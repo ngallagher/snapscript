@@ -10,6 +10,8 @@ This project contains a complete interpreter with the following components.
 
 Some code snippets
 
+#### Function overloading
+
 ```javascript
 function max(a, b) {
    if(a > b) {
@@ -23,5 +25,19 @@ function max(a, b, c) {
       return max(a, c);
    }
    return max(b, c);
+}
+```
+#### Type system
+
+```javascript
+trait Service {
+   function execute();
+}
+
+class Task with Service {
+
+   function override execute() {
+      // do something here...
+   }
 }
 ```
