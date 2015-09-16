@@ -3,13 +3,14 @@ Scripting language for various platforms, including Java (JVM), Android (Dalvik,
 
 This project contains a complete interpreter with the following components.
 
-1) Lexer
-2) Parser
-3) Assembler
-4) Interpreter
+1. Lexer
+2. Parser
+3. Assembler
+4. Interpreter
 
 Some code snippets
 
+```javascript
 function max(a, b) {
    if(a > b) {
       return a;
@@ -23,4 +24,4 @@ function max(a, b, c) {
    }
    return max(b, c);
 }
-
+```
