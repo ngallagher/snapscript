@@ -1,7 +1,7 @@
 # SnapScript
 Scripting language for various platforms, including Java (JVM), Android (Dalvik, ART), and Google Cloud (GAE). Syntax is a combination of TypeScript, ActionScript, and Scala.
 
-This project contains a complete interpreter with the following components.
+This project is a work in progress at the moment, however it contains a complete interpreter with the following components.
 
 1. Lexer
 2. Parser
