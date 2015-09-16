@@ -87,3 +87,40 @@ var end = System.currentTimeMillis();
 
 System.err.println("Time to sum: " + (end - start));
 ```
+#### Optional type constraints
+
+```javascript
+trait Time {
+   function getTime() {
+      return System.currentTimeMillis();
+   }
+}
+
+class Date with Time {
+   var year: Integer;
+   var month: Integer;
+   var day: Integer;
+   
+   function new(year: Integer, month: Integer, day: Integer) {
+      this.year = year;
+      this.month = month;
+      this.day = day;
+   }
+   
+   function getTime() {
+      // do something interesting here...
+   }
+}
+
+var date = new Date(1977, 18, 11);
+
+print(date);
+
+function print(x: Integer) {
+   System.out.println(x);
+}
+
+function print(x: Date) {
+   System.err.println(x);
+}
+```
