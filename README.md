@@ -107,7 +107,7 @@ class Date with Time {
       this.day = day;
    }
    
-   function getTime() {
+   function override getTime() {
       // do something interesting here...
    }
 }
