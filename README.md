@@ -124,3 +124,46 @@ function print(x: Date) {
    System.err.println(x);
 }
 ```
+#### Seamless integration with the host runtime
+
+```javascript
+import static lang.Math.*; // import static methods
+import security.SecureRandom; // import stock types
+
+function sort (a) {//shellsort
+    var increment = a.size() / 2;
+
+    while (increment > 0) {
+       for (var i = increment; i < a.size(); i++) {
+          var j = i;
+          var temp = a[i];
+
+          while (j >= increment && a[j - increment] > temp) {
+             a[j] = a[j - increment];
+             j = j - increment;
+          }
+          a[j] = temp;
+       }
+       if (increment == 2) {
+          increment = 1;
+       } else {
+          increment = floor(increment * (5.0 / 11));
+       }
+    }
+}
+var set = {}; // creates a new LinkedHashSet
+var empty = {:}; // creates a new LinkedHashMap
+var stuff = {'a':'A', 'b':'B'} // creates and populates LinkedHashMap
+var random = new SecureRandom();
+var array = []; // creates a new ArrayList
+
+for(var i = 0; i < count; i++){
+   var value = random.nextInt(100);   
+   array.add(value);
+}
+sort(array);
+
+for(var x in array){
+   System.out.println("shell="+x+" length="+array.size());
+}
+```
