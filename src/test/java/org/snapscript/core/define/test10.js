@@ -1,2 +1,0 @@
-var x = 1 + 1;
-System.out.print(x);
