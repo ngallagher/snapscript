@@ -1,4 +1,4 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
 import java.io.FileInputStream;
 import java.util.LinkedHashMap;
@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.Callable;
 
-import org.snapscript.assembler.Instruction;
-import org.snapscript.assembler.InstructionResolver;
+import org.snapscript.assemble.Instruction;
+import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.core.Context;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;

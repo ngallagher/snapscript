@@ -4,7 +4,6 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
 
-
 public class FunctionKeyBuilder {
 
    private final TypeExtractor extractor;

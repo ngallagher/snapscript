@@ -1,7 +1,7 @@
 package org.snapscript.core.execute;
 
-import org.snapscript.assembler.Instruction;
-import org.snapscript.assembler.Script;
+import org.snapscript.assemble.Instruction;
+import org.snapscript.assemble.Script;
 import org.snapscript.core.define.ClassDefinition;
 import org.snapscript.core.define.EnumDefinition;
 import org.snapscript.core.define.EnumList;

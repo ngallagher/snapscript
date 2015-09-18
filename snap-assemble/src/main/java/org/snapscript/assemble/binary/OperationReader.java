@@ -1,10 +1,10 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.snapscript.assembler.Instruction;
+import org.snapscript.assemble.Instruction;
 
 public class OperationReader {
    

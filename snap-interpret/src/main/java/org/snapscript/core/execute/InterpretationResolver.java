@@ -3,8 +3,8 @@ package org.snapscript.core.execute;
 import java.util.Arrays;
 import java.util.List;
 
-import org.snapscript.assembler.Instruction;
-import org.snapscript.assembler.InstructionResolver;
+import org.snapscript.assemble.Instruction;
+import org.snapscript.assemble.InstructionResolver;
 
 public class InterpretationResolver implements InstructionResolver {
 

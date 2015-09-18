@@ -1,4 +1,4 @@
-package org.snapscript.assembler;
+package org.snapscript.assemble;
 
 import java.util.HashMap;
 import java.util.Map;

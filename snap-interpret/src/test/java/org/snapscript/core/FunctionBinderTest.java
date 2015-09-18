@@ -7,9 +7,9 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assembler.InstructionResolver;
-import org.snapscript.assembler.ScriptContext;
-import org.snapscript.assembler.ScriptLinker;
+import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ScriptLinker;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.execute.ExpressionEvaluator;
 import org.snapscript.core.execute.InterpretationResolver;

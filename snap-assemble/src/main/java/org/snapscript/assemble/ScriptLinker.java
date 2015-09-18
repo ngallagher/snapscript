@@ -1,12 +1,12 @@
-package org.snapscript.assembler;
+package org.snapscript.assemble;
 
+import org.snapscript.assemble.binary.BinaryGenerator;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
 import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Statement;
-import org.snapscript.core.binary.BinaryGenerator;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;

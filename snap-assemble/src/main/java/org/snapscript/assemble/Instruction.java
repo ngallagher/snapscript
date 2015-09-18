@@ -1,4 +1,4 @@
-package org.snapscript.assembler;
+package org.snapscript.assemble;
 
 public interface Instruction {
    String getName();

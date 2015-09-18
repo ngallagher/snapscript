@@ -1,4 +1,4 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
 public enum OperationCode {
    VERSION('V'),

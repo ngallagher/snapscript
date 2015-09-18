@@ -1,4 +1,4 @@
-package org.snapscript.assembler;
+package org.snapscript.assemble;
 
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;

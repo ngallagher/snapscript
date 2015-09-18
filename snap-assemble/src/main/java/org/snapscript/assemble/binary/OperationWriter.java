@@ -1,9 +1,9 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
 
-import org.snapscript.assembler.Instruction;
+import org.snapscript.assemble.Instruction;
 
 public class OperationWriter {
    

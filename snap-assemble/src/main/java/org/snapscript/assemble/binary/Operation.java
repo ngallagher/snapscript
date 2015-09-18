@@ -1,6 +1,6 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
-import org.snapscript.assembler.Instruction;
+import org.snapscript.assemble.Instruction;
 
 public class Operation {
 

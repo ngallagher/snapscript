@@ -57,9 +57,9 @@ import javax.swing.text.StyledDocument;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.snapscript.assembler.InstructionResolver;
-import org.snapscript.assembler.ScriptCompiler;
-import org.snapscript.assembler.ScriptContext;
+import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.ScriptCompiler;
+import org.snapscript.assemble.ScriptContext;
 import org.snapscript.common.ThreadPool;
 import org.snapscript.core.execute.InterpretationResolver;
 

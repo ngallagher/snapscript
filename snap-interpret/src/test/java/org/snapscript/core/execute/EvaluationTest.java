@@ -11,9 +11,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assembler.Assembler;
-import org.snapscript.assembler.InstructionResolver;
-import org.snapscript.assembler.ScriptContext;
+import org.snapscript.assemble.Assembler;
+import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.binary.BinaryGenerator;
 import org.snapscript.core.Context;
 import org.snapscript.core.LexerBuilder;
 import org.snapscript.core.MapModel;
@@ -23,7 +24,6 @@ import org.snapscript.core.ModuleScope;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
-import org.snapscript.core.binary.BinaryGenerator;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 

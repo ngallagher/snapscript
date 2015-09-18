@@ -1,14 +1,14 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
-import static org.snapscript.core.binary.OperationCode.BOOLEAN;
-import static org.snapscript.core.binary.OperationCode.CHARACTER;
-import static org.snapscript.core.binary.OperationCode.DOUBLE;
-import static org.snapscript.core.binary.OperationCode.FLOAT;
-import static org.snapscript.core.binary.OperationCode.INTEGER;
-import static org.snapscript.core.binary.OperationCode.LONG;
-import static org.snapscript.core.binary.OperationCode.OCTET;
-import static org.snapscript.core.binary.OperationCode.SHORT;
-import static org.snapscript.core.binary.OperationCode.TEXT;
+import static org.snapscript.assemble.binary.OperationCode.BOOLEAN;
+import static org.snapscript.assemble.binary.OperationCode.CHARACTER;
+import static org.snapscript.assemble.binary.OperationCode.DOUBLE;
+import static org.snapscript.assemble.binary.OperationCode.FLOAT;
+import static org.snapscript.assemble.binary.OperationCode.INTEGER;
+import static org.snapscript.assemble.binary.OperationCode.LONG;
+import static org.snapscript.assemble.binary.OperationCode.OCTET;
+import static org.snapscript.assemble.binary.OperationCode.SHORT;
+import static org.snapscript.assemble.binary.OperationCode.TEXT;
 
 import java.io.DataInput;
 import java.io.DataOutput;

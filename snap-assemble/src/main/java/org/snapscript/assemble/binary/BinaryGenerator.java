@@ -1,4 +1,4 @@
-package org.snapscript.core.binary;
+package org.snapscript.assemble.binary;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.snapscript.assembler.AssemblerListener;
-import org.snapscript.assembler.Instruction;
+import org.snapscript.assemble.AssemblerListener;
+import org.snapscript.assemble.Instruction;
 
 public class BinaryGenerator implements AssemblerListener{
    

@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assembler.InstructionResolver;
-import org.snapscript.assembler.ScriptContext;
+import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
