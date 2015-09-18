@@ -1,32 +1,26 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ByteConverter extends TypeConverter {
-
+public class IntegerConverter extends TypeConverter {
+   
    @Override
    public int score(Object value) throws Exception {
       Class type = value.getClass();
       
-      if(type == Byte.class) {
+      if(type == Integer.class) {
          return EXACT;
       }
-      if(type == Short.class) {
-         return SIMILAR;
-      }
-      if(type == Integer.class) {
+      if(type == Long.class) {
          return SIMILAR;
       }
       if(type == BigInteger.class) {
          return SIMILAR;
       }
       if(type == AtomicInteger.class) {
-         return SIMILAR;
-      }
-      if(type == Long.class) {
          return SIMILAR;
       }
       if(type == AtomicLong.class) {
@@ -41,6 +35,12 @@ public class ByteConverter extends TypeConverter {
       if(type == BigDecimal.class) {
          return COMPATIBLE;
       }
+      if(type == Short.class) {
+         return COMPATIBLE;
+      }
+      if(type == Byte.class) {
+         return COMPATIBLE;
+      }
       if(type == String.class) {
          return POSSIBLE;
       }
@@ -53,14 +53,14 @@ public class ByteConverter extends TypeConverter {
       
       if(type == String.class) {
          String text = String.valueOf(value);
-         return convert(Byte.class, text);
+         return convert(Integer.class, text);
       }
       Class parent = type.getSuperclass();
       
       if(parent == Number.class) {
          Number number = (Number)value;
-         return number.byteValue();
+         return number.intValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to byte is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to integer is not possible");
    }
 }

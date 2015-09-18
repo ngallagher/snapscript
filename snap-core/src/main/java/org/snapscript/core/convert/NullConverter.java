@@ -1,6 +1,7 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
-public class AnyConverter extends TypeConverter {
+
+public class NullConverter extends TypeConverter {
    
    @Override
    public int score(Object value) throws Exception {

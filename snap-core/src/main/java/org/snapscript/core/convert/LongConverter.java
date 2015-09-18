@@ -1,20 +1,20 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class IntegerConverter extends TypeConverter {
+public class LongConverter extends TypeConverter{
    
    @Override
    public int score(Object value) throws Exception {
       Class type = value.getClass();
       
-      if(type == Integer.class) {
+      if(type == Long.class) {
          return EXACT;
       }
-      if(type == Long.class) {
+      if(type == Integer.class) {
          return SIMILAR;
       }
       if(type == BigInteger.class) {
@@ -53,14 +53,14 @@ public class IntegerConverter extends TypeConverter {
       
       if(type == String.class) {
          String text = String.valueOf(value);
-         return convert(Integer.class, text);
+         return convert(Long.class, text);
       }
       Class parent = type.getSuperclass();
       
       if(parent == Number.class) {
          Number number = (Number)value;
-         return number.intValue();
+         return number.longValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to integer is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to long is not possible");
    }
 }

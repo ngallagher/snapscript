@@ -1,17 +1,17 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class LongConverter extends TypeConverter{
-   
+public class ShortConverter extends TypeConverter {
+
    @Override
    public int score(Object value) throws Exception {
       Class type = value.getClass();
       
-      if(type == Long.class) {
+      if(type == Short.class) {
          return EXACT;
       }
       if(type == Integer.class) {
@@ -21,6 +21,9 @@ public class LongConverter extends TypeConverter{
          return SIMILAR;
       }
       if(type == AtomicInteger.class) {
+         return SIMILAR;
+      }
+      if(type == Long.class) {
          return SIMILAR;
       }
       if(type == AtomicLong.class) {
@@ -33,9 +36,6 @@ public class LongConverter extends TypeConverter{
          return COMPATIBLE;
       }
       if(type == BigDecimal.class) {
-         return COMPATIBLE;
-      }
-      if(type == Short.class) {
          return COMPATIBLE;
       }
       if(type == Byte.class) {
@@ -53,14 +53,14 @@ public class LongConverter extends TypeConverter{
       
       if(type == String.class) {
          String text = String.valueOf(value);
-         return convert(Long.class, text);
+         return convert(Short.class, text);
       }
       Class parent = type.getSuperclass();
       
       if(parent == Number.class) {
          Number number = (Number)value;
-         return number.longValue();
+         return number.shortValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to long is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to short is not possible");
    }
 }

@@ -1,10 +1,17 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
 
 import java.util.List;
 import java.util.Map;
 
 import org.snapscript.common.LeastRecentlyUsedMap;
 import org.snapscript.core.Signature;
+import org.snapscript.core.Type;
+import org.snapscript.core.TypeLoader;
+import org.snapscript.core.convert.FixedArgumentConverter;
+import org.snapscript.core.convert.NoArgumentConverter;
+import org.snapscript.core.convert.TypeConverter;
+import org.snapscript.core.convert.TypeMatcher;
+import org.snapscript.core.convert.VariableArgumentConverter;
 
 public class ArgumentMatcher {
 

@@ -1,4 +1,4 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 public abstract class TypeConverter {
    public static final int EXACT = 100;

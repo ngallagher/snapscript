@@ -1,7 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
-import static org.snapscript.core.TypeConverter.EXACT;
-import static org.snapscript.core.TypeConverter.INVALID;
+import static org.snapscript.core.convert.TypeConverter.EXACT;
+import static org.snapscript.core.convert.TypeConverter.INVALID;
+
+import org.snapscript.core.bind.ArgumentConverter;
 
 public class NoArgumentConverter implements ArgumentConverter {
 

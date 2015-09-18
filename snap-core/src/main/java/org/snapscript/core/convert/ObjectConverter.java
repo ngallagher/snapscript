@@ -1,6 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.util.List;
+
+import org.snapscript.core.Type;
+import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends TypeConverter {
    

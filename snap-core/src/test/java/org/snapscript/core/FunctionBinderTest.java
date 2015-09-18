@@ -3,11 +3,11 @@ package org.snapscript.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.snapscript.core.FunctionBinder;
 import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.TypeResolver;
+import org.snapscript.core.bind.FunctionBinder;
 
 import junit.framework.TestCase;
 

@@ -1,4 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
+
+import org.snapscript.core.Function;
+import org.snapscript.core.Invocation;
+import org.snapscript.core.Result;
+import org.snapscript.core.Scope;
 
 public class FunctionPointer {
    

@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.FunctionBinder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.binary.BinaryAssembler;
 import org.snapscript.core.binary.OperationCode;
+import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.Token;
 

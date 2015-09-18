@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
-import org.snapscript.core.FunctionBinder;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Module;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.TypeResolver;
+import org.snapscript.core.bind.FunctionBinder;
 
 public class ScriptContext implements Context {
    

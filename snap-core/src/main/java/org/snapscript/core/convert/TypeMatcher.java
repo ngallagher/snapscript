@@ -1,7 +1,13 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.snapscript.core.Scope;
+import org.snapscript.core.Type;
+import org.snapscript.core.TypeExtractor;
+import org.snapscript.core.TypeLoader;
+import org.snapscript.core.TypeVerifier;
 
 public class TypeMatcher {
    

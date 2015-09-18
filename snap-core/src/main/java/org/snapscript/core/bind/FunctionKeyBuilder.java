@@ -1,4 +1,8 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
+
+import org.snapscript.core.Type;
+import org.snapscript.core.TypeExtractor;
+import org.snapscript.core.TypeLoader;
 
 
 public class FunctionKeyBuilder {

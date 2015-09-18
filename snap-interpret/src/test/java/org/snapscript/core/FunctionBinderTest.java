@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 import org.snapscript.assembler.InstructionResolver;
 import org.snapscript.assembler.ScriptContext;
 import org.snapscript.assembler.ScriptLinker;
+import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.execute.ExpressionEvaluator;
 import org.snapscript.core.execute.InterpretationResolver;
 

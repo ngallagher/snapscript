@@ -1,6 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
 
 import java.util.concurrent.Callable;
+
+import org.snapscript.core.Result;
+import org.snapscript.core.Scope;
 
 public class FunctionCall implements Callable<Result> {
    

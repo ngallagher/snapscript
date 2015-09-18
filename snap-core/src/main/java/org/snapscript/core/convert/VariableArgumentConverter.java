@@ -1,6 +1,8 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
-import static org.snapscript.core.TypeConverter.*;
+import static org.snapscript.core.convert.TypeConverter.*;
+
+import org.snapscript.core.bind.ArgumentConverter;
 
 public class VariableArgumentConverter implements ArgumentConverter { 
    

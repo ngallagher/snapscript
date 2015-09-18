@@ -1,4 +1,4 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.snapscript.common.LeastRecentlyUsedMap;
 import org.snapscript.core.Function;
+import org.snapscript.core.Module;
 import org.snapscript.core.Signature;
+import org.snapscript.core.Type;
+import org.snapscript.core.TypeLoader;
 
 public class FunctionMatcher {
    

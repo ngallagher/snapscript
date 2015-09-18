@@ -1,4 +1,4 @@
-package org.snapscript.core;
+package org.snapscript.core.bind;
 
 public interface ArgumentConverter { 
    int score(Object... list) throws Exception;

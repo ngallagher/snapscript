@@ -10,10 +10,10 @@ import java.util.concurrent.Callable;
 import org.snapscript.assembler.Instruction;
 import org.snapscript.assembler.InstructionResolver;
 import org.snapscript.core.Context;
-import org.snapscript.core.FunctionBinder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 

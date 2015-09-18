@@ -1,4 +1,4 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -1,29 +1,20 @@
-package org.snapscript.core;
+package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class NumberConverter extends TypeConverter {
-   
+public class ByteConverter extends TypeConverter {
+
    @Override
    public int score(Object value) throws Exception {
       Class type = value.getClass();
       
-      if(type == Double.class) {
-         return SIMILAR;
+      if(type == Byte.class) {
+         return EXACT;
       }
-      if(type == Float.class) {
-         return SIMILAR;
-      }
-      if(type == BigDecimal.class) {
-         return SIMILAR;
-      }
-      if(type == Long.class) {
-         return SIMILAR;
-      }
-      if(type == AtomicLong.class) {
+      if(type == Short.class) {
          return SIMILAR;
       }
       if(type == Integer.class) {
@@ -35,30 +26,41 @@ public class NumberConverter extends TypeConverter {
       if(type == AtomicInteger.class) {
          return SIMILAR;
       }
-      if(type == Short.class) {
+      if(type == Long.class) {
          return SIMILAR;
       }
-      if(type == Byte.class) {
+      if(type == AtomicLong.class) {
          return SIMILAR;
+      }
+      if(type == Double.class) {
+         return COMPATIBLE;
+      }
+      if(type == Float.class) {
+         return COMPATIBLE;
+      }
+      if(type == BigDecimal.class) {
+         return COMPATIBLE;
       }
       if(type == String.class) {
-         return SIMILAR;
+         return POSSIBLE;
       }
       return INVALID;
    }
    
+   @Override
    public Object convert(Object value) throws Exception {
       Class type = value.getClass();
       
       if(type == String.class) {
          String text = String.valueOf(value);
-         return convert(Double.class, text);
+         return convert(Byte.class, text);
       }
       Class parent = type.getSuperclass();
       
       if(parent == Number.class) {
-         return (Number)value;
+         Number number = (Number)value;
+         return number.byteValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to number is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to byte is not possible");
    }
 }
