@@ -148,10 +148,9 @@ public class TokenIndexer {
 
    private Token text(int line) {
       String token = reader.text();
-      int mark = reader.mark();
       
       if (token != null) {
-         return new StringToken(token, lines[mark], TEXT.mask);
+         return new StringToken(token, line, TEXT.mask);
       }
       return null;
    }
