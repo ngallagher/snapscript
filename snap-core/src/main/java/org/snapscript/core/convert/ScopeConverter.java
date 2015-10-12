@@ -2,7 +2,6 @@ package org.snapscript.core.convert;
 
 import org.snapscript.core.Scope;
 
-
 public class ScopeConverter extends TypeConverter {
    
    @Override

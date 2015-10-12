@@ -73,6 +73,8 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
 
    static {
       STYLE_WORDS.put("public", "keyword");
+      STYLE_WORDS.put("protected", "keyword");
+      STYLE_WORDS.put("package", "keyword");
       STYLE_WORDS.put("private", "keyword");
       STYLE_WORDS.put("class", "keyword");
       STYLE_WORDS.put("trait", "keyword");

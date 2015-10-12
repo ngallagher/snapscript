@@ -1,6 +1,5 @@
 package org.snapscript.core;
 
-
 public class TypeExtractor {
    
    private final TypeLoader loader;

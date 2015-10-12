@@ -2,7 +2,6 @@ package org.snapscript.core.bind;
 
 import org.snapscript.core.Type;
 
-
 public class FunctionKey {      
 
    private final Type[] types;
