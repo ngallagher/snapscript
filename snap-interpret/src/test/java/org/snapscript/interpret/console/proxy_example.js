@@ -1,0 +1,18 @@
+/*
+ * This is a simple illustration of a Snap object
+ * implementing a Java interface.
+ */
+class Task with Runnable{
+
+   public override run(){
+      for(var i in [1,2,3,4,5]){
+         console.log("B.run("+i+")="+Thread.currentThread().getName());   
+      }
+   }
+}
+
+const task = new Task();
+const thread = new Thread(task);
+
+task.run();
+thread.start();
