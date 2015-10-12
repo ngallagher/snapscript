@@ -4,7 +4,6 @@ import org.snapscript.core.Holder;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
-
 public class CalculationResult implements Evaluation {
 
    private final Object value;

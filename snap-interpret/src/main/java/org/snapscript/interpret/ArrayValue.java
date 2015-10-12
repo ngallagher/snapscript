@@ -2,7 +2,6 @@ package org.snapscript.interpret;
 
 import org.snapscript.core.Value;
 
-
 public class ArrayValue extends Value {
    
    private final Object array;

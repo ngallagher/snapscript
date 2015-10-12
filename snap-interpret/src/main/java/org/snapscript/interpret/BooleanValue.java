@@ -2,7 +2,6 @@ package org.snapscript.interpret;
 
 import org.snapscript.core.Value;
 
-
 public class BooleanValue extends Value {   
    
    public static final BooleanValue TRUE = new BooleanValue(true);
