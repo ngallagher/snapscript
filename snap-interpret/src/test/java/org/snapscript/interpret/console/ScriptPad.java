@@ -13,10 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,15 +55,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
 import org.snapscript.common.ThreadPool;
-import org.snapscript.core.Context;
-import org.snapscript.core.Executable;
-import org.snapscript.core.MapModel;
-import org.snapscript.core.Model;
-import org.snapscript.interpret.InterpretationResolver;
 
 public class ScriptPad extends JFrame implements ActionListener, DocumentListener {
 
@@ -111,7 +101,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
 
    private Executor executor;
    private CodeHighlighter highlighter;
-   private JTextArea output;
+   private JTextArea info;
    private JTextArea console;
    private JTextPane ta;
    private JMenuBar menuBar;
@@ -119,7 +109,15 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    private JScrollPane scpane;
    private JScrollPane cpane;
    private JScrollPane opane;
-   private JMenuItem exitI, cutI, copyI, pasteI, selectI, saveI, openI, newI, runI;
+   private JMenuItem exitI;
+   private JMenuItem cutI; 
+   private JMenuItem copyI;
+   private JMenuItem pasteI;
+   private JMenuItem selectI;
+   private JMenuItem saveI;
+   private JMenuItem openI;
+   private JMenuItem newI;
+   private JMenuItem runI;
    private String pad;
    private JToolBar toolBar;
    private DefaultStyledDocument doc;
@@ -186,7 +184,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       fc = new JFileChooser();
       fc.setFileFilter(filter);
       fc.setCurrentDirectory(rootFile);
-      output = new JTextArea();
+      info = new JTextArea();
       console = new JTextArea();
       doc = new CodeDocument();
       font = new Font("Lucida Console", Font.PLAIN, 14);
@@ -203,7 +201,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       scpane.setRowHeaderView(lineNums);
       cpane = new JScrollPane(console); // scrollpane and add textarea to
                                         // scrollpane
-      opane = new JScrollPane(output); // scrollpane and add textarea to
+      opane = new JScrollPane(info); // scrollpane and add textarea to
                                        // scrollpane
       exitI = new JMenuItem("Exit");
       cutI = new JMenuItem("Cut");
@@ -227,11 +225,11 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       console.setBackground(Color.WHITE);
       console.setCaretColor(Color.BLACK);
 
-      output.setFont(font);
-      output.setEditable(false);
-      output.setForeground(Color.BLACK);
-      output.setBackground(Color.LIGHT_GRAY);
-      output.setCaretColor(Color.BLACK);
+      info.setFont(font);
+      info.setEditable(false);
+      info.setForeground(Color.BLACK);
+      info.setBackground(Color.LIGHT_GRAY);
+      info.setCaretColor(Color.BLACK);
 
       // ta.setLineWrap(true);
       // ta.setWrapStyleWord(true);
@@ -260,7 +258,8 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       copyI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
       pasteI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
       selectI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-
+      selectI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+      
       consolePanel.add(cpane, BorderLayout.CENTER);
       codePanel.add(scpane, BorderLayout.CENTER);
       codePanel.add(toolBar, BorderLayout.SOUTH);
@@ -421,11 +420,25 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    }
 
    public void executeScript() {
-      ThreadGroup group = Thread.currentThread().getThreadGroup();
-      ScriptRunner runner = new ScriptRunner(source);
-      Thread thread = new Thread(group, runner, "ScriptRunner", 512 * 1024 * 1024);
+      try {
+         ThreadGroup group = Thread.currentThread().getThreadGroup();
+         File file = File.createTempFile("Script", ".snap");
+         file.deleteOnExit();
+         ConsoleWriter outputWriter = new ConsoleWriter(executor, console);
+         ConsoleWriter infoWriter = new ConsoleWriter(executor, info);
+         console.setText("");
+         info.setText("");
+         FileOutputStream out = new FileOutputStream(file);
+         OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
+         encoder.write(source);
+         encoder.close();
+         ScriptLauncher launcher = new ScriptLauncher(outputWriter, infoWriter, source, file); // create some stats and execute in separate process
+         Thread thread = new Thread(group, launcher, "ScriptRunner");
 
-      thread.run();
+         thread.start();
+      }catch(Exception e){
+         e.printStackTrace();
+      }
    }
 
    @Override
@@ -535,30 +548,6 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
          super.insertString(offs, str, a);
       }
    };
-
-   private class ConsoleWriter {
-
-      private final Executor executor;
-      private final JTextArea console;
-
-      public ConsoleWriter(Executor executor, JTextArea console) {
-         this.executor = executor;
-         this.console = console;
-      }
-
-      public void log(final Object text) {
-         executor.execute(new Runnable() {
-            public void run() {
-               String original = console.getText();
-               if (original != null && original.length() > 0) {
-                  console.setText(original + "\r\n" + text);
-               } else {
-                  console.setText("" + text);
-               }
-            }
-         });
-      }
-   }
 
    private class FileSystemModel implements TreeModel {
 
@@ -712,7 +701,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       public boolean accept(File dir, String name) {
          File file = new File(dir, name);
 
-         if (file.isDirectory()) {
+         if (file.isDirectory() && !name.equals(".svn") && !name.equals("target")) {
             return true;
          }
          if (fileFilter != null) {
@@ -734,48 +723,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       }
    }
 
-   private class ScriptRunner implements Runnable {
 
-      private final String source;
-
-      public ScriptRunner(String source) {
-         this.source = source;
-      }
-
-      @Override
-      public void run() {
-         ConsoleWriter consoleWriter = new ConsoleWriter(executor, console);
-         ConsoleWriter outputWriter = new ConsoleWriter(executor, output);
-         console.setText("");
-         output.setText("");
-         try {
-
-            InstructionResolver set = new InterpretationResolver();
-            Context context =new ScriptContext(set);
-            ScriptCompiler compiler = new ScriptCompiler(context);
-            Map<String, Object> map = new HashMap<String, Object>();
-            Model model = new MapModel(map);
-            map.put("console", consoleWriter);
-            long start = System.currentTimeMillis();
-            Executable executable = compiler.compile(source);
-            long finish = System.currentTimeMillis();
-            long duration = finish - start;
-            outputWriter.log("Time taken to compile was " + duration + " ms, size was " + source.length());
-            start = System.currentTimeMillis();
-            executable.execute(model);
-            finish = System.currentTimeMillis();
-            duration = finish - start;
-            outputWriter.log("Time taken to execute was " + duration + " ms");
-         } catch (Exception e) {
-            StringWriter w = new StringWriter();
-            PrintWriter p = new PrintWriter(w);
-            e.printStackTrace(p);
-            p.flush();
-            outputWriter.log(w.toString());
-            e.printStackTrace(System.err);
-         }
-      }
-   }
 
    public static void main(String[] args) throws Exception {
       String lookAndFeel = "Metal";

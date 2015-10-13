@@ -16,5 +16,5 @@ set.add(4.55);
 set.add(2);
 
 for(var entry in set){
-   console.log(entry);
+   System.out.println(entry);
 }

@@ -14,11 +14,11 @@ function gcd(a,b) {
   while (true) {
     a %= b;
     if (a == 0) { 
-    	return b; 
+       return b; 
     }
     b %= a;
     if (b == 0) { 
-    	return a; 
+       return a; 
     }
   }
 }
@@ -27,4 +27,4 @@ var a = random.nextInt(40) + 1;
 var b = random.nextInt(40) + 1;
 var result = gcd(a, b);
 
-out.println("gcd("+a+","+b+")="+result);
+System.out.println("gcd("+a+","+b+")="+result);

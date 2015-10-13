@@ -6,7 +6,7 @@ class Task with Runnable{
 
    public override run(){
       for(var i in [1,2,3,4,5]){
-         console.log("B.run("+i+")="+Thread.currentThread().getName());   
+         System.err.println("B.run("+i+")="+Thread.currentThread().getName());   
       }
    }
 }

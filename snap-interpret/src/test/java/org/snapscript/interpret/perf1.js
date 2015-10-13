@@ -24,11 +24,11 @@ var s={};
 var m={:};
 var random=new SecureRandom();
 var array = [];
-for(var i = 0; i < count; i++){
-	var value = random.nextInt(100);	
-	array.add(value);
+for(var i = 0; i < 10000; i++){
+   var value = random.nextInt(100000);   
+   array.add(value);
 }
 sort(array);
 for(var x in array){
-	out.println("shell="+x+" length="+array.size());
+   System.out.println("shell="+x+" length="+array.size());
 }

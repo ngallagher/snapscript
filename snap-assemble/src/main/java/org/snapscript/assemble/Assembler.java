@@ -51,7 +51,7 @@ public class Assembler {
       Object result = create(token, name, 0);
       long finish=System.currentTimeMillis();
       long normal=finish-start;
-      System.err.println("Assembly time  took "+normal);
+      //System.err.println("Assembly time  took "+normal);
       listener.assemble(name, OperationCode.END, null, 0, null);
 //      try{
 //
