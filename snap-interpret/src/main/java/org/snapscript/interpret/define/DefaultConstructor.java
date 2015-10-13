@@ -27,7 +27,7 @@ public class DefaultConstructor implements TypePart {
    } 
    @Override
    public Statement define(Scope scope, Statement statements, Type type) throws Exception {
-      Signature signature = parameters.create(null);
+      Signature signature = parameters.create(scope);
       Statement baseCall = null;
       
       List<Type> types=type.getTypes();

@@ -64,9 +64,6 @@ public class TypeMatcher {
       if(comparator.same(String.class, type)) {
          return new StringConverter();
       }
-      if(comparator.same(Runnable.class, type)) {
-         return new InterfaceConverter(extractor, type);
-      }
       if(comparator.like(Scope.class, type)) {
          return new ScopeConverter();
       }

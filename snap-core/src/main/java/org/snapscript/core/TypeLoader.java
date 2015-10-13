@@ -100,9 +100,9 @@ public class TypeLoader {
          }
          Type done=null;
          if(type.isArray()){
-            done=new Type(name,load(type.getComponentType()),hierL,varsL,mapL);
+            done=new Type(name,load(type.getComponentType()),hierL,varsL,mapL,type);
          }else {
-            done=new Type(name,null,hierL,varsL,mapL);
+            done=new Type(name,null,hierL,varsL,mapL,type);
          }
          if(type==Object.class){
             Type any=load("Any", null,true);

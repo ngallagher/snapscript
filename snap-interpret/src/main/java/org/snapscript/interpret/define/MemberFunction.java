@@ -30,9 +30,9 @@ public class MemberFunction implements TypePart {
    @Override
    public Statement define(Scope scope, Statement statements, Type type) throws Exception {
       // XXX if this function is called it must be called on the internal scope of the instance...
-      Value handle = identifier.evaluate(null, null);  
+      Value handle = identifier.evaluate(scope, null);  
       String name = handle.getString();
-      Signature signature = parameters.create(null);
+      Signature signature = parameters.create(scope);
       Value mod = modifier.evaluate(scope, null);
       int modifiers = mod.getInteger();
       

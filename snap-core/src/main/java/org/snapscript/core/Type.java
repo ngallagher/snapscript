@@ -8,14 +8,20 @@ public class Type {
    private final List<Property> properties;
    private final List<Function> functions;
    private final List<Type> types;
+   private final Class type;
    private final Type entry;
    private final String name;
    
    public Type(String name, Type entry, List<Type> types, List<Property> properties, List<Function> functions){
+      this(name, entry, types, properties, functions, null);
+   }
+   
+   public Type(String name, Type entry, List<Type> types, List<Property> properties, List<Function> functions, Class type){
       this.functions = functions;
       this.properties = properties;
       this.entry = entry;
       this.types = types;
+      this.type = type;
       this.name = name;
    }
    
@@ -29,6 +35,10 @@ public class Type {
    
    public List<Type> getTypes(){
       return types;
+   }
+   
+   public Class getType() {
+      return type;
    }
    
    public Type getEntry(){
