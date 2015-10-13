@@ -34,6 +34,9 @@ public class ConstructObject implements Evaluation {
       FunctionBinder binder = context.getBinder();
       Type qualifier = module.getType(name);
       
+      if(qualifier == null) {
+         throw new IllegalStateException("No type found for " + name); // class not found
+      }
       if(list != null) {
          Value array = list.evaluate(scope, null); // arguments have no left hand side
          Object[] arguments = array.getValue();

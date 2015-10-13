@@ -187,7 +187,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       info = new JTextArea();
       console = new JTextArea();
       doc = new CodeDocument();
-      font = new Font("Lucida Console", Font.PLAIN, 14);
+      font = new Font("Lucida Console", Font.PLAIN, 13);
       ta = new CodePane(doc);
       menuBar = new JMenuBar(); // menubar
       fileM = new JMenu("File"); // file menu

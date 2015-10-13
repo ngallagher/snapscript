@@ -20,13 +20,17 @@ import org.snapscript.interpret.InterpretationResolver;
 public class ScriptRunner {
 
    public static void main(String[] list) throws Exception {
+      run(list[0]);
+   }
+   
+   public static void run(String file) throws Exception {
       try {
          InstructionResolver set = new InterpretationResolver();
          Context context = new ScriptContext(set);
          ScriptCompiler compiler = new ScriptCompiler(context);
          Map<String, Object> map = new HashMap<String, Object>();
          Model model = new MapModel(map);
-         String source = load(list[0]);
+         String source = load(file);
          Executable executable = compiler.compile(source);
          executable.execute(model);
       } catch (Exception e) {

@@ -17,10 +17,16 @@ public class ScriptLauncher implements Runnable {
    private final ConsoleWriter info;
    private final String source;
    private final File file;
+   private final boolean fork;
    
    public ScriptLauncher(ConsoleWriter output, ConsoleWriter info, String source, File file) {
+      this(output, info, source, file, true);
+   }
+   
+   public ScriptLauncher(ConsoleWriter output, ConsoleWriter info, String source, File file, boolean fork) {
       this.output = output;
       this.source = source;
+      this.fork = fork;
       this.info = info;
       this.file = file;
    }
@@ -29,13 +35,18 @@ public class ScriptLauncher implements Runnable {
    public void run() {
       compile();
       long start = System.currentTimeMillis();
-      launch();
+      
+      if(fork) {
+         fork();
+      } else {
+         execute();
+      }
       long finish = System.currentTimeMillis();
       long duration = finish - start;
       info.log("Time taken to execute was " + duration + " ms");
    }
    
-   private void launch() {
+   private void fork() {
       try {
          String javaHome = System.getProperty("java.home");
          String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
@@ -55,6 +66,18 @@ public class ScriptLauncher implements Runnable {
             line = reader.readLine();
          }
          process.waitFor();
+      }catch(Exception e) {
+         StringWriter w = new StringWriter();
+         PrintWriter p = new PrintWriter(w);
+         e.printStackTrace(p);
+         p.flush();
+         info.log(w.toString());
+      }
+   }
+   
+   private void execute() {
+      try {
+         ScriptRunner.run(file.getCanonicalPath());
       }catch(Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);
