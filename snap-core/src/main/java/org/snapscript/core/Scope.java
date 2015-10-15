@@ -9,5 +9,4 @@ public interface Scope {
    void setValue(String name, Value value);
    void addVariable(String name, Reference value);
    void addConstant(String name, Constant value);
-   
 }

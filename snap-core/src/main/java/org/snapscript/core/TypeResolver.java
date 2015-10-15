@@ -58,7 +58,7 @@ public class TypeResolver {
       try {
          return loader.load(location);
       } catch(Exception e){
-         throw new IllegalStateException("Problem importing " + name,e);
+         throw new IllegalStateException("Problem importing '" + name + "'",e);
       }
    }
    

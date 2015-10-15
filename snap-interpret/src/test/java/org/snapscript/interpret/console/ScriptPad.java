@@ -97,6 +97,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       STYLE_WORDS.put("override", "keyword");
       STYLE_WORDS.put("module", "keyword");
       STYLE_WORDS.put("enum", "keyword");
+      STYLE_WORDS.put("from", "keyword");
    }
 
    private Executor executor;

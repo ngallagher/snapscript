@@ -5,7 +5,6 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 
-
 public class Script extends Statement {
    
    private final Statement[] statements;

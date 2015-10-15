@@ -1,0 +1,4 @@
+import io.Blah;
+
+var b = new Blah();
+b.test();

@@ -33,12 +33,17 @@ public class ScriptLinker implements LibraryLinker {
    
    @Override
    public Library link(String source) throws Exception {
+      return link(source, "library");
+   }
+   
+   @Override
+   public Library link(String source, String grammar) throws Exception {
       Statement linked = cache.fetch(source);
       
       if(linked == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(source, root);
-         Script statement = (Script)assembler.assemble(node, "xx");
+         SyntaxNode node = parser.parse(source, grammar);
+         Statement statement = (Statement)assembler.assemble(node, "xx");
          
          cache.cache(source, statement); 
          return new ScriptLibrary(statement);

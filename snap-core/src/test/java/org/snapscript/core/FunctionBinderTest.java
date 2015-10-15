@@ -21,6 +21,10 @@ public class FunctionBinderTest extends TestCase {
          public Library link(String source) throws Exception {
             return null;
          }
+         @Override
+         public Library link(String source, String grammar) throws Exception {
+            return null;
+         }
       };
       TypeResolver resolver = new TypeResolver(linker);
       TypeLoader loader = new TypeLoader(resolver);
