@@ -130,7 +130,7 @@ public class InvocationBinder {
                return new Holder(data);   
             }
          }
-         Type type = scope.getType();
+         Type type = object.getType();
          
          if(local == null) {
             throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
