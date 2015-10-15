@@ -10,6 +10,8 @@ import org.snapscript.assemble.ScriptCompiler;
 import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
 import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.parse.SyntaxCompiler;
+import org.snapscript.parse.SyntaxParser;
 
 public class ScriptLauncher implements Runnable {
    
@@ -33,6 +35,7 @@ public class ScriptLauncher implements Runnable {
    
    @Override
    public void run() {
+      syntax();
       compile();
       long start = System.currentTimeMillis();
       
@@ -44,6 +47,17 @@ public class ScriptLauncher implements Runnable {
       long finish = System.currentTimeMillis();
       long duration = finish - start;
       info.log("Time taken to execute was " + duration + " ms");
+   }
+   
+   private void syntax(){
+      try {
+         SyntaxCompiler analyzer = new SyntaxCompiler();
+         SyntaxParser parser = analyzer.compile();
+         String syntax = SyntaxPrinter.print(parser, source, "script");
+         info.log(syntax);
+      }catch(Exception e){
+         //ignore for now
+      }
    }
    
    private void fork() {
@@ -66,6 +80,11 @@ public class ScriptLauncher implements Runnable {
             line = reader.readLine();
          }
          process.waitFor();
+         line = reader.readLine();
+         while(line != null){
+            output.log(line);
+            line = reader.readLine();
+         }
       }catch(Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);

@@ -25,7 +25,8 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.interpret.Evaluation;
 import org.snapscript.interpret.InterpretationResolver;
-import org.snapscript.interpret.console.LexerBuilder;
+import org.snapscript.interpret.console.SyntaxPrinter;
+import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
@@ -207,9 +208,10 @@ public class EvaluationTest extends TestCase {
       Scope s=new ModelScope(mod, model);
       BinaryGenerator generator = new BinaryGenerator(".bin");
       Assembler builder = new Assembler(generator, set, cc);
-      SyntaxParser analyzer = LexerBuilder.create();
+      SyntaxCompiler bb = new SyntaxCompiler();
+      SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
-      LexerBuilder.print(analyzer, source, grammar); // Evaluating the following
+      SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following
       Statement statement = (Statement)builder.assemble(token,"xx");
       return statement.execute(s).getFlow();
    }   
@@ -221,9 +223,10 @@ public class EvaluationTest extends TestCase {
       Scope s=new ModelScope(mod, model);
       BinaryGenerator generator = new BinaryGenerator(".bin");
       Assembler builder = new Assembler(generator, set, cc);
-      SyntaxParser analyzer = LexerBuilder.create();
+      SyntaxCompiler bb = new SyntaxCompiler();
+      SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
-      LexerBuilder.print(analyzer, source, grammar); // Evaluating the following
+      SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following
       Evaluation evaluation = (Evaluation)builder.assemble(token,"xx");
       
       if(repeat > 0) {

@@ -5,14 +5,16 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.snapscript.interpret.console.LexerBuilder;
+import org.snapscript.interpret.console.SyntaxPrinter;
+import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
 public class ModuleParseTest extends TestCase {
 
    public void testParse() throws Exception {
-      SyntaxParser tree = LexerBuilder.create();
+      SyntaxCompiler bb = new SyntaxCompiler();
+      SyntaxParser tree =  bb.compile();
 
       assertNotNull(tree);
 
@@ -41,7 +43,7 @@ public class ModuleParseTest extends TestCase {
       SyntaxNode list = analyzer.parse(source, grammar);
 
       if (list != null) {
-         LexerBuilder.print(analyzer, source, grammar);
+         SyntaxPrinter.print(analyzer, source, grammar);
       }else {
          if(success) {
             assertTrue(false);

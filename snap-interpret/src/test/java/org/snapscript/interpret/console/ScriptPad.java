@@ -414,7 +414,11 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       } else if (e.getSource() == runI) {
          new Thread(new Runnable() {
             public void run() {
-               executeScript();
+               try {
+                  executeScript();
+               } catch(Exception e){
+                  e.printStackTrace();
+               }
             }
          }).start();
       }

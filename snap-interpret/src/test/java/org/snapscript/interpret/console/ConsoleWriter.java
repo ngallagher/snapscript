@@ -9,16 +9,26 @@ import javax.swing.JTextArea;
 
 public class ConsoleWriter {
 
+   private final Queue<Object> window;
    private final Queue<Object> queue;
    private final AtomicBoolean running;
+   private final StringBuilder builder;
    private final Executor executor;
    private final JTextArea console;
+   private final int capacity;
 
    public ConsoleWriter(Executor executor, JTextArea console) {
+      this(executor, console, 1000);
+   }
+   
+   public ConsoleWriter(Executor executor, JTextArea console, int capacity) {
       this.queue = new ConcurrentLinkedQueue<Object>();
+      this.window = new ConcurrentLinkedQueue<Object>();
       this.running = new AtomicBoolean();
+      this.builder = new StringBuilder();
       this.executor = executor;
       this.console = console;
+      this.capacity = capacity;
    }
 
    public void log(Object text) {
@@ -44,22 +54,28 @@ public class ConsoleWriter {
    }
    
    private synchronized void log(){
-      if(!queue.isEmpty()) {
-         Object text = queue.poll();
-         
-         if(text != null) {
-            String original = console.getText();
-            StringBuilder builder = new StringBuilder(original == null ? "" : original);
-            builder.append(text);
-            builder.append("\r\n");
+      if(!queue.isEmpty()) {   
+         while(!queue.isEmpty()) {
+            Object text = queue.poll();
             
-            while(!queue.isEmpty()) {
-               text = queue.poll();
-               builder.append(text);
-               builder.append("\r\n");
+            if(text != null) {
+               int size = window.size();
+            
+               if(size > capacity) {
+                  window.poll();
+               }
+               window.offer(text);
             }
-            console.setText(builder.toString());
          }
+         builder.setLength(0);
+         
+         for(Object line : window) {
+            builder.append(line);
+            builder.append("\r\n");
+         }
+         String result = builder.toString();
+         
+         console.setText(result);
       }
    }
 }

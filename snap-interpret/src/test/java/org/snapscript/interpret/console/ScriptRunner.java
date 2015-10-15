@@ -19,20 +19,21 @@ import org.snapscript.interpret.InterpretationResolver;
 
 public class ScriptRunner {
 
+   private static final InstructionResolver SET = new InterpretationResolver();
+   private static final Context CONTEXT = new ScriptContext(SET);
+   private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
+   private static final Map<String, Object> MAP = new HashMap<String, Object>();
+   private static final Model MODEL = new MapModel(MAP);
+   
    public static void main(String[] list) throws Exception {
       run(list[0]);
    }
    
    public static void run(String file) throws Exception {
       try {
-         InstructionResolver set = new InterpretationResolver();
-         Context context = new ScriptContext(set);
-         ScriptCompiler compiler = new ScriptCompiler(context);
-         Map<String, Object> map = new HashMap<String, Object>();
-         Model model = new MapModel(map);
          String source = load(file);
-         Executable executable = compiler.compile(source);
-         executable.execute(model);
+         Executable executable = COMPILER.compile(source);
+         executable.execute(MODEL);
       } catch (Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);
