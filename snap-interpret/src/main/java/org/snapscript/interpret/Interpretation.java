@@ -79,6 +79,7 @@ public enum Interpretation implements Instruction {
    RETURN_STATEMENT(ReturnStatement.class, "return-statement"),      
    WHILE_STATEMENT(WhileStatement.class, "while-statement"),
    FOR_STATEMENT(ForStatement.class, "for-statement"),
+   FOR_INFINITE_STATEMENT(ForInfiniteStatement.class, "for-infinite-statement"),
    FOR_IN_STATEMENT(ForInStatement.class, "for-in-statement"),
    TYPE_CONSTRAINT(Constraint.class, "type-constraint"),
    PARAMETER(Parameter.class, "parameter"),

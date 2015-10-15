@@ -1,0 +1,11 @@
+var x = 0;
+
+for(;x<10;x++){
+   System.err.println(x);
+}
+for(;x < 100; x+=0){
+   if(x++ > 20){
+      break;
+   }
+   System.err.println(x);
+}
