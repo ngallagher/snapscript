@@ -9,3 +9,14 @@ for(;x < 100; x+=0){
    }
    System.err.println(x);
 }
+for(;;){
+   if(x++ > 30)   
+      break;
+   System.err.println(x);
+}
+for(;x<40;){
+   System.err.println(x++);
+}
+for(;x<50;x+=2){
+   System.err.println(x);
+}
