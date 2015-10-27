@@ -112,7 +112,8 @@ public enum Interpretation implements Instruction {
    MODULE_FUNCTION(FunctionDeclaration.class, "module-function"),     
    MODULE_DEFINITION(ModuleDefinition.class, "module-definition"),    
    SCRIPT_FUNCTION(FunctionDeclaration.class, "script-function"),     
-   SCRIPT(Script.class, "script");       
+   SCRIPT(Script.class, "script"),
+   LIBRARY(Script.class, "library");
    
    public final Class type;
    public final String name;

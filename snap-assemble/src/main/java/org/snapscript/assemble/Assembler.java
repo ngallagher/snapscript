@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.snapscript.assemble.binary.BinaryAssembler;
-import org.snapscript.assemble.binary.OperationCode;
 import org.snapscript.core.Context;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
@@ -20,15 +18,11 @@ public class Assembler {
    private final Map<String, Instruction> codes;
    private final Map<String, Type> types;
    private final InstructionResolver resolver;
-   private final AssemblerListener listener;
-   private final BinaryAssembler assembler;
    private final Context context;
 
-   public Assembler(AssemblerListener listener, InstructionResolver resolver, Context context) {
+   public Assembler(InstructionResolver resolver, Context context) {
       this.codes = new LinkedHashMap<String, Instruction>();
       this.types = new LinkedHashMap<String, Type>();
-      this.assembler = new BinaryAssembler(resolver, context, ".bin");
-      this.listener = listener;
       this.resolver = resolver;
       this.context = context;
    }
@@ -52,7 +46,7 @@ public class Assembler {
       long finish=System.currentTimeMillis();
       long normal=finish-start;
       //System.err.println("Assembly time  took "+normal);
-      listener.assemble(name, OperationCode.END, null, 0, null);
+//      listener.assemble(name, OperationCode.END, null, 0, null);
 //      try{
 //
 //         start = System.currentTimeMillis();
@@ -87,14 +81,10 @@ public class Assembler {
    private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Type type,int depth) throws Exception {
       FunctionBinder binder = context.getBinder();
       TypeLoader loader = context.getLoader();
-      String grammar = node.getGrammar();
-      Instruction instruction = codes.get(grammar);
       int size = children.size();
       
       Object[] arguments = new Object[size];
       Type[] parameters = new Type[size];
-
-      listener.assemble(name, OperationCode.PUSH, instruction, size, null);  
 
       for (int i = 0; i < size; i++) {
          SyntaxNode child = children.get(i);
@@ -108,8 +98,6 @@ public class Assembler {
          arguments[i] = argument;
          parameters[i] = t;
       }
-      listener.assemble(name, OperationCode.POP, instruction, size, null);  
-
       Callable<Result> callable = binder.bind(null, type, "new", arguments);
       Result result = callable.call();
       return result.getValue();
@@ -138,30 +126,21 @@ public class Assembler {
    }
    
    private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Type type, int depth) throws Exception {
-      FunctionBinder binder = context.getBinder();
-      String grammar = node.getGrammar();
-      Instruction instruction = codes.get(grammar);      
+      FunctionBinder binder = context.getBinder();  
       Token token = node.getToken();      
 
       if (type != null) {
          if (token == null) {
             Callable<Result> callable = binder.bind(null, type, "new");
             Result result = callable.call();
-            listener.assemble(name, OperationCode.NONE, instruction, 0, null);      
             return result.getValue();
          }      
          Callable<Result> callable = binder.bind(null, type, "new", token);    
          Result result = callable.call();
          Object value = token.getValue();
-
-         listener.assemble(name, OperationCode.PUSH, instruction, 1, null);          
-         listener.assemble(name, OperationCode.resolveCode(value), instruction,1,value);
-         listener.assemble(name, OperationCode.POP, instruction, 1, null);  
  
          return result.getValue();
       }
-      Object value = token.getValue();
-      listener.assemble(name, OperationCode.resolveCode(value), instruction,1,value);
       return token;
    }
 }

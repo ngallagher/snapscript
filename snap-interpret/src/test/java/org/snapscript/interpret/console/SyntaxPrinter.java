@@ -27,7 +27,7 @@ public class SyntaxPrinter {
       for (int i = 0; i < depth; i++) {
          builder.print(" ");
       }      
-      builder.printf("%s --> ", grammar);
+      builder.printf("%s --> (", grammar);
       int count = 0;
       
       for(SyntaxNode next : children) { 
@@ -43,8 +43,9 @@ public class SyntaxPrinter {
       if(t != null) {
          builder.print(" = \"");
          builder.print(t.getValue());
-         builder.print("\" ");
+         builder.print("\" <");
          builder.print(t.getValue().getClass().getSimpleName());
+         builder.print(">");
       }
       builder.println();
       builder.flush();

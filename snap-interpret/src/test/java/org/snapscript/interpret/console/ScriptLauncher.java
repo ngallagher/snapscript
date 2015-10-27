@@ -35,8 +35,8 @@ public class ScriptLauncher implements Runnable {
    
    @Override
    public void run() {
-      syntax();
       compile();
+      syntax();
       long start = System.currentTimeMillis();
       
       if(fork) {

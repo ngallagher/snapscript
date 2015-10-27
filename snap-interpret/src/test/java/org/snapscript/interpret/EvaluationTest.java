@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 import org.snapscript.assemble.Assembler;
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptContext;
-import org.snapscript.assemble.binary.BinaryGenerator;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
@@ -206,8 +205,7 @@ public class EvaluationTest extends TestCase {
       Context cc =new ScriptContext(set);
       ModuleScope mod=new ModuleScope(cc.getModule());
       Scope s=new ModelScope(mod, model);
-      BinaryGenerator generator = new BinaryGenerator(".bin");
-      Assembler builder = new Assembler(generator, set, cc);
+      Assembler builder = new Assembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
@@ -221,8 +219,7 @@ public class EvaluationTest extends TestCase {
       Context cc =new ScriptContext(set);
       ModuleScope mod=new ModuleScope(cc.getModule());
       Scope s=new ModelScope(mod, model);
-      BinaryGenerator generator = new BinaryGenerator(".bin");
-      Assembler builder = new Assembler(generator, set, cc);
+      Assembler builder = new Assembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);

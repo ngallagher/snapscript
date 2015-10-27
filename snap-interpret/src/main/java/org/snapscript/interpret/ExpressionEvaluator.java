@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.snapscript.assemble.Assembler;
 import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.binary.BinaryGenerator;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
@@ -24,7 +23,6 @@ import org.snapscript.parse.SyntaxParser;
 public class ExpressionEvaluator implements Evaluator{
    
    private final Cache<String, Evaluation> cache;
-   private final BinaryGenerator generator;
    private final SyntaxCompiler compiler;
    private final Assembler assembler;
    private final Interpretation root;
@@ -36,8 +34,7 @@ public class ExpressionEvaluator implements Evaluator{
    
    public ExpressionEvaluator(InstructionResolver resolver, Context context, Interpretation root) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
-      this.generator = new BinaryGenerator(".bin");
-      this.assembler = new Assembler(generator, resolver, context);
+      this.assembler = new Assembler(resolver, context);
       this.compiler = new SyntaxCompiler();
       this.context = context;
       this.root = root;

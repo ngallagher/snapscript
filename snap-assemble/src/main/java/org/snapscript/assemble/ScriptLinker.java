@@ -1,6 +1,5 @@
 package org.snapscript.assemble;
 
-import org.snapscript.assemble.binary.BinaryGenerator;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
@@ -14,21 +13,13 @@ import org.snapscript.parse.SyntaxParser;
 public class ScriptLinker implements LibraryLinker {
    
    private final Cache<String, Statement> cache;
-   private final BinaryGenerator generator;
    private final SyntaxCompiler compiler;
-   private final Assembler assembler;
-   private final String root;   
+   private final Assembler assembler;   
    
    public ScriptLinker(InstructionResolver resolver, Context context) {
-      this(resolver, context, "script");
-   }   
-   
-   public ScriptLinker(InstructionResolver resolver, Context context, String root) {
       this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.generator = new BinaryGenerator(".bin");
-      this.assembler = new Assembler(generator, resolver, context);      
+      this.assembler = new Assembler(resolver, context);      
       this.compiler = new SyntaxCompiler();
-      this.root = root;
    }
    
    @Override
