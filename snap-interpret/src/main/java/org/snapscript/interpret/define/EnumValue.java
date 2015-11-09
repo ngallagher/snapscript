@@ -34,7 +34,7 @@ public class EnumValue {
    //
    // static init before new...
    //
-   public Statement define(Scope scope, Type type, int index) throws Exception { // declare variable
+   public void define(Scope scope, Type type, int index) throws Exception { // declare variable
       //DeclarationStatement s = new DeclarationStatement(identifier, constraint, value);
       Value value = key.evaluate(scope, null);
       Name consName = new Name();
@@ -52,7 +52,6 @@ public class EnumValue {
       type.getProperties().add(property);
       // XXX property needs to go in to the definition of the type...
       //statement.execute(scope);
-      return fieldDef;
    }
 
 
@@ -65,14 +64,12 @@ public class EnumValue {
       
    }
    public class FieldDefinition extends Statement{
-      private final AtomicBoolean done;
       private final Evaluation ev;
       private final String name;
       private final String title;
       private final Type tp;
       private final int index;
       public FieldDefinition(Evaluation ev,Type tp,String name,String title,int index){
-         this.done = new AtomicBoolean();
          this.title = title;
          this.name=name;
          this.index =index;
@@ -83,24 +80,21 @@ public class EnumValue {
 
       @Override
       public Result execute(Scope scope) throws Exception {
-         if(done.compareAndSet(false, true)) {
-            InstanceScope s = new InstanceScope(scope, tp);
-            Constant cst=new Constant(tp);
-            s.addConstant("class", cst);
-            if(ev == null) {
-               throw new IllegalStateException("Unable to create enum");
-            }
-            Value result = ev.evaluate(scope, s);              
-            Scope instance = result.getValue();
-   //         instance.setAttribute("identity", new Constant(title));         
-            instance.addConstant("name", new Constant(name, "name"));
-            instance.addConstant("ordinal", new Constant(index, "ordinal"));            
-            String constraint=tp.getName();
-            Constant literal = new Constant(instance,name);
-            scope.addConstant(name, literal);
-            return new Result(ResultFlow.NORMAL,instance);
+         InstanceScope s = new InstanceScope(scope, tp);
+         Constant cst=new Constant(tp);
+         s.addConstant("class", cst);
+         if(ev == null) {
+            throw new IllegalStateException("Unable to create enum");
          }
-         return new Result();
+         Value result = ev.evaluate(scope, s);              
+         Scope instance = result.getValue();
+//         instance.setAttribute("identity", new Constant(title));         
+         instance.addConstant("name", new Constant(name, "name"));
+         instance.addConstant("ordinal", new Constant(index, "ordinal"));            
+         String constraint=tp.getName();
+         Constant literal = new Constant(instance,name);
+         scope.addConstant(name, literal);
+         return new Result(ResultFlow.NORMAL,instance);
       }
    }
 }

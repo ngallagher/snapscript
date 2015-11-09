@@ -4,16 +4,6 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-/**
- * Order of initialisation needs to be as follows:
- * 
- * 1) Initialize ENUM list
- * 2) Initialize statics
- * 
- * 
- * 
- * 
- */
 public class EnumList implements TypePart {
    
    private final EnumValue[] values;
@@ -28,11 +18,7 @@ public class EnumList implements TypePart {
       int index = 0;
       
       for(EnumValue value : values) {
-         Statement entry = value.define(scope, type, index++);
-         
-         if(entry != null) {
-            collector.update(entry);
-         }
+         value.define(scope, type, index++);
       }
       return collector;
    }   

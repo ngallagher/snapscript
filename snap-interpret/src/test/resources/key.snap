@@ -74,7 +74,7 @@ class KeyFinder {
 
 System.out.println(KeyFinder.at(1,1));
 System.out.println(KeyFinder.at(0,0));
-System.out.println(Key.INDEX);
+System.out.println(KeyFinder.INDEX);
 
 
 class KeyPressCalculator {
@@ -89,7 +89,7 @@ class KeyPressCalculator {
    [ 1, -2],
    [-1, -2]];
    
-   static const Key.KEY_COUNT = 20;
+   static const KEY_COUNT = 20;
 
    var cache;
    var moves;
@@ -122,7 +122,7 @@ class KeyPressCalculator {
       }
       var possible = moves[origin.index]; // have we got an index
       
-      if(possible.length == 0) {
+      if(possible.size() == 0) {
          var keys = new Key[KEY_COUNT];
          
          for(var i = 0; i < KEY_COUNT; i++) {
@@ -131,7 +131,7 @@ class KeyPressCalculator {
             if(key != null) {
                var count = 0; // how many moves are possible
                
-               for(var j = 0; j < JUMP_OFFSETS.length; j++) {
+               for(var j = 0; j < JUMP_OFFSETS.size(); j++) {
                   var x = JUMP_OFFSETS[j][0];
                   var y = JUMP_OFFSETS[j][1];
                   var next = KeyFinder.at(key.x + x, key.y + y); // make 'L' move
@@ -178,7 +178,7 @@ class KeyPressCalculator {
 
 }
 
-var calculator = new KeyPressCalculator(10, 2);
+var calculator = new KeyPressCalculator(32, 2);
 var result = calculator.calculate();
          
 System.out.println(result);

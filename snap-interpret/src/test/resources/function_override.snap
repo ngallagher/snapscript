@@ -20,6 +20,5 @@ class B extends A {
 
 var b = new B();
 var a = new A();
-a.fun1();
-System.err.println("-----");
+
 b.fun1();
