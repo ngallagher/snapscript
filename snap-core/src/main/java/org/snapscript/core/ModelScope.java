@@ -55,12 +55,12 @@ public class ModelScope implements Scope {
    }
    
    @Override
-   public void addVariable(String name, Reference value) {
+   public void addVariable(String name, Value value) {
       scope.addVariable(name, value);
    }
    
    @Override
-   public void addConstant(String name, Constant value) {
+   public void addConstant(String name, Value value) {
       scope.addConstant(name, value);
    }    
 }

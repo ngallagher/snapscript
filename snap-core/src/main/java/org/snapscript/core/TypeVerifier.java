@@ -4,9 +4,11 @@ import java.util.List;
 
 public class TypeVerifier {
    
+   private final PrimitivePromoter converter;
    private final TypeLoader loader;
    
    public TypeVerifier(TypeLoader loader) {
+      this.converter = new PrimitivePromoter();
       this.loader = loader;
    }
 

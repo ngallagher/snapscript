@@ -3,8 +3,11 @@ package org.snapscript.interpret.console;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +34,17 @@ public class ScriptRunner {
    
    public static void run(String file) throws Exception {
       try {
+         TerminateListener listener = new TerminateListener();
+         listener.start();
+         System.err.println("port="+listener.getPort()); // tell the launcher your port
+      } catch (Exception e) {
+         StringWriter w = new StringWriter();
+         PrintWriter p = new PrintWriter(w);
+         e.printStackTrace(p);
+         p.flush();
+         System.err.println(w.toString());
+      }
+      try {
          String source = load(file);
          Executable executable = COMPILER.compile(source);
          executable.execute(MODEL);
@@ -40,6 +54,8 @@ public class ScriptRunner {
          e.printStackTrace(p);
          p.flush();
          System.err.println(w.toString());
+      }finally {
+         System.exit(0);
       }
    }
 
@@ -59,4 +75,30 @@ public class ScriptRunner {
       return out.toString();
    }
 
+   
+   private static class TerminateListener extends Thread {
+      
+      private final ServerSocket socket;
+      
+      public TerminateListener() throws Exception {
+         this.socket = new ServerSocket(0);
+      }
+      
+      public int getPort() {
+         return socket.getLocalPort();
+      }
+      
+      public void run() {
+         try {
+            Socket sock = socket.accept();
+            InputStream stream = sock.getInputStream();
+            stream.read();
+         }catch(Exception e) {
+            e.printStackTrace();
+         }finally{
+            System.exit(0);
+         }
+      }
+   }
+   
 }

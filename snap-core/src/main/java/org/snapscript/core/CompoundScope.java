@@ -65,7 +65,7 @@ public class CompoundScope implements Scope {
    }
    
    @Override
-   public void addVariable(String name, Reference value) {
+   public void addVariable(String name, Value value) {
       Value variable = values.get(name);
 
       if(variable != null) {
@@ -75,7 +75,7 @@ public class CompoundScope implements Scope {
    }
    
    @Override
-   public void addConstant(String name, Constant value) {
+   public void addConstant(String name, Value value) {
       Value variable = values.get(name);
 
       if(variable != null) {

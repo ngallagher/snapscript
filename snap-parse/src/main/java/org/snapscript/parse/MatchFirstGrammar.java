@@ -1,11 +1,11 @@
 package org.snapscript.parse;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.snapscript.common.LeastRecentlyUsedMap;
+import org.snapscript.common.LeastRecentlyUsedSet;
 
 public class MatchFirstGrammar implements Grammar {
    
@@ -20,7 +20,7 @@ public class MatchFirstGrammar implements Grammar {
    
    public MatchFirstGrammar(List<Grammar> grammars, String name, int capacity) {
       this.cache = new LeastRecentlyUsedMap<Long, Grammar>(capacity);
-      this.failure = new HashSet<Long>();
+      this.failure = new LeastRecentlyUsedSet<Long>(capacity);
       this.grammars = grammars;
       this.name = name;
    }       

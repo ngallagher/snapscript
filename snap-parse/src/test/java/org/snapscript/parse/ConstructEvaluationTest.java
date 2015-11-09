@@ -209,8 +209,7 @@ public class ConstructEvaluationTest extends TestCase {
                }
             }
             if(grammar.equals(child)) {
-               String source = next.getSource();
-               String value = String.format("%s-%s %s --> [%s]%n", depth, count++, grammar, source);
+               String value = String.format("%s-%s %s%n", depth, count++, grammar);
                
                list.add(value);
             }

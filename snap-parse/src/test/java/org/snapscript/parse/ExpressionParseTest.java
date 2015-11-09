@@ -12,6 +12,9 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "[1,2,3]", "expression"); 
+      analyze(tree, "x[0]", "expression");  
+      analyze(tree, "x[0][1]", "expression");  
       analyze(tree, "call()", "expression");      
       analyze(tree, "call(12)", "expression");
       analyze(tree, "call(12.0f)", "expression");   

@@ -29,7 +29,7 @@ public class LexerBuilder {
       for (int i = 0; i < depth; i++) {
          System.err.print(" ");
       }      
-      System.err.printf("%s --> [%s] --> (", grammar, token.getSource());
+      System.err.printf("%s --> (", grammar);
       int count = 0;
       
       for(SyntaxNode next : children) { 

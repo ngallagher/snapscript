@@ -40,26 +40,26 @@ public class MemberConstructor implements TypePart {
       Statement baseCall = null;
       
       if(list != null){
-         baseCall = new SuperConstructor(list).define(scope, statements, type);
+         baseCall = new SuperConstructor(list).define(scope, null, type);
       }else {
          
          List<Type> types=type.getTypes();
             Type superT=types.isEmpty()?null:types.get(0);
          if(superT!=null) {
             // here we call the anon constructor
-            baseCall = new SuperConstructor(new ArgumentList()).define(scope, statements, type);                  
+            baseCall = new SuperConstructor(new ArgumentList()).define(scope, null, type);                  
          } else {
             baseCall = new PrimitiveConstructor(); // just create the scope object
          }
       }
-      Invocation bodyCall = new StatementInvocation(statement, signature);      
+      Invocation bodyCall = new StatementInvocation(statement, signature);   
       Invocation invocation = new NewInvocation(
             type,
             signature,
             baseCall, // first we need to call the super constructor to create everything
             statements, // the body of the class needs to be defined next
             bodyCall); // now call the constructor code!!!
-      
+      Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
       //
       // this function does the following in order...
       //
@@ -68,7 +68,7 @@ public class MemberConstructor implements TypePart {
       // 3) if no super type is defined via "extends" it creates a default constructor
       // 4) After invoking the super constructor the result will be a scope object
       //
-      Function function = new Function(signature, invocation, "new", "new");// description is wrong here.....
+      Function function = new Function(signature, scopeCall, "new", "new");// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

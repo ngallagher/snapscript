@@ -24,11 +24,12 @@ public class FixedArgumentConverter implements ArgumentConverter {
             TypeConverter converter = converters[i];
             Object value = list[i];
             int score = converter.score(value);
-            
+         
             if(score == 0) {
                return INVALID;
             }
             total += score;
+            
          }
          return total;
       }

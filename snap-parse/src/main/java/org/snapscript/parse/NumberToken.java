@@ -3,14 +3,14 @@ package org.snapscript.parse;
 public class NumberToken implements Token<Number> {
    
    private final Number value;
+   private final Line line;
    private final int type;
-   private final int line;
-   
+
    public NumberToken(Number value) {
-      this(value, 0, 0);
+      this(value, null, 0);
    }
    
-   public NumberToken(Number value, int line, int type) {
+   public NumberToken(Number value, Line line, int type) {
       this.value = value;
       this.type = type;
       this.line = line;
@@ -22,7 +22,7 @@ public class NumberToken implements Token<Number> {
    }
    
    @Override
-   public int getLine(){ 
+   public Line getLine(){ 
       return line;
    }
    

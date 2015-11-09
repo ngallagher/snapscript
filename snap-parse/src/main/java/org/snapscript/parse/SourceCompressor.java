@@ -4,49 +4,51 @@ import static org.snapscript.parse.TextCategory.INDEX;
 
 public class SourceCompressor {
    
+   private char[] original;
+   private char[] compress;
    private short[] lines;
-   private char[] source;
    private short line;
    private int write;
    private int read;
    private int count;
    
-   public SourceCompressor(char[] source) {
-      this.lines = new short[source.length];
-      this.count = source.length;
-      this.source = source;
+   public SourceCompressor(char[] original) {
+      this.lines = new short[original.length];
+      this.compress = new char[original.length];
+      this.count = original.length;
+      this.original = original;
       this.line = 1; // lines start at 1
    }
    
    public SourceCode compress() {
       while(read < count) {
-         char next = source[read];
+         char next = original[read];
          
          if(comment(next)) {
             if(!comment()) {
                lines[write] = line;
-               source[write++] = source[read++];
+               compress[write++] = original[read++];
             }
          } else if(quote(next)) {
             if(!string()) {
                lines[write] = line;
-               source[write++] = source[read++];
+               compress[write++] = original[read++];
             }
          } else if(!space(next)) {
             lines[write] = line;
-            source[write++] = source[read++];
+            compress[write++] = original[read++];
          } else {
             if(write > 0 && read + 1< count) {
-               char before = source[write-1];
-               char after = source[read+1];
+               char before = compress[write-1];
+               char after = original[read+1];
                
                if(identifier(before) && identifier(after)) {
                   lines[write] = line;
-                  source[write++] = ' ';               
+                  compress[write++] = ' ';               
                }
                if(operator(before) && operator(after)) {
                   lines[write] = line;
-                  source[write++] = ' ';               
+                  compress[write++] = ' ';               
                }               
             }
             if(next == '\n') {
@@ -67,7 +69,7 @@ public class SourceCompressor {
          throw new IllegalStateException("Source text is empty");
       }
       for(int i = 0; i < write; i++) {
-         char next = source[i];
+         char next = compress[i];
          
          if(next < INDEX.length) {
             types[i] = INDEX[next];
@@ -75,21 +77,22 @@ public class SourceCompressor {
          index[i] = lines[i]; 
          text[i] = next;
       }
-      return new SourceCode(text, index, types);
+      return new SourceCode(original, text, index, types);
    }
    
    private boolean comment() {
-      char start = source[read];
+      char start = original[read];
       
       if(comment(start)){
          if(read + 1 < count) {   
-            char next = source[read + 1];
+            char next = original[read + 1];
             
             if(next == '/') {
                while(read < count) {
-                  char terminal = source[read];
+                  char terminal = original[read];
                   
                   if(terminal == '\n') {
+                     read++;
                      line++;
                      return true;
                   }
@@ -99,13 +102,13 @@ public class SourceCompressor {
             } 
             if(next == '*') {
                while(read < count) {
-                  char terminal = source[read];
+                  char terminal = original[read];
                   
                   if(terminal == '\n') {
                      line++;
                   }
                   if(terminal == '/' && read > 0) {
-                     char prev = source[read - 1];
+                     char prev = original[read - 1];
                      
                      if(prev == '*') {
                         read++;
@@ -122,32 +125,35 @@ public class SourceCompressor {
    }
    
    private boolean string() {
-      char start = source[read];
+      char start = original[read];
       
       if(quote(start)) {
          int size = 0;
          
          while(read < count) {
-            char next = source[read];
+            char next = original[read];
             
             if(next == start) {
                if(size == 1) { // "" or ''
-                  source[write++] = source[read++];
+                  lines[write] = line;
+                  compress[write++] = original[read++];
                   return true; 
                } 
                if(read > 0 && size > 0) {
-                  char prev = source[read - 1];
+                  char prev = original[read - 1];
                   
                   if(!escape(prev)) {
-                     source[write++] = source[read++];
+                     lines[write] = line;
+                     compress[write++] = original[read++];
                      return true;
                   }
                   for(int i = 1; i < size; i++) {
-                     char value = source[read - i];
+                     char value = original[read - i];
                      
                      if(!escape(value)) {
                         if(i % 2 == 1) {
-                           source[write++] = source[read++];
+                           lines[write] = line;
+                           compress[write++] = original[read++];
                            return true;
                         }
                         break;
@@ -155,7 +161,8 @@ public class SourceCompressor {
                   }
                }
             }
-            source[write++] = source[read++];
+            lines[write] = line;
+            compress[write++] = original[read++];
             size++;
          }
          throw new IllegalStateException("String literal not closed at line " + line);

@@ -27,7 +27,7 @@ public class SuperFunction implements Evaluation {
    
    @Override
    public Value evaluate(Scope x, Object left) throws Exception {
-      TypeScope s =new TypeScope(x, type);
+      InstanceScope s =new InstanceScope(x, type);
       Constant constant = new Constant(type);
       s.addConstant("class",constant);
       InvocationDispatcher handler = dispatcher.dispatch(s, left);

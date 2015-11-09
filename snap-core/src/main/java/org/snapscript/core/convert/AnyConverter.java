@@ -1,6 +1,5 @@
 package org.snapscript.core.convert;
 
-
 public class AnyConverter extends TypeConverter {
    
    @Override

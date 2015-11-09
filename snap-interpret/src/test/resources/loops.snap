@@ -20,3 +20,14 @@ for(;x<40;){
 for(;x<50;x+=2){
    System.err.println(x);
 }
+while(x++<60){
+   System.err.println(x);
+}
+while(true){
+   if(x++>70)break;
+   System.err.println(x);
+}
+for(var i = 0; i < 10;i++){
+   x+=i;
+   System.err.println(x);
+}

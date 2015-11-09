@@ -9,8 +9,8 @@ public interface LexicalAnalyzer {
    Token<Number> hexidecimal();
    Token<Number> decimal();
    Token<Number> integer();
+   Line line(int mark);
    int reset(int mark);
-   int line(int mark);
    int count();
    int mark();  
 }

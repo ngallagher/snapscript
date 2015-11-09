@@ -39,14 +39,14 @@ public class DefaultConstructor implements TypePart {
             baseCall = new PrimitiveConstructor(); // just create the scope object
          }
       
-      Invocation bodyCall = new StatementInvocation(statement, signature);      
+      Invocation bodyCall = new StatementInvocation(statement, signature);   
       Invocation invocation = new NewInvocation(
             type,
             signature,
             baseCall, // first we need to call the super constructor to create everything
             statements, // the body of the class needs to be defined next
             bodyCall); // now call the constructor code!!!
-      
+      Invocation scopeCall = new TypeInvocation(invocation, scope);
       //
       // this function does the following in order...
       //

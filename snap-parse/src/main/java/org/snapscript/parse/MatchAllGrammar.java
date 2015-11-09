@@ -1,8 +1,9 @@
 package org.snapscript.parse;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.snapscript.common.LeastRecentlyUsedSet;
 
 public class MatchAllGrammar implements Grammar {
 
@@ -13,8 +14,12 @@ public class MatchAllGrammar implements Grammar {
    private final int index;
    
    public MatchAllGrammar(List<Grammar> grammars, String name, int index) {
-      this.success = new HashSet<Long>();
-      this.failure = new HashSet<Long>();
+      this(grammars, name, index, 1000);
+   }
+   
+   public MatchAllGrammar(List<Grammar> grammars, String name, int index, int capacity) {
+      this.success = new LeastRecentlyUsedSet<Long>();
+      this.failure = new LeastRecentlyUsedSet<Long>();
       this.grammars = grammars;
       this.index = index;
       this.name = name;

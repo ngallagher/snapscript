@@ -16,16 +16,19 @@ public class EnumConverter extends TypeConverter {
 
    @Override
    public int score(Object value) throws Exception {
-      Class type = value.getClass();
-      Class parent = type.getSuperclass();
-      
-      if(parent == Enum.class) {
-         return EXACT;
+      if(value != null) {
+         Class type = value.getClass();
+         Class parent = type.getSuperclass();
+         
+         if(parent == Enum.class) {
+            return EXACT;
+         }
+         if(type == String.class) {
+            return SIMILAR;
+         }
+         return INVALID;
       }
-      if(type == String.class) {
-         return SIMILAR;
-      }
-      return INVALID;
+      return POSSIBLE;
    }
    
    public Object convert(Object object) throws Exception {

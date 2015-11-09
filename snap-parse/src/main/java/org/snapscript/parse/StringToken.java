@@ -3,14 +3,14 @@ package org.snapscript.parse;
 public class StringToken implements Token<String>{
    
    private final String value;
+   private final Line line;
    private final int type;
-   private final int line;
    
    public StringToken(String value) {
-      this(value, 0, 0);
+      this(value, null, 0);
    }
    
-   public StringToken(String value, int line, int type) {
+   public StringToken(String value, Line line, int type) {
       this.value = value;
       this.type = type;
       this.line = line;
@@ -22,7 +22,7 @@ public class StringToken implements Token<String>{
    }
    
    @Override
-   public int getLine() {
+   public Line getLine() {
       return line;
    }
    

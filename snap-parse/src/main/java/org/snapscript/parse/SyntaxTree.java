@@ -13,20 +13,16 @@ public class SyntaxTree {
    private final GrammarIndexer indexer;
    private final IntegerStack stack;
    private final String grammar;
-   private final char[] source;
    private final long serial;
-   private final int count;
 
-   public SyntaxTree(GrammarIndexer indexer, String grammar, char[] source, short[] lines, short[] types, int off, int count, int serial) {
-      this.analyzer = new TokenScanner(indexer, source, lines, types, off, count);
+   public SyntaxTree(GrammarIndexer indexer, String grammar, char[] original, char[] source, short[] lines, short[] types, int serial) {
+      this.analyzer = new TokenScanner(indexer, original, source, lines, types);
       this.comparator = new SyntaxNodeComparator();
       this.nodes = new ArrayList<SyntaxCursor>();
       this.stack = new IntegerStack();
       this.indexer = indexer;
       this.grammar = grammar;
-      this.source = source;
       this.serial = serial;
-      this.count = count;
    } 
 
    public SyntaxReader mark() {   
@@ -50,10 +46,10 @@ public class SyntaxTree {
       int count = analyzer.count();
       
       if(mark != count) {
-         int line = analyzer.line(mark);
+         Line line = analyzer.line(mark);
          
          if(size <= 1) {
-            throw new IllegalStateException("Syntax error in source after line " + line);
+            throw new IllegalStateException("Syntax error in source at line " + line);
          }  
       }
       return create();
@@ -95,7 +91,7 @@ public class SyntaxTree {
       }      
       
       public SyntaxNode create() {
-         return new SyntaxResult(nodes, value, grammar, start, mark, depth);
+         return new SyntaxResult(nodes, value, grammar, start, depth);
       }
 
       @Override
@@ -233,40 +229,33 @@ public class SyntaxTree {
          }
          return false;
       }
-      
-      @Override
-      public String toString() {
-         return new String(source, start, count - start);
-      }
    }
 
    private class SyntaxResult implements SyntaxNode {
 
-      private List<SyntaxCursor> nodes;
+      private List<SyntaxCursor> children;
       private Token token;
       private int grammar;
       private int start;
-      private int stop;
       private int depth;
 
-      public SyntaxResult(List<SyntaxCursor> nodes, Token token, int grammar, int start, int stop, int depth) {
+      public SyntaxResult(List<SyntaxCursor> children, Token token, int grammar, int start, int depth) {
+         this.children = children;
          this.grammar = grammar;
-         this.nodes = nodes;
          this.token = token;
-         this.start = start;
          this.depth = depth;
-         this.stop = stop;
+         this.start = start;
       }
 
       @Override
       public List<SyntaxNode> getNodes() {
-         int size = nodes.size();
+         int size = children.size();
          
          if(size > 0) {
             List<SyntaxNode> result = new ArrayList<SyntaxNode>();
             
-            for(SyntaxCursor cursor : nodes) {
-               SyntaxNode node = cursor.create();
+            for(SyntaxCursor child : children) {
+               SyntaxNode node = child.create();
                
                if(node != null) {
                   result.add(node);
@@ -281,18 +270,8 @@ public class SyntaxTree {
       }
 
       @Override
-      public String getSource() {
-         return new String(source, start, stop - start);
-      }
-
-      @Override
       public String getGrammar() {
          return indexer.value(grammar);
-      }
-
-      @Override
-      public int getLine() {
-         return analyzer.line(start); // line in source
       }
 
       @Override
@@ -308,11 +287,6 @@ public class SyntaxTree {
       @Override
       public int getStart() {
          return start;
-      }
-
-      @Override
-      public String toString() {
-         return getGrammar();
       }
    } 
 }

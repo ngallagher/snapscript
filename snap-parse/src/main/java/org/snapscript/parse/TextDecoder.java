@@ -4,7 +4,7 @@ public class TextDecoder {
    
    private char[] source;
    private int count;
-   private int off;
+   private int start;
 
    public TextDecoder(char[] source) {
       this(source, 0, source.length);
@@ -13,7 +13,7 @@ public class TextDecoder {
    public TextDecoder(char[] source, int off, int count) {
       this.source = source;
       this.count = count;
-      this.off = off;      
+      this.start = off;      
    }
    
    public String decode(int off, int length) {
@@ -21,8 +21,8 @@ public class TextDecoder {
    }
    
    public String decode(int off, int length, boolean escape) {
-      int limit = length + off; 
-      int read = off;
+      int limit = start + length + off; 
+      int read = start + off;
       int write = 0;
 
       if(length > 0 && limit < count && escape) {

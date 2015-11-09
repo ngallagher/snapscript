@@ -55,9 +55,6 @@ public enum ValueComparator {
    public abstract int compare(Value left, Value right);
    
    public static ValueComparator resolveComparator(Value left, Value right) {
-      if(left == null || right == null){
-         System.err.println();
-      }
       Object primary = left.getValue();
       Object secondary = right.getValue();
 

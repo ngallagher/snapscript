@@ -13,12 +13,13 @@ import org.snapscript.assemble.ScriptLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
+import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.TypeResolver;
+import org.snapscript.core.ImportResolver;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.interpret.ExpressionEvaluator;
 import org.snapscript.interpret.InterpretationResolver;
@@ -30,8 +31,9 @@ public class FunctionBinderTest extends TestCase {
       Context context =new ScriptContext(set);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      TypeResolver resolver = new TypeResolver(linker);
-      TypeLoader loader = new TypeLoader(resolver);
+      ImportStore store = new ImportStore();
+      ImportResolver resolver = new ImportResolver(store, linker);
+      TypeLoader loader = new TypeLoader(store, resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       
       Type type =loader.load("java.io.PrintStream",null);
@@ -50,8 +52,9 @@ public class FunctionBinderTest extends TestCase {
       Context context =new ScriptContext(set);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      TypeResolver resolver = new TypeResolver(linker);
-      TypeLoader loader = new TypeLoader(resolver);
+      ImportStore store = new ImportStore();
+      ImportResolver resolver = new ImportResolver(store, linker);
+      TypeLoader loader = new TypeLoader(store, resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Map<String, Property>v=new LinkedHashMap<String,Property>();
       Type type =loader.load("java.lang.String",null);

@@ -4,6 +4,7 @@ import org.snapscript.assemble.Instruction;
 import org.snapscript.assemble.Script;
 import org.snapscript.interpret.define.ClassDefinition;
 import org.snapscript.interpret.define.EnumDefinition;
+import org.snapscript.interpret.define.EnumKey;
 import org.snapscript.interpret.define.EnumList;
 import org.snapscript.interpret.define.EnumValue;
 import org.snapscript.interpret.define.MemberConstructor;
@@ -92,6 +93,7 @@ public enum Interpretation implements Instruction {
    TRAIT_HIERARCHY(TypeHierarchy.class, "trait-hierarchy"),
    TRAIT_DEFINITION(TraitDefinition.class, "trait-definition"),    
    TRAIT_FUNCTION(TraitFunction.class, "trait-function"),
+   ENUM_KEY(EnumKey.class, "enum-key"),
    ENUM_HIERARCHY(TypeHierarchy.class, "enum-hierarchy"),
    ENUM_DEFINITION(EnumDefinition.class, "enum-definition"), 
    ENUM_VALUE(EnumValue.class, "enum-value"),

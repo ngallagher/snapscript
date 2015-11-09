@@ -5,10 +5,30 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.core.Type;
+
 public class NumberConverter extends TypeConverter {
+   
+   private final Type type;
+   
+   public NumberConverter(Type type) {
+      this.type = type;
+   }
    
    @Override
    public int score(Object value) throws Exception {
+      Class actual = type.getType();
+      
+      if(value != null) {
+         return match(value);
+      }
+      if(actual.isPrimitive()) {
+         return INVALID;
+      }
+      return POSSIBLE;
+   }
+   
+   private int match(Object value) throws Exception {
       Class type = value.getClass();
       
       if(type == Double.class) {

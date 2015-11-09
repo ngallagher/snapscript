@@ -2,7 +2,6 @@ package org.snapscript.interpret.define;
 
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
-import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeAccessor;
 import org.snapscript.core.Statement;
@@ -55,12 +54,12 @@ public class MemberField implements TypePart {
          Statement st =null;
          if(ModifierType.isConstant(modifiers)) {
             Evaluation e= new DeclareConstant(identifier, constraint, value);
-           st= new FieldDefinition(e);
+           st= new StaticInitializer(e, scope);
          } else {
             Evaluation e= new DeclareVariable(identifier, constraint, value);
-            st= new FieldDefinition(e);
+            st= new StaticInitializer(e, scope);
          }
-         StaticAccessor accessor = new StaticAccessor(st,scope, name);         
+         StaticAccessor accessor = new StaticAccessor(statements,scope, name); 
          Property property = new Property(name, type, accessor);
          
          // XXX add properties!!!
@@ -79,24 +78,10 @@ public class MemberField implements TypePart {
       //statement.execute(scope);
       if(ModifierType.isConstant(modifiers)) {
          Evaluation e= new DeclareConstant(identifier, constraint, value);
-         return new FieldDefinition(e);
+         return new InstanceInitializer(e, type);
       }
       Evaluation e= new DeclareVariable(identifier, constraint, value);
-      return new FieldDefinition(e);
+      return new InstanceInitializer(e, type);
       
-   }
-   
-   public class FieldDefinition extends Statement{
-      
-      public Evaluation evaluation;
-      public FieldDefinition(Evaluation evaluation){
-         this.evaluation = evaluation;
-      }
-
-      @Override
-      public Result execute(Scope scope) throws Exception {
-         evaluation.evaluate(scope, null);
-         return new Result();
-      }
    }
 }

@@ -1,14 +1,15 @@
 package org.snapscript.core.convert;
 
-
 public class StringConverter extends TypeConverter {
    
    @Override
    public int score(Object value) throws Exception {
-      Class type = value.getClass();
+      if(value != null) {
+         Class type = value.getClass();
       
-      if(type == String.class) {
-         return EXACT;
+         if(type == String.class) {
+            return EXACT;
+         }
       }
       return POSSIBLE;
    }

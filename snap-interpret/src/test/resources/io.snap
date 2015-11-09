@@ -6,3 +6,12 @@ class Blah{
       }
    }
 }
+
+class BlahBlah extends Blah with Runnable {
+   override test(val){
+      System.err.println("val="+val);
+   }
+   override run(){
+      test("run");
+   }
+}

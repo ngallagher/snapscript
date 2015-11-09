@@ -92,9 +92,6 @@ public class Assembler {
          Class parameter = argument.getClass();
          Type t = loader.load(parameter);
          
-         if(argument.equals(new Integer(70))) {
-            System.err.println();
-         }
          arguments[i] = argument;
          parameters[i] = t;
       }

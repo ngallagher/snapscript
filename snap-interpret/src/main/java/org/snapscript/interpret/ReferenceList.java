@@ -1,6 +1,7 @@
 package org.snapscript.interpret;
 
 import org.snapscript.core.Scope;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class ReferenceList implements Evaluation {
@@ -20,7 +21,7 @@ public class ReferenceList implements Evaluation {
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       Value result = part.evaluate(scope, left);         
-      
+ 
       if(list != null) {
          Object value = result.getValue();
          

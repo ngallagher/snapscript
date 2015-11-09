@@ -29,6 +29,7 @@ public class EnumTest extends TestCase{
    private static final String SOURCE_2=
    "enum Person {\n"+
    "   JIM('Jim',23),\n"+
+   "   JIM_2('Jim',23),\n"+
    "   TOM('Tom',33),\n"+
    "   BOB('Bob',21);\n"+
    "   var title;\n"+

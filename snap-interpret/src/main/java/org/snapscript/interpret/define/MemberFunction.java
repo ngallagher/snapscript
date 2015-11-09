@@ -9,9 +9,9 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.interpret.CompoundStatement;
 import org.snapscript.interpret.Evaluation;
 import org.snapscript.interpret.ParameterList;
-import org.snapscript.interpret.StatementInvocation;
 
 public class MemberFunction implements TypePart {
    
@@ -40,7 +40,8 @@ public class MemberFunction implements TypePart {
          Module module = scope.getModule();
          String qualifier=type.getName();
          //XXX invocation
-         Invocation invocation = new StatementInvocation(statement, signature);
+         Statement init = new CompoundStatement(statements, statement); // initialize static scope first
+         Invocation invocation = new StaticInvocation(init, signature, scope);
          Function functionStatic = new Function(signature, invocation, qualifier+"."+name, name);// description is wrong here.....      
          Function function = new Function(signature, invocation, name, name);// description is wrong here.....
          
@@ -52,7 +53,8 @@ public class MemberFunction implements TypePart {
          return null;//new FunctionDefinition(function,name); // we cannot invoke with scope registry
       }
       //XXX invocation
-      Invocation invocation = new ClassInvocation(statement, signature,name);
+      Invocation invocation = new InstanceInvocation(statement, signature,name);
+      //Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
       Function function = new Function(signature, invocation, name, name);// description is wrong here.....
       
       // add functions !!!!!!!!

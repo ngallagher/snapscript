@@ -45,8 +45,13 @@ public class SyntaxPrinter {
          builder.print(t.getValue());
          builder.print("\" <");
          builder.print(t.getValue().getClass().getSimpleName());
-         builder.print(">");
+         builder.print("> [");
+         builder.print(t.getLine().getNumber());
+         builder.print(": ");
+         builder.print(t.getLine().getSource().trim());
+         builder.print("]");
       }
+         
       builder.println();
       builder.flush();
       

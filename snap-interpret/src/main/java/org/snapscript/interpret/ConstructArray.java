@@ -3,7 +3,9 @@ package org.snapscript.interpret;
 import java.util.List;
 
 import org.snapscript.core.Holder;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class ConstructArray implements Evaluation {
@@ -26,12 +28,15 @@ public class ConstructArray implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
       Value value = type.evaluate(scope, null);
       String name = value.getString();
+      Module module = scope.getModule();
+      Type type = module.getType(name);
+      Class entry = type.getType();
       
       if(list != null) {
          Value reference = list.evaluate(scope, left);
          Object[] arguments = reference.getValue();
          int length = arguments.length;
-         Object array = converter.create(name, length);
+         Object array = converter.create(entry, length);
          
          if(length > 0) {
             List list = converter.convert(array);
@@ -42,7 +47,7 @@ public class ConstructArray implements Evaluation {
          }
          return new Holder(array);
       }
-      Object array = converter.create(name, 0);
+      Object array = converter.create(entry, 0);
       return new Holder(array);
    }
 }

@@ -1,14 +1,22 @@
 package org.snapscript.core.convert;
 
-public abstract class TypeConverter {
+import org.snapscript.core.PrimitivePromoter;
+
+public abstract class TypeConverter  {
    public static final int EXACT = 100;
    public static final int SIMILAR = 70;
    public static final int COMPATIBLE = 20;
    public static final int POSSIBLE = 10;
    public static final int INVALID = 0;
    
+   protected final PrimitivePromoter promoter;
+   
+   protected TypeConverter() {
+      this.promoter = new PrimitivePromoter();
+   }
+   
    protected Object convert(Class type, String value) throws Exception {
-      Class actual = convert(type);
+      Class actual = promoter.convert(type);
 
       try {
          if (actual == String.class) {
@@ -42,34 +50,6 @@ public abstract class TypeConverter {
          throw new IllegalStateException("Could not convert '" + value + "' to " + actual, e);
       }
       return value;
-   }
-   
-   protected Class convert(Class type) {
-      if (type == int.class) {
-         return Integer.class;
-      }
-      if (type == double.class) {
-         return Double.class;
-      }
-      if (type == float.class) {
-         return Float.class;
-      }
-      if (type == boolean.class) {
-         return Boolean.class;
-      }
-      if (type == byte.class) {
-         return Byte.class;
-      }
-      if (type == short.class) {
-         return Short.class;
-      }
-      if (type == long.class) {
-         return Long.class;
-      }
-      if (type == char.class) {
-         return Character.class;
-      }
-      return type;
    }
    
    public abstract int score(Object type) throws Exception;

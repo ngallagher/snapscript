@@ -2,10 +2,10 @@ package org.snapscript.core;
 
 public class StaticAccessor implements Accessor {
 
-   private Statement statement;
-   private Accessor accessor;
-   private Scope scope;
-   private String name;
+   private final Statement statement;
+   private final Accessor accessor;
+   private final Scope scope;
+   private final String name;
    
    public StaticAccessor(Statement statement, Scope scope, String name) {
       this.accessor = new ScopeAccessor(name);

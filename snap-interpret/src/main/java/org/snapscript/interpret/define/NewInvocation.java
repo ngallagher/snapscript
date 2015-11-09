@@ -58,8 +58,10 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       if(instance == null) {
          throw new IllegalStateException("Instance could not be created");
       }
-      TypeScope wrapper = new TypeScope(instance, type);// we need to pass the base type up!!
-      Constant base = new Constant(instance, "super");      
+      InstanceScope wrapper = new InstanceScope(instance, type);// we need to pass the base type up!!
+      
+      // Super should probably be a special variable and have special instructions!!!!!
+      Constant base = new Constant(instance, "super"); // XXXXXXXXXXXXXXXXXXXXXXXX This is an instance of the super class [ISOLATED].     
       Constant self = new Constant(wrapper, "this");
       Constant info = new Constant(type, "class");
       

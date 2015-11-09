@@ -1,7 +1,5 @@
 package org.snapscript.interpret;
 
-import java.util.List;
-
 import org.snapscript.core.Holder;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
@@ -9,30 +7,23 @@ import org.snapscript.core.Value;
 public class Array implements Evaluation {
    
    private final ArrayConverter converter;
-   private final Evaluation identifier;
+   private final Evaluation variable;
    
-   public Array(Evaluation identifier) {
+   public Array(Evaluation variable) {
       this.converter = new ArrayConverter();
-      this.identifier = identifier;
+      this.variable = variable;
    }
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception{
-      Value reference = identifier.evaluate(scope, left);
-      String name = reference.getString();
+      Value value = variable.evaluate(scope, left);
+      Object list = value.getValue();
+      Class type = list.getClass();
       
-      if(left == null) {
-         Value value = scope.getValue(name);
-         Object object = value.getValue();
-         Class type = object.getClass();
-         
-         if(type.isArray()) {
-            List list = converter.convert(object);
-            return new Holder(list);
-         }
-         return value;
-      }        
-      return new MemberReference(left, name);
+      if(type.isArray()) {
+         list = converter.convert(list);
+      }     
+      return new Holder(list);
    }  
    
 

@@ -6,7 +6,7 @@ import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.TypeResolver;
+import org.snapscript.core.ImportResolver;
 import org.snapscript.core.bind.FunctionMatcher;
 import org.snapscript.core.bind.FunctionPointer;
 
@@ -42,8 +42,9 @@ public class FunctionMatcherTest extends TestCase {
             return null;
          }
       };
-      TypeResolver resolver = new TypeResolver(linker);
-      TypeLoader loader = new TypeLoader(resolver);
+      ImportStore store = new ImportStore();
+      ImportResolver resolver = new ImportResolver(store, linker);
+      TypeLoader loader = new TypeLoader(store, resolver);
       FunctionMatcher matcher = new FunctionMatcher(loader);
       Type type = loader.load(ExampleObject.class);
       

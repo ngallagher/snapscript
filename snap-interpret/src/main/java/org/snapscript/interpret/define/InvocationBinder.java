@@ -1,5 +1,6 @@
 package org.snapscript.interpret.define;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
@@ -11,6 +12,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.interpret.ArrayConverter;
 
 public class InvocationBinder {
 
@@ -27,6 +29,9 @@ public class InvocationBinder {
          if(Type.class.isInstance(left)) {
             return new TypeHandler(scope, left);
          }  
+         if(type.isArray()) {
+            return new ArrayHandler(scope, left);
+         }
          return new ObjectHandler(scope, left);
       }
       Type type = scope.getType();
@@ -146,6 +151,41 @@ public class InvocationBinder {
       }
       
    }   
+   
+   private class ArrayHandler implements InvocationDispatcher {
+      
+      private final ArrayConverter converter;
+      private final Object object;
+      private final Scope scope;      
+      
+      public ArrayHandler(Scope scope, Object object) {
+         this.converter = new ArrayConverter();
+         this.object = object;
+         this.scope = scope;
+      }
+
+      @Override
+      public Value dispatch(String name, Object... arguments) throws Exception {
+         Module module = scope.getModule();
+         Context context = module.getContext();
+         FunctionBinder binder = context.getBinder();
+         List list = converter.convert(object);
+         Callable<Result> call = binder.bind(scope, list, name, arguments);
+         Class type = object.getClass();
+         
+         if(call == null) {
+            throw new IllegalStateException("Method '" + name + "' not found for " + type);
+         }
+         Result result = call.call();
+         ResultFlow flow = result.getFlow();
+         Object value = result.getValue();
+         
+         if(flow == ResultFlow.THROW) {
+            throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
+         }
+         return new Holder(value);
+      }
+   }
    
    private class ObjectHandler implements InvocationDispatcher {
       

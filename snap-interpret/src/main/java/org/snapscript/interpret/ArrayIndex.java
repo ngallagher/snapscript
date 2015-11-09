@@ -7,21 +7,39 @@ import org.snapscript.core.Value;
 
 public class ArrayIndex implements Evaluation {
    
-   private final Argument argument;
+   private final ListConverter converter;
+   private final Argument[] list;
+   private final Argument first;
    private final Array array;
   
-   public ArrayIndex(Array array, Argument argument) {
-      this.argument = argument;
+   public ArrayIndex(Array array, Argument first, Argument... list) {
+      this.converter = new ListConverter();
       this.array = array;        
+      this.first = first;
+      this.list = list;
    }
-   
+
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
-      Value index = argument.evaluate(scope, null);
+      Value index = first.evaluate(scope, null);
       Value value = array.evaluate(scope, left);
-      List list = value.getValue();
+      List source = value.getValue();
       Integer number = index.getInteger();
       
-      return new ListValue(list, number);
+      for(int i = 0; i < list.length; i++) {
+         Argument argument = list[i];
+         Object entry = source.get(number);
+         int length = i + 1;
+         
+         if(!converter.accept(entry)) {
+            throw new IllegalArgumentException("Array contains only " + length + " dimensions");
+         }
+         Class type = entry.getClass();
+         
+         source = converter.convert(entry);
+         index = argument.evaluate(scope, null);
+         number = index.getInteger();
+      }
+      return new ListValue(source, number);
    }
 }

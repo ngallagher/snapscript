@@ -1,5 +1,7 @@
 package org.snapscript.interpret.define;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.snapscript.core.Constant;
 import org.snapscript.core.Holder;
 import org.snapscript.core.Property;
@@ -16,21 +18,25 @@ import org.snapscript.interpret.FunctionInvocation;
 
 public class EnumValue {
    
-   private final TypeName identifier;
    private final ArgumentList list;
+   private final EnumKey key;
    
-   public EnumValue(TypeName identifier) {
-      this(identifier, null);
+   public EnumValue(EnumKey key) {
+      this(key, null);
    }
    
-   public EnumValue(TypeName identifier, ArgumentList list) {    
-      this.identifier = identifier;
+   public EnumValue(EnumKey key, ArgumentList list) {    
       this.list = list;
+      this.key = key;
    }
-
-   public void define(Scope scope, Type type, int index) throws Exception { // declare variable
+//
+   // Enums cause a circular reference!!!!! as they each call "new" which forces a static init before the enum is declared.
+   //
+   // static init before new...
+   //
+   public Statement define(Scope scope, Type type, int index) throws Exception { // declare variable
       //DeclarationStatement s = new DeclarationStatement(identifier, constraint, value);
-      Value value = identifier.evaluate(scope, null);
+      Value value = key.evaluate(scope, null);
       Name consName = new Name();
       Evaluation evaluation= new FunctionInvocation(consName, list);     
       String name = value.getString();
@@ -38,12 +44,15 @@ public class EnumValue {
       Statement fieldDef = new FieldDefinition(evaluation,type,name,name,index);
       StaticAccessor accessor = new StaticAccessor(fieldDef,scope, name);
       
+      // XXX initialise up front!!!!!!
+      //fieldDef.execute(scope);
       Property property = new Property(name, type, accessor);
       
       // XXX add properties!!!
       type.getProperties().add(property);
       // XXX property needs to go in to the definition of the type...
       //statement.execute(scope);
+      return fieldDef;
    }
 
 
@@ -56,12 +65,14 @@ public class EnumValue {
       
    }
    public class FieldDefinition extends Statement{
+      private final AtomicBoolean done;
       private final Evaluation ev;
       private final String name;
       private final String title;
       private final Type tp;
       private final int index;
       public FieldDefinition(Evaluation ev,Type tp,String name,String title,int index){
+         this.done = new AtomicBoolean();
          this.title = title;
          this.name=name;
          this.index =index;
@@ -72,21 +83,24 @@ public class EnumValue {
 
       @Override
       public Result execute(Scope scope) throws Exception {
-         TypeScope s = new TypeScope(scope, tp);
-         Constant cst=new Constant(tp);
-         s.addConstant("class", cst);
-         if(ev == null) {
-            throw new IllegalStateException("Unable to create enum");
+         if(done.compareAndSet(false, true)) {
+            InstanceScope s = new InstanceScope(scope, tp);
+            Constant cst=new Constant(tp);
+            s.addConstant("class", cst);
+            if(ev == null) {
+               throw new IllegalStateException("Unable to create enum");
+            }
+            Value result = ev.evaluate(scope, s);              
+            Scope instance = result.getValue();
+   //         instance.setAttribute("identity", new Constant(title));         
+            instance.addConstant("name", new Constant(name, "name"));
+            instance.addConstant("ordinal", new Constant(index, "ordinal"));            
+            String constraint=tp.getName();
+            Constant literal = new Constant(instance,name);
+            scope.addConstant(name, literal);
+            return new Result(ResultFlow.NORMAL,instance);
          }
-         Value result = ev.evaluate(scope, s);              
-         Scope instance = result.getValue();
-//         instance.setAttribute("identity", new Constant(title));         
-         instance.addConstant("name", new Constant(name, "name"));
-         instance.addConstant("ordinal", new Constant(index, "ordinal"));            
-         String constraint=tp.getName();
-         Constant literal = new Constant(instance,name);
-         scope.addConstant(name, literal);
-         return new Result(ResultFlow.NORMAL,instance);
+         return new Result();
       }
    }
 }

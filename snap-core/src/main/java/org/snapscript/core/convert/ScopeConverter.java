@@ -6,10 +6,13 @@ public class ScopeConverter extends TypeConverter {
    
    @Override
    public int score(Object value) throws Exception {
-      if(value instanceof Scope) {
-         return EXACT;
+      if(value != null) {
+         if(Scope.class.isInstance(value)) {
+            return EXACT;
+         }
+         return INVALID;
       }
-      return INVALID;
+      return POSSIBLE;
    }
    
    @Override

@@ -40,26 +40,50 @@ public class TypeMatcher {
       if(comparator.same(Object.class, type)) {
          return new AnyConverter();
       }
+      if(comparator.same(double.class, type)) {
+         return new DoubleConverter(type);
+      }
+      if(comparator.same(float.class, type)) {
+         return new FloatConverter(type);
+      }
+      if(comparator.same(int.class, type)) {
+         return new IntegerConverter(type);
+      }
+      if(comparator.same(long.class, type)) {
+         return new LongConverter(type);
+      }
+      if(comparator.same(short.class, type)) {
+         return new ShortConverter(type);
+      }
+      if(comparator.same(byte.class, type)) {
+         return new ByteConverter(type);
+      }
+      if(comparator.same(char.class, type)) {
+         return new CharacterConverter(type);
+      }
       if(comparator.same(Number.class, type)) {
-         return new NumberConverter();
+         return new NumberConverter(type);
       }
       if(comparator.same(Double.class, type)) {
-         return new DoubleConverter();
+         return new DoubleConverter(type);
       }
       if(comparator.same(Float.class, type)) {
-         return new FloatConverter();
+         return new FloatConverter(type);
       }
       if(comparator.same(Integer.class, type)) {
-         return new IntegerConverter();
+         return new IntegerConverter(type);
       }
       if(comparator.same(Long.class, type)) {
-         return new LongConverter();
+         return new LongConverter(type);
       }
       if(comparator.same(Short.class, type)) {
-         return new ShortConverter();
+         return new ShortConverter(type);
       }
       if(comparator.same(Byte.class, type)) {
-         return new ByteConverter();
+         return new ByteConverter(type);
+      }
+      if(comparator.same(Character.class, type)) {
+         return new CharacterConverter(type);
       }
       if(comparator.same(String.class, type)) {
          return new StringConverter();

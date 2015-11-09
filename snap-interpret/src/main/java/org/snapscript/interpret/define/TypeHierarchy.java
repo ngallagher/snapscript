@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.interpret.CompoundStatement;
 
 public class TypeHierarchy {
    
@@ -30,10 +32,10 @@ public class TypeHierarchy {
          
          types.add(base);
       }else {
-         StatementCollector collector = new StatementCollector();
+         Statement s = new CompoundStatement();// do nothing
          Type t =scope.getModule().addType("Any"); // invent a type!!
         
-         new DefaultConstructor().define(scope, collector, t); // add the default no arg constructor!!
+         new DefaultConstructor().define(scope, s, t); // add the default no arg constructor!!
          types.add(t);
       }
       for(int i = 0; i < traits.length; i++) {

@@ -16,14 +16,14 @@ public class TokenScanner implements LexicalAnalyzer {
 
    private TokenIndexer indexer;
    private List<Token> tokens;
-   private int count;
    private int[] masks;
+   private int count;
    private int mark;
 
-   public TokenScanner(GrammarIndexer indexer, char[] source, short[] lines, short[] types, int off, int count) {
-      this.indexer = new TokenIndexer(indexer, source, lines, types, off, count);
+   public TokenScanner(GrammarIndexer indexer, char[] original, char[] source, short[] lines, short[] types) {
+      this.indexer = new TokenIndexer(indexer, original, source, lines, types);
       this.tokens = new ArrayList<Token>();
-      this.count = count;
+      this.count = source.length;
    }
 
    @Override
@@ -135,6 +135,16 @@ public class TokenScanner implements LexicalAnalyzer {
       }
       return null;
    }
+   
+   @Override
+   public Line line(int position) {
+      Token token = tokens.get(position);
+      
+      if(token != null) {
+         return token.getLine();
+      }
+      return null;
+   }
 
    @Override
    public int reset(int position) {
@@ -144,16 +154,6 @@ public class TokenScanner implements LexicalAnalyzer {
          mark = position;
       }
       return current;
-   }
-   
-   @Override
-   public int line(int position) {
-      Token token = tokens.get(position);
-      
-      if(token != null) {
-         return token.getLine();
-      }
-      return 0;
    }
 
    @Override

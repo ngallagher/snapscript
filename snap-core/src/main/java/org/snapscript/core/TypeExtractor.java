@@ -12,7 +12,7 @@ public class TypeExtractor {
       if(value != null) {
          Class type = value.getClass();
          
-         if(Scope.class.isInstance(value)) {
+         if(Scope.class.isAssignableFrom(type)) {
             Scope scope = (Scope)value;
             return scope.getType();
          }

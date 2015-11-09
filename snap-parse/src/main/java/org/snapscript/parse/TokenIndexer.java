@@ -16,13 +16,15 @@ import java.util.List;
 public class TokenIndexer {
 
    private final LengthComparator comparator;
+   private final LineExtractor extractor;
    private final GrammarIndexer indexer;
    private final TextReader reader;
    private final List<String> values;
    private final short[] lines;
 
-   public TokenIndexer(GrammarIndexer indexer, char[] source, short[] lines, short[] types, int off, int count) {
-      this.reader = new TextReader(source, types, off, count);
+   public TokenIndexer(GrammarIndexer indexer, char[] original, char[] source, short[] lines, short[] types) {
+      this.extractor = new LineExtractor(original);
+      this.reader = new TextReader(source, types);
       this.comparator = new LengthComparator();
       this.values = new ArrayList<String>();
       this.indexer = indexer;
@@ -96,7 +98,8 @@ public class TokenIndexer {
       return new int[]{};
    }
    
-   private Token type(int line) {
+   private Token type(int number) {
+      Line line = extractor.extract(number);
       String token = reader.type();
 
       if (token != null) {
@@ -105,7 +108,8 @@ public class TokenIndexer {
       return null;
    }
 
-   private Token identifier(int line) {
+   private Token identifier(int number) {
+      Line line = extractor.extract(number);
       String token = reader.identifier();
       
       if (token != null) {
@@ -114,7 +118,8 @@ public class TokenIndexer {
       return null;
    }
 
-   private Token decimal(int line) {
+   private Token decimal(int number) {
+      Line line = extractor.extract(number);
       Number token = reader.decimal();
 
       if (token != null) {
@@ -128,7 +133,8 @@ public class TokenIndexer {
       return null;
    }
 
-   private Token integer(int line) {
+   private Token integer(int number) {
+      Line line = extractor.extract(number);
       Number token = reader.integer();
       
       if (token != null) {
@@ -137,7 +143,8 @@ public class TokenIndexer {
       return null;
    }
 
-   private Token hexidecimal(int line) {
+   private Token hexidecimal(int number) {
+      Line line = extractor.extract(number);
       Number token = reader.hexidecimal();
       
       if (token != null) {
@@ -146,7 +153,8 @@ public class TokenIndexer {
       return null;
    }
 
-   private Token text(int line) {
+   private Token text(int number) {
+      Line line = extractor.extract(number);
       String token = reader.text();
       
       if (token != null) {
@@ -155,7 +163,9 @@ public class TokenIndexer {
       return null;
    }
    
-   private Token literal(int line) {
+   private Token literal(int number) {
+      Line line = extractor.extract(number);
+      
       for (String literal : values) {
          int mark = reader.mark();
          String token = reader.literal(literal);

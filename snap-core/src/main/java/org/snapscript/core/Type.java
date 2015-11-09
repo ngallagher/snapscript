@@ -2,7 +2,6 @@ package org.snapscript.core;
 
 import java.util.List;
 
-// need to know if its primitives for function matching as null not allowed for primitive!!
 public class Type {
    
    private final List<Property> properties;

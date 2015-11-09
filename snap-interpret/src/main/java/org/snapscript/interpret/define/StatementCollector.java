@@ -13,7 +13,7 @@ public class StatementCollector extends Statement {
    private final List<Statement> list;
    
    public StatementCollector(){
-      this.list = new ArrayList<Statement>(); 
+      this.list = new ArrayList<Statement>();
    }
 
    public void update(Statement statement) throws Exception {

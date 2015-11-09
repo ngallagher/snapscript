@@ -22,12 +22,12 @@ public class SyntaxTreeBuilder {
          throw new IllegalStateException("Source text is empty for '" + grammar + "'");
       }
       SourceCode source = processor.process(text);
-      char[] data = source.getSource();
+      char[] original = source.getOriginal();
+      char[] compress = source.getSource();
       short[] lines = source.getLines();
       short[]types = source.getTypes();
-      int length = data.length;
 
-      return new SyntaxTree(indexer, grammar, data, lines, types, 0, length, serial);
+      return new SyntaxTree(indexer, grammar, original, compress, lines, types, serial);
    }       
 }
 

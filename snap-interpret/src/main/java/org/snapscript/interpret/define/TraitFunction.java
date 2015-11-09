@@ -38,11 +38,12 @@ public class TraitFunction implements TypePart {
       //XXX invocation
       Invocation invocation = null;
       if(statement != null){
-         invocation = new ClassInvocation(statement, signature,name);
+         invocation = new InstanceInvocation(statement, signature,name);
       }else {
          invocation = new InvalidInvocation(statement, signature);
       }
-      Function function = new Function(signature, invocation, name, name);// description is wrong here.....
+      Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
+      Function function = new Function(signature, scopeCall, name, name);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

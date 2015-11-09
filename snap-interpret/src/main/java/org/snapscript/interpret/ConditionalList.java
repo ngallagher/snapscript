@@ -21,13 +21,13 @@ public class ConditionalList implements Evaluation {
          
          if(operator.isAnd()) {
             if(result.booleanValue()) {                  
-               result = result && evaluate(scope, context, i + 1);
+               result = evaluate(scope, context, i + 1);
             } else {
                return BooleanValue.FALSE;
             }
          } else if(operator.isOr()){
-            if(result.booleanValue()) {
-               result = result || evaluate(scope, context, i + 1);
+            if(!result.booleanValue()) {
+               result = evaluate(scope, context, i + 1);
             } else {
                return BooleanValue.TRUE;
             }

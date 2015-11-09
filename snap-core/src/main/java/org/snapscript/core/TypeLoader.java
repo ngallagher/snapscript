@@ -12,13 +12,13 @@ import java.util.Map;
 public class TypeLoader {
    
    private final Map<Object, Type> types;
-   private final PrimitiveConverter converter;
-   private final TypeResolver resolver;
+   private final PrimitivePromoter converter;
+   private final ImportResolver resolver;
    private final List<String> modules;
    
-   public TypeLoader(TypeResolver resolver){
+   public TypeLoader(ImportStore store, ImportResolver resolver){
       this.types = new LinkedHashMap<Object, Type>();      
-      this.converter = new PrimitiveConverter();
+      this.converter = new PrimitivePromoter();
       this.modules = new ArrayList<String>();
       this.resolver = resolver;
    }
@@ -36,9 +36,15 @@ public class TypeLoader {
    public Class getType(String name) { 
       return resolver.getType(name);
    }
+   private void registerType(Object name, Type type) {
+      types.put(name, type);
+   }
+   private Type resolveType(Object name) {
+      return types.get(name);
+   }
    public Type define(String name,String moduleName) throws Exception {
       String full=moduleName!=null?moduleName+"."+name:name;
-      Type t  =types.get(full);
+      Type t  =resolveType(full);
     
       
       if(t==null) {
@@ -50,7 +56,7 @@ public class TypeLoader {
 
          
          t=new Type(full,null,hierL,varsL,mapL);
-         types.put(full,t);
+         registerType(full,t);
       }
       return t;
    }
@@ -59,13 +65,13 @@ public class TypeLoader {
       return load(name,null,true);
    }
    public Type load(String name, String moduleName, boolean create) throws Exception {
-      Type t = types.get(name);
+      Type t = resolveType(name);
       
       if(t==null) { 
          Class cls=resolver.getType(name);
          if(cls==null){
             for(String n:modules){// was the type named in a module???
-               t=types.get(n+"."+name);
+               t=resolveType(n+"."+name);
                if(t!=null){
                   return t;
                }
@@ -76,13 +82,13 @@ public class TypeLoader {
             return null;
          }
          t=load(cls);
-         types.put(name, t);
+         registerType(name, t);
       }
       return t;
    }
-   public Type load(Class cls) throws Exception {
+   public Type load(final Class cls) throws Exception {
       Class type = converter.convert(cls);
-      Type t=types.get(type);
+      Type t=resolveType(cls);
       
       if(t==null){
          String name = type.getName();
@@ -100,120 +106,130 @@ public class TypeLoader {
          }
          Type done=null;
          if(type.isArray()){
-            done=new Type(name,load(type.getComponentType()),hierL,varsL,mapL,type);
+            done=new Type(name,load(type.getComponentType()),hierL,varsL,mapL,cls);
          }else {
-            done=new Type(name,null,hierL,varsL,mapL,type);
+            done=new Type(name,null,hierL,varsL,mapL,cls);
          }
          if(type==Object.class){
             Type any=load("Any", null,true);
             hierL.add(any);
          }
-         types.put(cls,done);
-         types.put(name,done);;
-
-         Method[] methods = type.getDeclaredMethods();
-         for(Method m:methods){
-            int mod=m.getModifiers();
-            if(Modifier.isPublic(mod)) {
-               Class[] c=m.getParameterTypes();
-               List<Type> tt=new ArrayList<Type>();
-               List<String>nns=new ArrayList<String>();
-               builder.setLength(0);
-               builder.append(m.getName());
-               builder.append("(");
-               for(int i=0;i<c.length;i++){
-                  if(i>0){
-                     builder.append(", ");
-                  }
-                  c[i]=converter.convert(c[i]);// promote primitives
-                  builder.append(c[i].getSimpleName());
-                  tt.add(load(c[i]));
-                  nns.add("a"+i);
-               }
-               builder.append(")");
-               m.setAccessible(true);
-               //SignatureKey k=new SignatureKey(nb,tt);
-               String k=builder.toString();
-               int modifiers=m.getModifiers();
-               Signature sig=new Signature(nns, tt,modifiers);
-               Invocation ex=new MethodInvocation(m);
-               Function gg=new Function(sig, ex, k, m.getName());
-
-               if(!Modifier.isStatic(mod)) {
-                  String prop=getProperty(m);
-                  if(prop!=null){
-                     Method read=m;
-                     Class readT=read.getReturnType();
-                     Method write=getPropertySetterMatch(methods,readT,prop);
-                     Type propT=load(readT);
-                     MethodAccessor acc=new MethodAccessor(converter.convert(readT),read,write);
-                     Property v=new Property(prop,propT,acc);               
-                     varsL.add(v);
-                     
-                  }
-               }
-               mapL.add(gg);
-            }
-         }
-         Constructor[] cons = type.getDeclaredConstructors();
-         for(Constructor c:cons){
-            int mod=c.getModifiers();
-            if(Modifier.isPublic(mod)) {
-               Class[] cl=c.getParameterTypes();
-               List<Type> tt=new ArrayList<Type>();
-               List<String>nns=new ArrayList<String>();
-               builder.setLength(0);
-               builder.append("new(");
-               for(int i=0;i<cl.length;i++){
-                  if(i>0){
-                     builder.append(", ");
-                  }
-                  cl[i]=converter.convert(cl[i]);// promote primitives
-                  builder.append(cl[i].getSimpleName());
-                  tt.add(load(cl[i]));
-                  nns.add("a"+i);
-               }
-               builder.append(")");
-               c.setAccessible(true);
-               //SignatureKey k=new SignatureKey("new",tt);
-               String k=builder.toString();
-               int modifiers=c.getModifiers();
-               Signature sig=new Signature(nns, tt,modifiers);
-               Invocation ex=new ConstructorInvocation(c);
-               Function gg=new Function(sig, ex, k, "new");
-               mapL.add(gg);
-            }
-         }
-         Field[] fields= type.getDeclaredFields();
-         for(Field f:fields){
-            int mod=f.getModifiers();
-            if(Modifier.isPublic(mod)) {
-               String nb=f.getName();
-               Type ft=load(f.getType());
-               FieldAccessor acc=new FieldAccessor(f);
-               Property v=new Property(nb,ft,acc);               
-               varsL.add(v);
-            }
-         }
-         for(Class i:interfaces){
-            Type baset=load(i);
-            hier.put(i.getName(),baset);
-            hierL.addAll(baset.getTypes());
-            for(Type ttp:baset.getTypes()){
-               hier.put(ttp.getName(),ttp);
-            }
-         }
-         if(base != null) {
-            Type baset=load(base); 
-            hier.put(base.getName(), baset);
-            for(Type ttp:baset.getTypes()){
-               hier.put(ttp.getName(),ttp);
-            }
+         registerType(cls,done);
+         if(!cls.isPrimitive()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
+            registerType(name,done);
+            indexMethods(type, builder, mapL, varsL);
+            indexConstructors(type, builder, mapL);
+            indexFields(type, base, interfaces, hier, varsL, hierL);
          }
          hierL.addAll(hier.values());
          return done;
       }
       return t;
+   }
+   private void indexMethods(Class type, StringBuilder builder, List<Function> mapL, List<Property> varsL) throws Exception {
+      Method[] methods = type.getDeclaredMethods();
+      for(Method m:methods){
+         int mod=m.getModifiers();
+         if(Modifier.isPublic(mod)) {
+            Class[] c=m.getParameterTypes();
+            List<Type> tt=new ArrayList<Type>();
+            List<String>nns=new ArrayList<String>();
+            builder.setLength(0);
+            builder.append(m.getName());
+            builder.append("(");
+            for(int i=0;i<c.length;i++){
+               if(i>0){
+                  builder.append(", ");
+               }
+               Type tp =load(c[i]);//c[i]=converter.convert(c[i]);// promote primitives
+               builder.append(tp.getName());
+               tt.add(tp);
+               nns.add("a"+i);
+            }
+            builder.append(")");
+            m.setAccessible(true);
+            //SignatureKey k=new SignatureKey(nb,tt);
+            String k=builder.toString();
+            int modifiers=m.getModifiers();
+            Signature sig=new Signature(nns, tt,modifiers);
+            Invocation ex=new MethodInvocation(m);
+            Function gg=new Function(sig, ex, k, m.getName());
+
+            if(!Modifier.isStatic(mod)) {
+               String prop=getProperty(m);
+               if(prop!=null){
+                  Method read=m;
+                  Class readT=read.getReturnType();
+                  Method write=getPropertySetterMatch(methods,readT,prop);
+                  Type propT=load(readT);
+                  MethodAccessor acc=new MethodAccessor(converter.convert(readT),read,write);
+                  Property v=new Property(prop,propT,acc);               
+                  varsL.add(v);
+                  
+               }
+            }
+            mapL.add(gg);
+         }
+      }
+   }
+   private void indexConstructors(Class type, StringBuilder builder, List<Function> mapL) throws Exception {
+      Constructor[] cons = type.getDeclaredConstructors();
+      for(Constructor c:cons){
+         int mod=c.getModifiers();
+         if(Modifier.isPublic(mod)) {
+            Class[] cl=c.getParameterTypes();
+            List<Type> tt=new ArrayList<Type>();
+            List<String>nns=new ArrayList<String>();
+            builder.setLength(0);
+            builder.append("new(");
+            for(int i=0;i<cl.length;i++){
+               if(i>0){
+                  builder.append(", ");
+               }
+               Type tp =load(cl[i]);//c[i]=converter.convert(c[i]);// promote primitives
+               builder.append(tp.getName());
+               tt.add(tp);
+               nns.add("a"+i);
+            }
+            builder.append(")");
+            c.setAccessible(true);
+            //SignatureKey k=new SignatureKey("new",tt);
+            String k=builder.toString();
+            int modifiers=c.getModifiers();
+            Signature sig=new Signature(nns, tt,modifiers);
+            Invocation ex=new ConstructorInvocation(c);
+            Function gg=new Function(sig, ex, k, "new");
+            mapL.add(gg);
+         }
+      }
+   }
+   private void indexFields(Class type, Class base, Class[] interfaces, Map<String, Type> hier, List<Property> varsL, List<Type> hierL) throws Exception {
+      Field[] fields= type.getDeclaredFields();
+      for(Field f:fields){
+         int mod=f.getModifiers();
+         if(Modifier.isPublic(mod)) {
+            String nb=f.getName();
+            Type ft=load(f.getType());
+            FieldAccessor acc=new FieldAccessor(f);
+            Property v=new Property(nb,ft,acc);               
+            varsL.add(v);
+         }
+      }
+      for(Class i:interfaces){
+         Type baset=load(i);
+         hier.put(i.getName(),baset);
+         hierL.addAll(baset.getTypes());
+         for(Type ttp:baset.getTypes()){
+            hier.put(ttp.getName(),ttp);
+         }
+      }
+      if(base != null) {
+         Type baset=load(base); 
+         hier.put(base.getName(), baset);
+         for(Type ttp:baset.getTypes()){
+            hier.put(ttp.getName(),ttp);
+         }
+      }
    }
    private String getProperty(Method method)throws Exception{
       PropertyType[] types = PropertyType.values();
@@ -350,38 +366,4 @@ public class TypeLoader {
    private static boolean isUpperCase(char value) {
       return Character.isUpperCase(value);
    }   
-   
-   private static class PrimitiveConverter {
-
-      public Class convert(Class type) {
-         if (type == int.class) {
-            return Integer.class;
-         }
-         if (type == double.class) {
-            return Double.class;
-         }
-         if (type == float.class) {
-            return Float.class;
-         }
-         if (type == boolean.class) {
-            return Boolean.class;
-         }
-         if (type == byte.class) {
-            return Byte.class;
-         }
-         if (type == short.class) {
-            return Short.class;
-         }
-         if (type == long.class) {
-            return Long.class;
-         }
-         if (type == char.class) {
-            return Character.class;
-         }
-         if (type == void.class) {
-            return Void.class;
-         }
-         return type;
-      }
-   }
 }

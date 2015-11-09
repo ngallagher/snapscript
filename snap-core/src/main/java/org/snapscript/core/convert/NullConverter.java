@@ -1,6 +1,5 @@
 package org.snapscript.core.convert;
 
-
 public class NullConverter extends TypeConverter {
    
    @Override

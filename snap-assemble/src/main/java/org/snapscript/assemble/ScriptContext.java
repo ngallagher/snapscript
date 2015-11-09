@@ -5,18 +5,20 @@ import java.util.Map;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
+import org.snapscript.core.ImportResolver;
+import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Module;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.TypeResolver;
 import org.snapscript.core.bind.FunctionBinder;
 
 public class ScriptContext implements Context {
    
    private final Map<String, Module> modules;
    private final FunctionBinder binder;
-   private final TypeResolver resolver;
+   private final ImportResolver resolver;
    private final LibraryLinker linker;
+   private final ImportStore store;
    private final TypeLoader loader;   
    private final Module module;
 
@@ -24,8 +26,9 @@ public class ScriptContext implements Context {
       this.modules = new HashMap<String, Module>();
       this.linker = new ScriptLinker(res, this);
       this.module = new ContextModule(this);
-      this.resolver = new TypeResolver(linker);      
-      this.loader = new TypeLoader(resolver);
+      this.store = new ImportStore();
+      this.resolver = new ImportResolver(store, linker);      
+      this.loader = new TypeLoader(store, resolver);
       this.binder = new FunctionBinder(loader);
    }
 

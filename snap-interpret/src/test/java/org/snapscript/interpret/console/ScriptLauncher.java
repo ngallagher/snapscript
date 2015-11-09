@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.Socket;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
@@ -13,8 +16,9 @@ import org.snapscript.interpret.InterpretationResolver;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
 
-public class ScriptLauncher implements Runnable {
+public class ScriptLauncher implements ScriptTask, Runnable {
    
+   private final AtomicReference<Socket> port;
    private final ConsoleWriter output;
    private final ConsoleWriter info;
    private final String source;
@@ -26,6 +30,7 @@ public class ScriptLauncher implements Runnable {
    }
    
    public ScriptLauncher(ConsoleWriter output, ConsoleWriter info, String source, File file, boolean fork) {
+      this.port = new AtomicReference<Socket>();
       this.output = output;
       this.source = source;
       this.fork = fork;
@@ -33,20 +38,40 @@ public class ScriptLauncher implements Runnable {
       this.file = file;
    }
    
+   public void stop() {
+      try {
+         Socket socket = port.get();
+         
+         if(socket != null) {
+            socket.getOutputStream().write(1);
+            socket.getOutputStream().close();
+            port.set(null);
+         }
+      }catch(Exception e) {
+         StringWriter w = new StringWriter();
+         PrintWriter p = new PrintWriter(w);
+         e.printStackTrace(p);
+         p.flush();
+         info.log(w.toString());
+      }
+   }
+   
    @Override
    public void run() {
       compile();
       syntax();
-      long start = System.currentTimeMillis();
+      long start = System.nanoTime();
       
       if(fork) {
          fork();
       } else {
          execute();
       }
-      long finish = System.currentTimeMillis();
+      long finish = System.nanoTime();
       long duration = finish - start;
-      info.log("Time taken to execute was " + duration + " ms");
+      long millis = TimeUnit.NANOSECONDS.toMillis(duration);
+      
+      info.log("Time taken to execute was " + millis + " ms");
    }
    
    private void syntax(){
@@ -75,6 +100,13 @@ public class ScriptLauncher implements Runnable {
          ConsoleReader reader = new ConsoleReader(input);
          String line = reader.readLine();
          
+         if(!line.startsWith("port=")) {
+            throw new IllegalStateException(ScriptRunner.class.getName() + " did not provide port");
+         }
+         String[] parts = line.split("=");
+         port.set(new Socket("localhost", Integer.parseInt(parts[1]))); // set the listen port 
+         line = reader.readLine();
+         
          while(line != null){
             output.log(line);
             line = reader.readLine();
@@ -93,7 +125,6 @@ public class ScriptLauncher implements Runnable {
          info.log(w.toString());
       }
    }
-   
    private void execute() {
       try {
          ScriptRunner.run(file.getCanonicalPath());
@@ -111,11 +142,12 @@ public class ScriptLauncher implements Runnable {
          InstructionResolver set = new InterpretationResolver();
          Context context =new ScriptContext(set);
          ScriptCompiler compiler = new ScriptCompiler(context);
-         long start = System.currentTimeMillis();
+         long start = System.nanoTime();
          compiler.compile(source);
-         long finish = System.currentTimeMillis();
+         long finish = System.nanoTime();
          long duration = finish - start;
-         info.log("Time taken to compile was " + duration + " ms, size was " + source.length());
+         long millis = TimeUnit.NANOSECONDS.toMillis(duration);
+         info.log("Time taken to compile was " + millis + " ms, size was " + source.length());
       }catch(Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);
@@ -125,4 +157,5 @@ public class ScriptLauncher implements Runnable {
          throw new RuntimeException("Script does not compile", e);
       }
    }
+
 }
