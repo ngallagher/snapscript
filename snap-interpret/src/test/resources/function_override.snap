@@ -1,0 +1,25 @@
+class A {
+
+   fun1(){
+      System.err.println("A.fun1()");
+      fun2();
+   }
+
+   fun2(){
+      System.err.println("A.fun2()");
+   }
+}
+
+class B extends A {
+
+   fun2() {
+      System.err.println("B.fun2()");
+      super.fun1();
+   }
+}
+
+var b = new B();
+var a = new A();
+a.fun1();
+System.err.println("-----");
+b.fun1();
