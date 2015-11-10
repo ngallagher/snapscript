@@ -8,6 +8,23 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
+// we need to ALWAYS force EVERY class to extend something, it might just be the "Any" type
+/* 
+ * EXAMPLE
+ * 
+ * class X extends Any with I, J, K{ // here we have an implicit extension!!!! 
+ * }
+ * class Y extends X {
+ * }
+ * class Z extends Y with A, B, C{
+ * }
+ * 
+ * 
+ * 
+ */
+/**
+ * @see SearchPathFinder
+ */
 public class TypeHierarchy {
    
    private final TraitName[] traits; 
