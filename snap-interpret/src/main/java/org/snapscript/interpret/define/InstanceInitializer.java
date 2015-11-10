@@ -1,12 +1,12 @@
 package org.snapscript.interpret.define;
 
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.Evaluation;
 
-public class InstanceInitializer extends Statement {
+public class InstanceInitializer implements Initializer {
    
    private final Evaluation evaluation;
    private final Type type;
@@ -17,12 +17,13 @@ public class InstanceInitializer extends Statement {
    }
 
    @Override
-   public Result execute(Scope instance) throws Exception {
+   public Result initialize(Scope instance, Type type) throws Exception {
       Type current = instance.getType();
       
-      if(current == type) {
+      // This check is probably rubbish!!!
+      //if(current == type) {
          evaluation.evaluate(instance, null);
-      }
+      //}
       return new Result();
    }
 }

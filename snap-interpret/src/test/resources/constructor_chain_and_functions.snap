@@ -1,0 +1,43 @@
+class A {
+   var x;
+   new(x){
+      System.err.println("A.new("+x+")->"+class);
+      this.x=x;
+   }
+   fun1(){
+      System.err.println("A.fun1()="+x);
+   }
+}
+class B extends A {
+   new(x):super(x){
+      System.err.println("B.new("+x+")->"+class);
+   }
+}
+class C extends B {
+   new(x):super(x){
+      System.err.println("C.new("+x+")->"+class);
+   }
+   fun2() {
+      System.err.println("C.fun2()="+x);
+      super.fun1();
+   }
+   fun3() {
+      System.err.println("C.fun3()="+x);
+   }
+}
+class D extends C {
+   new(x) :super(x){
+      System.err.println("D.new("+x+")->"+class);
+   }
+}
+var b = new B(122);
+b.fun1();
+var c = new C(334);
+c.fun1();
+var d = new D(11);
+d.fun2();
+
+//expected output is
+// C.fun2()=11
+// A.fun1()=11
+// C.fun3()=11

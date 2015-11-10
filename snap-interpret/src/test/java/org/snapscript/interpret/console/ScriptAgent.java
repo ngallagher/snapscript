@@ -27,7 +27,7 @@ public class ScriptAgent {
    private static final Map<String, Object> MAP = new HashMap<String, Object>();
    private static final Model MODEL = new MapModel(MAP);
    private static final String SOURCE =
-   "class B {\n"+
+   "class InternalTypeForScriptAgent {\n"+
    "   static const ARR = [\"a\",\"b\",\"c\"];\n"+
    "   var x;\n"+
    "   new(index){\n"+
@@ -37,10 +37,10 @@ public class ScriptAgent {
    "      System.err.println(x);\n"+
    "   }\n"+
    "}\n"+
-   "var b = new B(1);\n"+
+   "var b = new InternalTypeForScriptAgent(1);\n"+
    "b.dump();\n"+
    "System.err.println(b.x);\n"+
-   "System.err.println(B.ARR);";
+   "System.err.println(InternalTypeForScriptAgent.ARR);";
    
    public static void main(String[] list) throws Exception {
       if(list.length > 0) {

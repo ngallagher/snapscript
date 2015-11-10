@@ -133,6 +133,10 @@ public class Assembler {
             return result.getValue();
          }      
          Callable<Result> callable = binder.bind(null, type, "new", token);    
+         
+         if(callable == null) {
+            throw new IllegalStateException("No constructor for " + type);
+         }
          Result result = callable.call();
          Object value = token.getValue();
  

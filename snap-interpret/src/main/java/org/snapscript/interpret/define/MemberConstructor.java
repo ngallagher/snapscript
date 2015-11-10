@@ -3,6 +3,7 @@ package org.snapscript.interpret.define;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -33,11 +34,11 @@ public class MemberConstructor implements TypePart {
       this.list = list;
    } 
    @Override
-   public Statement define(Scope scope, Statement statements, Type type) throws Exception {
-      Signature signature = parameters.create(scope);
+   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
+      Signature signature = parameters.create(scope, "class");
       Value mod = modifier.evaluate(scope, null);
       int modifiers = mod.getInteger();
-      Statement baseCall = null;
+      Initializer baseCall = null;
       
       if(list != null){
          baseCall = new SuperConstructor(list).define(scope, null, type);

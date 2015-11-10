@@ -41,8 +41,16 @@ public class ConstructObject implements Evaluation {
          Value array = list.evaluate(scope, null); // arguments have no left hand side
          Object[] arguments = array.getValue();
          
+         // XXX this is a hack for not to construct objects correctly...
+         Object[] expand = new Object[arguments.length + 1];
+         
+         for(int i = 0; i < arguments.length; i++) {
+            expand[i + 1] = arguments[i];
+         }
+         expand[0] = qualifier;
+         
          if(arguments.length > 0) {
-            Callable<Result> call = binder.bind(scope, qualifier, "new", arguments);
+            Callable<Result> call = binder.bind(scope, qualifier, "new", expand);
            
             if(call == null){
                throw new IllegalStateException("No constructor for " + name);
@@ -53,7 +61,7 @@ public class ConstructObject implements Evaluation {
             return new Holder(instance);
          }
       }
-      Callable<Result> call = binder.bind(scope, qualifier, "new");
+      Callable<Result> call = binder.bind(scope, qualifier, "new", qualifier);
       
       if(call == null){
          throw new IllegalStateException("No constructor for " + name);

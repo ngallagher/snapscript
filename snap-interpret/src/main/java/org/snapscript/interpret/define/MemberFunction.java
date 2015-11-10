@@ -1,6 +1,7 @@
 package org.snapscript.interpret.define;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
@@ -28,7 +29,7 @@ public class MemberFunction implements TypePart {
    } 
 
    @Override
-   public Statement define(Scope scope, Statement statements, Type type) throws Exception {
+   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       // XXX if this function is called it must be called on the internal scope of the instance...
       Value handle = identifier.evaluate(scope, null);  
       String name = handle.getString();
@@ -40,7 +41,8 @@ public class MemberFunction implements TypePart {
          Module module = scope.getModule();
          String qualifier=type.getName();
          //XXX invocation
-         Statement init = new CompoundStatement(statements, statement); // initialize static scope first
+         Statement init = new InitializerStatement(statements, type); // initialize static scope first
+         Statement compound = new CompoundStatement(init, statement);
          Invocation invocation = new StaticInvocation(init, signature, scope);
          Function functionStatic = new Function(signature, invocation, qualifier+"."+name, name);// description is wrong here.....      
          Function function = new Function(signature, invocation, name, name);// description is wrong here.....

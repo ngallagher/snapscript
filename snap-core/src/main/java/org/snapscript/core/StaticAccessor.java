@@ -2,16 +2,18 @@ package org.snapscript.core;
 
 public class StaticAccessor implements Accessor {
 
-   private final Statement statement;
+   private final Initializer initializer;
    private final Accessor accessor;
    private final Scope scope;
    private final String name;
+   private final Type type;
    
-   public StaticAccessor(Statement statement, Scope scope, String name) {
+   public StaticAccessor(Initializer initializer, Scope scope, Type type, String name) {
       this.accessor = new ScopeAccessor(name);
-      this.statement = statement;
+      this.initializer = initializer;
       this.scope = scope;
       this.name = name;
+      this.type = type;
    }
    
    @Override
@@ -19,7 +21,7 @@ public class StaticAccessor implements Accessor {
       try {
          Value v=scope.getValue(name);
          if(v==null) {
-            statement.execute(scope);           
+            initializer.initialize(scope, type);           
          }
       }catch(Exception e){
          throw new IllegalStateException(e);
@@ -33,7 +35,7 @@ public class StaticAccessor implements Accessor {
       try {
          Value v=scope.getValue(name);
          if(v==null) {
-            statement.execute(scope);           
+            initializer.initialize(scope, type);           
          }     
       }catch(Exception e){
          throw new IllegalStateException(e);

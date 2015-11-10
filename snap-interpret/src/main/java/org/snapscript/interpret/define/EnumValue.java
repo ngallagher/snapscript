@@ -1,14 +1,12 @@
 package org.snapscript.interpret.define;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.snapscript.core.Constant;
 import org.snapscript.core.Holder;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -41,8 +39,8 @@ public class EnumValue {
       Evaluation evaluation= new FunctionInvocation(consName, list);     
       String name = value.getString();
       String qualifier = type.getName();
-      Statement fieldDef = new FieldDefinition(evaluation,type,name,name,index);
-      StaticAccessor accessor = new StaticAccessor(fieldDef,scope, name);
+      Initializer fieldDef = new FieldDefinition(evaluation,type,name,name,index);
+      StaticAccessor accessor = new StaticAccessor(fieldDef,scope, type,name);
       
       // XXX initialise up front!!!!!!
       //fieldDef.execute(scope);
@@ -63,7 +61,7 @@ public class EnumValue {
       }
       
    }
-   public class FieldDefinition extends Statement{
+   public class FieldDefinition implements Initializer {
       private final Evaluation ev;
       private final String name;
       private final String title;
@@ -79,7 +77,7 @@ public class EnumValue {
       
 
       @Override
-      public Result execute(Scope scope) throws Exception {
+      public Result initialize(Scope scope, Type type) throws Exception {
          InstanceScope s = new InstanceScope(scope, tp);
          Constant cst=new Constant(tp);
          s.addConstant("class", cst);

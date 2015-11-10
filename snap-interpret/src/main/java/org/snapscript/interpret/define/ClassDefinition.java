@@ -5,6 +5,7 @@ import static org.snapscript.core.ResultFlow.NORMAL;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
@@ -32,7 +33,7 @@ public class ClassDefinition extends Statement {
    @Override
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);
-      StatementCollector collector = new StatementCollector();
+      InitializerCollector collector = new InitializerCollector();
       
       // this should be passed in to the ClassHierarchy to define the type hierarchy!!!
       String n=name.evaluate(other, null).getString();
@@ -44,13 +45,13 @@ public class ClassDefinition extends Statement {
          types.addAll(hierarchy.create(other)); // add in the type hierarchy!!
       } 
       for(TypePart part : parts) {
-         Statement s=part.define(other, collector, t);
+         Initializer s=part.define(other, collector, t);
          collector.update(s);
       }  
       ScopeAccessor accessor = new ScopeAccessor("this");
       ScopeAccessor accessor2 = new ScopeAccessor("class");
       Property property = new Property("this", t, accessor);
-      Property property2 = new Property("class", t, accessor);      
+      Property property2 = new Property("class", t, accessor2);      
       t.getProperties().add(property);
       List<Function>mapL=t.getFunctions();
       int count=0;

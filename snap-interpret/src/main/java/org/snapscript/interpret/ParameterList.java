@@ -19,11 +19,19 @@ public class ParameterList {
    }
    
    public Signature create(Scope scope) throws Exception{
+      return create(scope, null);
+   }
+   
+   public Signature create(Scope scope, String prefix) throws Exception{
       if(signature == null) {
          List<String> names = new ArrayList<String>();
          List<Type> constraints = new ArrayList<Type>();
          Signature result = new Signature(names, constraints, 0);
          
+         if(prefix != null) {
+            names.add(prefix);
+            constraints.add(null);
+         }
          for(int i = 0; i < list.length; i++) {
             Value value = list[i].evaluate(scope, null);
             String constraint = value.getConstraint();

@@ -3,13 +3,14 @@ package org.snapscript.interpret.define;
 import java.util.List;
 
 import org.snapscript.core.Holder;
+import org.snapscript.core.Initializer;
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.interpret.ArgumentList;
 import org.snapscript.interpret.Evaluation;
-import org.snapscript.interpret.ExpressionStatement;
 
 public class SuperConstructor implements TypePart {
    
@@ -20,7 +21,7 @@ public class SuperConstructor implements TypePart {
    }
 
    @Override
-   public Statement define(Scope scope, Statement statement, Type type) throws Exception {
+   public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {
       
       List<Type> types=type.getTypes();
          Type superT=types.isEmpty()?null:types.get(0);
@@ -30,7 +31,7 @@ public class SuperConstructor implements TypePart {
       }     
       Name name = new Name();
       Evaluation evaluation= new SuperFunction(name, superT,list);
-      return new ExpressionStatement(evaluation);
+      return new SuperStatement(evaluation);
    }
    public final class Name implements Evaluation {
 
@@ -39,5 +40,21 @@ public class SuperConstructor implements TypePart {
          return new Holder("new");
       }
       
+   }
+   public final class SuperStatement implements Initializer {
+      
+      private final Evaluation expression;
+      
+      public SuperStatement(Evaluation expression) {
+         this.expression = expression;
+      }
+
+      @Override
+      public Result initialize(Scope scope, Type type) throws Exception {
+         Value reference = expression.evaluate(scope, type);
+         Object value = reference.getValue();
+         
+         return new Result(ResultFlow.NORMAL, value);
+      }
    }
 }

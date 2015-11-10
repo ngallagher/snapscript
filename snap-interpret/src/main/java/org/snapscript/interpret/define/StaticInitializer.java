@@ -2,12 +2,13 @@ package org.snapscript.interpret.define;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
+import org.snapscript.core.Type;
 import org.snapscript.interpret.Evaluation;
 
-public class StaticInitializer extends Statement {
+public class StaticInitializer implements Initializer {
    
    private final Evaluation evaluation;
    private final AtomicBoolean done;
@@ -20,7 +21,7 @@ public class StaticInitializer extends Statement {
    }
 
    @Override
-   public Result execute(Scope instance) throws Exception {
+   public Result initialize(Scope instance, Type type) throws Exception {
       if(done.compareAndSet(false, true)) {
          evaluation.evaluate(scope, null);
       }

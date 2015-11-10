@@ -1,6 +1,7 @@
 package org.snapscript.interpret.define;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -29,7 +30,7 @@ public class TraitFunction implements TypePart {
    }
    
    @Override
-   public Statement define(Scope scope, Statement statements, Type type) throws Exception {
+   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       // XXX if this function is called it must be called on the internal scope of the instance...
       Value handle = identifier.evaluate(null, null);  
       String name = handle.getString();

@@ -3,6 +3,7 @@ package org.snapscript.interpret.define;
 import java.util.List;
 
 import org.snapscript.core.Constant;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
@@ -10,7 +11,6 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.ConstraintChecker;
 
@@ -20,11 +20,11 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
    private final SignatureAligner aligner;
    private final Invocation constructor;
    private final Signature signature;
-   private final Statement factory;
-   private final Statement body;
+   private final Initializer factory;
+   private final Initializer body;
    private final Type type;
    
-   public NewInvocation(Type type, Signature signature, Statement factory, Statement body, Invocation constructor) {
+   public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
       this.constructor = constructor;
@@ -36,6 +36,12 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
 
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
+      
+      if(list.length == 0) {
+         throw new IllegalArgumentException("Type '" + type + "' must be given an explicit type");
+      }
+      Type real = (Type)list[0];
+      System.err.println("NEW.new="+type.getName());
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
@@ -52,18 +58,19 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
          Reference reference = new Reference(argument);         
          inner.addVariable(name, reference);
       }
-      Result result = factory.execute(inner);
+      // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
+      Result result = factory.initialize(inner, real);
       Scope instance = result.getValue();
       
       if(instance == null) {
          throw new IllegalStateException("Instance could not be created");
       }
-      InstanceScope wrapper = new InstanceScope(instance, type);// we need to pass the base type up!!
+      InstanceScope wrapper = new InstanceScope(instance, real);// we need to pass the base type up!!
       
       // Super should probably be a special variable and have special instructions!!!!!
       Constant base = new Constant(instance, "super"); // XXXXXXXXXXXXXXXXXXXXXXXX This is an instance of the super class [ISOLATED].     
       Constant self = new Constant(wrapper, "this");
-      Constant info = new Constant(type, "class");
+      Constant info = new Constant(real, "class"); // give it the REAL type
       
       wrapper.addConstant("class", info);    
       wrapper.addConstant("this", self);
@@ -75,7 +82,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
       
-      body.execute(wrapper);
+      body.initialize(wrapper, real);
       constructor.invoke(wrapper, wrapper, list);
       
       return new Result(ResultFlow.NORMAL, wrapper);

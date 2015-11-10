@@ -27,10 +27,15 @@ public class SuperFunction implements Evaluation {
    
    @Override
    public Value evaluate(Scope x, Object left) throws Exception {
+      if(left == null) {
+         throw new IllegalArgumentException("Type required for super function call");
+      }
+      Type real = (Type)left;
+      System.err.println("SUPER.new="+type.getName());
       InstanceScope s =new InstanceScope(x, type);
       Constant constant = new Constant(type);
       s.addConstant("class",constant);
-      InvocationDispatcher handler = dispatcher.dispatch(s, left);
+      InvocationDispatcher handler = dispatcher.dispatch(s, null);
       Value reference = function.evaluate(s, left);
       String name = reference.getString();      
       
@@ -38,8 +43,16 @@ public class SuperFunction implements Evaluation {
          Value array = list.evaluate(s, null); // arguments have no left hand side
          Object[] arguments = array.getValue();
          
-         return handler.dispatch(name, arguments);
+         // XXX hack to pass up the type
+         Object[] expand = new Object[arguments.length + 1];
+         
+         for(int i = 0; i < arguments.length; i++) {
+            expand[i + 1] = arguments[i];
+         }
+         expand[0] = real;
+         
+         return handler.dispatch(name, expand);
       }
-      return handler.dispatch(name);
+      return handler.dispatch(name, real);
    }
 }

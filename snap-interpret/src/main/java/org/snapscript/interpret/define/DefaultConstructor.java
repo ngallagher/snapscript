@@ -3,6 +3,7 @@ package org.snapscript.interpret.define;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -26,9 +27,9 @@ public class DefaultConstructor implements TypePart {
       this.statement = new NoOperation();
    } 
    @Override
-   public Statement define(Scope scope, Statement statements, Type type) throws Exception {
+   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       Signature signature = parameters.create(scope);
-      Statement baseCall = null;
+      Initializer baseCall = null;
       
       List<Type> types=type.getTypes();
          Type superT=types.isEmpty()?null:types.get(0);

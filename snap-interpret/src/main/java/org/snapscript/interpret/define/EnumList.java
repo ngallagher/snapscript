@@ -1,7 +1,7 @@
 package org.snapscript.interpret.define;
 
+import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
 public class EnumList implements TypePart {
@@ -13,8 +13,8 @@ public class EnumList implements TypePart {
    }
 
    @Override
-   public Statement define(Scope scope, Statement statement, Type type) throws Exception {
-      StatementCollector collector = new StatementCollector();
+   public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {
+      InitializerCollector collector = new InitializerCollector();
       int index = 0;
       
       for(EnumValue value : values) {

@@ -1,8 +1,8 @@
 package org.snapscript.core.bind;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.snapscript.common.LeastRecentlyUsedMap;
 import org.snapscript.core.Function;
@@ -14,6 +14,7 @@ import org.snapscript.core.TypeLoader;
 public class FunctionMatcher {
    
    private final Map<Object, Function> cache;
+   private final FunctionPathFinder finder;
    private final FunctionKeyBuilder builder;
    private final ArgumentMatcher matcher;
    
@@ -25,6 +26,7 @@ public class FunctionMatcher {
       this.cache = new LeastRecentlyUsedMap<Object, Function>(capacity);
       this.matcher = new ArgumentMatcher(loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
+      this.finder = new FunctionPathFinder();
    }
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
@@ -60,18 +62,16 @@ public class FunctionMatcher {
       return null;
    }
    
-   public FunctionPointer match(Type type, String name, Object... values) throws Exception {
+   public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
       Object key = builder.create(type, name, values);
       Function function = cache.get(key);
       
       if(!cache.containsKey(key)) {
-         List<Type> hierarchy = type.getTypes();
-         Iterator<Type> iterator = hierarchy.iterator();
-         Type base = type;
+         Set<Type> path = finder.createPath(type);
          int best = 0;
          
-         while(base != null) {
-            List<Function> functions = base.getFunctions();
+         for(Type entry : path) {
+            List<Function> functions = entry.getFunctions();
    
             for(Function next : functions) {
                String method = next.getName();
@@ -87,10 +87,6 @@ public class FunctionMatcher {
                   }
                }
             }
-            if(!iterator.hasNext()) { // no more supers
-               break;
-            }
-            base = iterator.next();
          }
          cache.put(key, function);
       }

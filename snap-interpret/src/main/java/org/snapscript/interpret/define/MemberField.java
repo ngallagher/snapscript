@@ -1,10 +1,10 @@
 package org.snapscript.interpret.define;
 
+import org.snapscript.core.Initializer;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeAccessor;
-import org.snapscript.core.Statement;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -41,7 +41,7 @@ public class MemberField implements TypePart {
    }
 
    @Override
-   public Statement define(Scope scope, Statement statements, Type type) throws Exception { // declare variable
+   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception { // declare variable
       //DeclarationStatement s = new DeclarationStatement(identifier, constraint, value);
       Value vvvv = identifier.evaluate(scope, null);
       Value mod = modifier.evaluate(scope, null);
@@ -51,7 +51,7 @@ public class MemberField implements TypePart {
          //DeclarationStatement s = new DeclarationStatement(identifier, constraint, value);
          String name = vvvv.getString();
          String qualifier = type.getName();
-         Statement st =null;
+         Initializer st =null;
          if(ModifierType.isConstant(modifiers)) {
             Evaluation e= new DeclareConstant(identifier, constraint, value);
            st= new StaticInitializer(e, scope);
@@ -59,7 +59,7 @@ public class MemberField implements TypePart {
             Evaluation e= new DeclareVariable(identifier, constraint, value);
             st= new StaticInitializer(e, scope);
          }
-         StaticAccessor accessor = new StaticAccessor(statements,scope, name); 
+         StaticAccessor accessor = new StaticAccessor(statements,scope,type, name); 
          Property property = new Property(name, type, accessor);
          
          // XXX add properties!!!
