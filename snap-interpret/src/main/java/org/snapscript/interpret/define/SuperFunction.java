@@ -31,7 +31,6 @@ public class SuperFunction implements Evaluation {
          throw new IllegalArgumentException("Type required for super function call");
       }
       Type real = (Type)left;
-      System.err.println("SUPER.new="+type.getName());
       InstanceScope s =new InstanceScope(x, type);
       Constant constant = new Constant(type);
       s.addConstant("class",constant);

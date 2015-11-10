@@ -1,43 +1,38 @@
 package org.snapscript.core.bind;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.snapscript.core.Type;
 
 // This MUST have a unit test to ensure correct path resolution
-public class FunctionPathFinder {
+public class SearchPathFinder {
    
-   private final Map<Type, Set<Type>> paths;
+   private final Map<Type, List<Type>> paths;
    
-   public FunctionPathFinder() {
-      this.paths = new HashMap<Type, Set<Type>>();
+   public SearchPathFinder() {
+      this.paths = new HashMap<Type, List<Type>>();
    }
 
-   public Set<Type> createPath(Type type) {
-      Set<Type> path = paths.get(type);
+   public List<Type> createPath(Type type) {
+      List<Type> path = paths.get(type);
       
       if(path == null) {
-         Set<Type> classes = new LinkedHashSet<Type>();
-         Set<Type> traits = new LinkedHashSet<Type>();
+         List<Type> result = new ArrayList<Type>();
       
-         collectClasses(type, classes);
-         collectTraits(type, traits);
-      
-         if(!traits.isEmpty()) {
-            classes.addAll(traits);
-         }
-         paths.put(type, classes);
-         return classes;
+         collectClasses(type, result);
+         collectTraits(type, result);
+
+         paths.put(type, result);
+         return result;
       }
       return path;
    }
    
-   private void collectTraits(Type type, Set<Type> done) {
+   private void collectTraits(Type type, List<Type> done) {
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       
@@ -45,16 +40,16 @@ public class FunctionPathFinder {
          Type next = iterator.next(); // next in line, i.e base
          
          for(Type entry : types) {
-            done.add(entry);
+            if(!done.contains(entry)) {
+               done.add(entry);
+            }
          }
-         if(!done.contains(next)) {
-            collectTraits(next, done);
-         }
+         collectTraits(next, done);
       }
    }
    
    // we need to check if its a class or a trait here!!!
-   private void collectClasses(Type type, Set<Type> done) {
+   private void collectClasses(Type type, List<Type> done) {
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       

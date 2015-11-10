@@ -36,12 +36,10 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
 
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
-      
       if(list.length == 0) {
          throw new IllegalArgumentException("Type '" + type + "' must be given an explicit type");
       }
       Type real = (Type)list[0];
-      System.err.println("NEW.new="+type.getName());
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array

@@ -22,7 +22,6 @@ public class SuperConstructor implements TypePart {
 
    @Override
    public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {
-      
       List<Type> types=type.getTypes();
          Type superT=types.isEmpty()?null:types.get(0);
       
