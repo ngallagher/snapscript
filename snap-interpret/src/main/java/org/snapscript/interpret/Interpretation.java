@@ -29,7 +29,7 @@ public enum Interpretation implements Instruction {
    CLASS(TextLiteral.class, "class"),  
    TYPE(TextLiteral.class, "type"),   
    TEXT(TextLiteral.class, "text"),
-   THIS(TextLiteral.class, "this"),      
+   THIS(TextLiteral.class, "this"),
    NULL(NullLiteral.class, "null"),
    NUMBER(SignedNumber.class, "number"), 
    VARIABLE(Variable.class, "variable"),

@@ -51,6 +51,9 @@ public class InstanceInvocation implements Invocation<Scope> {
          list = Arrays.copyOf(list, length);
       }
       // create a class scope from the passed in object!!!!!
+      if(object == null) {
+         object=scope; // XXX tihs is for super only!!!
+      }
       Module module = scope.getModule();
       Scope inner = object.getScope();
       

@@ -1,16 +1,7 @@
-package org.snapscript.interpret.define;
+package org.snapscript.core;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.snapscript.core.CompoundScope;
-import org.snapscript.core.Constant;
-import org.snapscript.core.Context;
-import org.snapscript.core.Module;
-import org.snapscript.core.Reference;
-import org.snapscript.core.Scope;
-import org.snapscript.core.Type;
-import org.snapscript.core.Value;
 
 public class InstanceScope implements Scope {
    

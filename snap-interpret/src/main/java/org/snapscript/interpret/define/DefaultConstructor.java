@@ -28,7 +28,7 @@ public class DefaultConstructor implements TypePart {
    } 
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
-      Signature signature = parameters.create(scope);
+      Signature signature = parameters.create(scope, "class");
       Initializer baseCall = null;
       
       List<Type> types=type.getTypes();

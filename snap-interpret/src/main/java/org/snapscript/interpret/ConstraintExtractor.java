@@ -16,12 +16,16 @@ public class ConstraintExtractor {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
-      Class type = value.getClass();
       
-      if(Scope.class.isInstance(value)) {
-         Scope definition = (Scope)value;
-         return definition.getType();
+      if(value != null) {
+         Class type = value.getClass();
+         
+         if(Scope.class.isInstance(value)) {
+            Scope definition = (Scope)value;
+            return definition.getType();
+         }
+         return loader.load(type);
       }
-      return loader.load(type);
+      return null;
    }
 }

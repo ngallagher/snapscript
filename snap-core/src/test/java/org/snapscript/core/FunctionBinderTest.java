@@ -3,13 +3,9 @@ package org.snapscript.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.snapscript.core.Library;
-import org.snapscript.core.LibraryLinker;
-import org.snapscript.core.TypeLoader;
-import org.snapscript.core.ImportResolver;
-import org.snapscript.core.bind.FunctionBinder;
-
 import junit.framework.TestCase;
+
+import org.snapscript.core.bind.FunctionBinder;
 
 public class FunctionBinderTest extends TestCase {
    
@@ -30,6 +26,7 @@ public class FunctionBinderTest extends TestCase {
       ImportResolver resolver = new ImportResolver(store, linker);
       TypeLoader loader = new TypeLoader(store, resolver);
       FunctionBinder binder = new FunctionBinder(loader);
+      Type type = loader.load(Map.class);
       
       binder.bind(null, map, "put", "x", 11).call();
       binder.bind(null, map, "put", "y", 21).call();

@@ -3,10 +3,12 @@ package org.snapscript.interpret;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.TypeLoader;
 import org.snapscript.core.Value;
 
 public class ParameterList {
@@ -29,8 +31,13 @@ public class ParameterList {
          Signature result = new Signature(names, constraints, 0);
          
          if(prefix != null) {
+            Module module = scope.getModule();
+            Context context = module.getContext();
+            TypeLoader loader = context.getLoader();
+            Type constraint = loader.load(Type.class);
+            
             names.add(prefix);
-            constraints.add(null);
+            constraints.add(constraint);
          }
          for(int i = 0; i < list.length; i++) {
             Value value = list[i].evaluate(scope, null);

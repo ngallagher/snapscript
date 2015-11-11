@@ -3,6 +3,7 @@ package org.snapscript.interpret.define;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Holder;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;

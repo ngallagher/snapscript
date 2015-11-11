@@ -17,25 +17,27 @@ public class ConstraintChecker {
    public boolean compatible(Scope scope, Object value, String name) throws Exception {
       if(name != null) {
          Module module = scope.getModule();
-         Type require = module.getType(name);
-         Type actual = extractor.extract(scope, value);
+         Type type = module.getType(name);
 
-         if(require != actual) {
-            List<Type> compatible = actual.getTypes();
-            
-            if(!compatible.contains(require)) {
-               return false;
-            }
-         }
+         return compatible(scope, value, type);
       }
       return true;
    }
    
+   // this might not work!!!
    public boolean compatible(Scope scope, Object value, Type type) throws Exception {
       if(type != null) {
          Type actual = extractor.extract(scope, value);
 
          if(type != actual) {
+            if(actual == null) {
+               Class real = type.getType();
+               
+               if(real != null) {
+                  return !real.isPrimitive();
+               }
+               return true;
+            }
             List<Type> compatible = actual.getTypes();
             
             if(!compatible.contains(type)) {
@@ -45,6 +47,4 @@ public class ConstraintChecker {
       }
       return true;
    }
-   
-
 }

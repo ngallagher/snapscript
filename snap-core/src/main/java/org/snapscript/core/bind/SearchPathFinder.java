@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.snapscript.core.Type;
 
-// This MUST have a unit test to ensure correct path resolution
 public class SearchPathFinder {
    
    private final Map<Type, List<Type>> paths;
@@ -19,13 +18,16 @@ public class SearchPathFinder {
 
    public List<Type> createPath(Type type) {
       List<Type> path = paths.get(type);
+      Class real = type.getType();
       
       if(path == null) {
          List<Type> result = new ArrayList<Type>();
       
          collectClasses(type, result);
-         collectTraits(type, result);
-
+      
+         if(real == null) {
+            collectTraits(type, result);
+         }
          paths.put(type, result);
          return result;
       }

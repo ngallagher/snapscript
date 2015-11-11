@@ -149,8 +149,7 @@ public class InvocationBinder {
          }
          return new Holder(data);           
       }
-      
-   }   
+   }  
    
    private class ArrayHandler implements InvocationDispatcher {
       

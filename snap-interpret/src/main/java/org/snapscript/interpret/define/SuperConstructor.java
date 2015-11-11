@@ -2,11 +2,13 @@ package org.snapscript.interpret.define;
 
 import java.util.List;
 
+import org.snapscript.core.Constant;
 import org.snapscript.core.Holder;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
+import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.interpret.ArgumentList;
@@ -30,7 +32,7 @@ public class SuperConstructor implements TypePart {
       }     
       Name name = new Name();
       Evaluation evaluation= new SuperFunction(name, superT,list);
-      return new SuperStatement(evaluation);
+      return new SuperStatement(evaluation, superT);
    }
    public final class Name implements Evaluation {
 
@@ -43,17 +45,27 @@ public class SuperConstructor implements TypePart {
    public final class SuperStatement implements Initializer {
       
       private final Evaluation expression;
+      private final Type type;
       
-      public SuperStatement(Evaluation expression) {
+      public SuperStatement(Evaluation expression, Type type) {
          this.expression = expression;
+         this.type = type;
       }
 
       @Override
-      public Result initialize(Scope scope, Type type) throws Exception {
-         Value reference = expression.evaluate(scope, type);
-         Object value = reference.getValue();
+      public Result initialize(Scope scope, Type real) throws Exception {
+         Value reference = expression.evaluate(scope, real);
+         Scope value = reference.getValue();
          
-         return new Result(ResultFlow.NORMAL, value);
+         // This won't work, there needs to be two forms of binding, a special Value needs to be 
+         // assigned to super so that it takes a unique path through the FunctionBinder, perhaps
+         // there needs to be a parameter we can pass that says when a method is referenced as
+         // super then it needs to bind to a 
+         
+         Scope compound = new SuperScope(value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
+         Constant constant = new Constant(compound, "super");
+         compound.addConstant("super", constant);
+         return new Result(ResultFlow.NORMAL, compound);
       }
    }
 }

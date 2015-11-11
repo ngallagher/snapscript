@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
@@ -63,16 +64,17 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       if(instance == null) {
          throw new IllegalStateException("Instance could not be created");
       }
+      // this could easily be the "Any" type
+      //Type superT = type.getTypes().size() > 0 ? type.getTypes().get(0) : null; // XXX this is rubbish!!
+      
       InstanceScope wrapper = new InstanceScope(instance, real);// we need to pass the base type up!!
       
       // Super should probably be a special variable and have special instructions!!!!!
-      Constant base = new Constant(instance, "super"); // XXXXXXXXXXXXXXXXXXXXXXXX This is an instance of the super class [ISOLATED].     
       Constant self = new Constant(wrapper, "this");
       Constant info = new Constant(real, "class"); // give it the REAL type
       
       wrapper.addConstant("class", info);    
       wrapper.addConstant("this", self);
-      wrapper.addConstant("super", base);  // return previous class!!!----> makes methods non virtual tho!!
       //
       // functoin calls need to be handled better!!!
       // super is actually a very special value!!! its no good to just provide the base!!

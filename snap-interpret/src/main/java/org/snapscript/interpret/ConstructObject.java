@@ -30,39 +30,13 @@ public class ConstructObject implements Evaluation {
       Value value = type.evaluate(scope, null);
       String name = value.getString();
       Module module = scope.getModule();
-      Context context = module.getContext();
-      FunctionBinder binder = context.getBinder();
-      Type qualifier = module.getType(name);
+      Type type = module.getType(name);
       
-      if(qualifier == null) {
+      if(type == null) {
          throw new IllegalStateException("No type found for " + name); // class not found
       }
-      if(list != null) {
-         Value array = list.evaluate(scope, null); // arguments have no left hand side
-         Object[] arguments = array.getValue();
-         
-         // XXX this is a hack for not to construct objects correctly...
-         Object[] expand = new Object[arguments.length + 1];
-         
-         for(int i = 0; i < arguments.length; i++) {
-            expand[i + 1] = arguments[i];
-         }
-         expand[0] = qualifier;
-         
-         if(arguments.length > 0) {
-            Callable<Result> call = binder.bind(scope, qualifier, "new", expand);
+      Callable<Result> call = bind(scope, type);
            
-            if(call == null){
-               throw new IllegalStateException("No constructor for " + name);
-            }
-            Result result = call.call();
-            Object instance = result.getValue();
-            
-            return new Holder(instance);
-         }
-      }
-      Callable<Result> call = binder.bind(scope, qualifier, "new", qualifier);
-      
       if(call == null){
          throw new IllegalStateException("No constructor for " + name);
       }
@@ -70,5 +44,33 @@ public class ConstructObject implements Evaluation {
       Object instance = result.getValue();
       
       return new Holder(instance);
+   }
+   
+   private Callable<Result> bind(Scope scope, Type type) throws Exception {
+      Module module = scope.getModule();
+      Context context = module.getContext();
+      FunctionBinder binder = context.getBinder();
+      Class real = type.getType();
+      
+      if(list != null) {
+         Value array = list.evaluate(scope, null); // arguments have no left hand side
+         Object[] arguments = array.getValue();
+
+         if(real == null) {
+            Object[] expand = new Object[arguments.length + 1];
+            
+            for(int i = 0; i < arguments.length; i++) {
+               expand[i + 1] = arguments[i];
+            }
+            expand[0] = type;
+            
+            return binder.bind(scope, type, "new", expand);
+         }
+         return binder.bind(scope, type, "new", arguments);
+      }
+      if(real == null) {
+         return binder.bind(scope, type, "new", type);
+      }
+      return binder.bind(scope, type, "new");
    }
 }

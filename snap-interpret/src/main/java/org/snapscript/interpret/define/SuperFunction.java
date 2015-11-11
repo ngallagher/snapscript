@@ -1,7 +1,7 @@
 package org.snapscript.interpret.define;
 
-import org.snapscript.core.Constant;
 import org.snapscript.core.Scope;
+import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.interpret.ArgumentList;
@@ -26,14 +26,12 @@ public class SuperFunction implements Evaluation {
    }
    
    @Override
-   public Value evaluate(Scope x, Object left) throws Exception {
+   public Value evaluate(Scope instance, Object left) throws Exception {
       if(left == null) {
          throw new IllegalArgumentException("Type required for super function call");
       }
       Type real = (Type)left;
-      InstanceScope s =new InstanceScope(x, type);
-      Constant constant = new Constant(type);
-      s.addConstant("class",constant);
+      SuperScope s =new SuperScope(instance, real, type);
       InvocationDispatcher handler = dispatcher.dispatch(s, null);
       Value reference = function.evaluate(s, left);
       String name = reference.getString();      
