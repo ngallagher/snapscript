@@ -85,6 +85,7 @@ public class EnumValue {
          if(ev == null) {
             throw new IllegalStateException("Unable to create enum");
          }
+
          Value result = ev.evaluate(scope, s);              
          Scope instance = result.getValue();
 //         instance.setAttribute("identity", new Constant(title));         

@@ -81,8 +81,9 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       //
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
-      
-      body.initialize(wrapper, real);
+      if(body != null) {
+         body.initialize(wrapper, real);
+      }
       constructor.invoke(wrapper, wrapper, list);
       
       return new Result(ResultFlow.NORMAL, wrapper);

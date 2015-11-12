@@ -62,7 +62,7 @@ public class TypeLoader {
    }
    
    public Type load(String name,String moduleName) throws Exception {
-      return load(name,null,true);
+      return load(name,moduleName,true); // XXX moduleName was null here?????
    }
    public Type load(String name, String moduleName, boolean create) throws Exception {
       Type t = resolveType(name);

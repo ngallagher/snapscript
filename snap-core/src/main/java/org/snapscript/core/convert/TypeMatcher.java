@@ -38,7 +38,7 @@ public class TypeMatcher {
    
    private TypeConverter resolve(Type type) throws Exception {
       if(comparator.same(Object.class, type)) {
-         return new AnyConverter();
+         return new AnyConverter(type);
       }
       if(comparator.same(double.class, type)) {
          return new DoubleConverter(type);

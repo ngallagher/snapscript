@@ -16,6 +16,7 @@ import org.snapscript.core.Type;
 
 public class ClassDefinition extends Statement {   
    
+   private final AnyDefinition definition;
    private final TypeHierarchy hierarchy;
    private final TypeName name;
    private final TypePart[] parts;
@@ -25,6 +26,7 @@ public class ClassDefinition extends Statement {
    }
    
    public ClassDefinition(TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
+      this.definition = new AnyDefinition();
       this.hierarchy = hierarchy;
       this.parts = parts;
       this.name = name;
@@ -43,7 +45,12 @@ public class ClassDefinition extends Statement {
       List<Type>types=t.getTypes();
       if(hierarchy!=null){
          types.addAll(hierarchy.create(other)); // add in the type hierarchy!!
-      } 
+      } else {
+         Result result = definition.compile(scope);
+         Type type = result.getValue();
+         
+         types.add(type);
+      }
       for(TypePart part : parts) {
          Initializer s=part.define(other, collector, t);
          collector.update(s);

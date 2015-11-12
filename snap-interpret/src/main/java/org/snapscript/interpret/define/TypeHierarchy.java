@@ -3,10 +3,11 @@ package org.snapscript.interpret.define;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Initializer;
+import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.bind.SearchPathFinder;
 
 // we need to ALWAYS force EVERY class to extend something, it might just be the "Any" type
 /* 
@@ -27,6 +28,7 @@ import org.snapscript.core.Value;
  */
 public class TypeHierarchy {
    
+   private final AnyDefinition definition;
    private final TraitName[] traits; 
    private final TypeName type;
 
@@ -35,6 +37,7 @@ public class TypeHierarchy {
    }
    
    public TypeHierarchy(TypeName type, TraitName... traits) {
+      this.definition = new AnyDefinition();
       this.traits = traits;
       this.type = type;
    }
@@ -48,11 +51,10 @@ public class TypeHierarchy {
          
          types.add(base);
       }else {
-         Initializer s = new CompoundInitializer();// do nothing
-         Type t =scope.getModule().addType("Any"); // invent a type!!
-        
-         new DefaultConstructor().define(scope, s, t); // add the default no arg constructor!!
-         types.add(t);
+         Result result = definition.compile(scope);
+         Type type = result.getValue();
+         
+         types.add(type);
       }
       for(int i = 0; i < traits.length; i++) {
          Value value = traits[i].evaluate(scope, null);

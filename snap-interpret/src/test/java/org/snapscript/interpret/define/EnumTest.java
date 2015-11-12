@@ -42,10 +42,23 @@ public class EnumTest extends TestCase{
    "out.println('enum for JIM='+Person.JIM.name+' class='+Person.JIM.class+' ordinal='+Person.JIM.ordinal+' age='+Person.JIM.age+' title='+Person.JIM.title);\n"+
    "out.println('enum for TOM='+Person.TOM.name+' class='+Person.TOM.class+' ordinal='+Person.TOM.ordinal+' age='+Person.TOM.age+' title='+Person.TOM.title);\n"+
    "out.println('enum for BOB='+Person.BOB.name+' class='+Person.BOB.class+' ordinal='+Person.BOB.ordinal+' age='+Person.BOB.age+' title='+Person.BOB.title);\n";   
-   public static void main(String[] l)throws Exception{
-      new EnumTest().testEnums();
-   }
-   public void testEnums() throws Exception {
+//
+//   public void testSimpleEnum() throws Exception {
+//      Map map = new HashMap<String,Value>();
+//      map.put("out",System.out);
+//      Model s = new MapModel(map);
+//      InstructionResolver set = new InterpretationResolver();
+//      Context context =new ScriptContext(set);
+//      ContextModule m = new ContextModule(context);
+//      ScriptCompiler compiler = new ScriptCompiler(context);
+//      //compiler.compile(SOURCE_1).execute(s);
+//      System.err.println();
+//      System.err.println(SOURCE_1);
+//      compiler.compile(SOURCE_1).execute(s);
+//      System.err.println();     
+//   }
+   
+   public void testComplexEnum() throws Exception {
       Map map = new HashMap<String,Value>();
       map.put("out",System.out);
       Model s = new MapModel(map);
@@ -53,8 +66,6 @@ public class EnumTest extends TestCase{
       Context context =new ScriptContext(set);
       ContextModule m = new ContextModule(context);
       ScriptCompiler compiler = new ScriptCompiler(context);
-      boolean failure=false;
-      System.err.println(SOURCE_1);
       //compiler.compile(SOURCE_1).execute(s);
       System.err.println();
       System.err.println(SOURCE_2);
