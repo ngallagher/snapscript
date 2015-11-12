@@ -11,15 +11,12 @@ import org.snapscript.core.PropertyValue;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
-import org.snapscript.core.convert.ProxyExtractor;
 
 public class VariableResolver {
    
-   private final ProxyExtractor extractor;
    private final Evaluation identifier;
    
    public VariableResolver(Evaluation identifier) {
-      this.extractor = new ProxyExtractor();
       this.identifier = identifier;
    }
    
