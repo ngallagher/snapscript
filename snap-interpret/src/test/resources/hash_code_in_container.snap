@@ -19,6 +19,7 @@ class Key{
 var set = new HashSet();
 var a = new Key("a");
 var b = new Key("b");
+var c = new Key("c");
 
 System.err.println(a.toString());
 System.err.println(b.toString());
@@ -26,4 +27,5 @@ set.add(a);
 set.add(b);
 
 System.err.println(set.contains(a));
-System.err.println(Set.contains(b));
+System.err.println(set.contains(b));
+System.err.println(set.contains(c));

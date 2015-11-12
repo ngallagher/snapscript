@@ -1,6 +1,5 @@
 package org.snapscript.core.convert;
 
-import java.lang.reflect.Proxy;
 import java.util.List;
 
 import org.snapscript.core.Scope;
@@ -9,10 +8,12 @@ import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends TypeConverter {
    
+   private final ProxyBuilder builder;
    private final TypeExtractor extractor;
    private final Type type;
    
    public ObjectConverter(TypeExtractor extractor, Type type) {
+      this.builder = new ProxyBuilder(type);
       this.extractor = extractor;
       this.type = type;
    }
@@ -43,11 +44,7 @@ public class ObjectConverter extends TypeConverter {
          Class actual = object.getClass();
       
          if(Scope.class.isAssignableFrom(actual)) {
-            if(require.isInterface()) {
-               return Proxy.newProxyInstance(require.getClassLoader(), 
-                     new Class[]{require},  
-                     new ProxyHandler((Scope)object, type));
-            }
+            return builder.create((Scope)object, require);
          }
       }
       return object;
