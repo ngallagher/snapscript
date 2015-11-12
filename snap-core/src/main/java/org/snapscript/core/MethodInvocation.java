@@ -4,13 +4,15 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.snapscript.core.Scope;
+import org.snapscript.core.convert.ProxyExtractor;
 
 public class MethodInvocation implements Invocation<Object>{
 
+   private final ProxyExtractor extractor;
    private final Method method;
    
    public MethodInvocation(Method method) {
+      this.extractor = new ProxyExtractor();
       this.method = method;
    }
    
@@ -39,7 +41,9 @@ public class MethodInvocation implements Invocation<Object>{
             list[start] = array;
          }
       }
-      Object value= method.invoke(left, list);
-      return new Result(ResultFlow.NORMAL, value);
+      Object value = method.invoke(left, list);
+      Object result = extractor.extract(value);
+      
+      return new Result(ResultFlow.NORMAL, result);
    }
 }

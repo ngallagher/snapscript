@@ -1,12 +1,13 @@
 package org.snapscript.core.convert;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
-
 public class ProxyArgumentExtractor {
 
+   private final ProxyExtractor extractor;
+   private final Object[] empty;
+   
    public ProxyArgumentExtractor() {
-      super();
+      this.extractor = new ProxyExtractor();
+      this.empty = new Object[]{};
    }
    
    public Object[] extract(Object[] arguments) {
@@ -14,23 +15,13 @@ public class ProxyArgumentExtractor {
          Object[] convert = new Object[arguments.length];
          
          for(int i = 0; i < arguments.length; i++) {
-            Object object = arguments[i];
-         
-            if(Proxy.class.isInstance(object)) {
-               InvocationHandler handler = Proxy.getInvocationHandler(object);
-              
-               if(ProxyHandler.class.isInstance(handler)) {
-                  ProxyHandler proxy = (ProxyHandler)handler;
-                  Object value = proxy.extract();
-                  
-                  convert[i] = value;
-               }
-            } else {
-               convert[i] = object;
-            }
+            Object argument = arguments[i];
+            Object value = extractor.extract(argument);
+            
+            convert[i] = value;
          }
          return convert;
       }
-      return new Object[]{};
+      return empty;
    }
 }
