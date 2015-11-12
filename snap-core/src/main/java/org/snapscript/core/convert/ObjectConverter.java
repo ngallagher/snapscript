@@ -13,7 +13,7 @@ public class ObjectConverter extends TypeConverter {
    private final Type type;
    
    public ObjectConverter(TypeExtractor extractor, Type type) {
-      this.builder = new ProxyBuilder(type);
+      this.builder = new ProxyBuilder();
       this.extractor = extractor;
       this.type = type;
    }

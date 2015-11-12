@@ -1,16 +1,13 @@
 package org.snapscript.core.convert;
 
 import org.snapscript.core.Scope;
-import org.snapscript.core.Type;
 
 public class AnyConverter extends TypeConverter {
    
    private final ProxyBuilder builder;
-   private final Type type;
    
-   public AnyConverter(Type type) {
-      this.builder = new ProxyBuilder(type);
-      this.type = type;
+   public AnyConverter() {
+      this.builder = new ProxyBuilder();
    }
    
    @Override

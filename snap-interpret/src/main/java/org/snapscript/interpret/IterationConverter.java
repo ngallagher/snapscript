@@ -1,11 +1,14 @@
 package org.snapscript.interpret;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ProxyIterable;
 
 public class IterationConverter {
 
@@ -47,7 +50,12 @@ public class IterationConverter {
       }
       
       public Iterable getIterable(Scope scope) throws Exception {
-         return converter.convert(value);
+         List list = converter.convert(value);
+         
+         if(!list.isEmpty()) {
+            return new ProxyIterable(list);
+         }
+         return list;
       }
    }
    
@@ -68,7 +76,12 @@ public class IterationConverter {
       @Override
       public Iterable getIterable(Scope scope) throws Exception {
          Map map = (Map)value;
-         return map.entrySet();
+         Set set = map.entrySet();
+         
+         if(!set.isEmpty()) {
+            return new ProxyIterable(set);
+         }
+         return set;
       }
    }
    
@@ -86,7 +99,8 @@ public class IterationConverter {
       }
       
       public Iterable getIterable(Scope scope) throws Exception {
-         return (Iterable)value;
+         Iterable iterable = (Iterable)value;
+         return new ProxyIterable(iterable);
       }
    }
 }
