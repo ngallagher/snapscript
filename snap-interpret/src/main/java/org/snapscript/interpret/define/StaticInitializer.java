@@ -8,7 +8,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.Evaluation;
 
-public class StaticInitializer implements Initializer {
+public class StaticInitializer extends Initializer {
    
    private final Evaluation evaluation;
    private final AtomicBoolean done;
@@ -21,7 +21,7 @@ public class StaticInitializer implements Initializer {
    }
 
    @Override
-   public Result initialize(Scope instance, Type type) throws Exception {
+   public Result execute(Scope instance, Type type) throws Exception {
       if(done.compareAndSet(false, true)) {
          evaluation.evaluate(scope, null);
       }

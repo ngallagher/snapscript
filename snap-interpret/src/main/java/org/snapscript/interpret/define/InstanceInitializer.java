@@ -6,7 +6,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.Evaluation;
 
-public class InstanceInitializer implements Initializer {
+public class InstanceInitializer extends Initializer {
    
    private final Evaluation evaluation;
    private final Type type;
@@ -17,7 +17,7 @@ public class InstanceInitializer implements Initializer {
    }
 
    @Override
-   public Result initialize(Scope instance, Type type) throws Exception {
+   public Result execute(Scope instance, Type type) throws Exception {
       Type current = instance.getType();
       
       // This check is probably rubbish!!!

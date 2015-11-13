@@ -3,7 +3,6 @@ package org.snapscript.core.convert;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
-
 public class EnumConverter extends TypeConverter {
    
    private final TypeExtractor extractor;

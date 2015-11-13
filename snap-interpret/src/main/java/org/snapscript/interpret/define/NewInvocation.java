@@ -58,7 +58,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
          inner.addVariable(name, reference);
       }
       // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
-      Result result = factory.initialize(inner, real);
+      Result result = factory.execute(inner, real);
       Scope instance = result.getValue();
       
       if(instance == null) {
@@ -82,7 +82,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
       if(body != null) {
-         body.initialize(wrapper, real);
+         body.execute(wrapper, real);
       }
       constructor.invoke(wrapper, wrapper, list);
       

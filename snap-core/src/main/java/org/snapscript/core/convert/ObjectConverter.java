@@ -2,7 +2,6 @@ package org.snapscript.core.convert;
 
 import java.util.List;
 
-import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
@@ -41,11 +40,7 @@ public class ObjectConverter extends TypeConverter {
       Class require = type.getType();
       
       if(require != null) {
-         Class actual = object.getClass();
-      
-         if(Scope.class.isAssignableFrom(actual)) {
-            return builder.create((Scope)object, require);
-         }
+         return builder.create(object, require);
       }
       return object;
    }

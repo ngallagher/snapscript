@@ -7,7 +7,7 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-public class CompoundInitializer implements Initializer {
+public class CompoundInitializer extends Initializer {
    
    private final Initializer[] initializers;
    
@@ -16,12 +16,12 @@ public class CompoundInitializer implements Initializer {
    }
 
    @Override
-   public Result initialize(Scope scope, Type type) throws Exception {
+   public Result execute(Scope scope, Type type) throws Exception {
       Scope compound = new CompoundScope(scope);
       Result last = new Result();
       
       for(Initializer initializer : initializers) {
-         Result result = initializer.initialize(compound, type);
+         Result result = initializer.execute(compound, type);
          ResultFlow flow = result.getFlow();
          
          if(flow != ResultFlow.NORMAL){

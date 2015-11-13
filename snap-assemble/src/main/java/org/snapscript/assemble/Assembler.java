@@ -96,6 +96,9 @@ public class Assembler {
          parameters[i] = t;
       }
       Callable<Result> callable = binder.bind(null, type, "new", arguments);
+      if(callable == null) {
+         throw new IllegalStateException("No constructor for " + type);
+      }
       Result result = callable.call();
       return result.getValue();
    }

@@ -9,7 +9,7 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-public class InitializerCollector implements Initializer {
+public class InitializerCollector extends Initializer {
    
    private final List<Initializer> list;
    
@@ -22,13 +22,29 @@ public class InitializerCollector implements Initializer {
          list.add(initializer);
       }
    }
-
+   
    @Override
-   public Result initialize(Scope scope, Type type) throws Exception {
+   public Result compile(Scope scope, Type type) throws Exception {
       Result last = new Result();
 
       for(Initializer initializer : list) {
-         Result result = initializer.initialize(scope, type);
+         Result result = initializer.compile(scope, type);
+         ResultFlow flow = result.getFlow();
+         
+         if(flow != ResultFlow.NORMAL){
+            return result;
+         }
+         last = result;
+      }
+      return last;
+   } 
+
+   @Override
+   public Result execute(Scope scope, Type type) throws Exception {
+      Result last = new Result();
+
+      for(Initializer initializer : list) {
+         Result result = initializer.execute(scope, type);
          ResultFlow flow = result.getFlow();
          
          if(flow != ResultFlow.NORMAL){

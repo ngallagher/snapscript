@@ -7,7 +7,7 @@ import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.CompoundStatement;
 
-public class StatementInitializer implements Initializer {
+public class StatementInitializer extends Initializer {
 
    private final Statement statement;
    
@@ -16,7 +16,7 @@ public class StatementInitializer implements Initializer {
    }
    
    @Override
-   public Result initialize(Scope scope, Type type) throws Exception {
+   public Result execute(Scope scope, Type type) throws Exception {
       return statement.execute(scope);
    }
 

@@ -1,7 +1,5 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.Scope;
-
 public class AnyConverter extends TypeConverter {
    
    private final ProxyBuilder builder;
@@ -16,11 +14,6 @@ public class AnyConverter extends TypeConverter {
    }
    
    public Object convert(Object object) {
-      Class actual = object.getClass();
-   
-      if(Scope.class.isAssignableFrom(actual)) {
-         return builder.create((Scope)object);
-      }
-      return object;
+      return builder.create(object);
    }
 }

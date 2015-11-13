@@ -50,8 +50,10 @@ public class SearchPathFinder {
       }
    }
    
-   // we need to check if its a class or a trait here!!!
    private void collectClasses(Type type, List<Type> done) {
+      if(type==null){
+         System.err.println();
+      }
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       

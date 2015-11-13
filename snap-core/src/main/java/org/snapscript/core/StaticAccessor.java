@@ -21,7 +21,7 @@ public class StaticAccessor implements Accessor {
       try {
          Value v=scope.getValue(name);
          if(v==null) {
-            initializer.initialize(scope, type);           
+            initializer.execute(scope, type);           
          }
       }catch(Exception e){
          throw new IllegalStateException(e);
@@ -35,7 +35,7 @@ public class StaticAccessor implements Accessor {
       try {
          Value v=scope.getValue(name);
          if(v==null) {
-            initializer.initialize(scope, type);           
+            initializer.execute(scope, type);           
          }     
       }catch(Exception e){
          throw new IllegalStateException(e);

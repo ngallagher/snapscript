@@ -42,7 +42,7 @@ public class SuperConstructor implements TypePart {
       }
       
    }
-   public final class SuperStatement implements Initializer {
+   public final class SuperStatement extends Initializer {
       
       private final Evaluation expression;
       private final Type type;
@@ -53,7 +53,7 @@ public class SuperConstructor implements TypePart {
       }
 
       @Override
-      public Result initialize(Scope scope, Type real) throws Exception {
+      public Result execute(Scope scope, Type real) throws Exception {
          Value reference = expression.evaluate(scope, real);
          Scope value = reference.getValue();
          

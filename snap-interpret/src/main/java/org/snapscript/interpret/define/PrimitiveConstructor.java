@@ -7,10 +7,10 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-public class PrimitiveConstructor implements Initializer {
+public class PrimitiveConstructor extends Initializer {
 
    @Override
-   public Result initialize(Scope scope, Type type) throws Exception {
+   public Result execute(Scope scope, Type type) throws Exception {
       CompoundScope instance= new CompoundScope(scope);      
       return new Result(ResultFlow.NORMAL,instance);
    }

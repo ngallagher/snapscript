@@ -47,6 +47,6 @@ public class CharacterConverter extends TypeConverter {
          Character number = (Character)value;
          return number.charValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to byte is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to character is not possible");
    }
 }

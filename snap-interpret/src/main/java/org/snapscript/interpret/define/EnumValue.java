@@ -62,7 +62,7 @@ public class EnumValue {
       }
       
    }
-   public class FieldDefinition implements Initializer {
+   public class FieldDefinition extends Initializer {
       private final Evaluation ev;
       private final String name;
       private final String title;
@@ -78,7 +78,7 @@ public class EnumValue {
       
 
       @Override
-      public Result initialize(Scope scope, Type type) throws Exception {
+      public Result execute(Scope scope, Type type) throws Exception {
          InstanceScope s = new InstanceScope(scope, tp);
          Constant cst=new Constant(tp);
          s.addConstant("class", cst);

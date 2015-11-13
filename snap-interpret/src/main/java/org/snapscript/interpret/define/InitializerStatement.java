@@ -18,6 +18,6 @@ public class InitializerStatement extends Statement {
 
    @Override
    public Result execute(Scope scope) throws Exception {
-      return initializer.initialize(scope, type);
+      return initializer.execute(scope, type);
    }
 }
