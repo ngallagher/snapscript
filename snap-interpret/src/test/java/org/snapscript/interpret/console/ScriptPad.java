@@ -150,7 +150,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       JPanel codePanel = new JPanel();
       JPanel consolePanel = new JPanel();
       JPanel outputPanel = new JPanel();
-      ScriptFileFilter filter = new ScriptFileFilter(".*(\\.js|\\.snap)");
+      ScriptFileFilter filter = new ScriptFileFilter(".*.snap");
       codePanel.setLayout(new BorderLayout());
       consolePanel.setLayout(new BorderLayout());
       outputPanel.setLayout(new BorderLayout());
