@@ -1,0 +1,14 @@
+try {
+   throw "this is some text 1 - catch String";
+}catch(e: String){
+   System.out.println(e);
+}
+try {
+   try {
+      throw "this is some text 2 - catch Integer";
+   }catch(e: Integer){
+      System.out.println("problem!!!! "+e);
+   }
+}catch(e){
+   System.out.println("caught in last block "+e);
+}
