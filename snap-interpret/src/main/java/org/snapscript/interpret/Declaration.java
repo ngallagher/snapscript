@@ -51,7 +51,7 @@ public class Declaration extends Statement {
             String alias = qualifier.getString();
             Class type = value.getClass(); 
             Type actual = module.getType(type);
-            Type require = module.getType(alias);
+            Type require = module.getType(alias); 
             
             if(actual != require) {
                List<Type> compatible = actual.getTypes();

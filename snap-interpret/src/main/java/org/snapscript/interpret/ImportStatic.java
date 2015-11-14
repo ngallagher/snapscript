@@ -24,7 +24,7 @@ public class ImportStatic extends Statement {
    @Override
    public Result compile(Scope scope) throws Exception {
       Module module = scope.getModule();
-      Type type = module.getType(location);
+      Type type = module.addType(location);
       List<Function> methods = type.getFunctions();
       List<Function> funs = module.getFunctions();
       

@@ -46,7 +46,7 @@ public class ParameterList {
             
             if(constraint != null) {
                Module module = scope.getModule();
-               Type type = module.getType(constraint);
+               Type type = module.addType(constraint); // add type if not declared yet
                
                constraints.add(type);
             } else {

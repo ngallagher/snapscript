@@ -11,14 +11,9 @@ public class ModelScope implements Scope {
    }
    
    @Override
-   public Type getType() {
-      return null;
-   }
-   
-   @Override
    public Scope getScope() {
       return new CompoundScope(this);
-   }   
+   } 
 
    @Override
    public Module getModule() {
@@ -29,6 +24,11 @@ public class ModelScope implements Scope {
    public Context getContext() {
       return scope.getContext();
    } 
+   
+   @Override
+   public Type getType() {
+      return null;
+   }  
    
    @Override
    public State getState() {

@@ -17,7 +17,7 @@ public class TypeLoader {
    }
    
    public Type resolveType(String name, String module) throws Exception {
-      return indexer.load(name, module);
+      return indexer.load(name, module, false);
    }
    
    public Type defineType(String name, String module) throws Exception {

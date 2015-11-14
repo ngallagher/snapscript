@@ -51,7 +51,9 @@ public class ClassDefinitionTest extends TestCase {
       Type type = definer.compile(mod).getValue();
 
       assertEquals(type.getName(), "Test");
-      assertEquals(type.getProperties().size(), 3);//include 'this'            
+      assertEquals(type.getProperties().size(), 4);//include 'this' and 'class'  
+      
+      System.err.println(type.getProperties());
    }
 
    public void testInstantiateClass() throws Exception {
@@ -74,7 +76,7 @@ public class ClassDefinitionTest extends TestCase {
 
       Type type = definer.compile(mod).getValue(); 
       FunctionBinder binder = context.getBinder();
-      Callable<Result> call = binder.bind(scope, type, "new");
+      Callable<Result> call = binder.bind(scope, type, "new", type);
       Scope result = call.call().getValue();
             
       assertNotNull(result);

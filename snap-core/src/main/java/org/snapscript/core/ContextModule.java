@@ -46,7 +46,7 @@ public class ContextModule implements Module {
    }
 
    @Override
-   public Type getType(String name) {
+   public Type getType(String name) { // this needs to define the type also......
       try {
          TypeLoader loader = context.getLoader();
          return loader.resolveType(name, this.name);
