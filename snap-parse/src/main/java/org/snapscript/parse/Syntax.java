@@ -108,7 +108,7 @@ public enum Syntax {
    MEMBER_FIELD("member-field", "<modifier-list><assignment-variable>?(':'<type-constraint>)?('='<assignment-expression>)';'"),
    MEMBER_FUNCTION("member-function", "<modifier-list><function>'('<parameter-list>')'<group-statement>"),   
    MEMBER_CONSTRUCTOR("member-constructor", "<modifier-list>'new('<parameter-list>')'?(':super('<argument-list>')')<group-statement>"),
-   CLASS_HIERARCHY("class-hierarchy", "{' ''extends'' '<type-name>|' ''with'' '<trait-name>}*(' ''with'' '<trait-name>)}"),
+   CLASS_HIERARCHY("class-hierarchy", "?{' ''extends'' '<type-name>|' ''with'' '<trait-name>}*(' ''with'' '<trait-name>)"),
    CLASS_DEFINITION("class-definition", "'class'' '<type-name>?<class-hierarchy>{'{}'|'{'*(<member-field>|<member-constructor>|<member-function>)'}'}"),
    TRAIT_HIERARCHY("trait-hierarchy", "*(' ''extends'' '<trait-name>)"),
    TRAIT_FUNCTION("trait-function", "?<modifier-list><function>'('<parameter-list>')'{';'|<group-statement>}"),

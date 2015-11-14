@@ -18,7 +18,11 @@ public class EnumList implements TypePart {
       int index = 0;
       
       for(EnumValue value : values) {
-         value.define(scope, type, index++);
+         Initializer initializer = value.define(scope, type, index++);
+         
+         if(initializer != null) {
+            collector.update(initializer);
+         }
       }
       return collector;
    }   

@@ -40,7 +40,8 @@ public class ClassDefinitionTest extends TestCase {
             new MemberField(new ModifierList(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
             new MemberField(new ModifierList(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
       };
-      ClassDefinition definer = new ClassDefinition(name, parts);
+      TypeHierarchy hierarchy = new TypeHierarchy();
+      ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
       Context context =new ScriptContext(set);
@@ -61,7 +62,8 @@ public class ClassDefinitionTest extends TestCase {
             new MemberField(new ModifierList(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
             new MemberField(new ModifierList(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
       };
-      ClassDefinition definer = new ClassDefinition(name, parts);
+      TypeHierarchy hierarchy = new TypeHierarchy();
+      ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
       Context context =new ScriptContext(set);
