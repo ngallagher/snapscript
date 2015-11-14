@@ -23,7 +23,7 @@ public class FunctionBinder {
       FunctionPointer call = matcher.match(module, name, list);
       
       if(call != null) {
-         return new FunctionCall(call, scope, module, name);
+         return new FunctionCall(call, scope, module);
       }
       return null;
    }
@@ -32,7 +32,7 @@ public class FunctionBinder {
       FunctionPointer call = matcher.match(type, name, list);
       
       if(call != null) {
-         return new FunctionCall(call, scope, null, name);
+         return new FunctionCall(call, scope, null);
       }
       return null;
    }
@@ -42,7 +42,7 @@ public class FunctionBinder {
       FunctionPointer call = matcher.match(type, name, list);
       
       if(call != null) {
-         return new FunctionCall(call, scope, source, name);
+         return new FunctionCall(call, scope, source);
       }
       return null;
    }

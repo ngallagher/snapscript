@@ -10,13 +10,11 @@ public class FunctionCall implements Callable<Result> {
    private final FunctionPointer pointer;
    private final Object source;
    private final Scope scope;
-   private final String name;
    
-   public FunctionCall(FunctionPointer pointer, Scope scope, Object source, String name) {
+   public FunctionCall(FunctionPointer pointer, Scope scope, Object source) {
       this.pointer = pointer;
       this.source = source;
       this.scope = scope;
-      this.name = name;
    }
    
    @Override
