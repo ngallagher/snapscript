@@ -13,7 +13,7 @@ public class TypeVerifier {
    }
 
    public boolean same(Class require, Type type) throws Exception {
-      Type actual = loader.load(require);
+      Type actual = loader.loadType(require);
       
       if(actual == type) {
          return true;
@@ -22,7 +22,7 @@ public class TypeVerifier {
    }
    
    public boolean like(Class require, Type type) throws Exception {
-      Type actual = loader.load(require);
+      Type actual = loader.loadType(require);
       List<Type> types = actual.getTypes();
       
       if(actual != type) {

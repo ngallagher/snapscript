@@ -1,6 +1,10 @@
 package org.snapscript.interpret.console;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -10,16 +14,16 @@ import org.snapscript.assemble.ScriptLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
+import org.snapscript.core.ImportResolver;
 import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.ImportResolver;
 import org.snapscript.interpret.ExpressionEvaluator;
 import org.snapscript.interpret.InterpretationResolver;
 
 public class TypeTest extends TestCase {
-   private static final String[] TYPES = { "java.util.LinkedList", "java.util.HashMap", "java.util.LinkedHashMap", "java.lang.String", "java.util.Map"};
+   private static final Class[] TYPES = { LinkedList.class, HashMap.class, LinkedHashMap.class, String.class, Map.class};
 
    public void testTypes() throws Exception {
       InstructionResolver set = new InterpretationResolver();
@@ -30,10 +34,10 @@ public class TypeTest extends TestCase {
       ImportResolver resolver = new ImportResolver(store, linker);
       TypeLoader loader = new TypeLoader(store, resolver);
 
-      for (String name : TYPES) {
+      for (Class name : TYPES) {
          long start = System.currentTimeMillis();
          try {
-            Type type = loader.load(name,null);
+            Type type = loader.loadType(name);
             List<Function> functions = type.getFunctions();
 
             for (Function function : functions) {

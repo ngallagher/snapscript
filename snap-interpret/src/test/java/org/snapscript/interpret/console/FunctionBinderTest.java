@@ -1,5 +1,6 @@
 package org.snapscript.interpret.console;
 
+import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +14,13 @@ import org.snapscript.assemble.ScriptLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
+import org.snapscript.core.ImportResolver;
 import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.ImportResolver;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.interpret.ExpressionEvaluator;
 import org.snapscript.interpret.InterpretationResolver;
@@ -36,7 +37,7 @@ public class FunctionBinderTest extends TestCase {
       TypeLoader loader = new TypeLoader(store, resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       
-      Type type =loader.load("java.io.PrintStream",null);
+      Type type =loader.loadType(PrintStream.class);
       List<Function> functions = type.getFunctions();
 
       for (Function function : functions) {
@@ -57,7 +58,7 @@ public class FunctionBinderTest extends TestCase {
       TypeLoader loader = new TypeLoader(store, resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Map<String, Property>v=new LinkedHashMap<String,Property>();
-      Type type =loader.load("java.lang.String",null);
+      Type type =loader.loadType(String.class);
       List<Function> functions = type.getFunctions();
 
       for (Function function : functions) {

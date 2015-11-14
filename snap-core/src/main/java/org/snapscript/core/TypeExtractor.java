@@ -20,7 +20,7 @@ public class TypeExtractor {
             Scope scope = (Scope)value;
             return scope.getType();
          }
-         return loader.load(type);
+         return loader.loadType(type);
       }
       return null;
    }

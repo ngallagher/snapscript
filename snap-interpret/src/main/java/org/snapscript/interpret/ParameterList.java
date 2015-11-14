@@ -34,7 +34,7 @@ public class ParameterList {
             Module module = scope.getModule();
             Context context = module.getContext();
             TypeLoader loader = context.getLoader();
-            Type constraint = loader.load(Type.class);
+            Type constraint = loader.loadType(Type.class);
             
             names.add(prefix);
             constraints.add(constraint);

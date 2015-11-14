@@ -29,7 +29,7 @@ public class AnyDefinition extends Statement {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
-      Type type = loader.load("Any", null, true);
+      Type type = loader.defineType("Any", null);
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {

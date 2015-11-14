@@ -20,7 +20,7 @@ public class ScriptLibrary implements Library {
          script.compile(scope);
          script.execute(scope);
       } catch(Exception e) {
-         throw new IllegalStateException("Error occured in '" + name + "'");
+         throw new IllegalStateException("Error occured in '" + name + "'", e);
       }
    }
 

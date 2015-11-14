@@ -46,7 +46,7 @@ public class FunctionMatcherTest extends TestCase {
       ImportResolver resolver = new ImportResolver(store, linker);
       TypeLoader loader = new TypeLoader(store, resolver);
       FunctionMatcher matcher = new FunctionMatcher(loader);
-      Type type = loader.load(ExampleObject.class);
+      Type type = loader.loadType(ExampleObject.class);
       
       assertNotNull(type);
       

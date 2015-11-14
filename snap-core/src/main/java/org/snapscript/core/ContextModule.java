@@ -39,7 +39,7 @@ public class ContextModule implements Module {
    public Type addType(String name) {
       try {
          TypeLoader loader = context.getLoader();
-         return loader.load(name, this.name,true);
+         return loader.defineType(name, this.name);
       } catch(Exception e){
          throw new IllegalStateException(e);
       }
@@ -49,7 +49,7 @@ public class ContextModule implements Module {
    public Type getType(String name) {
       try {
          TypeLoader loader = context.getLoader();
-         return loader.load(name, this.name,false);
+         return loader.resolveType(name, this.name);
       } catch(Exception e){
          throw new IllegalStateException(e);
       }
@@ -59,7 +59,7 @@ public class ContextModule implements Module {
    public Type getType(Class type) {
       try {
          TypeLoader loader = context.getLoader();
-         return loader.load(type);
+         return loader.loadType(type);
       } catch(Exception e){
          throw new IllegalStateException(e);
       }

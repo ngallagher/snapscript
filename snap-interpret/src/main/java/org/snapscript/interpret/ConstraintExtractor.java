@@ -24,7 +24,7 @@ public class ConstraintExtractor {
             Scope definition = (Scope)value;
             return definition.getType();
          }
-         return loader.load(type);
+         return loader.loadType(type);
       }
       return null;
    }

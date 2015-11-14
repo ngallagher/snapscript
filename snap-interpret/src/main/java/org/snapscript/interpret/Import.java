@@ -27,13 +27,13 @@ public class Import extends Statement {
       TypeLoader loader = context.getLoader();
       
       if(target == null) {
-         Library library = loader.addImport(location);
+         Library library = loader.importPackage(location);
          
          if(library != null) {
             library.include(scope);
          }
       } else {
-         Library library = loader.addType(location, target);
+         Library library = loader.importType(location, target);
          
          if(library != null) {
             library.include(scope);

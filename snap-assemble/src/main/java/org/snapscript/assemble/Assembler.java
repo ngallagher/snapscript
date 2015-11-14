@@ -36,7 +36,7 @@ public class Assembler {
             TypeLoader loader = context.getLoader();
             Class value = instruction.getType();
             String id = instruction.getName();
-            Type type = loader.load(value);
+            Type type = loader.loadType(value);
             
             codes.put(id, instruction);
             types.put(id, type);
@@ -90,7 +90,7 @@ public class Assembler {
          SyntaxNode child = children.get(i);
          Object argument = create(child, name, depth+1);
          Class parameter = argument.getClass();
-         Type t = loader.load(parameter);
+         Type t = loader.loadType(parameter);
          
          arguments[i] = argument;
          parameters[i] = t;
