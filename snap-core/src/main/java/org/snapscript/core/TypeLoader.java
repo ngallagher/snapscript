@@ -94,7 +94,6 @@ public class TypeLoader {
          String name = type.getName();
          Class base = type.getSuperclass();
          Class[] interfaces = type.getInterfaces();
-         StringBuilder builder=new StringBuilder();
          Map<String,Type> hier = new LinkedHashMap<String,Type>();
          List<Function> mapL = new ArrayList<Function>();
          List<Property> varsL = new ArrayList<Property>();
@@ -117,8 +116,8 @@ public class TypeLoader {
          registerType(cls,done);
          if(!cls.isPrimitive()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
             registerType(name,done);
-            indexMethods(type, builder, mapL, varsL);
-            indexConstructors(type, builder, mapL);
+            indexMethods(type, mapL, varsL);
+            indexConstructors(type, mapL);
             indexFields(type, base, interfaces, hier, varsL, hierL);
          }
          hierL.addAll(hier.values());
@@ -126,7 +125,7 @@ public class TypeLoader {
       }
       return t;
    }
-   private void indexMethods(Class type, StringBuilder builder, List<Function> mapL, List<Property> varsL) throws Exception {
+   private void indexMethods(Class type, List<Function> mapL, List<Property> varsL) throws Exception {
       Method[] methods = type.getDeclaredMethods();
       for(Method m:methods){
          int mod=m.getModifiers();
@@ -134,26 +133,19 @@ public class TypeLoader {
             Class[] c=m.getParameterTypes();
             List<Type> tt=new ArrayList<Type>();
             List<String>nns=new ArrayList<String>();
-            builder.setLength(0);
-            builder.append(m.getName());
-            builder.append("(");
+
             for(int i=0;i<c.length;i++){
-               if(i>0){
-                  builder.append(", ");
-               }
                Type tp =load(c[i]);//c[i]=converter.convert(c[i]);// promote primitives
-               builder.append(tp.getName());
+
                tt.add(tp);
                nns.add("a"+i);
             }
-            builder.append(")");
             m.setAccessible(true);
             //SignatureKey k=new SignatureKey(nb,tt);
-            String k=builder.toString();
             int modifiers=m.getModifiers();
             Signature sig=new Signature(nns, tt,modifiers);
             Invocation ex=new MethodInvocation(m);
-            Function gg=new Function(sig, ex, k, m.getName());
+            Function gg=new Function(sig, ex, m.getName());
 
             if(!Modifier.isStatic(mod)) {
                String prop=getProperty(m);
@@ -172,7 +164,7 @@ public class TypeLoader {
          }
       }
    }
-   private void indexConstructors(Class type, StringBuilder builder, List<Function> mapL) throws Exception {
+   private void indexConstructors(Class type, List<Function> mapL) throws Exception {
       Constructor[] cons = type.getDeclaredConstructors();
       for(Constructor c:cons){
          int mod=c.getModifiers();
@@ -180,25 +172,16 @@ public class TypeLoader {
             Class[] cl=c.getParameterTypes();
             List<Type> tt=new ArrayList<Type>();
             List<String>nns=new ArrayList<String>();
-            builder.setLength(0);
-            builder.append("new(");
             for(int i=0;i<cl.length;i++){
-               if(i>0){
-                  builder.append(", ");
-               }
                Type tp =load(cl[i]);//c[i]=converter.convert(c[i]);// promote primitives
-               builder.append(tp.getName());
                tt.add(tp);
                nns.add("a"+i);
             }
-            builder.append(")");
             c.setAccessible(true);
-            //SignatureKey k=new SignatureKey("new",tt);
-            String k=builder.toString();
             int modifiers=c.getModifiers();
             Signature sig=new Signature(nns, tt,modifiers);
             Invocation ex=new ConstructorInvocation(c);
-            Function gg=new Function(sig, ex, k, "new");
+            Function gg=new Function(sig, ex, "new");
             mapL.add(gg);
          }
       }

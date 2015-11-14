@@ -44,7 +44,7 @@ public class TraitFunction implements TypePart {
          invocation = new InvalidInvocation(statement, signature);
       }
       Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
-      Function function = new Function(signature, scopeCall, name, name);// description is wrong here.....
+      Function function = new Function(signature, scopeCall, name);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

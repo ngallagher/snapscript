@@ -44,8 +44,8 @@ public class MemberFunction implements TypePart {
          Statement init = new InitializerStatement(statements, type); // initialize static scope first
          Statement compound = new CompoundStatement(init, statement);
          Invocation invocation = new StaticInvocation(compound, signature, scope, name);
-         Function functionStatic = new Function(signature, invocation, qualifier+"."+name, name);// description is wrong here.....      
-         Function function = new Function(signature, invocation, name, name);// description is wrong here.....
+         Function functionStatic = new Function(signature, invocation, name);// description is wrong here.....      
+         Function function = new Function(signature, invocation, name);// description is wrong here.....
          
          // add functions !!!!!!!!
          type.getFunctions().add(function);
@@ -57,7 +57,7 @@ public class MemberFunction implements TypePart {
       //XXX invocation
       Invocation invocation = new InstanceInvocation(statement, signature,name);
       //Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
-      Function function = new Function(signature, invocation, name, name);// description is wrong here.....
+      Function function = new Function(signature, invocation, name);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

@@ -51,7 +51,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types, 1);
       Invocation<Object> invocation = new HashCodeInvocation();
       
-      return new Function<Object>(signature, invocation, "hashCode()", "hashCode");
+      return new Function<Object>(signature, invocation, "hashCode");
    }
    
    private Function createEquals() {
@@ -63,7 +63,7 @@ public class AnyDefinition extends Statement {
       types.add(null);
       names.add("object");
       
-      return new Function<Object>(signature, invocation, "equals(a)", "equals");
+      return new Function<Object>(signature, invocation, "equals");
    }
    
    private Function createToString() {
@@ -72,7 +72,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types, 1);
       Invocation<Object> invocation = new ToStringInvocation();
       
-      return new Function<Object>(signature, invocation, "toString()", "toString");
+      return new Function<Object>(signature, invocation, "toString");
    }
    
    private static class HashCodeInvocation implements Invocation<Object> {

@@ -32,7 +32,7 @@ public class FunctionDeclaration extends Statement {
       Value value = identifier.evaluate(scope, null);      
       String name = value.getString();
       Invocation invocation = new StatementInvocation(statement, signature);
-      Function function = new Function(signature, invocation, name, name);// description is wrong here.....
+      Function function = new Function(signature, invocation, name);// description is wrong here.....
       
       functions.add(function);
       return new Result(ResultFlow.NORMAL, function);

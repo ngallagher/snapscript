@@ -69,7 +69,7 @@ public class MemberConstructor implements TypePart {
       // 3) if no super type is defined via "extends" it creates a default constructor
       // 4) After invoking the super constructor the result will be a scope object
       //
-      Function function = new Function(signature, scopeCall, "new", "new");// description is wrong here.....
+      Function function = new Function(signature, scopeCall, "new", 1);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);
