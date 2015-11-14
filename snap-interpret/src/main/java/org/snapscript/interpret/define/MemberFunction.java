@@ -43,7 +43,7 @@ public class MemberFunction implements TypePart {
          //XXX invocation
          Statement init = new InitializerStatement(statements, type); // initialize static scope first
          Statement compound = new CompoundStatement(init, statement);
-         Invocation invocation = new StaticInvocation(compound, signature, scope);
+         Invocation invocation = new StaticInvocation(compound, signature, scope, name);
          Function functionStatic = new Function(signature, invocation, qualifier+"."+name, name);// description is wrong here.....      
          Function function = new Function(signature, invocation, name, name);// description is wrong here.....
          
