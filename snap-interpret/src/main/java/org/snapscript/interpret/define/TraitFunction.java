@@ -39,7 +39,7 @@ public class TraitFunction implements TypePart {
       //XXX invocation
       Invocation invocation = null;
       if(statement != null){
-         invocation = new InstanceInvocation(statement, signature,name);
+         invocation = new InstanceInvocation(statement, signature);
       }else {
          invocation = new InvalidInvocation(statement, signature);
       }

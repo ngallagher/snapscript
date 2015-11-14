@@ -18,14 +18,12 @@ public class InstanceInvocation implements Invocation<Scope> {
    private final SignatureAligner aligner;
    private final Signature signature;
    private final Statement statement;
-   private final String function;
    
-   public InstanceInvocation(Statement statement, Signature signature, String function) {
+   public InstanceInvocation(Statement statement, Signature signature) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
       this.statement = statement;
       this.signature = signature;
-      this.function = function;
    }
    
    @Override
@@ -46,7 +44,7 @@ public class InstanceInvocation implements Invocation<Scope> {
          Object argument = arguments[i];
          
          if(!checker.compatible(scope, argument, require)) {
-            throw new IllegalStateException("Parameter '" + name + "' does not match '" + require + "' for '" + function + "'");
+            throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Reference reference = new Reference(argument);         
          inner.addVariable(name, reference);

@@ -18,9 +18,13 @@ public class FunctionPointer {
    }
    
    public Result call(Scope scope, Object object) throws Exception{
-      Object[] list = converter.convert(arguments);
-      Invocation invocation = function.getInvocation();
-
-      return invocation.invoke(scope, object, list);
+      try {
+         Object[] list = converter.convert(arguments);
+         Invocation invocation = function.getInvocation();
+         
+         return invocation.invoke(scope, object, list); 
+      } catch(Exception e) {
+         throw new IllegalStateException("Invocation error for function " + function, e);
+      }
    }
 }

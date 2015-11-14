@@ -21,10 +21,6 @@ public class FunctionCall implements Callable<Result> {
    
    @Override
    public Result call() throws Exception {
-      try {
-         return pointer.call(scope, source);
-      } catch(Exception e) {
-         throw new IllegalStateException("Invocation error for function " + name, e);
-      }
+      return pointer.call(scope, source);
    }
 }

@@ -43,7 +43,7 @@ public class MemberFunction implements TypePart {
          //XXX invocation
          Statement init = new InitializerStatement(statements, type); // initialize static scope first
          Statement compound = new CompoundStatement(init, statement);
-         Invocation invocation = new StaticInvocation(compound, signature, scope, name);
+         Invocation invocation = new StaticInvocation(compound, signature, scope);
          Function functionStatic = new Function(signature, invocation, name);// description is wrong here.....      
          Function function = new Function(signature, invocation, name);// description is wrong here.....
          
@@ -55,7 +55,7 @@ public class MemberFunction implements TypePart {
          return null;//new FunctionDefinition(function,name); // we cannot invoke with scope registry
       }
       //XXX invocation
-      Invocation invocation = new InstanceInvocation(statement, signature,name);
+      Invocation invocation = new InstanceInvocation(statement, signature);
       //Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
       Function function = new Function(signature, invocation, name);// description is wrong here.....
       
