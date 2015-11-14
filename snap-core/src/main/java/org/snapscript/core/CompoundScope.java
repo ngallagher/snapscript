@@ -1,86 +1,75 @@
 package org.snapscript.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.snapscript.core.Context;
-import org.snapscript.core.Module;
-import org.snapscript.core.Scope;
-
 public class CompoundScope implements Scope {
    
-   private final Map<String, Value> values;
-   private final Context context;
-   private final Module module;
+   private final State state;
    private final Scope scope;
-   private final Type type;
    
    public CompoundScope(Scope scope) {
-      this.values = new HashMap<String, Value>();    
-      this.context = scope.getContext();
-      this.module = scope.getModule();
-      this.type = scope.getType();
+      this.state = new MapState(scope);    
       this.scope = scope;
    } 
+  
+   @Override
+   public Scope getScope() {
+      return new StateScope(scope, this);
+   }  
    
    @Override
    public Type getType() {
-      return type;
+      return scope.getType();
    }
-   
-   @Override
-   public Scope getScope() {
-      return new CompoundScope(this); // this goes too deep!!
-   }   
-
+  
    @Override
    public Module getModule() {
-      return module;
+      return scope.getModule();
    }
    
    @Override
    public Context getContext() {
-      return context;
+      return scope.getContext();
    }   
 
    @Override
-   public Value getValue(String name) {
-      Value value = values.get(name);
+   public State getState() {
+      return state;
+   }
+   
+   private static class StateScope implements Scope {
       
-      if(value == null) {
-         return scope.getValue(name);
+      private final State state;
+      private final Scope outer;
+      private final Scope inner;
+      
+      public StateScope(Scope outer, Scope inner) {
+         this.state = new MapState(outer);
+         this.inner = inner;
+         this.outer = outer;
       }
-      return value;
+
+      @Override
+      public Scope getScope() {
+         return new StateScope(inner, this); // check state before deciding "outer" = quick, "inner" = slow
+      }
+
+      @Override
+      public Type getType() {
+         return outer.getType();
+      }
+
+      @Override
+      public Module getModule() {
+         return outer.getModule();
+      }
+
+      @Override
+      public Context getContext() {
+         return outer.getContext();
+      }
+
+      @Override
+      public State getState() {
+         return state;
+      }
    }
-
-   @Override
-   public void setValue(String name, Value value) {
-      Value variable = values.get(name);
-      Object data = value.getValue();
-
-      if(variable == null) {
-         throw new IllegalStateException("Variable '" + name + "' does not exist");
-      }
-      variable.setValue(data);      
-   }
-   
-   @Override
-   public void addVariable(String name, Value value) {
-      Value variable = values.get(name);
-
-      if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
-      }
-      values.put(name, value);      
-   }
-   
-   @Override
-   public void addConstant(String name, Value value) {
-      Value variable = values.get(name);
-
-      if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
-      }
-      values.put(name, value);     
-   }   
 }

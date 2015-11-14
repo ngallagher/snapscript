@@ -1,4 +1,5 @@
 package org.snapscript.core;
+
 import java.util.List;
 
 public class FunctionDescription {
@@ -28,7 +29,7 @@ public class FunctionDescription {
          Type type = types.get(i);
          String name = names.get(i);
          
-         if(i > 0) {
+         if(i > start) {
             builder.append(", ");
          }
          builder.append(name);

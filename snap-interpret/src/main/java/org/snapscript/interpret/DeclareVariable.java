@@ -2,6 +2,7 @@ package org.snapscript.interpret;
 
 import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Value;
 
 public class DeclareVariable implements Evaluation {
@@ -34,6 +35,7 @@ public class DeclareVariable implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       Value variable = identifier.evaluate(scope, null);
       String name = variable.getString();
+      State state = scope.getState();
       
       if(value != null) {         
          Value result = value.evaluate(scope, null);         
@@ -47,14 +49,19 @@ public class DeclareVariable implements Evaluation {
                throw new IllegalStateException("Variable '" + name + "' does not match constraint '" + alias + "'");
             }
          }
-         return declare(scope, name, value);
+         return declare(state, name, value);
       }
-      return declare(scope, name, null);
+      return declare(state, name, null);
    }
    
-   protected Value declare(Scope scope, String name, Object value) throws Exception {
+   protected Value declare(State state, String name, Object value) throws Exception {
       Reference reference = new Reference(value);         
-      scope.addVariable(name, reference);
+      
+      try {
+         state.addVariable(name, reference);
+      } catch(Exception e) {
+         throw new IllegalStateException("Declaration of variable '" + name + "' failed");
+      }
       return reference;      
    }
 }

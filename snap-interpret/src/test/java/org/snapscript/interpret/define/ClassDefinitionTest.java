@@ -78,9 +78,9 @@ public class ClassDefinitionTest extends TestCase {
       Scope result = call.call().getValue();
             
       assertNotNull(result);
-      assertNotNull(result.getValue("bool"));
-      assertNotNull(result.getValue("num"));
-      assertEquals(result.getValue("bool").getValue(),Boolean.TRUE);
-      assertEquals(result.getValue("num").getValue(),12.33d);
+      assertNotNull(result.getState().getValue("bool"));
+      assertNotNull(result.getState().getValue("num"));
+      assertEquals(result.getState().getValue("bool").getValue(),Boolean.TRUE);
+      assertEquals(result.getState().getValue("num").getValue(),12.33d);
    }
 }

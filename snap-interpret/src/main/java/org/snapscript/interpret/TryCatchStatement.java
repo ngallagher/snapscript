@@ -2,12 +2,12 @@ package org.snapscript.interpret;
 
 import java.util.List;
 
-import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -75,10 +75,11 @@ public class TryCatchStatement extends Statement {
                   }
                }
             }
-            Scope compound = new CompoundScope(scope);
+            Scope compound = scope.getScope();
+            State state = compound.getState();
             Constant constant = new Constant(value, name);
             
-            compound.addConstant(name, constant);
+            state.addConstant(name, constant);
                
             if(handle != null) {
                return handle.execute(compound);

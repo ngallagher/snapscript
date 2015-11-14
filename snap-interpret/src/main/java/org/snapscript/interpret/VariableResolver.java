@@ -9,6 +9,7 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.PropertyValue;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
@@ -59,7 +60,8 @@ public class VariableResolver {
       
       @Override
       public Value resolve(Scope scope, Scope left) {
-         return left.getValue(name);
+         State state = left.getState();
+         return state.getValue(name);
       }
    }
    
@@ -73,7 +75,8 @@ public class VariableResolver {
       
       @Override
       public Value resolve(Scope scope, Object left) {
-         Value variable = scope.getValue(name);
+         State state = scope.getState();
+         Value variable = state.getValue(name);
          
          if(variable == null) { 
             Context context = scope.getContext();

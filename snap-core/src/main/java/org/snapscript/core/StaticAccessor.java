@@ -19,12 +19,14 @@ public class StaticAccessor implements Accessor {
    @Override
    public Object getValue(Object source) {
       try {
-         Value v=scope.getValue(name);
-         if(v==null) {
+         State state = scope.getState();
+         Value field = state.getValue(name);
+         
+         if(field == null) {
             initializer.execute(scope, type);           
          }
       }catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
       }
 
       return accessor.getValue(scope);
@@ -33,12 +35,14 @@ public class StaticAccessor implements Accessor {
    @Override
    public void setValue(Object source, Object value) {
       try {
-         Value v=scope.getValue(name);
-         if(v==null) {
+         State state = scope.getState();
+         Value field = state.getValue(name);
+         
+         if(field == null) {
             initializer.execute(scope, type);           
-         }     
+         }    
       }catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
       }   
       accessor.setValue(scope,value);
    }

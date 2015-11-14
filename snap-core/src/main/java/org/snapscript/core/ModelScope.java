@@ -1,17 +1,12 @@
 package org.snapscript.core;
 
-import org.snapscript.core.Context;
-import org.snapscript.core.Model;
-import org.snapscript.core.Module;
-import org.snapscript.core.Scope;
-
 public class ModelScope implements Scope {
    
-   private final Model model;
+   private final State state;
    private final Scope scope;
    
    public ModelScope(Scope scope, Model model) {
-      this.model = model;
+      this.state = new ModelState(scope, model);
       this.scope = scope;
    }
    
@@ -33,34 +28,50 @@ public class ModelScope implements Scope {
    @Override
    public Context getContext() {
       return scope.getContext();
-   }   
-
+   } 
+   
    @Override
-   public Value getValue(String name) {
-      Value variable = scope.getValue(name);
+   public State getState() {
+      return state;
+   }
+
+   private static class ModelState implements State {
       
-      if(variable == null) {
-         Object object = model.getAttribute(name);
-         
-         if(object != null) {
-            return new Constant(object, name);
-         }
+      private final Model model;
+      private final State state;
+      
+      public ModelState(Scope scope, Model model) {
+         this.state = scope.getState();
+         this.model = model;
       }
-      return variable;
-   }
-
-   @Override
-   public void setValue(String name, Value value) {
-      scope.setValue(name, value);
-   }
+      
+      @Override
+      public Value getValue(String name) {
+         Value variable = state.getValue(name);
+         
+         if(variable == null) {
+            Object object = model.getAttribute(name);
+            
+            if(object != null) {
+               return new Constant(object, name);
+            }
+         }
+         return variable;
+      }
    
-   @Override
-   public void addVariable(String name, Value value) {
-      scope.addVariable(name, value);
+      @Override
+      public void setValue(String name, Value value) {
+         state.setValue(name, value);
+      }
+      
+      @Override
+      public void addVariable(String name, Value value) {
+         state.addVariable(name, value);
+      }
+      
+      @Override
+      public void addConstant(String name, Value value) {
+         state.addConstant(name, value);
+      }    
    }
-   
-   @Override
-   public void addConstant(String name, Value value) {
-      scope.addConstant(name, value);
-   }    
 }

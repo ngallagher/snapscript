@@ -12,6 +12,7 @@ import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
+import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.ConstraintChecker;
 
@@ -45,6 +46,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
       Scope inner = scope.getScope();
+      State state = inner.getState();
       
       for(int i = 0; i < arguments.length; i++) {
          Type require = types.get(i);
@@ -55,7 +57,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Reference reference = new Reference(argument);         
-         inner.addVariable(name, reference);
+         state.addVariable(name, reference);
       }
       // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
       Result result = factory.execute(inner, real);
@@ -73,8 +75,8 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       Constant self = new Constant(wrapper, "this");
       Constant info = new Constant(real, "class"); // give it the REAL type
       
-      wrapper.addConstant("class", info);    
-      wrapper.addConstant("this", self);
+      wrapper.getState().addConstant("class", info);    
+      wrapper.getState().addConstant("this", self);
       //
       // functoin calls need to be handled better!!!
       // super is actually a very special value!!! its no good to just provide the base!!

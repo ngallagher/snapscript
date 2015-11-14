@@ -4,6 +4,7 @@ import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
 
@@ -29,13 +30,14 @@ public class ForInStatement extends Statement {
       Object value = list.getValue();
       Iteration iteration = converter.convert(value);
       Iterable iterable = iteration.getIterable(scope);
-
+      State state = scope.getState();
+      
       for (Object entry : iterable) {
-         Value variable = scope.getValue(name);
+         Value variable = state.getValue(name);
          
          if(variable == null) {
             Reference constant = new Reference(entry);
-            scope.addVariable(name, constant);
+            state.addVariable(name, constant);
          } else {
             variable.setValue(entry);
          }

@@ -6,6 +6,7 @@ import org.snapscript.core.Holder;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -38,6 +39,7 @@ public class Declaration extends Statement {
    public Result execute(Scope scope) throws Exception {
       Value variable = identifier.evaluate(scope, null);
       String name = variable.getString();
+      State state = scope.getState();
       
       if(value != null) {         
          Value result = value.evaluate(scope, null);         
@@ -59,10 +61,10 @@ public class Declaration extends Statement {
                }
             }
          }
-         scope.setValue(name, result);
+         state.setValue(name, result);
       } else {
-         Holder constant = new Holder(null); // bit rubbish!!
-         scope.setValue(name, constant);
+         Value constant = new Holder(null); // bit rubbish!!
+         state.setValue(name, constant);
       }
       return new Result();
    }

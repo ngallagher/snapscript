@@ -7,20 +7,20 @@ import org.snapscript.core.Statement;
 public class ScriptLibrary implements Library {
    
    private final Statement script;
-
-   public ScriptLibrary() {
-      this(null);
-   }
+   private final String name;
    
-   public ScriptLibrary(Statement script) {
+   public ScriptLibrary(Statement script, String name) {
       this.script = script;
+      this.name = name;
    }
 
    @Override
    public void include(Scope scope) throws Exception {
-      if(script != null) {
+      try {
          script.compile(scope);
          script.execute(scope);
+      } catch(Exception e) {
+         throw new IllegalStateException("Error occured in '" + name + "'");
       }
    }
 

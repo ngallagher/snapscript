@@ -34,11 +34,11 @@ public class FunctionMatcherTest extends TestCase {
       LibraryLinker linker = new LibraryLinker() {
          
          @Override
-         public Library link(String source) throws Exception {
+         public Library link(String name, String source) throws Exception {
             return null;
          }
          @Override
-         public Library link(String source, String grammar) throws Exception {
+         public Library link(String name, String source, String grammar) throws Exception {
             return null;
          }
       };

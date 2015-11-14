@@ -7,7 +7,7 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
-import org.snapscript.core.bind.SearchPathFinder;
+import org.snapscript.core.bind.TypePathBuilder;
 
 // we need to ALWAYS force EVERY class to extend something, it might just be the "Any" type
 /* 
@@ -24,7 +24,7 @@ import org.snapscript.core.bind.SearchPathFinder;
  * 
  */
 /**
- * @see SearchPathFinder
+ * @see TypePathBuilder
  */
 public class TypeHierarchy {
    

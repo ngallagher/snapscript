@@ -52,9 +52,9 @@ public class EnumInitializer extends Initializer {
       // Add a static accessor to the enum type
       type.getProperties().add(property);
       
-      instance.addConstant("name", new Constant(name, "name"));
-      instance.addConstant("ordinal", new Constant(index, "ordinal"));  
-      scope.addConstant(name, new Constant(instance, name));
+      instance.getState().addConstant("name", new Constant(name, "name"));
+      instance.getState().addConstant("ordinal", new Constant(index, "ordinal"));  
+      scope.getState().addConstant(name, new Constant(instance, name));
       
       return NORMAL.getResult(instance);
    }

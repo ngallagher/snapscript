@@ -8,6 +8,7 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.ConstraintChecker;
@@ -29,24 +30,25 @@ public class StaticInvocation implements Invocation<Object> {
    }
    
    @Override
-   public Result invoke(Scope scope, Object object, Object... list) throws Exception {
+   public Result invoke(Scope outer, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope blah = inner.getScope();
+      Scope scope = inner.getScope();
+      State state = scope.getState();
       
       for(int i = 0; i < arguments.length; i++) {
          Type require = types.get(i);
          String name = names.get(i);
          Object argument = arguments[i];
          
-         if(!checker.compatible(scope, argument, require)) {
+         if(!checker.compatible(outer, argument, require)) {
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Reference reference = new Reference(argument);         
-         blah.addVariable(name, reference);
+         state.addVariable(name, reference);
       }
-      return statement.execute(blah);
+      return statement.execute(scope);
    }
 }
 

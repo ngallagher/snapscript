@@ -24,7 +24,7 @@ public class FunctionPointer {
          
          return invocation.invoke(scope, object, list); 
       } catch(Exception e) {
-         throw new IllegalStateException("Invocation error for function " + function, e);
+         throw new IllegalStateException("Invocation error for function '" + function + "'", e);
       }
    }
 }

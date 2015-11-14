@@ -36,7 +36,7 @@ public class ClassPathLoader {
          String text = buffer.toString();
          
          try {
-            return linker.link(text);
+            return linker.link(qualifier, text);
          } catch(Exception e) {
             throw new IllegalStateException("Could not load library '" + path + suffix + "'", e);
          }

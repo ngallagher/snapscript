@@ -1,6 +1,8 @@
 package org.snapscript.core.bind;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,15 +10,18 @@ import java.util.Map;
 
 import org.snapscript.core.Type;
 
-public class SearchPathFinder {
+public class TypePathBuilder {
    
    private final Map<Type, List<Type>> paths;
    
-   public SearchPathFinder() {
+   public TypePathBuilder() {
       this.paths = new HashMap<Type, List<Type>>();
    }
 
-   public List<Type> createPath(Type type) {
+   public List<Type> createPath(Type type, String name) {
+      if(name.equals("new")) {
+         return Arrays.asList(type);
+      }
       List<Type> path = paths.get(type);
       Class real = type.getType();
       
@@ -51,9 +56,6 @@ public class SearchPathFinder {
    }
    
    private void collectClasses(Type type, List<Type> done) {
-      if(type==null){
-         System.err.println();
-      }
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       

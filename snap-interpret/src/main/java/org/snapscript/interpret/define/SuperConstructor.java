@@ -8,6 +8,7 @@ import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -64,7 +65,8 @@ public class SuperConstructor implements TypePart {
          
          Scope compound = new SuperScope(value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
          Constant constant = new Constant(compound, "super");
-         compound.addConstant("super", constant);
+         State state = compound.getState();
+         state.addConstant("super", constant);
          return new Result(ResultFlow.NORMAL, compound);
       }
    }

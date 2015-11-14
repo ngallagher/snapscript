@@ -8,6 +8,7 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.interpret.ConstraintChecker;
@@ -37,6 +38,7 @@ public class InstanceInvocation implements Invocation<Scope> {
          object=scope; // XXX tihs is for super only!!!
       }
       Scope inner = object.getScope();
+      State state = inner.getState();
       
       for(int i = 0; i < arguments.length; i++) {
          Type require = types.get(i);
@@ -47,7 +49,7 @@ public class InstanceInvocation implements Invocation<Scope> {
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Reference reference = new Reference(argument);         
-         inner.addVariable(name, reference);
+         state.addVariable(name, reference);
       }
       return statement.execute(inner);
    }

@@ -1,11 +1,10 @@
 package org.snapscript.interpret;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.snapscript.core.Holder;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Value;
 
 public class MapEntry implements Evaluation {
@@ -23,13 +22,14 @@ public class MapEntry implements Evaluation {
       Value keyResult = key.evaluate(scope, left);
       Object valueObject = valueResult.getValue();
       Object keyObject = keyResult.getValue();
+      State state = scope.getState();
       
       if(keyObject != null) {
          Class type = keyObject.getClass();
          String key = keyObject.toString();
          
          if(type == String.class) {
-            Value value = scope.getValue(key);
+            Value value = state.getValue(key);
             
             if(value != null) {
                keyObject = value.getValue();

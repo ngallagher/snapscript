@@ -13,7 +13,7 @@ import org.snapscript.core.TypeLoader;
 public class FunctionMatcher {
    
    private final Map<Object, Function> cache;
-   private final SearchPathFinder finder;
+   private final TypePathBuilder finder;
    private final FunctionKeyBuilder builder;
    private final ArgumentMatcher matcher;
    
@@ -25,7 +25,7 @@ public class FunctionMatcher {
       this.cache = new LeastRecentlyUsedMap<Object, Function>(capacity);
       this.matcher = new ArgumentMatcher(loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
-      this.finder = new SearchPathFinder();
+      this.finder = new TypePathBuilder();
    }
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
@@ -66,7 +66,7 @@ public class FunctionMatcher {
       Function function = cache.get(key);
       
       if(!cache.containsKey(key)) {
-         List<Type> path = finder.createPath(type);
+         List<Type> path = finder.createPath(type, name);
          int best = 0;
          
          for(Type entry : path) {

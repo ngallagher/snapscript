@@ -8,6 +8,7 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
@@ -31,6 +32,7 @@ public class StatementInvocation implements Invocation<Object> {
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
       Scope inner = scope.getScope();
+      State state = inner.getState();
       
       for(int i = 0; i < arguments.length; i++) {
          Type require = types.get(i);
@@ -41,7 +43,7 @@ public class StatementInvocation implements Invocation<Object> {
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Reference reference = new Reference(argument);         
-         inner.addVariable(name, reference);
+         state.addVariable(name, reference);
       }
       return statement.execute(inner);
    }

@@ -1,16 +1,13 @@
 package org.snapscript.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class InstanceScope implements Scope {
    
-   private final Map<String, Value> values;
+   private final State state;
    private final Scope scope;
    private final Type type;
    
    public InstanceScope(Scope scope, Type type) {
-      this.values = new HashMap<String, Value>();      
+      this.state = new MapState(scope);      
       this.scope = scope;
       this.type = type;
    }
@@ -36,44 +33,8 @@ public class InstanceScope implements Scope {
    }   
 
    @Override
-   public Value getValue(String name) {
-      Value value = values.get(name);
-      
-      if(value == null) {
-         return scope.getValue(name);
-      }
-      return value;
-   }
-
-   @Override
-   public void setValue(String name, Value value) {
-      Value variable = values.get(name);
-      Object data = value.getValue();
-
-      if(variable == null) {
-         throw new IllegalStateException("Variable '" + name + "' does not exist");
-      }
-      variable.setValue(data);      
-   }
-   
-   @Override
-   public void addVariable(String name, Value value) {
-      Value variable = values.get(name);
-
-      if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
-      }
-      values.put(name, value);      
-   }
-   
-   @Override
-   public void addConstant(String name, Value value) {
-      Value variable = values.get(name);
-
-      if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
-      }
-      values.put(name, value);     
+   public State getState() {
+      return state;
    }
    
    @Override

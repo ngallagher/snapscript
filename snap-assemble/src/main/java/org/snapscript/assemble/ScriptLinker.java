@@ -23,13 +23,13 @@ public class ScriptLinker implements LibraryLinker {
    }
    
    @Override
-   public Library link(String source) throws Exception {
-      return link(source, "library");
+   public Library link(String name, String source) throws Exception {
+      return link(name, source, "library");
    }
    
    @Override
-   public Library link(String source, String grammar) throws Exception {
-      Statement linked = cache.fetch(source);
+   public Library link(String name, String source, String grammar) throws Exception {
+      Statement linked = cache.fetch(name);
       
       if(linked == null) {
          SyntaxParser parser = compiler.compile();
@@ -37,8 +37,8 @@ public class ScriptLinker implements LibraryLinker {
          Statement statement = (Statement)assembler.assemble(node, "xx");
          
          cache.cache(source, statement); 
-         return new ScriptLibrary(statement);
+         return new ScriptLibrary(statement, name);
       }
-      return new ScriptLibrary();
+      return new ScriptLibrary(linked, name);
    } 
 }
