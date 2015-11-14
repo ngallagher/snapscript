@@ -27,7 +27,7 @@ public class LibraryLinkerTest extends TestCase {
       Context c =new ScriptContext(set);
       ScriptCompiler compiler = new ScriptCompiler(c);
    
-      executeScript(compiler, "script1.js");      
+      executeScript(compiler, "script1.snap");      
  /*     executeScript(compiler, "perf2.js");    
       executeScript(compiler, "perf3.js"); */   
    }

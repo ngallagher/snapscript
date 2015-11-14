@@ -30,7 +30,7 @@ public class TestRunnerTest extends TestCase{
       }
    }
    public static void executeScript(int i) throws Exception {
-      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\define\\test"+i+".js");
+      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\define\\test"+i+".snap");
       if(file.exists()){
          try{
             String script = load(file);

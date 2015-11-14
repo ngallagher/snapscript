@@ -19,7 +19,7 @@ public class ExpressionBuilderTest extends TestCase {
 
    private void analyzeScripts(SyntaxParser analyzer) throws Exception {      
       for(int i = 0; i < 100;i++) {
-         File file = new File("C:\\Work\\development\\github\\snapscript-builder\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".js");  
+         File file = new File("C:\\Work\\development\\github\\snapscript-builder\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".snap");  
          if(file.exists()) {
             String source = load(file);
             LexerBuilder.print(analyzer, source, "script");
@@ -43,7 +43,7 @@ public class ExpressionBuilderTest extends TestCase {
    private void testParsePerformance(SyntaxParser analyzer) throws Exception {
       int iterations = 1000;
       for(int i = 0; i < 100;i++) {
-         File file = new File("C:\\Work\\development\\github\\snapscript-builder\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".js");  
+         File file = new File("C:\\Work\\development\\github\\snapscript-builder\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".snap");  
          if(file.exists()) {
             String source=load(file);
             long start=System.currentTimeMillis();
