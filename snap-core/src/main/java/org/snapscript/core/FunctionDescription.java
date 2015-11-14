@@ -33,7 +33,7 @@ public class FunctionDescription {
          }
          builder.append(name);
          
-         if(type == null) {
+         if(type != null) {
             String constraint = type.getName();
             
             builder.append(": ");
