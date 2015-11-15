@@ -60,7 +60,7 @@ public class DeclareVariable implements Evaluation {
       try {
          state.addVariable(name, reference);
       } catch(Exception e) {
-         throw new IllegalStateException("Declaration of variable '" + name + "' failed");
+         throw new IllegalStateException("Declaration of variable '" + name + "' failed", e);
       }
       return reference;      
    }

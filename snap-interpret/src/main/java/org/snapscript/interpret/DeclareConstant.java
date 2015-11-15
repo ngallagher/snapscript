@@ -29,7 +29,7 @@ public class DeclareConstant extends DeclareVariable {
       try {
          state.addConstant(name, constant);
       } catch(Exception e) {
-         throw new IllegalStateException("Declaration of constant '" + name + "' failed");
+         throw new IllegalStateException("Declaration of constant '" + name + "' failed", e);
       }
       return constant;
    }   

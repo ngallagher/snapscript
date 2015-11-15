@@ -22,9 +22,8 @@ public class FunctionBinderTest extends TestCase {
             return null;
          }
       };
-      ImportStore store = new ImportStore();
-      ImportResolver resolver = new ImportResolver(store, linker);
-      TypeLoader loader = new TypeLoader(store, resolver);
+      ImportResolver resolver = new ImportResolver(linker);
+      TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Type type = loader.loadType(Map.class);
       

@@ -9,15 +9,17 @@ public class Type {
    private final List<Type> types;
    private final Class type;
    private final Type entry;
+   private final String module;
    private final String name;
    
-   public Type(String name, Type entry, List<Type> types, List<Property> properties, List<Function> functions){
-      this(name, entry, types, properties, functions, null);
+   public Type(String name, String module, Type entry, List<Type> types, List<Property> properties, List<Function> functions){
+      this(name, module, entry, types, properties, functions, null);
    }
    
-   public Type(String name, Type entry, List<Type> types, List<Property> properties, List<Function> functions, Class type){
+   public Type(String name, String module, Type entry, List<Type> types, List<Property> properties, List<Function> functions, Class type){
       this.functions = functions;
       this.properties = properties;
+      this.module = module;
       this.entry = entry;
       this.types = types;
       this.type = type;
@@ -42,6 +44,10 @@ public class Type {
    
    public Type getEntry(){
       return entry;
+   }
+   
+   public String getModule(){
+      return module;
    }
    
    public String getName(){

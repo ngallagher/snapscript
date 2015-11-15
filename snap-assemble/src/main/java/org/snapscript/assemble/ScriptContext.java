@@ -1,12 +1,11 @@
 package org.snapscript.assemble;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Module;
 import org.snapscript.core.TypeLoader;
@@ -18,23 +17,19 @@ public class ScriptContext implements Context {
    private final FunctionBinder binder;
    private final ImportResolver resolver;
    private final LibraryLinker linker;
-   private final ImportStore store;
-   private final TypeLoader loader;   
-   private final Module module;
+   private final TypeLoader loader; 
 
    public ScriptContext(InstructionResolver res){
-      this.modules = new HashMap<String, Module>();
+      this.modules = new ConcurrentHashMap<String, Module>();
       this.linker = new ScriptLinker(res, this);
-      this.module = new ContextModule(this);
-      this.store = new ImportStore();
-      this.resolver = new ImportResolver(store, linker);      
-      this.loader = new TypeLoader(store, resolver);
+      this.resolver = new ImportResolver(linker);      
+      this.loader = new TypeLoader(resolver);
       this.binder = new FunctionBinder(loader);
    }
 
    @Override
    public Module getModule() {
-      return module;
+      return modules.get("");
    }
    
    @Override

@@ -33,9 +33,10 @@ public class Import extends Statement {
             library.include(scope);
          }
       } else {
-         Library library = loader.importType(location, target);
+         Library library = loader.importType(target, location);
          
          if(library != null) {
+            module.addImport(target, location);
             library.include(scope);
          }
       }

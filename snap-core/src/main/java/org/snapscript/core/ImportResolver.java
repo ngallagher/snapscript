@@ -23,17 +23,15 @@ public class ImportResolver {
    private final Map<String, Class> types;
    private final List<String> imports;
    private final ClassPathLoader loader;
-   private final ImportStore store;
    
-   public ImportResolver(ImportStore store, LibraryLinker linker) {
-      this(store, linker, Arrays.asList(DEFAULTS));
+   public ImportResolver(LibraryLinker linker) {
+      this(linker, Arrays.asList(DEFAULTS));
    }
    
-   public ImportResolver(ImportStore store, LibraryLinker linker, List<String> imports) {
+   public ImportResolver(LibraryLinker linker, List<String> imports) {
       this.types = new LinkedHashMap<String, Class>();
       this.imports = new ArrayList<String>(imports);
       this.loader = new ClassPathLoader(linker);
-      this.store = store;
    }
    
    public Library addImport(String name) {
@@ -45,7 +43,7 @@ public class ImportResolver {
       }
    }
    
-   public Library addType(String location, String name) {
+   public Library addType(String name, String location) {
       for(String prefix : imports) {
          try {
             String title=prefix+location+"."+name;

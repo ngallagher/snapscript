@@ -1,14 +1,13 @@
 package org.snapscript.core;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.snapscript.core.Context;
-import org.snapscript.core.Module;
-import org.snapscript.core.Scope;
 
 public class ContextModule implements Module {
 
+   private final Map<String, Type> imports;
    private final List<Function> functions;    
    private final Context context;
    private final Scope scope;
@@ -20,6 +19,7 @@ public class ContextModule implements Module {
    
    public ContextModule(Context context, String name) {
       this.functions = new CopyOnWriteArrayList<Function>();
+      this.imports = new ConcurrentHashMap<String, Type>();
       this.scope = new ModuleScope(this);
       this.context = context;
       this.name = name;
@@ -44,12 +44,32 @@ public class ContextModule implements Module {
          throw new IllegalStateException(e);
       }
    }
+   
+   @Override
+   public Type addImport(String name, String module) {
+      try {
+         TypeLoader loader = context.getLoader();
+         Type type = loader.defineType(name, module);
+         
+         if(name != null && name.length() > 0) {
+            imports.put(name, type);
+         }
+         return type;
+      } catch(Exception e){
+         throw new IllegalStateException(e);
+      }
+   }
 
    @Override
    public Type getType(String name) { // this needs to define the type also......
       try {
-         TypeLoader loader = context.getLoader();
-         return loader.resolveType(name, this.name);
+         Type type = imports.get(name);
+         
+         if(type == null) {
+            TypeLoader loader = context.getLoader();
+            return loader.resolveType(name, this.name);
+         }
+         return type;
       } catch(Exception e){
          throw new IllegalStateException(e);
       }

@@ -37,9 +37,9 @@ public class ScriptAgent {
    "      System.err.println(x);\n"+
    "   }\n"+
    "}\n"+
-   "var b = new InternalTypeForScriptAgent(1);\n"+
-   "b.dump();\n"+
-   "System.err.println(b.x);\n"+
+   "var privateVariableInScriptAgent = new InternalTypeForScriptAgent(1);\n"+
+   "privateVariableInScriptAgent.dump();\n"+
+   "System.err.println(privateVariableInScriptAgent.x);\n"+
    "System.err.println(InternalTypeForScriptAgent.ARR);";
    
    public static void main(String[] list) throws Exception {

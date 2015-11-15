@@ -4,27 +4,27 @@ public class TypeLoader {
    
    private final TypeIndexer indexer;
    
-   public TypeLoader(ImportStore store, ImportResolver resolver){
-      this.indexer = new TypeIndexer(store, resolver);
+   public TypeLoader(ImportResolver resolver){
+      this.indexer = new TypeIndexer(resolver);
    }
    
-   public Library importPackage(String name) {
+   public synchronized Library importPackage(String name) {
       return indexer.addImport(name);
    }   
    
-   public Library importType(String location, String name) {
-      return indexer.addType(location, name);
+   public synchronized Library importType(String name, String module) {
+      return indexer.addType(name, module); 
    }
    
-   public Type resolveType(String name, String module) throws Exception {
+   public synchronized Type resolveType(String name, String module) throws Exception {
       return indexer.load(name, module, false);
    }
    
-   public Type defineType(String name, String module) throws Exception {
+   public synchronized Type defineType(String name, String module) throws Exception {
       return indexer.load(name, module, true);
    }
    
-   public Type loadType(Class cls) throws Exception {
+   public synchronized Type loadType(Class cls) throws Exception {
       return indexer.load(cls);
    } 
 }

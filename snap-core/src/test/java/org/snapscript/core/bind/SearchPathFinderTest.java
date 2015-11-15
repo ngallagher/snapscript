@@ -31,16 +31,16 @@ public class SearchPathFinderTest extends TestCase {
       List<Type> typesB = new ArrayList<Type>();
       List<Type> typesC = new ArrayList<Type>();
       List<Type> typesD = new ArrayList<Type>();
-      Type a = new Type("A", null, typesA, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type b = new Type("B", null, typesB, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type c = new Type("C", null, typesC, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type d = new Type("D", null, typesD, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type x = new Type("X", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type y = new Type("Y", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type z = new Type("Z", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type i = new Type("I", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type j = new Type("J", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type k = new Type("K", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type a = new Type("A", "", null, typesA, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type b = new Type("B", "", null, typesB, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type c = new Type("C", "", null, typesC, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type d = new Type("D", "", null, typesD, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type x = new Type("X", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type y = new Type("Y", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type z = new Type("Z", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type i = new Type("I", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type j = new Type("J", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type k = new Type("K", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
       
       typesB.add(a); // class B extends A with X,Y,Z
       typesB.add(x);

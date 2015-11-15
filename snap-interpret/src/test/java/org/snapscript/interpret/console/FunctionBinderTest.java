@@ -15,7 +15,6 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
@@ -32,9 +31,8 @@ public class FunctionBinderTest extends TestCase {
       Context context =new ScriptContext(set);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      ImportStore store = new ImportStore();
-      ImportResolver resolver = new ImportResolver(store, linker);
-      TypeLoader loader = new TypeLoader(store, resolver);
+      ImportResolver resolver = new ImportResolver(linker);
+      TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       
       Type type =loader.loadType(PrintStream.class);
@@ -53,9 +51,8 @@ public class FunctionBinderTest extends TestCase {
       Context context =new ScriptContext(set);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      ImportStore store = new ImportStore();
-      ImportResolver resolver = new ImportResolver(store, linker);
-      TypeLoader loader = new TypeLoader(store, resolver);
+      ImportResolver resolver = new ImportResolver(linker);
+      TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Map<String, Property>v=new LinkedHashMap<String,Property>();
       Type type =loader.loadType(String.class);

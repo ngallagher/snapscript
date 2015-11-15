@@ -16,7 +16,7 @@ public class TypeIndexer {
    private final ImportResolver resolver;
    private final List<String> modules;
    
-   public TypeIndexer(ImportStore store, ImportResolver resolver){
+   public TypeIndexer(ImportResolver resolver){
       this.types = new LinkedHashMap<Object, Type>();      
       this.converter = new PrimitivePromoter();
       this.modules = new ArrayList<String>();
@@ -26,11 +26,11 @@ public class TypeIndexer {
       modules.add(name);///XXX????
       return resolver.addImport(name);
    }   
-   public Library addType(String location, String name) {
-      modules.add(name);
+   public Library addType(String name, String module) {
+      //modules.add(module);
       //resolver.addImport(location);// helps with java types
       
-      return resolver.addType(location, name);
+      return resolver.addType(name, module);
    }
    
    private Class getType(String name) { 
@@ -43,7 +43,7 @@ public class TypeIndexer {
       return types.get(name);
    }
    private Type define(String name,String moduleName) throws Exception {
-      String full=moduleName!=null?moduleName+"."+name:name;
+      String full=createName(name, moduleName);
       Type t  =resolveType(full);
     
       
@@ -53,16 +53,23 @@ public class TypeIndexer {
          List<Type> hierL = new ArrayList<Type>();
 
          
-         t=new Type(full,null,hierL,varsL,mapL);
+         t=new Type(name, moduleName,null,hierL,varsL,mapL);
          registerType(full,t);
       }
       return t;
+   }
+   private String createName(String name, String module){
+      if(module != null && module.length() >0) {
+         return module + "." + name;
+      }
+      return name;
    }
    
    public Type load(String name,String moduleName) throws Exception {
       return load(name,moduleName,true); // XXX moduleName was null here?????
    }
-   public Type load(String name, String moduleName, boolean create) throws Exception {
+   public Type load(String nameX, String moduleName, boolean create) throws Exception {
+      String name = createName(nameX, moduleName);
       Type t = resolveType(name);
       
       if(t==null) { 
@@ -75,7 +82,7 @@ public class TypeIndexer {
                }
             }
             if(create){
-               return define(name,moduleName);
+               return define(nameX,moduleName);
             }
             return null;
          }
@@ -89,7 +96,15 @@ public class TypeIndexer {
       Type t=resolveType(cls);
       
       if(t==null){
-         String name = type.getName();
+         String key = type.getName();
+         Package p = type.getPackage();
+         String pack="";
+         if(p!=null){
+            pack=p.getName();
+         }else {
+            pack="";// debug types
+         }
+         String simpleName = type.getSimpleName();
          Class base = type.getSuperclass();
          Class[] interfaces = type.getInterfaces();
          Map<String,Type> hier = new LinkedHashMap<String,Type>();
@@ -103,17 +118,17 @@ public class TypeIndexer {
          }
          Type done=null;
          if(type.isArray()){
-            done=new Type(name,load(type.getComponentType()),hierL,varsL,mapL,cls);
+            done=new Type(simpleName,pack,load(type.getComponentType()),hierL,varsL,mapL,cls);
          }else {
-            done=new Type(name,null,hierL,varsL,mapL,cls);
+            done=new Type(simpleName,pack,null,hierL,varsL,mapL,cls);
          }
          if(type==Object.class){
             Type any=load("Any", null,true);
             hierL.add(any);
          }
          registerType(cls,done);
-         if(!cls.isPrimitive()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
-            registerType(name,done);
+         if(!cls.isPrimitive()&&!cls.isArray()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
+            registerType(key,done);
             indexMethods(type, mapL, varsL);
             indexConstructors(type, mapL);
             indexFields(type, base, interfaces, hier, varsL, hierL);

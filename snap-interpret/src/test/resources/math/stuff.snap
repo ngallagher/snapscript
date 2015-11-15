@@ -1,3 +1,4 @@
+
 class Max {
    static max(a,b){  
       return a > b ? a : b;
@@ -7,5 +8,11 @@ class Max {
          return max(a, c);
       }
       return max(b, c);
+   }
+}
+class Blah{
+   test(val){
+      new BlahBlah();
+      System.err.println("The import fucked up!!");
    }
 }

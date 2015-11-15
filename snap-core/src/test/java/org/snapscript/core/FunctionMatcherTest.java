@@ -42,9 +42,8 @@ public class FunctionMatcherTest extends TestCase {
             return null;
          }
       };
-      ImportStore store = new ImportStore();
-      ImportResolver resolver = new ImportResolver(store, linker);
-      TypeLoader loader = new TypeLoader(store, resolver);
+      ImportResolver resolver = new ImportResolver(linker);
+      TypeLoader loader = new TypeLoader(resolver);
       FunctionMatcher matcher = new FunctionMatcher(loader);
       Type type = loader.loadType(ExampleObject.class);
       

@@ -15,7 +15,6 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.ImportStore;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -30,9 +29,8 @@ public class TypeTest extends TestCase {
       Context context =new ScriptContext(set);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      ImportStore store = new ImportStore();
-      ImportResolver resolver = new ImportResolver(store, linker);
-      TypeLoader loader = new TypeLoader(store, resolver);
+      ImportResolver resolver = new ImportResolver(linker);
+      TypeLoader loader = new TypeLoader(resolver);
 
       for (Class name : TYPES) {
          long start = System.currentTimeMillis();
