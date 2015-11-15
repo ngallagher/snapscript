@@ -10,4 +10,5 @@ public interface Module {
    Type addImport(String name, String module); 
    List<Function> getFunctions();
    Scope getScope(); // scope here is confined to the module, it should inherit the callers scope
+   String getName();
 }

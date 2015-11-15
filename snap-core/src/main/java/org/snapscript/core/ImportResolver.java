@@ -47,7 +47,9 @@ public class ImportResolver {
       for(String prefix : imports) {
          try {
             String title=prefix+location+"."+name;
+            System.err.println("ImportResolver.addType() searching for class ["+title+"]");
             Class type = Class.forName(title);
+            System.err.println("ImportResolver.addType() found class ["+type+"]");
             types.put(name, type); 
             types.put(location+"."+name, type);           
             return null;

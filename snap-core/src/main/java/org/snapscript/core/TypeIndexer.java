@@ -26,11 +26,25 @@ public class TypeIndexer {
       modules.add(name);///XXX????
       return resolver.addImport(name);
    }   
-   public Library addType(String name, String module) {
+   public Library addType(final String name, final String module) {
+      
       //modules.add(module);
       //resolver.addImport(location);// helps with java types
       
-      return resolver.addType(name, module);
+      Library library = resolver.addType(name, module);
+      if(library == null) {
+         return new Library() {
+
+            @Override
+            public void include(Scope scope) throws Exception {
+               String full = createName(name, module);
+               System.err.println("TypeIndexer.addType() Doing a CLASS load on name=["+name+"] module=["+module+"] full=["+full+"]");
+               load(name, module);
+            }
+            
+         };
+      }
+      return library;
    }
    
    private Class getType(String name) { 
@@ -73,6 +87,7 @@ public class TypeIndexer {
       Type t = resolveType(name);
       
       if(t==null) { 
+         System.err.println("TypeIndexer.load() Trying to load [" + name + "]");
          Class cls=resolver.getType(name);
          if(cls==null){
             for(String n:modules){// was the type named in a module???

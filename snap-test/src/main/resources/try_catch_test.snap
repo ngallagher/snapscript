@@ -1,0 +1,24 @@
+import test.UnitTest;
+
+class TryCatchTest with UnitTest {
+	
+	testThrowString(){
+		try {
+			throw "A string";
+		}catch(e){
+			assertEquals(e, "A string");
+		}
+	}
+	
+	testThrowException() {
+		try {
+			throw new IllegalStateException("Some text");
+		} catch(e) {
+			assertEquals(e.class, IllegalStateException.class);
+			assertEquals(e.message, "Some text");
+		}
+	}
+}
+
+var test = new TryCatchTest();
+test.execute();

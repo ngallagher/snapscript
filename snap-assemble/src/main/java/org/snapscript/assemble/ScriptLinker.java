@@ -37,7 +37,7 @@ public class ScriptLinker implements LibraryLinker {
          SyntaxNode node = parser.parse(source, grammar);
          Statement statement = (Statement)assembler.assemble(node, name);
          
-         cache.cache(source, statement); 
+         cache.cache(name, statement); 
          return new ScriptLibrary(statement, name);
       }
       return new NoLibrary(); 

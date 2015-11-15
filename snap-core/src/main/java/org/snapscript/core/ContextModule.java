@@ -38,8 +38,17 @@ public class ContextModule implements Module {
    @Override
    public Type addType(String name) {
       try {
-         TypeLoader loader = context.getLoader();
-         return loader.defineType(name, this.name);
+         Type t = getType(name);
+         
+         if(t == null) {
+            TypeLoader loader = context.getLoader();
+            t= loader.defineType(name, this.name);
+            
+            if(t!=null) {
+               imports.put(name, t);
+            }
+         }
+         return t;
       } catch(Exception e){
          throw new IllegalStateException(e);
       }
@@ -66,8 +75,18 @@ public class ContextModule implements Module {
          Type type = imports.get(name);
          
          if(type == null) {
+            System.err.println("ContextModule.getType() Import failure for ["+name+"] in ["+this.name+"]");
             TypeLoader loader = context.getLoader();
-            return loader.resolveType(name, this.name);
+            Type result = loader.resolveType(name, this.name);
+            
+            if(result == null) {
+               result = loader.resolveType(name, null);
+            }
+            if(result != null) {
+               System.err.println("ContextModule.getType() Successful hit for ["+name+"] as ["+result+"]");
+               imports.put(name, result);
+            }
+            return result;
          }
          return type;
       } catch(Exception e){
@@ -88,6 +107,11 @@ public class ContextModule implements Module {
    @Override
    public Scope getScope() {
       return scope;
+   }
+   
+   @Override
+   public String getName() {
+      return name;
    }
 
    @Override

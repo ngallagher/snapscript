@@ -86,7 +86,6 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       STYLE_WORDS.put("static", "keyword");
       STYLE_WORDS.put("const", "keyword");
       STYLE_WORDS.put("import", "keyword");
-      STYLE_WORDS.put("throw", "keyword");
       STYLE_WORDS.put("extends", "keyword");
       STYLE_WORDS.put("try", "keyword");
       STYLE_WORDS.put("catch", "keyword");
@@ -120,6 +119,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    private JMenuItem pasteI;
    private JMenuItem selectI;
    private JMenuItem saveI;
+   private JMenuItem saveAsI;
    private JMenuItem openI;
    private JMenuItem newI;
    private JMenuItem runExternalI;
@@ -222,6 +222,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       selectI = new JMenuItem("Select All"); // menuitems
       newI = new JMenuItem("New");
       saveI = new JMenuItem("Save"); // menuitems
+      saveAsI = new JMenuItem("Save As...");
       openI = new JMenuItem("Open"); // menuitems
       runExternalI = new JMenuItem("Run External"); // menuitems
       runInternalI = new JMenuItem("Run Internal"); // menuitems
@@ -256,6 +257,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       fileM.add(newI);
       fileM.add(openI);
       fileM.add(saveI);
+      fileM.add(saveAsI);
       fileM.add(exitI);
 
       editM.add(cutI);
@@ -267,7 +269,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       programM.add(runInternalI);
       programM.add(stopI);
       
-      saveI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+      newI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
       saveI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
       openI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
       cutI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
@@ -284,6 +286,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       doc.addDocumentListener(this);
       newI.addActionListener(this);
       saveI.addActionListener(this);
+      saveAsI.addActionListener(this);;
       openI.addActionListener(this);
       exitI.addActionListener(this);
       cutI.addActionListener(this);
@@ -392,28 +395,14 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       if (choice == saveI) {
          if (this.file != null) {
             fc.setSelectedFile(this.file);
+            saveFile(file, ta.getText()); // if we have the file then save
+         }else {
+            showFileChooserForSave();
          }
-         int returnVal = fc.showSaveDialog(ScriptPad.this);
-
-         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            // This is where a real application would open the file.
-            if (!file.exists()) {
-               file.getParentFile().mkdirs();
-            }
-            saveFile(file, ta.getText());
-         }
+      } else if (choice == saveAsI) {
+         showFileChooserForSave();
       } else if (choice == openI) {
-         int returnVal = fc.showOpenDialog(ScriptPad.this);
-
-         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            // This is where a real application would open the file.
-            if (file.exists()) {
-               openFile(file);
-            }
-         }
-
+         showFileChooserForOpen();
       } else if (choice == newI) {
          setTitle("ScriptPad");
          ta.setText("");
@@ -434,6 +423,36 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
          stopCurrentAndExecute(true);
       } else if (e.getSource() == stopI) {
          stopCurrent();
+      }
+   }
+   
+   private void showFileChooserForOpen() {
+      int returnVal = fc.showOpenDialog(ScriptPad.this);
+
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+         File file = fc.getSelectedFile();
+         // This is where a real application would open the file.
+         if (file.exists()) {
+            openFile(file);
+         }
+      }
+   }
+   
+   private void showFileChooserForSave() {
+      // set the file chooser defaults before opening
+      if(this.file != null) {
+         fc.setSelectedFile(this.file);
+         fc.setCurrentDirectory(this.file.getParentFile());
+      }
+      int returnVal = fc.showSaveDialog(ScriptPad.this); // if we don't have a file then use dialog
+
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+         File file = fc.getSelectedFile();
+         // This is where a real application would open the file.
+         if (!file.exists()) {
+            file.getParentFile().mkdirs();
+         }
+         saveFile(file, ta.getText());
       }
    }
    

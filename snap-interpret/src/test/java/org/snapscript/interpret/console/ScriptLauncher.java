@@ -90,7 +90,7 @@ public class ScriptLauncher implements ScriptTask, Runnable {
          String javaHome = System.getProperty("java.home");
          String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
          String classpath = System.getProperty("java.class.path");
-         String className = ScriptRunner.class.getCanonicalName();
+         String className = ScriptProcess.class.getCanonicalName();
          String scriptPath = file.getCanonicalPath();
          
          ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, scriptPath);
@@ -101,7 +101,7 @@ public class ScriptLauncher implements ScriptTask, Runnable {
          String line = reader.readLine();
          
          if(!line.startsWith("port=")) {
-            throw new IllegalStateException(ScriptRunner.class.getName() + " did not provide port");
+            throw new IllegalStateException(ScriptProcess.class.getName() + " did not provide port");
          }
          String[] parts = line.split("=");
          port.set(new Socket("localhost", Integer.parseInt(parts[1]))); // set the listen port 
@@ -127,7 +127,7 @@ public class ScriptLauncher implements ScriptTask, Runnable {
    }
    private void execute() {
       try {
-         ScriptRunner.run(file.getCanonicalPath());
+         ScriptProcess.run(file.getCanonicalPath());
       }catch(Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);

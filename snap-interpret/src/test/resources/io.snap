@@ -1,9 +1,10 @@
+import math.stuff.Max;
 
 class Blah{
    test(val){
-      System.err.println("RUNNING.....");
+      System.err.println("RUNNING..22...");
       for(var i = 0; i < 10; i++) {
-         System.out.println("i="+i+" val="+val);
+         System.out.println("i="+i+" val="+val+" max="+Max.max(i, val));
       }
    }
 }

@@ -20,7 +20,7 @@ import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.interpret.InterpretationResolver;
 
-public class ScriptRunner {
+public class ScriptProcess {
 
    private static final InstructionResolver SET = new InterpretationResolver();
    private static final Context CONTEXT = new ScriptContext(SET);

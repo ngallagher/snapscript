@@ -1,3 +1,4 @@
+import io.BlahBlah;
 
 class Max {
    static max(a,b){  

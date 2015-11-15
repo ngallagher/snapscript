@@ -1,5 +1,8 @@
 package org.snapscript.interpret;
 
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,11 +27,14 @@ public class IterationConverter {
       if(type.isArray()) {
          return new ArrayIteration(value);
       } 
-      if (Iterable.class.isInstance(value)) {
+      if(Iterable.class.isInstance(value)) {
          return new IterableIteration(value);
       } 
-      if (Map.class.isInstance(value)) {
+      if(Map.class.isInstance(value)) {
          return new MapIteration(value);
+      }
+      if(Enumeration.class.isInstance(value)) {
+         return new EnumerationIteration(value);
       }
       throw new IllegalArgumentException("Iteration for " + type + " is not possible");
    }
@@ -100,7 +106,74 @@ public class IterationConverter {
       
       public Iterable getIterable(Scope scope) throws Exception {
          Iterable iterable = (Iterable)value;
-         return new ProxyIterable(iterable);
+         
+         if(value != null) {
+            return new ProxyIterable(iterable);
+         }
+         return Collections.emptyList();
+      }
+   }
+   
+   private class EnumerationIteration implements Iteration {
+      
+      private final Object value;
+      
+      public EnumerationIteration(Object value) {
+         this.value = value;
+      }
+      
+      public Type getEntry(Scope scope) throws Exception {
+         Module module = scope.getModule();
+         return module.getType(Object.class);
+      }
+      
+      public Iterable getIterable(Scope scope) throws Exception {
+         Enumeration list = (Enumeration)value;
+         
+         if(list != null) {
+            EnumerationIterable iterable = new EnumerationIterable(list);
+            ProxyIterable proxy = new ProxyIterable(iterable);
+            
+            return proxy;
+         }
+         return Collections.emptyList();
+      }
+      
+      private class EnumerationIterable implements Iterable {
+         
+         private final Enumeration list;
+         
+         public EnumerationIterable(Enumeration list) {
+            this.list = list;
+         }
+         
+         public Iterator iterator() {
+            return new EnumerationIterator(list);
+         }
+      }
+      
+      private class EnumerationIterator implements Iterator {
+         
+         private final Enumeration list;
+         
+         public EnumerationIterator(Enumeration list) {
+            this.list = list;
+         }
+
+         @Override
+         public boolean hasNext() {
+            return list.hasMoreElements();
+         }
+
+         @Override
+         public Object next() {
+            return list.nextElement();
+         }
+         
+         @Override
+         public void remove() {
+            throw new UnsupportedOperationException("Remove not supported");
+         }
       }
    }
 }

@@ -33,7 +33,7 @@ public class ConstructObject implements Evaluation {
       Type type = module.getType(name);
       
       if(type == null) {
-         throw new IllegalStateException("No type found for " + name); // class not found
+         throw new IllegalStateException("No type found for " + name + " in '" + module + "'"); // class not found
       }
       Callable<Result> call = bind(scope, type);
            
