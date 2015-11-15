@@ -28,8 +28,8 @@ public class TextTemplate implements Evaluation {
    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
-   private final StringToken template;
-   private final List<Token> tokens;
+   private volatile StringToken template;
+   private volatile List<Token> tokens;
    
    public TextTemplate(StringToken template) {
       this.tokens = new ArrayList<Token>();
@@ -53,14 +53,16 @@ public class TextTemplate implements Evaluation {
             
       if(tokens.isEmpty()) {
          TokenIterator iterator = new TokenIterator(text);
+         List<Token> list = new ArrayList<Token>();
          
          while(iterator.hasNext()) {
             Token token = iterator.next();
             
             if(token != null) {
-               tokens.add(token);  
+               list.add(token);  
             }
          }
+         tokens = list; // atomic swap
       }
       for(Token token : tokens) {
          token.process(scope, writer);
