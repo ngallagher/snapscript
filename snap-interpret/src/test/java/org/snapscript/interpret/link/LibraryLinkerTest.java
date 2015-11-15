@@ -24,7 +24,16 @@ public class LibraryLinkerTest extends TestCase {
    }
    public void testLinker() throws Exception {
       InstructionResolver set = new InterpretationResolver();
-      Context c =new ScriptContext(set);
+      Map<String, Object> map = new HashMap<String, Object>();
+      
+      map.put("out", System.out);
+      map.put("err", System.err);
+      map.put("count", 100);
+
+      //LexerBuilder.print(LexerBuilder.create(), script, "script");
+      
+      Model model = new MapModel(map);
+      Context c =new ScriptContext(set, model);
       ScriptCompiler compiler = new ScriptCompiler(c);
    
       executeScript(compiler, "script1.snap");      
@@ -35,21 +44,12 @@ public class LibraryLinkerTest extends TestCase {
       File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\link\\"+source);
       String script = load(file);
 
-      Map<String, Object> map = new HashMap<String, Object>();
-      
-      map.put("out", System.out);
-      map.put("err", System.err);
-      map.put("count", 100);
-
-      //LexerBuilder.print(LexerBuilder.create(), script, "script");
-      
-      Model model = new MapModel(map);
       long start=System.currentTimeMillis();
       long last=start;
       for(int j=0;j<ITERATIONS;j++){
          last=System.currentTimeMillis();
 
-         compiler.compile(script).execute(model);
+         compiler.compile(script).execute();
       }
       long finish=System.currentTimeMillis();
       long duration=finish-start;

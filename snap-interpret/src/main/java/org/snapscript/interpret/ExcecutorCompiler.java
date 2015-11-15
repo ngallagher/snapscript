@@ -57,13 +57,13 @@ public class ExcecutorCompiler implements Compiler {
       }
 
       @Override
-      public void execute(Model model) throws Exception {
+      public void execute() throws Exception {
          Executable executable = result.get();
          
          if(executable == null) {
             throw new IllegalStateException("Could not compile script");
          }
-         executable.execute(model);
+         executable.execute();
       }      
    }
    
@@ -102,7 +102,7 @@ public class ExcecutorCompiler implements Compiler {
       }      
 
       @Override
-      public void execute(Model model) throws Exception {
+      public void execute() throws Exception {
          throw new IllegalStateException(message, cause);
       }             
    }  

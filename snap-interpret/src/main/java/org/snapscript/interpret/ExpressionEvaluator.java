@@ -1,19 +1,13 @@
 package org.snapscript.interpret;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.snapscript.assemble.Assembler;
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluator;
-import org.snapscript.core.MapModel;
-import org.snapscript.core.Model;
-import org.snapscript.core.ModelScope;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleScope;
+import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.SyntaxCompiler;
@@ -42,16 +36,9 @@ public class ExpressionEvaluator implements Evaluator{
    
    @Override
    public <T> T evaluate(String source) throws Exception{
-      Map<String, Object> map = new LinkedHashMap<String, Object>();
-      Model model = new MapModel(map);
-      
-      return (T)evaluate(source, model);
-   }
-   
-   @Override
-   public <T> T evaluate(String source, Model model) throws Exception{
       Evaluation evaluation = cache.fetch(source);
-      Module module = context.getModule();
+      ModuleBuilder builder = context.getBuilder();
+      Module module = builder.resolve();
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
@@ -60,8 +47,8 @@ public class ExpressionEvaluator implements Evaluator{
          evaluation = (Evaluation)assembler.assemble(node, "xx");
          cache.cache(source, evaluation);      
       }
-      Scope base = new ModuleScope(module);
-      Scope scope = new ModelScope(base, model);
+      Scope base = module.getScope();
+      Scope scope = base.getScope();
       
       Value reference = evaluation.evaluate(scope,null);
       return (T)reference.getValue();

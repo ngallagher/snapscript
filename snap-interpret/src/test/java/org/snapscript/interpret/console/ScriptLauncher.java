@@ -12,6 +12,8 @@ import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
 import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
 import org.snapscript.interpret.InterpretationResolver;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
@@ -140,7 +142,8 @@ public class ScriptLauncher implements ScriptTask, Runnable {
    private void compile() {
       try {
          InstructionResolver set = new InterpretationResolver();
-         Context context =new ScriptContext(set);
+         Model model = new EmptyModel();
+         Context context =new ScriptContext(set, model);
          ScriptCompiler compiler = new ScriptCompiler(context);
          long start = System.nanoTime();
          compiler.compile(source);

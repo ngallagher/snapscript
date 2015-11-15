@@ -17,13 +17,9 @@ import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.ModelScope;
-import org.snapscript.core.ModuleScope;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
-import org.snapscript.interpret.Evaluation;
-import org.snapscript.interpret.InterpretationResolver;
 import org.snapscript.interpret.console.SyntaxPrinter;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
@@ -44,11 +40,11 @@ public class EvaluationTest extends TestCase {
       model.put("x", 12d);
       model.put("y", 5d);
 
-      assertEquals(executeScript("script18.js", model), ResultFlow.NORMAL);
-      assertEquals(executeScript("script14.js", model), ResultFlow.NORMAL);
-      assertEquals(executeScript("script17.js", model), ResultFlow.NORMAL);
-      assertEquals(executeScript("script16.js", model), ResultFlow.NORMAL);
-      assertEquals(executeScript("script15.js", model), ResultFlow.NORMAL);
+      assertEquals(executeScript("script18.snap", model), ResultFlow.NORMAL);
+      assertEquals(executeScript("script14.snap", model), ResultFlow.NORMAL);
+      assertEquals(executeScript("script17.snap", model), ResultFlow.NORMAL);
+      assertEquals(executeScript("script16.snap", model), ResultFlow.NORMAL);
+      assertEquals(executeScript("script15.snap", model), ResultFlow.NORMAL);
       //assertEquals(evaluate("x=12.0d", "expression", model), 12.0d);      
       assertEquals(evaluate("[]", "expression", model), Arrays.asList());
       assertEquals(evaluate("\"x\"+\"y\"", "expression", model), "xy");
@@ -176,11 +172,11 @@ public class EvaluationTest extends TestCase {
       assertEquals(statement("return;", "return-statement", model), ResultFlow.RETURN);     
       assertEquals(statement("function one(){return 1;}var xx=one();", "script", model), ResultFlow.NORMAL);     
       
-      assertEquals(executeScript("script1.js", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
-      assertEquals(executeScript("script9.js", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
-      assertEquals(executeScript("script10.js", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
-      assertEquals(executeScript("script11.js", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
-      assertEquals(executeScript("script12.js", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
+      assertEquals(executeScript("script1.snap", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
+      assertEquals(executeScript("script9.snap", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
+      assertEquals(executeScript("script10.snap", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
+      assertEquals(executeScript("script11.snap", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
+      assertEquals(executeScript("script12.snap", new HashMap<String, Object>(model)), ResultFlow.NORMAL);
    }
    public static Object executeScript(String source, Map<String, Object> model) throws Exception {
       String script = load(new File("c:\\Work\\development\\github\\snapscript\\snap-parse\\src\\test\\java\\org\\snapscript\\parse\\"+source));
@@ -202,9 +198,8 @@ public class EvaluationTest extends TestCase {
    public static ResultFlow statement(String source, String grammar, Map<String, Object> map) throws Exception {
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
-      ModuleScope mod=new ModuleScope(cc.getModule());
-      Scope s=new ModelScope(mod, model);
+      Context cc =new ScriptContext(set, model);
+      Scope s = cc.getBuilder().resolve().getScope();
       Assembler builder = new Assembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
@@ -216,9 +211,8 @@ public class EvaluationTest extends TestCase {
    public static Object evaluate(String source, String grammar, Map<String, Object> map, int repeat) throws Exception {
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
-      ModuleScope mod=new ModuleScope(cc.getModule());
-      Scope s=new ModelScope(mod, model);
+      Context cc =new ScriptContext(set, model);
+      Scope s = cc.getBuilder().resolve().getScope();
       Assembler builder = new Assembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();

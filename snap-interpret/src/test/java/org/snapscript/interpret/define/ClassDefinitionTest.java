@@ -11,7 +11,6 @@ import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.ModelScope;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleScope;
 import org.snapscript.core.Result;
@@ -22,11 +21,6 @@ import org.snapscript.interpret.BooleanLiteral;
 import org.snapscript.interpret.InterpretationResolver;
 import org.snapscript.interpret.NumberLiteral;
 import org.snapscript.interpret.TextLiteral;
-import org.snapscript.interpret.define.ClassDefinition;
-import org.snapscript.interpret.define.MemberField;
-import org.snapscript.interpret.define.ModifierList;
-import org.snapscript.interpret.define.TypeName;
-import org.snapscript.interpret.define.TypePart;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 
@@ -44,11 +38,10 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set);
-      ContextModule m = new ContextModule(context);
-      ModuleScope scope = new ModuleScope(m);
-      ModelScope mod = new ModelScope(scope, model);
-      Type type = definer.compile(mod).getValue();
+      Context context =new ScriptContext(set, model);
+      ContextModule m = new ContextModule(context, model);
+      ModuleScope scope = new ModuleScope(m, model);
+      Type type = definer.compile(scope).getValue();
 
       assertEquals(type.getName(), "Test");
       assertEquals(type.getProperties().size(), 4);//include 'this' and 'class'  
@@ -68,13 +61,12 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set);
-      ContextModule m = new ContextModule(context);
-      Module module = new ContextModule(context);
-      ModuleScope scope = new ModuleScope(module);
-      ModelScope mod = new ModelScope(scope, model);
+      Context context =new ScriptContext(set, model);
+      ContextModule m = new ContextModule(context, model);
+      Module module = new ContextModule(context, model);
+      ModuleScope scope = new ModuleScope(module, model);
 
-      Type type = definer.compile(mod).getValue(); 
+      Type type = definer.compile(scope).getValue(); 
       FunctionBinder binder = context.getBinder();
       Callable<Result> call = binder.bind(scope, type, "new", type);
       Scope result = call.call().getValue();

@@ -34,7 +34,7 @@ public class ScriptCompiler implements Compiler {
       
       if(executable == null) {
          LibraryLinker linker = context.getLinker();
-         Library library = linker.link("", source, "script");
+         Library library = linker.link(null, source, "script");
          
          return new ExecutableLibrary(context, library);
       }

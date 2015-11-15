@@ -12,10 +12,12 @@ import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptContext;
 import org.snapscript.assemble.ScriptLinker;
 import org.snapscript.core.Context;
+import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
 import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.Model;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
@@ -28,7 +30,8 @@ public class FunctionBinderTest extends TestCase {
 
    public void testBinderMethod() throws Exception {
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set);
+      Model model = new EmptyModel();
+      Context context =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
       ImportResolver resolver = new ImportResolver(linker);
@@ -48,7 +51,8 @@ public class FunctionBinderTest extends TestCase {
 
    public void testBinderConstruct() throws Exception {
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set);
+      Model model = new EmptyModel();
+      Context context =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
       ImportResolver resolver = new ImportResolver(linker);

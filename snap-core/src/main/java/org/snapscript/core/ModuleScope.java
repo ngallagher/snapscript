@@ -2,11 +2,11 @@ package org.snapscript.core;
 
 public class ModuleScope implements Scope {
    
-   private final MapState state;
    private final Module module;
+   private final State state;
    
-   public ModuleScope(Module module) {
-      this.state = new MapState();  
+   public ModuleScope(Module module, Model model) {
+      this.state = new ModelState(model);
       this.module = module;
    }
    
@@ -19,6 +19,11 @@ public class ModuleScope implements Scope {
    public Context getContext() {
       return module.getContext();
    } 
+
+   @Override
+   public State getState() {
+      return state;
+   }
    
    @Override
    public Type getType() {
@@ -28,10 +33,46 @@ public class ModuleScope implements Scope {
    @Override
    public Module getModule() {
       return module;
-   }     
-
-   @Override
-   public State getState() {
-      return state;
    }
+   
+   private static class ModelState implements State {
+      
+      private final Model model;
+      private final State state;
+      
+      public ModelState(Model model) {
+         this.state = new MapState();
+         this.model = model;
+      }
+      
+      @Override
+      public Value getValue(String name) {
+         Value variable = state.getValue(name);
+         
+         if(variable == null) {
+            Object object = model.getAttribute(name);
+            
+            if(object != null) {
+               return new Constant(object, name);
+            }
+         }
+         return variable;
+      }
+   
+      @Override
+      public void setValue(String name, Value value) {
+         state.setValue(name, value);
+      }
+      
+      @Override
+      public void addVariable(String name, Value value) {
+         state.addVariable(name, value);
+      }
+      
+      @Override
+      public void addConstant(String name, Value value) {
+         state.addConstant(name, value);
+      }    
+   }
+
 }

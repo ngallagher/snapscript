@@ -29,7 +29,7 @@ public class CompilePerformanceTest extends TestCase {
    }
    public void testCompilerPerformance() throws Exception {
       //compileScript("perf4.js");  
-      compileScript("perf4.js"); 
+      compileScript("perf4.snap"); 
  /*     executeScript("perf2.js");    
       executeScript("perf3.js"); */   
    }
@@ -47,22 +47,23 @@ public class CompilePerformanceTest extends TestCase {
       for(int j=0;j<ITERATIONS;j++){
          long start=System.currentTimeMillis();
          InstructionResolver set = new InterpretationResolver();
-         Context c =new ScriptContext(set);
-         ScriptCompiler compiler = new ScriptCompiler(c);
          Map<String, Object> map = new HashMap<String, Object>();
-         
+         Model model = new MapModel(map);
+         Context c =new ScriptContext(set, model);
+         ScriptCompiler compiler = new ScriptCompiler(c);
+
          map.put("out", System.out);
          map.put("err", System.err);
          map.put("count", 100);
          
-         Model model = new MapModel(map);
+
          Executable e=compiler.compile(script);
          long finish=System.currentTimeMillis();
          long duration=finish-start;
          System.err.println("Time taken to compile  was " + duration+" size was "+script.length());
          start=System.currentTimeMillis();
          if(execute){
-            e.execute(model);
+            e.execute();
          }
          finish=System.currentTimeMillis();
          duration=finish-start;

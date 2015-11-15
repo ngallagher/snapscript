@@ -6,6 +6,7 @@ import org.snapscript.core.Accessor;
 import org.snapscript.core.Context;
 import org.snapscript.core.Holder;
 import org.snapscript.core.Module;
+import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Property;
 import org.snapscript.core.PropertyValue;
 import org.snapscript.core.Scope;
@@ -84,7 +85,8 @@ public class VariableResolver {
             Type type = module.getType(name);
             
             if(type == null) {
-               Object result = context.getModule(name);
+               ModuleBuilder builder = context.getBuilder();
+               Object result = builder.resolve(name);
                
                if(result != null) {
                   return new Holder(result);

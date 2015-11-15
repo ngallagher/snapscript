@@ -7,8 +7,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -28,6 +26,8 @@ import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
 import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
 import org.snapscript.interpret.InterpretationResolver;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
@@ -184,7 +184,8 @@ public class ScriptEngine {
       private void compile() {
          try {
             InstructionResolver set = new InterpretationResolver();
-            Context context =new ScriptContext(set);
+            Model model = new EmptyModel();
+            Context context =new ScriptContext(set, model);
             ScriptCompiler compiler = new ScriptCompiler(context);
             long start = System.nanoTime();
             compiler.compile(file);

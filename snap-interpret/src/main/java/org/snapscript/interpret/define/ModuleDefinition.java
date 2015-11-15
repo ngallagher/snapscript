@@ -2,6 +2,7 @@ package org.snapscript.interpret.define;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
+import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
@@ -23,7 +24,8 @@ public class ModuleDefinition extends Statement {
       String name = value.getString();
       Module module = scope.getModule();
       Context context = module.getContext();
-      Module define = context.addModule(name);
+      ModuleBuilder builder = context.getBuilder();
+      Module define = builder.create(name);
       Scope inner = define.getScope();
       
       // this will define the classes in this module!!

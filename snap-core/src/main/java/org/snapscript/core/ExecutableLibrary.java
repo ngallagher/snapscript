@@ -11,13 +11,12 @@ public class ExecutableLibrary implements Executable{
    }
    
    @Override
-   public void execute(Model model) throws Exception{ 
-      Module module = context.addModule("");
+   public void execute() throws Exception{ 
+      ModuleBuilder builder = context.getBuilder();
+      Module module = builder.resolve();
       Scope scope = module.getScope();
-      // XXX this is not really working!!
-      ModelScope s = new ModelScope(scope, model);
-      
-      library.include(s);
+
+      library.include(scope);
    }
 
 }

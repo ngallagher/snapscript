@@ -13,14 +13,14 @@ public class ContextModule implements Module {
    private final Scope scope;
    private final String name;
 
-   public ContextModule(Context context) {
-      this(context, null);
+   public ContextModule(Context context, Model model) {
+      this(context, model, null);
    }
    
-   public ContextModule(Context context, String name) {
+   public ContextModule(Context context, Model model, String name) {
       this.functions = new CopyOnWriteArrayList<Function>();
       this.imports = new ConcurrentHashMap<String, Type>();
-      this.scope = new ModuleScope(this);
+      this.scope = new ModuleScope(this, model);
       this.context = context;
       this.name = name;
    }

@@ -26,10 +26,10 @@ import org.snapscript.interpret.InterpretationResolver;
 public class ScriptAgent {
 
    private static final InstructionResolver SET = new InterpretationResolver();
-   private static final Context CONTEXT = new ScriptContext(SET);
-   private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
    private static final Map<String, Object> MAP = new HashMap<String, Object>();
    private static final Model MODEL = new MapModel(MAP);
+   private static final Context CONTEXT = new ScriptContext(SET, MODEL);
+   private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
    private static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
    "   static const ARR = [\"a\",\"b\",\"c\"];\n"+
@@ -58,7 +58,7 @@ public class ScriptAgent {
       try {
          LibraryLinker linker = CONTEXT.getLinker();
          Library library = linker.link("moduleForTheScriptAgent", SOURCE);
-         Module module = CONTEXT.addModule("moduleForTheScriptAgent");
+         Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
          
          library.include(scope);
@@ -127,7 +127,7 @@ public class ScriptAgent {
             // start and listen for the socket close
             listener.start();
             Executable executable = COMPILER.compile(script);
-            executable.execute(MODEL);
+            executable.execute();
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }

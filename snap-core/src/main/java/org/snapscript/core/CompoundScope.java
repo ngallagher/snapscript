@@ -39,17 +39,15 @@ public class CompoundScope implements Scope {
       
       private final State state;
       private final Scope outer;
-      private final Scope inner;
       
       public StateScope(Scope outer, Scope inner) {
          this.state = new MapState(inner);
-         this.inner = inner;
          this.outer = outer;
       }
 
       @Override
       public Scope getScope() {
-         return new StateScope(inner, this); // check state before deciding "outer" = quick, "inner" = slow
+         return new StateScope(outer, this); // check state before deciding "outer" = quick, "inner" = slow
       }
 
       @Override

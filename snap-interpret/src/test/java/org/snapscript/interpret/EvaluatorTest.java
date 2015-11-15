@@ -20,9 +20,9 @@ public class EvaluatorTest extends TestCase{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
+      Context cc =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,cc);
-      Object result = evaluator.evaluate("1+2", model);
+      Object result = evaluator.evaluate("1+2");
       assertEquals(result, 3);
    }
    
@@ -30,11 +30,11 @@ public class EvaluatorTest extends TestCase{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
+      Context cc =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,cc);
 
       map.put("x", "blah");
-      Object result = evaluator.evaluate("x.substring(1)", model);
+      Object result = evaluator.evaluate("x.substring(1)");
       assertEquals(result, "lah");
    }
    
@@ -42,9 +42,9 @@ public class EvaluatorTest extends TestCase{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
+      Context cc =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,cc);
-      Object result = evaluator.evaluate("-1", model);
+      Object result = evaluator.evaluate("-1");
       assertEquals(result, -1);
    }
    
@@ -53,9 +53,9 @@ public class EvaluatorTest extends TestCase{
       Model model = new MapModel(map);
       map.put("m", 10);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set);
+      Context cc =new ScriptContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,cc);
-      Object result = evaluator.evaluate("m * -1", model);
+      Object result = evaluator.evaluate("m * -1");
       assertEquals(result, -10);
    }
    

@@ -29,12 +29,12 @@ public class Interpreter {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
       InstructionResolver resolver = new InterpretationResolver();
-      Context context = new ScriptContext(resolver);
+      Context context = new ScriptContext(resolver, model);
       Compiler compiler = new ScriptCompiler(context);
       
       try {
          Executable executable = compiler.compile(source);
-         executable.execute(model);
+         executable.execute();
       } catch(Exception e) {
          throw new IllegalStateException("Could not execute script '" + script +"':\n" + source, e);
       }

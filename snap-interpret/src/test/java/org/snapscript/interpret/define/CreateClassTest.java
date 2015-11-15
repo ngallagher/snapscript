@@ -136,25 +136,25 @@ public class CreateClassTest extends TestCase{
       map.put("out",System.out);
       Model s = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set);
-      ContextModule m = new ContextModule(context);
+      Context context =new ScriptContext(set, s);
+      ContextModule m = new ContextModule(context, s);
       ScriptCompiler compiler = new ScriptCompiler(context);
       boolean failure=false;
       System.err.println(SOURCE_1);
-      compiler.compile(SOURCE_1).execute(s);
+      compiler.compile(SOURCE_1).execute();
       System.err.println();
       System.err.println(SOURCE_2);
-      compiler.compile(SOURCE_2).execute(s);
+      compiler.compile(SOURCE_2).execute();
       System.err.println();
       System.err.println(SOURCE_3);
-      compiler.compile(SOURCE_3).execute(s);
+      compiler.compile(SOURCE_3).execute();
       System.err.println();
       System.err.println(SOURCE_4);
-      compiler.compile(SOURCE_4).execute(s);      
+      compiler.compile(SOURCE_4).execute();      
       System.err.println();
       System.err.println(ERROR_1);
       try{
-         compiler.compile(ERROR_1).execute(s);
+         compiler.compile(ERROR_1).execute();
       }catch(Exception e){
          e.printStackTrace();
          failure=true;

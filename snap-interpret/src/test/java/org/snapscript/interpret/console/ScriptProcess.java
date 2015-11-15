@@ -23,10 +23,10 @@ import org.snapscript.interpret.InterpretationResolver;
 public class ScriptProcess {
 
    private static final InstructionResolver SET = new InterpretationResolver();
-   private static final Context CONTEXT = new ScriptContext(SET);
-   private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
    private static final Map<String, Object> MAP = new HashMap<String, Object>();
    private static final Model MODEL = new MapModel(MAP);
+   private static final Context CONTEXT = new ScriptContext(SET, MODEL);
+   private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
    
    public static void main(String[] list) throws Exception {
       run(list[0]);
@@ -47,7 +47,7 @@ public class ScriptProcess {
       try {
          String source = load(file);
          Executable executable = COMPILER.compile(source);
-         executable.execute(MODEL);
+         executable.execute();
       } catch (Exception e) {
          StringWriter w = new StringWriter();
          PrintWriter p = new PrintWriter(w);
