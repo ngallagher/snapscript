@@ -35,7 +35,10 @@ public class ScriptLibrary implements Library {
             script.compile(scp); // compile it with a different module, all will go in to context
             script.execute(scp);
          } catch(Exception e) {
-            throw new IllegalStateException("Error occured in '" + name + "'", e);
+            if(name != null) {
+               throw new IllegalStateException("Error occured in '" + name + "'", e);
+            }
+            throw new IllegalStateException("Error occured in script", e);
          }
       }
    }
