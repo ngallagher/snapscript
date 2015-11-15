@@ -14,8 +14,10 @@ public class ExecutableLibrary implements Executable{
    public void execute(Model model) throws Exception{ 
       Module module = context.addModule("");
       Scope scope = module.getScope();
+      // XXX this is not really working!!
+      ModelScope s = new ModelScope(scope, model);
       
-      library.include(scope);
+      library.include(s);
    }
 
 }

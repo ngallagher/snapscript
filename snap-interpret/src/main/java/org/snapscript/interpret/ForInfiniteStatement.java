@@ -16,7 +16,7 @@ public class ForInfiniteStatement extends Statement {
 
    @Override
    public Result execute(Scope scope) throws Exception {
-      Scope compound = new CompoundScope(scope);
+      Scope compound = scope.getScope();
       
       while(true) {
          Result next = statement.execute(compound);

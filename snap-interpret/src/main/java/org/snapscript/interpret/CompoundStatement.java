@@ -1,6 +1,5 @@
 package org.snapscript.interpret;
 
-import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
@@ -21,7 +20,7 @@ public class CompoundStatement extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      Scope compound = new CompoundScope(scope);
+      Scope compound = scope.getScope(); 
       Result last = new Result();
       
       for(Statement statement : statements) {

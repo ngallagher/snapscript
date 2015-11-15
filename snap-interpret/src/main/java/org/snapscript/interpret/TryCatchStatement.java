@@ -1,5 +1,7 @@
 package org.snapscript.interpret;
 
+import static org.snapscript.core.ResultFlow.THROW;
+
 import java.util.List;
 
 import org.snapscript.core.Constant;
@@ -36,19 +38,28 @@ public class TryCatchStatement extends Statement {
 
    @Override
    public Result execute(Scope scope) throws Exception {
-      Result result = statement.execute(scope);
-      ResultFlow type = result.getFlow();
+      Result result = handle(scope);
       
       try {
+         ResultFlow type = result.getFlow();
+         
          if(type == ResultFlow.THROW) {
             return handle(scope, result);            
-         }
+         }   
       } finally {
          if(finish != null) {
             finish.execute(scope);
          }
       }
       return result;
+   }
+   
+   private Result handle(Scope scope) throws Exception {
+      try {
+         return statement.execute(scope);
+      } catch(Exception cause) {
+         return THROW.getResult(cause);
+      }
    }
    
    private Result handle(Scope scope, Result result) throws Exception {

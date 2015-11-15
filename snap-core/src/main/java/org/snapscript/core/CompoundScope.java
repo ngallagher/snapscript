@@ -42,7 +42,7 @@ public class CompoundScope implements Scope {
       private final Scope inner;
       
       public StateScope(Scope outer, Scope inner) {
-         this.state = new MapState(outer);
+         this.state = new MapState(inner);
          this.inner = inner;
          this.outer = outer;
       }
