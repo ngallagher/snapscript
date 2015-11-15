@@ -4,12 +4,12 @@ public interface SyntaxReader {
    SyntaxReader mark(int index); 
    boolean literal(String value);   
    boolean decimal();
-   boolean integer();
    boolean hexidecimal();
    boolean identifier();
    boolean qualifier();
-   boolean type();  
+   boolean template();
    boolean text();
+   boolean type();  
    long position(); 
    void commit();
    int reset();

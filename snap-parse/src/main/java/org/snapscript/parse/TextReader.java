@@ -227,48 +227,6 @@ public class TextReader {
       return null;
    }   
    
-   public Number integer() {
-      long value = 0;   
-      int mark = off;
-      int sign = 1;
-      
-      while(off < count) {
-         char next = source[off];
-         short mask = types[off];
-         
-         if ((mask & DIGIT) == 0) {
-            if(off > mark) {
-               if((mask & LONG) == LONG) {
-                  off++;
-                  return converter.convert(long.class, value);
-               }
-               break;
-            } else {
-               if((mask & MINUS) == MINUS){ 
-                  if(off + 1 < count) {
-                     mask = types[off + 1];
-                     
-                     if((mask & DIGIT) == DIGIT) {
-                        sign = -1;
-                        off++;
-                        continue;
-                     }
-                  }
-               }
-               return null;
-            }
-         }
-         value *= 10;
-         value += next;
-         value -= '0';  
-         off++;
-      }
-      if(off > mark) {
-         return converter.convert(int.class, sign * value);
-      }
-      return null;
-   }
-   
    public String text() {
       int mark = off + 1;
       int pos = off + 1;
@@ -305,6 +263,54 @@ public class TextReader {
                length++;
             }
             if(next == start && off > mark){
+               return decoder.decode(mark, length, escape > 0); 
+            }
+         }
+      }
+      return null;
+   }
+   
+   public String template() {
+      int mark = off + 1;
+      int pos = off + 1;
+      
+      if(pos < count) {
+         char start = source[off];
+         short mask = types[off];
+         char next = start;
+         
+         if((mask & QUOTE) == QUOTE) {
+            int escape = 0;
+            int length = 0;
+            int variable = 0;
+            
+            while(pos < count) {
+               next = source[pos++];
+               
+               if(next == start) {
+                  if(variable > 0) {
+                     off = pos;
+                  }
+                  break;
+               }
+               mask = types[pos -1];
+               
+               if((mask & DOLLAR) == DOLLAR){
+                  variable++;
+               } else if((mask & ESCAPE) == ESCAPE){
+                  if(pos + 1 < count) {                     
+                     mask = types[pos];
+                     
+                     if((mask & SPECIAL) == SPECIAL) {
+                        escape++;
+                        length++;
+                        pos++;
+                     }
+                  }
+               }
+               length++;
+            }
+            if(next == start && off > mark && variable > 0){
                return decoder.decode(mark, length, escape > 0); 
             }
          }

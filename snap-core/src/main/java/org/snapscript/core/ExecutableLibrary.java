@@ -16,7 +16,7 @@ public class ExecutableLibrary implements Executable{
       Module module = builder.resolve();
       Scope scope = module.getScope();
 
-      library.include(scope);
+      library.include(scope); // this can only be executed one for 'null' the default module, we need to reset it
    }
 
 }

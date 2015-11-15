@@ -7,7 +7,7 @@ public enum Syntax {
    NUMBER("number", "?<sign>{[hexidecimal]|[decimal]|[integer]}"), 
    BOOLEAN("boolean", "{'true'|'false'}"),
    NULL("null", "'null'"),
-   LITERAL("literal", "{<null>|<boolean>|<number>|[text]}"),
+   LITERAL("literal", "{<null>|<boolean>|<number>|[template]|[text]}"),
    ASSIGNMENT_OPERATOR("assignment-operator", "{'='|'*='|'/='|'%='|'+='|'-='|'<<='|'>>='|'>>>='|'&='|'^='|'|='}"),
    ARITHMETIC_OPERATOR("arithmetic-operator", "{'+'|'-'|'*'|'/'|'%'}"),
    BINARY_OPERATOR("binary-operator", "{'&'|'|'|'^'|'>>>'|'>>'|'<<'}"),

@@ -3,9 +3,9 @@ package org.snapscript.parse;
 import static org.snapscript.parse.TokenType.DECIMAL;
 import static org.snapscript.parse.TokenType.HEXIDECIMAL;
 import static org.snapscript.parse.TokenType.IDENTIFIER;
-import static org.snapscript.parse.TokenType.INTEGER;
 import static org.snapscript.parse.TokenType.LITERAL;
 import static org.snapscript.parse.TokenType.QUALIFIER;
+import static org.snapscript.parse.TokenType.TEMPLATE;
 import static org.snapscript.parse.TokenType.TEXT;
 import static org.snapscript.parse.TokenType.TYPE;
 
@@ -56,6 +56,9 @@ public class TokenIndexer {
          Token token = literal(line);
          
          if (token == null) {
+            token = template(line);
+         }
+         if (token == null) {
             token = text(line);
          }
          if(token == null) {
@@ -69,9 +72,6 @@ public class TokenIndexer {
          }
          if(token == null) {
             token = decimal(line);
-         }
-         if(token == null) {
-            token = integer(line);
          }
          if(token == null) {
             throw new IllegalStateException("Could not parse token on line " + lines[mark]);
@@ -123,22 +123,7 @@ public class TokenIndexer {
       Number token = reader.decimal();
 
       if (token != null) {
-         int mask = DECIMAL.mask;
-
-         if (token instanceof Integer || token instanceof Long) {
-            mask |= INTEGER.mask;
-         }
-         return new NumberToken(token, line, mask);
-      }
-      return null;
-   }
-
-   private Token integer(int number) {
-      Line line = extractor.extract(number);
-      Number token = reader.integer();
-      
-      if (token != null) {
-         return new NumberToken(token, line, INTEGER.mask | DECIMAL.mask);
+         return new NumberToken(token, line, DECIMAL.mask);
       }
       return null;
    }
@@ -148,11 +133,21 @@ public class TokenIndexer {
       Number token = reader.hexidecimal();
       
       if (token != null) {
-         return new NumberToken(token, line, INTEGER.mask | HEXIDECIMAL.mask | DECIMAL.mask);
+         return new NumberToken(token, line, HEXIDECIMAL.mask | DECIMAL.mask);
       }
       return null;
    }
 
+   private Token template(int number) {
+      Line line = extractor.extract(number);
+      String token = reader.template();
+      
+      if (token != null) {
+         return new StringToken(token, line, TEMPLATE.mask);
+      }
+      return null;
+   }
+   
    private Token text(int number) {
       Line line = extractor.extract(number);
       String token = reader.text();

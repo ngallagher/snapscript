@@ -3,9 +3,9 @@ package org.snapscript.parse;
 import static org.snapscript.parse.TokenType.DECIMAL;
 import static org.snapscript.parse.TokenType.HEXIDECIMAL;
 import static org.snapscript.parse.TokenType.IDENTIFIER;
-import static org.snapscript.parse.TokenType.INTEGER;
 import static org.snapscript.parse.TokenType.LITERAL;
 import static org.snapscript.parse.TokenType.QUALIFIER;
+import static org.snapscript.parse.TokenType.TEMPLATE;
 import static org.snapscript.parse.TokenType.TEXT;
 import static org.snapscript.parse.TokenType.TYPE;
 
@@ -33,6 +33,19 @@ public class TokenScanner implements LexicalAnalyzer {
       }
       if (mark < masks.length) {
          if ((masks[mark] & TEXT.mask) != 0) {
+            return tokens.get(mark++);
+         }
+      }
+      return null;
+   }
+   
+   @Override
+   public Token<String> template() {
+      if (masks == null) {
+         masks = indexer.index(tokens);
+      }
+      if (mark < masks.length) {
+         if ((masks[mark] & TEMPLATE.mask) != 0) {
             return tokens.get(mark++);
          }
       }
@@ -117,19 +130,6 @@ public class TokenScanner implements LexicalAnalyzer {
       }
       if (mark < masks.length) {
          if ((masks[mark] & DECIMAL.mask) != 0) {
-            return tokens.get(mark++);
-         }
-      }
-      return null;
-   }
-
-   @Override
-   public Token<Number> integer() {
-      if (masks == null) {
-         masks = indexer.index(tokens);
-      }
-      if (mark < masks.length) {
-         if ((masks[mark] & INTEGER.mask) != 0) {
             return tokens.get(mark++);
          }
       }

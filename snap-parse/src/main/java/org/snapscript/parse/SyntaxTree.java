@@ -165,17 +165,6 @@ public class SyntaxTree {
       }
 
       @Override
-      public boolean integer() {
-         Token token = analyzer.integer();
-
-         if (token != null) {
-            value = token;
-            return true;
-         }
-         return false;
-      }
-
-      @Override
       public boolean hexidecimal() {
          Token token = analyzer.hexidecimal();
 
@@ -222,6 +211,17 @@ public class SyntaxTree {
       @Override
       public boolean text() {
          Token token = analyzer.text();
+
+         if (token != null) {
+            value = token;
+            return true;
+         }
+         return false;
+      }
+      
+      @Override
+      public boolean template() {
+         Token token = analyzer.template();
 
          if (token != null) {
             value = token;

@@ -22,10 +22,10 @@ import org.snapscript.interpret.define.TypeName;
 
 public enum Interpretation implements Instruction {
    DECIMAL(NumberLiteral.class, "decimal"),
-   INTEGER(NumberLiteral.class, "integer"),
    HEXIDECIMAL(NumberLiteral.class, "hexidecimal"),    
    BOOLEAN(BooleanLiteral.class, "boolean"),
-   IDENTIFIER(TextLiteral.class, "identifier"),  
+   IDENTIFIER(TextLiteral.class, "identifier"), 
+   TEMPLATE(TextTemplate.class, "template"),
    CLASS(TextLiteral.class, "class"),  
    TYPE(TextLiteral.class, "type"),   
    TEXT(TextLiteral.class, "text"),
