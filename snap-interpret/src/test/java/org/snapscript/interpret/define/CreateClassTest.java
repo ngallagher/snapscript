@@ -132,6 +132,22 @@ public class CreateClassTest extends TestCase{
       new CreateClassTest().testClasses();
    }
    public void testClasses() throws Exception {
+      boolean failure = false;
+      execute(SOURCE_1);
+      execute(SOURCE_2);
+      execute(SOURCE_3);
+      execute(SOURCE_4);
+      
+      try{
+         execute(ERROR_1);
+      }catch(Exception e){
+         e.printStackTrace();
+         failure=true;
+      }
+      assertTrue(failure);
+   }
+   
+   private void execute(String source) throws Exception {
       Map map = new HashMap<String,Value>();
       map.put("out",System.out);
       Model s = new MapModel(map);
@@ -140,25 +156,8 @@ public class CreateClassTest extends TestCase{
       ContextModule m = new ContextModule(context, s);
       ScriptCompiler compiler = new ScriptCompiler(context);
       boolean failure=false;
-      System.err.println(SOURCE_1);
-      compiler.compile(SOURCE_1).execute();
+      System.err.println(source);
+      compiler.compile(source).execute();
       System.err.println();
-      System.err.println(SOURCE_2);
-      compiler.compile(SOURCE_2).execute();
-      System.err.println();
-      System.err.println(SOURCE_3);
-      compiler.compile(SOURCE_3).execute();
-      System.err.println();
-      System.err.println(SOURCE_4);
-      compiler.compile(SOURCE_4).execute();      
-      System.err.println();
-      System.err.println(ERROR_1);
-      try{
-         compiler.compile(ERROR_1).execute();
-      }catch(Exception e){
-         e.printStackTrace();
-         failure=true;
-      }
-      assertTrue(failure);
    }
 }
