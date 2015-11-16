@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.InstructionSet;
 import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
@@ -18,7 +18,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.interpret.BooleanLiteral;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 import org.snapscript.interpret.NumberLiteral;
 import org.snapscript.interpret.TextLiteral;
 import org.snapscript.parse.NumberToken;
@@ -37,7 +37,7 @@ public class ClassDefinitionTest extends TestCase {
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Context context =new ClassPathContext(set, model);
       ContextModule m = new ContextModule(context, model);
       ModuleScope scope = new ModuleScope(m, model);
@@ -60,7 +60,7 @@ public class ClassDefinitionTest extends TestCase {
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Context context =new ClassPathContext(set, model);
       ContextModule m = new ContextModule(context, model);
       Module module = new ContextModule(context, model);

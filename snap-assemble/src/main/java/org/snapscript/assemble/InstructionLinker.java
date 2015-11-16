@@ -7,19 +7,20 @@ import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.NoLibrary;
 import org.snapscript.core.Statement;
+import org.snapscript.core.StatementLibrary;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
-public class ScriptLinker implements LibraryLinker {
+public class InstructionLinker implements LibraryLinker {
    
    private final Cache<String, Statement> cache;
    private final SyntaxCompiler compiler;
    private final Assembler assembler;   
    
-   public ScriptLinker(InstructionResolver resolver, Context context) {
+   public InstructionLinker(InstructionSet instructions, Context context) {
       this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.assembler = new InstructionAssembler(resolver, context);      
+      this.assembler = new InstructionAssembler(instructions, context);      
       this.compiler = new SyntaxCompiler();
    }
    
@@ -38,7 +39,7 @@ public class ScriptLinker implements LibraryLinker {
          Statement statement = (Statement)assembler.assemble(node, name);
          
          cache.cache(name, statement); 
-         return new ScriptLibrary(statement, name);
+         return new StatementLibrary(statement, name);
       }
       return new NoLibrary(); 
    } 

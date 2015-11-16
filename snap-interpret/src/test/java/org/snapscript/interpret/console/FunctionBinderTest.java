@@ -9,8 +9,8 @@ import java.util.concurrent.Callable;
 import junit.framework.TestCase;
 
 import org.snapscript.assemble.ClassPathContext;
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptLinker;
+import org.snapscript.assemble.InstructionSet;
+import org.snapscript.assemble.InstructionLinker;
 import org.snapscript.common.io.ClassPathReader;
 import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.Context;
@@ -26,16 +26,16 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.interpret.ExpressionEvaluator;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 
 public class FunctionBinderTest extends TestCase {
 
    public void testBinderMethod() throws Exception {
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Model model = new EmptyModel();
       Context context =new ClassPathContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
-      LibraryLinker linker = new ScriptLinker(set, context);
+      LibraryLinker linker = new InstructionLinker(set, context);
       ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
@@ -53,12 +53,12 @@ public class FunctionBinderTest extends TestCase {
    
 
    public void testBinderConstruct() throws Exception {
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Model model = new EmptyModel();
       Context context =new ClassPathContext(set, model);
       ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
-      LibraryLinker linker = new ScriptLinker(set, context);
+      LibraryLinker linker = new InstructionLinker(set, context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);

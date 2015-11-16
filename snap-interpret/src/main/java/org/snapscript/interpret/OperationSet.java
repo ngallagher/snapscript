@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.snapscript.assemble.Instruction;
-import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.InstructionSet;
 
-public class InterpretationResolver implements InstructionResolver {
+public class OperationSet implements InstructionSet {
 
    @Override
    public List<Instruction> list() {
-      Instruction[] list = Interpretation.values();
+      Instruction[] list = Operation.values();
       return Arrays.asList(list);
    }
 }

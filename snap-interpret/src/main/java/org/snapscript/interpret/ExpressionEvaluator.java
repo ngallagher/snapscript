@@ -2,7 +2,7 @@ package org.snapscript.interpret;
 
 import org.snapscript.assemble.Assembler;
 import org.snapscript.assemble.InstructionAssembler;
-import org.snapscript.assemble.InstructionResolver;
+import org.snapscript.assemble.InstructionSet;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
@@ -20,14 +20,14 @@ public class ExpressionEvaluator implements Evaluator{
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
    private final Assembler assembler;
-   private final Interpretation root;
+   private final Operation root;
    private final Context context;
    
-   public ExpressionEvaluator(InstructionResolver resolver, Context context){
-      this(resolver, context, Interpretation.EXPRESSION);
+   public ExpressionEvaluator(InstructionSet resolver, Context context){
+      this(resolver, context, Operation.EXPRESSION);
    }
    
-   public ExpressionEvaluator(InstructionResolver resolver, Context context, Interpretation root) {
+   public ExpressionEvaluator(InstructionSet resolver, Context context, Operation root) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new InstructionAssembler(resolver, context);
       this.compiler = new SyntaxCompiler();

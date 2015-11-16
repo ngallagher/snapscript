@@ -17,21 +17,20 @@ public class InstructionAssembler implements Assembler {
    
    private final Map<String, Instruction> codes;
    private final Map<String, Type> types;
-   private final InstructionResolver resolver;
+   private final InstructionSet instructions;
    private final Context context;
 
-   public InstructionAssembler(InstructionResolver resolver, Context context) {
+   public InstructionAssembler(InstructionSet instructions, Context context) {
       this.codes = new LinkedHashMap<String, Instruction>();
       this.types = new LinkedHashMap<String, Type>();
-      this.resolver = resolver;
+      this.instructions = instructions;
       this.context = context;
    }
    
    @Override
    public Object assemble(SyntaxNode token, String name) throws Exception {
-      long start=System.currentTimeMillis();
       if(types.isEmpty()) {
-         List<Instruction> list = resolver.list();       
+         List<Instruction> list = instructions.list();       
       
          for(Instruction instruction :list){
             TypeLoader loader = context.getLoader();
@@ -43,25 +42,7 @@ public class InstructionAssembler implements Assembler {
             types.put(id, type);
          }  
       } 
-      Object result = create(token, name, 0);
-      long finish=System.currentTimeMillis();
-      long normal=finish-start;
-      //System.err.println("Assembly time  took "+normal);
-//      listener.assemble(name, OperationCode.END, null, 0, null);
-//      try{
-//
-//         start = System.currentTimeMillis();
-//         Object object = assembler.assemble(name);
-//         finish=System.currentTimeMillis();
-//         long time=finish-start;
-//         System.err.println("Binary assemble time was "+time+" normal was "+normal);
-//         if(object != null){
-//            return object;
-//         }
-//      }catch(Exception e){
-//         e.printStackTrace();
-//      }
-      return result;
+      return create(token, name, 0);
    }
    
    private Object create(SyntaxNode node, String name, int depth) throws Exception {

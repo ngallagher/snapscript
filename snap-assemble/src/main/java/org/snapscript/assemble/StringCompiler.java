@@ -10,12 +10,12 @@ import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.NoScript;
 
-public class ScriptCompiler implements Compiler {
+public class StringCompiler implements Compiler {
    
    private final Cache<String, Executable> cache;
    private final Context context;   
    
-   public ScriptCompiler(Context context) {
+   public StringCompiler(Context context) {
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
       this.context = context;
    } 

@@ -1,21 +1,14 @@
-package org.snapscript.assemble;
+package org.snapscript.core;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.snapscript.core.Context;
-import org.snapscript.core.Library;
-import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
-import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
-
-public class ScriptLibrary implements Library {
+public class StatementLibrary implements Library {
    
    private final AtomicBoolean done;
    private final Statement script;
    private final String name;
    
-   public ScriptLibrary(Statement script, String name) {
+   public StatementLibrary(Statement script, String name) {
       this.done = new AtomicBoolean();
       this.script = script;
       this.name = name;

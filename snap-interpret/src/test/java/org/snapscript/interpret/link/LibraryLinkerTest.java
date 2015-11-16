@@ -8,14 +8,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptCompiler;
+import org.snapscript.assemble.InstructionSet;
+import org.snapscript.assemble.StringCompiler;
 import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 
 public class LibraryLinkerTest extends TestCase {
    private static final int ITERATIONS = 1;
@@ -23,7 +23,7 @@ public class LibraryLinkerTest extends TestCase {
       new LibraryLinkerTest().testLinker();
    }
    public void testLinker() throws Exception {
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Map<String, Object> map = new HashMap<String, Object>();
       
       map.put("out", System.out);
@@ -34,13 +34,13 @@ public class LibraryLinkerTest extends TestCase {
       
       Model model = new MapModel(map);
       Context c =new ClassPathContext(set, model);
-      ScriptCompiler compiler = new ScriptCompiler(c);
+      StringCompiler compiler = new StringCompiler(c);
    
       executeScript(compiler, "script1.snap");      
  /*     executeScript(compiler, "perf2.js");    
       executeScript(compiler, "perf3.js"); */   
    }
-   public static Object executeScript(ScriptCompiler compiler, String source) throws Exception {
+   public static Object executeScript(StringCompiler compiler, String source) throws Exception {
       File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\link\\"+source);
       String script = load(file);
 

@@ -20,7 +20,7 @@ import org.snapscript.interpret.define.TraitName;
 import org.snapscript.interpret.define.TypeHierarchy;
 import org.snapscript.interpret.define.TypeName;
 
-public enum Interpretation implements Instruction {
+public enum Operation implements Instruction {
    DECIMAL(NumberLiteral.class, "decimal"),
    HEXIDECIMAL(NumberLiteral.class, "hexidecimal"),    
    BOOLEAN(BooleanLiteral.class, "boolean"),
@@ -120,7 +120,7 @@ public enum Interpretation implements Instruction {
    public final Class type;
    public final String name;
    
-   private Interpretation(Class type, String name){
+   private Operation(Class type, String name){
       this.type = type;
       this.name = name;
    }
@@ -140,8 +140,8 @@ public enum Interpretation implements Instruction {
       return ordinal();
    }
    
-   public static Interpretation resolveInstruction(int code) {
-      Interpretation[] instruction = Interpretation.values();
+   public static Instruction resolveInstruction(int code) {
+      Instruction[] instruction = Operation.values();
       
       if(instruction.length > code) {
          return instruction[code];

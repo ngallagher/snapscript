@@ -14,20 +14,25 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class FileContext implements Context {
 
-   private final FunctionBinder binder;
    private final ImportResolver resolver;
+   private final FunctionBinder binder;
    private final ResourceReader reader;
    private final ModuleBuilder builder;
    private final LibraryLinker linker;
    private final TypeLoader loader; 
 
-   public FileContext(InstructionResolver res, Model model, File file){
+   public FileContext(InstructionSet instructions, Model model, File file){
       this.reader = new FileReader(file);
       this.builder = new ModuleBuilder(this, model);
-      this.linker = new ScriptLinker(res, this);
+      this.linker = new InstructionLinker(instructions, this);
       this.resolver = new ImportResolver(linker, reader);      
       this.loader = new TypeLoader(resolver);
       this.binder = new FunctionBinder(loader);
+   }
+   
+   @Override
+   public ResourceReader getReader() {
+      return reader;
    }
 
    @Override

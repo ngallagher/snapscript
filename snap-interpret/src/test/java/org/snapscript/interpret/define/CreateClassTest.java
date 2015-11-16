@@ -5,15 +5,15 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptCompiler;
+import org.snapscript.assemble.InstructionSet;
+import org.snapscript.assemble.StringCompiler;
 import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Value;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 
 public class CreateClassTest extends TestCase{
    private static final String SOURCE_1=
@@ -151,10 +151,10 @@ public class CreateClassTest extends TestCase{
       Map map = new HashMap<String,Value>();
       map.put("out",System.out);
       Model s = new MapModel(map);
-      InstructionResolver set = new InterpretationResolver();
+      InstructionSet set = new OperationSet();
       Context context =new ClassPathContext(set, s);
       ContextModule m = new ContextModule(context, s);
-      ScriptCompiler compiler = new ScriptCompiler(context);
+      StringCompiler compiler = new StringCompiler(context);
       boolean failure=false;
       System.err.println(source);
       compiler.compile(source).execute();

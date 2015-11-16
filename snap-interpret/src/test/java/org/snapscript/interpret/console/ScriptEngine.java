@@ -22,13 +22,13 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptCompiler;
+import org.snapscript.assemble.InstructionSet;
+import org.snapscript.assemble.StringCompiler;
 import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
 
@@ -183,10 +183,10 @@ public class ScriptEngine {
       
       private void compile() {
          try {
-            InstructionResolver set = new InterpretationResolver();
+            InstructionSet set = new OperationSet();
             Model model = new EmptyModel();
             Context context =new ClassPathContext(set, model);
-            ScriptCompiler compiler = new ScriptCompiler(context);
+            StringCompiler compiler = new StringCompiler(context);
             long start = System.nanoTime();
             compiler.compile(file);
             long finish = System.nanoTime();

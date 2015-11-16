@@ -1,14 +1,14 @@
 package org.snapscript.run;
 
-import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptCompiler;
+import org.snapscript.assemble.InstructionSet;
+import org.snapscript.assemble.StringCompiler;
 import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Compiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Executable;
 import org.snapscript.core.Model;
-import org.snapscript.interpret.InterpretationResolver;
+import org.snapscript.interpret.OperationSet;
 
 public class Interpreter {
    
@@ -28,9 +28,9 @@ public class Interpreter {
       }catch(Exception e) {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
-      InstructionResolver resolver = new InterpretationResolver();
+      InstructionSet resolver = new OperationSet();
       Context context = new ClassPathContext(resolver, model);
-      Compiler compiler = new ScriptCompiler(context);
+      Compiler compiler = new StringCompiler(context);
       
       try {
          Executable executable = compiler.compile(source);
