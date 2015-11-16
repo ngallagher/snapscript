@@ -8,7 +8,7 @@
   <dependencies>
     <dependency>
       <groupId>org.snapscript</groupId>
-      <artifactId>snap-interpret</artifactId>
+      <artifactId>snap-compile</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
