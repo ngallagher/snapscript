@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.snapscript.compile.instruction.ArrayConverter;
+import org.snapscript.compile.instruction.collection.ArrayConverter;
 import org.snapscript.core.Context;
 import org.snapscript.core.Holder;
 import org.snapscript.core.Module;

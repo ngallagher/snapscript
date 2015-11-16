@@ -1,6 +1,6 @@
 package org.snapscript.interpret;
 
-import org.snapscript.compile.instruction.PrimitiveNumberList;
+import org.snapscript.compile.instruction.collection.PrimitiveNumberList;
 
 import junit.framework.TestCase;
 

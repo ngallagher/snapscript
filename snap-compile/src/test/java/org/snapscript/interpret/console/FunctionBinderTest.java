@@ -10,10 +10,10 @@ import junit.framework.TestCase;
 
 import org.snapscript.common.io.ClassPathReader;
 import org.snapscript.common.io.ResourceReader;
-import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Evaluator;
 import org.snapscript.compile.StringEvaluator;
 import org.snapscript.compile.assemble.InstructionLinker;
+import org.snapscript.compile.context.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Function;

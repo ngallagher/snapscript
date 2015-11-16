@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.compile.instruction.operation.SignOperator;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.NumberToken;

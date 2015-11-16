@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.context.ClassPathContext;
 import org.snapscript.compile.instruction.BooleanLiteral;
 import org.snapscript.compile.instruction.NumberLiteral;
 import org.snapscript.compile.instruction.TextLiteral;
