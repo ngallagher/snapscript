@@ -1,10 +1,11 @@
-package org.snapscript.compile.assemble;
+package org.snapscript.compile;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;

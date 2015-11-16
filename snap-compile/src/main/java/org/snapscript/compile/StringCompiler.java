@@ -2,7 +2,7 @@ package org.snapscript.compile;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.assemble.Instruction;
+import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.ExecutableLibrary;

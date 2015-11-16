@@ -11,9 +11,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.assemble.Assembler;
-import org.snapscript.compile.assemble.InstructionAssembler;
-import org.snapscript.compile.context.ClassPathContext;
+import org.snapscript.compile.Assembler;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.InstructionAssembler;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;

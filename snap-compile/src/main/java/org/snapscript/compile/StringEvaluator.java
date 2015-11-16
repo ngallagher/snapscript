@@ -1,13 +1,9 @@
 package org.snapscript.compile;
 
-import java.rmi.server.Operation;
-
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.assemble.Assembler;
-import org.snapscript.compile.assemble.Instruction;
-import org.snapscript.compile.assemble.InstructionAssembler;
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;

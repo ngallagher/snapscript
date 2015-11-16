@@ -1,7 +1,6 @@
-package org.snapscript.compile.instruction.loop;
+package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;

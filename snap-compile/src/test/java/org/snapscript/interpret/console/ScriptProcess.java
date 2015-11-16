@@ -11,8 +11,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
-import org.snapscript.compile.context.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;

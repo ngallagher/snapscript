@@ -1,10 +1,7 @@
-package org.snapscript.compile.context;
+package org.snapscript.compile;
 
-import java.io.File;
-
-import org.snapscript.common.io.FileReader;
+import org.snapscript.common.io.ClassPathReader;
 import org.snapscript.common.io.ResourceReader;
-import org.snapscript.compile.assemble.InstructionLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.ImportResolver;
 import org.snapscript.core.LibraryLinker;
@@ -13,7 +10,7 @@ import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 
-public class FileContext implements Context {
+public class ClassPathContext implements Context {
 
    private final ImportResolver resolver;
    private final FunctionBinder binder;
@@ -22,8 +19,8 @@ public class FileContext implements Context {
    private final LibraryLinker linker;
    private final TypeLoader loader; 
 
-   public FileContext(Model model, File file){
-      this.reader = new FileReader(file);
+   public ClassPathContext(Model model){
+      this.reader = new ClassPathReader(ClassPathContext.class);
       this.builder = new ModuleBuilder(this, model);
       this.linker = new InstructionLinker(this);
       this.resolver = new ImportResolver(linker, reader);      

@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
-import org.snapscript.compile.context.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;

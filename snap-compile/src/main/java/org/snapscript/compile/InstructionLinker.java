@@ -1,4 +1,4 @@
-package org.snapscript.compile.assemble;
+package org.snapscript.compile;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;

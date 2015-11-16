@@ -8,8 +8,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
-import org.snapscript.compile.context.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.Executable;
