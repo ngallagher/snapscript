@@ -12,8 +12,9 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.assemble.Assembler;
+import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.assemble.InstructionAssembler;
 import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
@@ -198,9 +199,9 @@ public class EvaluationTest extends TestCase {
    public static ResultFlow statement(String source, String grammar, Map<String, Object> map) throws Exception {
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set, model);
+      Context cc =new ClassPathContext(set, model);
       Scope s = cc.getBuilder().resolve().getScope();
-      Assembler builder = new Assembler(set, cc);
+      Assembler builder = new InstructionAssembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
@@ -211,9 +212,9 @@ public class EvaluationTest extends TestCase {
    public static Object evaluate(String source, String grammar, Map<String, Object> map, int repeat) throws Exception {
       Model model = new MapModel(map);
       InstructionResolver set = new InterpretationResolver();
-      Context cc =new ScriptContext(set, model);
+      Context cc =new ClassPathContext(set, model);
       Scope s = cc.getBuilder().resolve().getScope();
-      Assembler builder = new Assembler(set, cc);
+      Assembler builder = new InstructionAssembler(set, cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);

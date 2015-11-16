@@ -2,7 +2,7 @@ package org.snapscript.run;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Compiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
@@ -29,7 +29,7 @@ public class Interpreter {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
       InstructionResolver resolver = new InterpretationResolver();
-      Context context = new ScriptContext(resolver, model);
+      Context context = new ClassPathContext(resolver, model);
       Compiler compiler = new ScriptCompiler(context);
       
       try {

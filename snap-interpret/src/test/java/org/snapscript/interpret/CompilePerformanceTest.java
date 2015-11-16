@@ -8,15 +8,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
-import org.snapscript.interpret.InterpretationResolver;
 
 //Assembly time  took 376
 //Binary assemble time was 2004 normal was 376
@@ -49,7 +48,7 @@ public class CompilePerformanceTest extends TestCase {
          InstructionResolver set = new InterpretationResolver();
          Map<String, Object> map = new HashMap<String, Object>();
          Model model = new MapModel(map);
-         Context c =new ScriptContext(set, model);
+         Context c =new ClassPathContext(set, model);
          ScriptCompiler compiler = new ScriptCompiler(c);
 
          map.put("out", System.out);

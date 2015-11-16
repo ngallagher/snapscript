@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
@@ -185,7 +185,7 @@ public class ScriptEngine {
          try {
             InstructionResolver set = new InterpretationResolver();
             Model model = new EmptyModel();
-            Context context =new ScriptContext(set, model);
+            Context context =new ClassPathContext(set, model);
             ScriptCompiler compiler = new ScriptCompiler(context);
             long start = System.nanoTime();
             compiler.compile(file);

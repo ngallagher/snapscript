@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
@@ -25,7 +25,7 @@ public class ScriptProcess {
    private static final InstructionResolver SET = new InterpretationResolver();
    private static final Map<String, Object> MAP = new HashMap<String, Object>();
    private static final Model MODEL = new MapModel(MAP);
-   private static final Context CONTEXT = new ScriptContext(SET, MODEL);
+   private static final Context CONTEXT = new ClassPathContext(SET, MODEL);
    private static final ScriptCompiler COMPILER = new ScriptCompiler(CONTEXT);
    
    public static void main(String[] list) throws Exception {

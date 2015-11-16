@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.snapscript.common.io.ResourceReader;
+
 public class ImportResolver {
    
    private static final String[] DEFAULTS = {
@@ -22,16 +24,16 @@ public class ImportResolver {
    
    private final Map<String, Class> types;
    private final List<String> imports;
-   private final ClassPathLoader loader;
+   private final LibraryLoader loader;
    
-   public ImportResolver(LibraryLinker linker) {
-      this(linker, Arrays.asList(DEFAULTS));
+   public ImportResolver(LibraryLinker linker, ResourceReader reader) {
+      this(linker, reader, Arrays.asList(DEFAULTS));
    }
    
-   public ImportResolver(LibraryLinker linker, List<String> imports) {
+   public ImportResolver(LibraryLinker linker, ResourceReader reader, List<String> imports) {
       this.types = new LinkedHashMap<String, Class>();
       this.imports = new ArrayList<String>(imports);
-      this.loader = new ClassPathLoader(linker);
+      this.loader = new LibraryLoader(linker, reader);
    }
    
    public Library addImport(String name) {

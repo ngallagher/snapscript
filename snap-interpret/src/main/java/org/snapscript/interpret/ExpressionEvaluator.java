@@ -1,6 +1,7 @@
 package org.snapscript.interpret;
 
 import org.snapscript.assemble.Assembler;
+import org.snapscript.assemble.InstructionAssembler;
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
@@ -28,7 +29,7 @@ public class ExpressionEvaluator implements Evaluator{
    
    public ExpressionEvaluator(InstructionResolver resolver, Context context, Interpretation root) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
-      this.assembler = new Assembler(resolver, context);
+      this.assembler = new InstructionAssembler(resolver, context);
       this.compiler = new SyntaxCompiler();
       this.context = context;
       this.root = root;

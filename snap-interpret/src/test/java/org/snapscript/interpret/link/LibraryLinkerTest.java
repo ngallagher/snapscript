@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
@@ -33,7 +33,7 @@ public class LibraryLinkerTest extends TestCase {
       //LexerBuilder.print(LexerBuilder.create(), script, "script");
       
       Model model = new MapModel(map);
-      Context c =new ScriptContext(set, model);
+      Context c =new ClassPathContext(set, model);
       ScriptCompiler compiler = new ScriptCompiler(c);
    
       executeScript(compiler, "script1.snap");      

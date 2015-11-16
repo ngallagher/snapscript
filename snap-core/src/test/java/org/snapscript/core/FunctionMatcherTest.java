@@ -2,6 +2,8 @@ package org.snapscript.core;
 
 import java.util.Arrays;
 
+import org.snapscript.common.io.ClassPathReader;
+import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.Library;
 import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Type;
@@ -42,7 +44,8 @@ public class FunctionMatcherTest extends TestCase {
             return null;
          }
       };
-      ImportResolver resolver = new ImportResolver(linker);
+      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
+      ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionMatcher matcher = new FunctionMatcher(loader);
       Type type = loader.loadType(ExampleObject.class);

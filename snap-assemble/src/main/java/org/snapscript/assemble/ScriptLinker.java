@@ -19,7 +19,7 @@ public class ScriptLinker implements LibraryLinker {
    
    public ScriptLinker(InstructionResolver resolver, Context context) {
       this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.assembler = new Assembler(resolver, context);      
+      this.assembler = new InstructionAssembler(resolver, context);      
       this.compiler = new SyntaxCompiler();
    }
    

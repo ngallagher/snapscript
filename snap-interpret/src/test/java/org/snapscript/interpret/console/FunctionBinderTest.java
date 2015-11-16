@@ -8,9 +8,11 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptContext;
 import org.snapscript.assemble.ScriptLinker;
+import org.snapscript.common.io.ClassPathReader;
+import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Evaluator;
@@ -31,10 +33,11 @@ public class FunctionBinderTest extends TestCase {
    public void testBinderMethod() throws Exception {
       InstructionResolver set = new InterpretationResolver();
       Model model = new EmptyModel();
-      Context context =new ScriptContext(set, model);
+      Context context =new ClassPathContext(set, model);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      ImportResolver resolver = new ImportResolver(linker);
+      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
+      ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       
@@ -52,10 +55,11 @@ public class FunctionBinderTest extends TestCase {
    public void testBinderConstruct() throws Exception {
       InstructionResolver set = new InterpretationResolver();
       Model model = new EmptyModel();
-      Context context =new ScriptContext(set, model);
+      Context context =new ClassPathContext(set, model);
+      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
       Evaluator evaluator = new ExpressionEvaluator(set,context);
       LibraryLinker linker = new ScriptLinker(set, context);
-      ImportResolver resolver = new ImportResolver(linker);
+      ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Map<String, Property>v=new LinkedHashMap<String,Property>();

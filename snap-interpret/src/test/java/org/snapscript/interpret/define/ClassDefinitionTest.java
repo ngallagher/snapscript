@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 import junit.framework.TestCase;
 
 import org.snapscript.assemble.InstructionResolver;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
@@ -38,7 +38,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set, model);
+      Context context =new ClassPathContext(set, model);
       ContextModule m = new ContextModule(context, model);
       ModuleScope scope = new ModuleScope(m, model);
       Type type = definer.compile(scope).getValue();
@@ -61,7 +61,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
       InstructionResolver set = new InterpretationResolver();
-      Context context =new ScriptContext(set, model);
+      Context context =new ClassPathContext(set, model);
       ContextModule m = new ContextModule(context, model);
       Module module = new ContextModule(context, model);
       ModuleScope scope = new ModuleScope(module, model);

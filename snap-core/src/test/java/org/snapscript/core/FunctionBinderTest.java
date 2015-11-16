@@ -5,6 +5,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.snapscript.common.io.ClassPathReader;
+import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.bind.FunctionBinder;
 
 public class FunctionBinderTest extends TestCase {
@@ -22,7 +24,8 @@ public class FunctionBinderTest extends TestCase {
             return null;
          }
       };
-      ImportResolver resolver = new ImportResolver(linker);
+      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
+      ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);
       Type type = loader.loadType(Map.class);

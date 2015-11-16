@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 import org.snapscript.assemble.InstructionResolver;
 import org.snapscript.assemble.ScriptCompiler;
-import org.snapscript.assemble.ScriptContext;
+import org.snapscript.assemble.ClassPathContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.Executable;
@@ -38,7 +38,7 @@ public class TestRunnerTest extends TestCase{
             Map<String, Object> map = new HashMap<String, Object>();
             Model s = new MapModel(map);
             InstructionResolver set = new InterpretationResolver();
-            Context context =new ScriptContext(set, s);
+            Context context =new ClassPathContext(set, s);
             ContextModule m = new ContextModule(context, s);
             ScriptCompiler compiler = new ScriptCompiler(context);
    
