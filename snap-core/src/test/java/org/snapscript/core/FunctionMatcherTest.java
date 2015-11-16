@@ -2,17 +2,12 @@ package org.snapscript.core;
 
 import java.util.Arrays;
 
+import junit.framework.TestCase;
+
 import org.snapscript.common.io.ClassPathReader;
 import org.snapscript.common.io.ResourceReader;
-import org.snapscript.core.Library;
-import org.snapscript.core.LibraryLinker;
-import org.snapscript.core.Type;
-import org.snapscript.core.TypeLoader;
-import org.snapscript.core.ImportResolver;
 import org.snapscript.core.bind.FunctionMatcher;
 import org.snapscript.core.bind.FunctionPointer;
-
-import junit.framework.TestCase;
 
 public class FunctionMatcherTest extends TestCase {
    

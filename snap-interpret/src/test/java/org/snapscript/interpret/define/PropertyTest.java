@@ -5,15 +5,13 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
-import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Value;
-import org.snapscript.interpret.OperationSet;
 
 public class PropertyTest extends TestCase{
    public static class Pet{
@@ -47,8 +45,7 @@ public class PropertyTest extends TestCase{
       Map map = new HashMap<String,Value>();
       map.put("out",System.out);
       Model s = new MapModel(map);
-      InstructionSet set = new OperationSet();
-      Context context =new ClassPathContext(set, s);
+      Context context =new ClassPathContext(s);
       ContextModule m = new ContextModule(context, s);
       StringCompiler compiler = new StringCompiler(context);
       boolean failure=false;

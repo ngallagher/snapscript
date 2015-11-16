@@ -31,7 +31,6 @@
            <module>snap-common</module>
            <module>snap-core</module>
            <module>snap-parse</module>           
-           <module>snap-assemble</module>
            <module>snap-interpret</module>       
            <module>snap-run</module>
            <module>snap-test</module>          

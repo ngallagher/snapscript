@@ -8,13 +8,11 @@ import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
-import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
-import org.snapscript.interpret.OperationSet;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
 
@@ -141,9 +139,8 @@ public class ScriptLauncher implements ScriptTask, Runnable {
    
    private void compile() {
       try {
-         InstructionSet set = new OperationSet();
          Model model = new EmptyModel();
-         Context context =new ClassPathContext(set, model);
+         Context context =new ClassPathContext(model);
          StringCompiler compiler = new StringCompiler(context);
          long start = System.nanoTime();
          compiler.compile(source);

@@ -10,9 +10,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
-import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.Library;
@@ -21,14 +20,12 @@ import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.interpret.OperationSet;
 
 public class ScriptAgent {
 
-   private static final InstructionSet SET = new OperationSet();
    private static final Map<String, Object> MAP = new HashMap<String, Object>();
    private static final Model MODEL = new MapModel(MAP);
-   private static final Context CONTEXT = new ClassPathContext(SET, MODEL);
+   private static final Context CONTEXT = new ClassPathContext(MODEL);
    private static final StringCompiler COMPILER = new StringCompiler(CONTEXT);
    private static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+

@@ -8,25 +8,22 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
-import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Compiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.interpret.OperationSet;
 
 public class CompilerTest extends TestCase{
    public static void main(String[] l)throws Exception{
       new CompilerTest().testCompilerPerformance();
    }
    public void testCompilerPerformance() throws Exception {
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context c =new ClassPathContext(set, model);
+      Context c =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(c);
       
       compileScripts(compiler);
@@ -67,19 +64,17 @@ public class CompilerTest extends TestCase{
       }
    }   
    public void testCompiler() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("var x=\"xx\";x.toString();");
       executable.execute();     
    }
    public void testCompilerWithArgument() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("map.put('y',x.substring(1));");
       map.put("map", map);
@@ -88,10 +83,9 @@ public class CompilerTest extends TestCase{
       assertEquals(map.get("y"), "lah");
    }
    public void testImportStatic() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("import static lang.Math.*;var x = 1.6; var y = round(x); map.put('x',x); map.put('y',y);");
       map.put("map", map);
@@ -100,10 +94,9 @@ public class CompilerTest extends TestCase{
       assertEquals(map.get("y"), 2l);      
    }
    public void testImport() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("import security.SecureRandom; var rand = new SecureRandom(); var val = rand.nextInt(10); map.put('rand', rand); map.put('val', val);");
       map.put("map", map);
@@ -112,10 +105,9 @@ public class CompilerTest extends TestCase{
       assertEquals(map.get("val").getClass(), Integer.class);      
    }
    public void testTypeConstraint() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("var num : Number = 1.0d; var decimal : Double = 5*num; map.put('num', num); map.put('decimal', decimal);");
       map.put("map", map);
@@ -124,10 +116,9 @@ public class CompilerTest extends TestCase{
       assertEquals(map.get("decimal"), 5.0);      
    }
    public void testTypeConstraintFailure() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("var num : Number = 1.0d; map.put('num',num); var decimal : String = 5*num;");
       map.put("map", map);
@@ -142,10 +133,9 @@ public class CompilerTest extends TestCase{
       assertTrue(failure);
    }
    public void testParameterTypeConstraint() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("function fun(x:String){return \"done=\"+x;}var y =fun(\"x\");map.put('y',y);");
 
@@ -154,10 +144,9 @@ public class CompilerTest extends TestCase{
       assertEquals(map.get("y"), "done=x");
    }
    public void testParameterTypeConstraintFailure() throws Exception{
-      InstructionSet set = new OperationSet();
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(set, model);
+      Context context =new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       Executable executable = compiler.compile("function fun(x:Date){return \"done=\"+x;}var y =fun(11.2);");
       boolean failure=false;

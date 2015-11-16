@@ -8,9 +8,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.ClassPathContext;
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
@@ -45,10 +44,9 @@ public class CompilePerformanceTest extends TestCase {
 
       for(int j=0;j<ITERATIONS;j++){
          long start=System.currentTimeMillis();
-         InstructionSet set = new OperationSet();
          Map<String, Object> map = new HashMap<String, Object>();
          Model model = new MapModel(map);
-         Context c =new ClassPathContext(set, model);
+         Context c =new ClassPathContext(model);
          StringCompiler compiler = new StringCompiler(c);
 
          map.put("out", System.out);

@@ -8,15 +8,13 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.assemble.InstructionSet;
-import org.snapscript.assemble.StringCompiler;
-import org.snapscript.assemble.ClassPathContext;
+import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.interpret.OperationSet;
 
 public class TestRunnerTest extends TestCase{
    private static final int ITERATIONS = 1;
@@ -37,8 +35,7 @@ public class TestRunnerTest extends TestCase{
             
             Map<String, Object> map = new HashMap<String, Object>();
             Model s = new MapModel(map);
-            InstructionSet set = new OperationSet();
-            Context context =new ClassPathContext(set, s);
+            Context context =new ClassPathContext(s);
             ContextModule m = new ContextModule(context, s);
             StringCompiler compiler = new StringCompiler(context);
    

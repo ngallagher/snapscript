@@ -1,6 +1,6 @@
 package org.snapscript.interpret;
 
-import org.snapscript.interpret.PrimitiveCharacterList;
+import org.snapscript.compile.instruction.PrimitiveCharacterList;
 
 import junit.framework.TestCase;
 
