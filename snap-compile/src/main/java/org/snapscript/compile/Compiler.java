@@ -1,4 +1,6 @@
-package org.snapscript.core;
+package org.snapscript.compile;
+
+import org.snapscript.core.Executable;
 
 public interface Compiler {
    Executable compile(String source) throws Exception;

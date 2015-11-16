@@ -11,11 +11,11 @@ import junit.framework.TestCase;
 import org.snapscript.common.io.ClassPathReader;
 import org.snapscript.common.io.ResourceReader;
 import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.Evaluator;
+import org.snapscript.compile.StringEvaluator;
 import org.snapscript.compile.assemble.InstructionLinker;
-import org.snapscript.compile.instruction.ExpressionEvaluator;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
-import org.snapscript.core.Evaluator;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
 import org.snapscript.core.LibraryLinker;
@@ -31,7 +31,7 @@ public class FunctionBinderTest extends TestCase {
    public void testBinderMethod() throws Exception {
       Model model = new EmptyModel();
       Context context =new ClassPathContext(model);
-      Evaluator evaluator = new ExpressionEvaluator(context);
+      Evaluator evaluator = new StringEvaluator(context);
       LibraryLinker linker = new InstructionLinker(context);
       ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
       ImportResolver resolver = new ImportResolver(linker, reader);
@@ -53,7 +53,7 @@ public class FunctionBinderTest extends TestCase {
       Model model = new EmptyModel();
       Context context =new ClassPathContext(model);
       ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
-      Evaluator evaluator = new ExpressionEvaluator(context);
+      Evaluator evaluator = new StringEvaluator(context);
       LibraryLinker linker = new InstructionLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);

@@ -6,10 +6,7 @@ import java.util.concurrent.FutureTask;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.core.Compiler;
 import org.snapscript.core.Executable;
-import org.snapscript.core.Model;
-import org.snapscript.core.NoScript;
 
 public class ExcecutorCompiler implements Compiler {
    
@@ -31,7 +28,7 @@ public class ExcecutorCompiler implements Compiler {
    @Override
    public Executable compile(String source, boolean verbose) throws Exception {
       if(source == null) {
-         return new NoScript();
+         throw new NullPointerException("No source provided");
       }
       Executable executable = cache.fetch(source);
       

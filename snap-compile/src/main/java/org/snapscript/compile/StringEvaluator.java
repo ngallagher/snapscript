@@ -1,4 +1,4 @@
-package org.snapscript.compile.instruction;
+package org.snapscript.compile;
 
 import java.rmi.server.Operation;
 
@@ -6,8 +6,9 @@ import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.assemble.Assembler;
 import org.snapscript.compile.assemble.InstructionAssembler;
+import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
-import org.snapscript.core.Evaluator;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Scope;
@@ -16,24 +17,24 @@ import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
-public class ExpressionEvaluator implements Evaluator{
+public class StringEvaluator implements Evaluator{
    
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
+   private final Instruction instruction;
    private final Assembler assembler;
-   private final Instruction root;
    private final Context context;
    
-   public ExpressionEvaluator(Context context){
+   public StringEvaluator(Context context){
       this(context, Instruction.EXPRESSION);
    }
    
-   public ExpressionEvaluator(Context context, Instruction root) {
+   public StringEvaluator(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new InstructionAssembler(context);
       this.compiler = new SyntaxCompiler();
       this.context = context;
-      this.root = root;
+      this.instruction = instruction;
    }
    
    @Override
@@ -44,7 +45,7 @@ public class ExpressionEvaluator implements Evaluator{
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(source, root.name);
+         SyntaxNode node = parser.parse(source, instruction.name);
          
          evaluation = (Evaluation)assembler.assemble(node, source);
          cache.cache(source, evaluation);      
