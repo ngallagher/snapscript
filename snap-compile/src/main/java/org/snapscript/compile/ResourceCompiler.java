@@ -1,7 +1,6 @@
 package org.snapscript.compile;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Executable;
 import org.snapscript.core.resource.ResourceReader;
 
 public class ResourceCompiler implements Compiler {

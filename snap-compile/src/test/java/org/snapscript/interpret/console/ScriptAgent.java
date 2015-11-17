@@ -11,14 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.Executable;
-import org.snapscript.core.Package;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
+import org.snapscript.core.Package;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 
 public class ScriptAgent {

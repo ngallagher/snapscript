@@ -1,11 +1,17 @@
-package org.snapscript.core;
+package org.snapscript.compile;
 
-public class ExecutableLibrary implements Executable{
+import org.snapscript.core.Context;
+import org.snapscript.core.Module;
+import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.Package;
+import org.snapscript.core.Scope;
+
+public class ContextExecutable implements Executable{
    
    private final Package library;
    private final Context context;
  
-   public ExecutableLibrary(Context context, Package library){
+   public ContextExecutable(Context context, Package library){
       this.library = library;
       this.context = context;
    }

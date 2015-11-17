@@ -6,7 +6,6 @@ import java.util.concurrent.FutureTask;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.core.Executable;
 
 public class ExcecutorCompiler implements Compiler {
    

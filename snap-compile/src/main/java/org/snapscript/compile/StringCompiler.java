@@ -4,8 +4,6 @@ import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
-import org.snapscript.core.Executable;
-import org.snapscript.core.ExecutableLibrary;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 
@@ -41,7 +39,7 @@ public class StringCompiler implements Compiler {
          PackageLinker linker = context.getLinker();
          Package library = linker.link(null, source, instruction.name);
          
-         return new ExecutableLibrary(context, library);
+         return new ContextExecutable(context, library);
       }
       return executable;
    } 

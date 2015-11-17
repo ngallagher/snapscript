@@ -9,14 +9,12 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
-import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
 
 public class TestRunnerTest extends TestCase{
    private static final int ITERATIONS = 1;
