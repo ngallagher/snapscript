@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Executable;
@@ -118,13 +119,16 @@ public class ScriptAgent {
          try {
             TerminateListener listener = new TerminateListener(socket);
             // redirect all output to the streams
-            System.setOut(new PrintStream(socket.getOutputStream(), true, "UTF-8"));
-            System.setErr(new PrintStream(socket.getOutputStream(), true, "UTF-8"));
+            System.setOut(new PrintStream(socket.getOutputStream(), false, "UTF-8"));
+            System.setErr(new PrintStream(socket.getOutputStream(), false, "UTF-8"));
             
             // start and listen for the socket close
             listener.start();
+            long start = System.nanoTime();
             Executable executable = COMPILER.compile(script);
             executable.execute();
+            long stop = System.nanoTime();
+            System.err.println("time="+TimeUnit.NANOSECONDS.toMillis(stop-start));
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }
