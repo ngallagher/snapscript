@@ -39,7 +39,7 @@ public class CompilePerformanceTest extends TestCase {
       return executeScript(source, true);
    }
    public static Object executeScript(String source, boolean execute) throws Exception {
-      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\"+source);
+      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-compile\\src\\test\\java\\org\\snapscript\\interpret\\"+source);
       String script = load(file);
 
       for(int j=0;j<ITERATIONS;j++){

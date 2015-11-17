@@ -11,7 +11,6 @@ import junit.framework.TestCase;
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
@@ -42,7 +41,7 @@ public class PackageLinkerTest extends TestCase {
       executeScript(compiler, "perf3.js"); */   
    }
    public static Object executeScript(StringCompiler compiler, String source) throws Exception {
-      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\interpret\\link\\"+source);
+      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-compile\\src\\test\\java\\org\\snapscript\\interpret\\link\\"+source);
       String script = load(file);
 
       long start=System.currentTimeMillis();
