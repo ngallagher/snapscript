@@ -38,7 +38,6 @@ public class TypeIndexer {
             @Override
             public void include(Scope scope) throws Exception {
                String full = createName(name, module);
-               System.err.println("TypeIndexer.addType() Doing a CLASS load on name=["+name+"] module=["+module+"] full=["+full+"]");
                load(name, module);
             }
             
@@ -87,7 +86,6 @@ public class TypeIndexer {
       Type t = resolveType(name);
       
       if(t==null) { 
-         System.err.println("TypeIndexer.load() Trying to load [" + name + "]");
          Class cls=resolver.getType(name);
          if(cls==null){
             for(String n:modules){// was the type named in a module???

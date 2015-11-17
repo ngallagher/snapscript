@@ -26,8 +26,6 @@ public class Import extends Statement {
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
       
-      System.err.println("Import.compile() importing [" +qualifier+ "]");
-      
       if(target == null) {
          Package library = loader.importPackage(location);
          

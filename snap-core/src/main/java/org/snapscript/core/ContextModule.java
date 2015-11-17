@@ -75,7 +75,6 @@ public class ContextModule implements Module {
          Type type = imports.get(name);
          
          if(type == null) {
-            System.err.println("ContextModule.getType() Import failure for ["+name+"] in ["+this.name+"]");
             TypeLoader loader = context.getLoader();
             Type result = loader.resolveType(name, this.name);
             
@@ -83,7 +82,6 @@ public class ContextModule implements Module {
                result = loader.resolveType(name, null);
             }
             if(result != null) {
-               System.err.println("ContextModule.getType() Successful hit for ["+name+"] as ["+result+"]");
                imports.put(name, result);
             }
             return result;
