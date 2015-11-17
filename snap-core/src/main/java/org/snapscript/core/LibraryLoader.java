@@ -3,7 +3,7 @@ package org.snapscript.core;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.snapscript.common.io.ResourceReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class LibraryLoader {
    

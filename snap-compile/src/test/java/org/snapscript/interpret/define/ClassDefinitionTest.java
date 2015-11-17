@@ -25,6 +25,8 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 

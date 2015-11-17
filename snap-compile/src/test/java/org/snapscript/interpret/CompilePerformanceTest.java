@@ -15,6 +15,8 @@ import org.snapscript.core.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 //Assembly time  took 376
 //Binary assemble time was 2004 normal was 376

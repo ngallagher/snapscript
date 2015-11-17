@@ -27,6 +27,8 @@ import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
 

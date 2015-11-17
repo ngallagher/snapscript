@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.snapscript.common.io.ResourceReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class ImportResolver {
    

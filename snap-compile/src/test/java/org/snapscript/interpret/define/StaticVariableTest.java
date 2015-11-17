@@ -12,6 +12,8 @@ import org.snapscript.core.ContextModule;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Value;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class StaticVariableTest extends TestCase{
    public static class Pet{

@@ -27,10 +27,10 @@ public class StringEvaluator implements Evaluator{
    
    public StringEvaluator(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
-      this.assembler = new InstructionAssembler(context);
+      this.assembler = new ContextAssembler(context);
       this.compiler = new SyntaxCompiler();
+      this.instruction = instruction;;
       this.context = context;
-      this.instruction = instruction;
    }
    
    @Override

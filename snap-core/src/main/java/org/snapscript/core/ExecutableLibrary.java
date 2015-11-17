@@ -1,6 +1,5 @@
 package org.snapscript.core;
 
-
 public class ExecutableLibrary implements Executable{
    
    private final Library library;

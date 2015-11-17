@@ -1,13 +1,13 @@
 package org.snapscript.compile;
 
-import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
+import org.snapscript.core.resource.ResourceReader;
 
 public class ResourceCompiler implements Compiler {
    
-   private final Compiler compiler;
-   private final Context context;   
+   private final Compiler compiler;  
+   private final Context context;
    
    public ResourceCompiler(Context context) {
       this.compiler = new StringCompiler(context);

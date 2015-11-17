@@ -14,13 +14,13 @@ import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.Token;
 
-public class InstructionAssembler implements Assembler {
+public class ContextAssembler implements Assembler {
    
    private final Map<String, Instruction> codes;
    private final Map<String, Type> types;
    private final Context context;
 
-   public InstructionAssembler(Context context) {
+   public ContextAssembler(Context context) {
       this.codes = new LinkedHashMap<String, Instruction>();
       this.types = new LinkedHashMap<String, Type>();
       this.context = context;

@@ -12,15 +12,15 @@ import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
-public class InstructionLinker implements LibraryLinker {
+public class ContextLinker implements LibraryLinker {
    
    private final Cache<String, Statement> cache;
    private final SyntaxCompiler compiler;
    private final Assembler assembler;   
    
-   public InstructionLinker(Context context) {
+   public ContextLinker(Context context) {
       this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.assembler = new InstructionAssembler(context);      
+      this.assembler = new ContextAssembler(context);      
       this.compiler = new SyntaxCompiler();
    }
    

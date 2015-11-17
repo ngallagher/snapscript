@@ -1,12 +1,14 @@
 package org.snapscript.run;
 
-import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Compiler;
+import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Executable;
 import org.snapscript.core.Model;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class Interpreter {
    
@@ -26,6 +28,7 @@ public class Interpreter {
       }catch(Exception e) {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
+      ResourceReader reader = new ClassPathReader();
       Context context = new ClassPathContext(model);
       Compiler compiler = new StringCompiler(context);
       

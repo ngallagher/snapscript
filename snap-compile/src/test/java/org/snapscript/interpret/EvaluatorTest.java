@@ -5,12 +5,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Evaluator;
+import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringEvaluator;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class EvaluatorTest extends TestCase{
    

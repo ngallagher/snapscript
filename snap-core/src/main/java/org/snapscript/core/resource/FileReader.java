@@ -1,4 +1,4 @@
-package org.snapscript.common.io;
+package org.snapscript.core.resource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

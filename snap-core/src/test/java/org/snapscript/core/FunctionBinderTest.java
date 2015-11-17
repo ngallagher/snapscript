@@ -5,9 +5,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.common.io.ClassPathReader;
-import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class FunctionBinderTest extends TestCase {
    
@@ -24,7 +24,7 @@ public class FunctionBinderTest extends TestCase {
             return null;
          }
       };
-      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
+      ResourceReader reader = new ClassPathReader();
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
       FunctionBinder binder = new FunctionBinder(loader);

@@ -1,4 +1,4 @@
-package org.snapscript.common.io;
+package org.snapscript.core.resource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -6,15 +6,14 @@ import java.io.InputStream;
 
 public class ClassPathReader implements ResourceReader {
    
-   private final Class type;
-   
-   public ClassPathReader(Class type) {
-      this.type = type;
+   public ClassPathReader() {
+      super();
    }
    
    public String read(String path) throws Exception {
       try {
-         ClassLoader loader = type.getClassLoader();
+         Thread thread = Thread.currentThread();
+         ClassLoader loader = thread.getContextClassLoader();
          InputStream source = loader.getResourceAsStream(path);
          
          try {

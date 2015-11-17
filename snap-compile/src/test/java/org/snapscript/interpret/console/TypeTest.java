@@ -8,11 +8,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.common.io.ClassPathReader;
-import org.snapscript.common.io.ResourceReader;
+import org.snapscript.compile.ContextLinker;
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Evaluator;
-import org.snapscript.compile.InstructionLinker;
 import org.snapscript.compile.StringEvaluator;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
@@ -22,16 +20,18 @@ import org.snapscript.core.LibraryLinker;
 import org.snapscript.core.Model;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 
 public class TypeTest extends TestCase {
    private static final Class[] TYPES = { LinkedList.class, HashMap.class, LinkedHashMap.class, String.class, Map.class};
 
    public void testTypes() throws Exception {
       Model model = new EmptyModel();
+      ResourceReader reader = new ClassPathReader();
       Context context =new ClassPathContext(model);
       Evaluator evaluator = new StringEvaluator(context);
-      LibraryLinker linker = new InstructionLinker(context);
-      ResourceReader reader = new ClassPathReader(FunctionBinderTest.class);
+      LibraryLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
 

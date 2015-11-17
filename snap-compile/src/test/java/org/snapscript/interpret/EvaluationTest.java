@@ -12,8 +12,8 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.compile.Assembler;
+import org.snapscript.compile.ContextAssembler;
 import org.snapscript.compile.ClassPathContext;
-import org.snapscript.compile.InstructionAssembler;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
@@ -21,6 +21,8 @@ import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
+import org.snapscript.core.resource.ClassPathReader;
+import org.snapscript.core.resource.ResourceReader;
 import org.snapscript.interpret.console.SyntaxPrinter;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
@@ -200,7 +202,7 @@ public class EvaluationTest extends TestCase {
       Model model = new MapModel(map);
       Context cc =new ClassPathContext(model);
       Scope s = cc.getBuilder().resolve().getScope();
-      Assembler builder = new InstructionAssembler(cc);
+      Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
@@ -212,7 +214,7 @@ public class EvaluationTest extends TestCase {
       Model model = new MapModel(map);
       Context cc =new ClassPathContext(model);
       Scope s = cc.getBuilder().resolve().getScope();
-      Assembler builder = new InstructionAssembler(cc);
+      Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);

@@ -1,7 +1,7 @@
 package org.snapscript.core;
 
-import org.snapscript.common.io.ResourceReader;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.resource.ResourceReader;
 
 public interface Context{
    ResourceReader getReader();
