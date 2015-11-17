@@ -13,14 +13,14 @@ public class FunctionBinderTest extends TestCase {
    
    public void testBinder() throws Exception {
       Map<String, Object> map = new HashMap<String, Object>();
-      LibraryLinker linker = new LibraryLinker() {
+      PackageLinker linker = new PackageLinker() {
          
          @Override
-         public Library link(String name, String source) throws Exception {
+         public Package link(String name, String source) throws Exception {
             return null;
          }
          @Override
-         public Library link(String name, String source, String grammar) throws Exception {
+         public Package link(String name, String source, String grammar) throws Exception {
             return null;
          }
       };

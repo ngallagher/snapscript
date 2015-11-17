@@ -22,18 +22,18 @@ public class TypeIndexer {
       this.modules = new ArrayList<String>();
       this.resolver = resolver;
    }
-   public Library addImport(String name) {
+   public Package addImport(String name) {
       modules.add(name);///XXX????
       return resolver.addImport(name);
    }   
-   public Library addType(final String name, final String module) {
+   public Package addType(final String name, final String module) {
       
       //modules.add(module);
       //resolver.addImport(location);// helps with java types
       
-      Library library = resolver.addType(name, module);
+      Package library = resolver.addType(name, module);
       if(library == null) {
-         return new Library() {
+         return new Package() {
 
             @Override
             public void include(Scope scope) throws Exception {
@@ -112,7 +112,7 @@ public class TypeIndexer {
       
       if(t==null){
          String key = type.getName();
-         Package p = type.getPackage();
+         java.lang.Package p = type.getPackage();
          String pack="";
          if(p!=null){
             pack=p.getName();

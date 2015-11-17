@@ -6,8 +6,8 @@ import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
 import org.snapscript.core.ExecutableLibrary;
-import org.snapscript.core.Library;
-import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.Package;
+import org.snapscript.core.PackageLinker;
 
 public class StringCompiler implements Compiler {
    
@@ -38,8 +38,8 @@ public class StringCompiler implements Compiler {
       Executable executable = cache.fetch(source);
       
       if(executable == null) {
-         LibraryLinker linker = context.getLinker();
-         Library library = linker.link(null, source, instruction.name);
+         PackageLinker linker = context.getLinker();
+         Package library = linker.link(null, source, instruction.name);
          
          return new ExecutableLibrary(context, library);
       }

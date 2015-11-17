@@ -7,7 +7,7 @@ public interface Context{
    ResourceReader getReader();
    ModuleBuilder getBuilder();
    FunctionBinder getBinder();
-   LibraryLinker getLinker();
+   PackageLinker getLinker();
    TypeLoader getLoader();  
    
 }

@@ -2,7 +2,7 @@ package org.snapscript.core;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class StatementLibrary implements Library {
+public class StatementLibrary implements Package {
    
    private final AtomicBoolean done;
    private final Statement script;

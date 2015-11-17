@@ -142,9 +142,9 @@ public enum Instruction {
    MODULE_NAME(ModuleName.class, "module-name"),    
    MODULE_FUNCTION(FunctionDeclaration.class, "module-function"),     
    MODULE_DEFINITION(ModuleDefinition.class, "module-definition"),    
-   SCRIPT_FUNCTION(FunctionDeclaration.class, "script-function"),     
-   SCRIPT(Script.class, "script"),
-   LIBRARY(Script.class, "library");
+   SCRIPT_FUNCTION(FunctionDeclaration.class, "script-function"),
+   SCRIPT_PACKAGE(Script.class, "script-package"),
+   SCRIPT(Script.class, "script");
    
    public final Class type;
    public final String name;

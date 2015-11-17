@@ -14,8 +14,8 @@ import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Executable;
-import org.snapscript.core.Library;
-import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.Package;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
@@ -53,8 +53,8 @@ public class ScriptAgent {
    
    public static void run(int serverPort) throws Exception {
       try {
-         LibraryLinker linker = CONTEXT.getLinker();
-         Library library = linker.link("moduleForTheScriptAgent", SOURCE);
+         PackageLinker linker = CONTEXT.getLinker();
+         Package library = linker.link("moduleForTheScriptAgent", SOURCE);
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
          

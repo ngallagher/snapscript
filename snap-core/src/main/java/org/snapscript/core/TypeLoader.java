@@ -8,11 +8,11 @@ public class TypeLoader {
       this.indexer = new TypeIndexer(resolver);
    }
    
-   public synchronized Library importPackage(String name) {
+   public synchronized Package importPackage(String name) {
       return indexer.addImport(name);
    }   
    
-   public synchronized Library importType(String name, String module) {
+   public synchronized Package importType(String name, String module) {
       return indexer.addType(name, module); 
    }
    

@@ -11,17 +11,17 @@ import junit.framework.TestCase;
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
 
-public class LibraryLinkerTest extends TestCase {
+public class PackageLinkerTest extends TestCase {
    private static final int ITERATIONS = 1;
    public static void main(String[] l)throws Exception{
-      new LibraryLinkerTest().testLinker();
+      new PackageLinkerTest().testLinker();
    }
    public void testLinker() throws Exception {
       Map<String, Object> map = new HashMap<String, Object>();

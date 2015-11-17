@@ -16,7 +16,7 @@ import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Model;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -31,7 +31,7 @@ public class TypeTest extends TestCase {
       ResourceReader reader = new ClassPathReader();
       Context context =new ClassPathContext(model);
       Evaluator evaluator = new StringEvaluator(context);
-      LibraryLinker linker = new ContextLinker(context);
+      PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
 

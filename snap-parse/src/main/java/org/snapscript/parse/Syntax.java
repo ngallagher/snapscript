@@ -130,22 +130,8 @@ public enum Syntax {
    SCRIPT_IMPORT("script-import", "<import-static>|<import>"),
    SCRIPT_FUNCTION("script-function", "'function'' '<function>'('<parameter-list>')'<group-statement>"),
    SCRIPT_STATEMENT("script-statement", "{<try-statement>|<declaration-statement>|<conditional-statement>|<type-definition>|<module-definition>|<expression-statement>}"),
-   SCRIPT("script", "*<script-import>*{<script-function>|<script-statement>}"),
-   /*
-    * A library is anything that is imported by an import statement that is not in the java
-    * packages. Here the "package" does not need to be declared, it is implied by the location
-    * within the file system so "blah.Blah" is in a file called "blah.snap" and "foo.bar.Blah"
-    * is in the file "foo/bar.snap". Like the naming of packages in Java all libraries should
-    * be in lower case. There can be multiple classes, enums, and traits within any file. There
-    * are no executable statements within the file, nor are there any functions, HOWEVER IT MAY
-    * BE A GOOD IDEA TO ALLOW FUNCTIONS TO BE IMPORTED IN THIS WAY like, "import foo.bar.*" or
-    * possibly "import function foo.bar.doSomething" at the same time "import class foo.bar.Blah"
-    * and "import trait foo.bar.Enum" might be a good solution.
-    * 
-    * The "LibraryLinker" needs to be given the grammar "library" so that it can import based
-    * on this grammar alone, causing a syntax error if there is a violation.
-    */
-   LIBRARY("library", "*<script-import>*{<type-definition>}");
+   SCRIPT_PACKAGE("script-package", "*<script-import>*{<type-definition>}"),
+   SCRIPT("script", "*<script-import>*{<script-function>|<script-statement>}");
    
    public final String name;
    public final String grammar;

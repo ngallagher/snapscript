@@ -1,6 +1,5 @@
 package org.snapscript.core;
 
-
-public interface Library {
+public interface Package {
    void include(Scope scope) throws Exception;
 }

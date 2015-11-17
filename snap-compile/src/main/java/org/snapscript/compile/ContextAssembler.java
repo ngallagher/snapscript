@@ -27,7 +27,7 @@ public class ContextAssembler implements Assembler {
    }
    
    @Override
-   public Object assemble(SyntaxNode token, String name) throws Exception {
+   public <T> T assemble(SyntaxNode token, String name) throws Exception {
       if(types.isEmpty()) {
          Instruction[] list = Instruction.values();       
       
@@ -41,7 +41,7 @@ public class ContextAssembler implements Assembler {
             types.put(id, type);
          }  
       } 
-      return create(token, name, 0);
+      return (T)create(token, name, 0);
    }
    
    private Object create(SyntaxNode node, String name, int depth) throws Exception {

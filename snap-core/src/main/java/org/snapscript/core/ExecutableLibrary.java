@@ -2,10 +2,10 @@ package org.snapscript.core;
 
 public class ExecutableLibrary implements Executable{
    
-   private final Library library;
+   private final Package library;
    private final Context context;
  
-   public ExecutableLibrary(Context context, Library library){
+   public ExecutableLibrary(Context context, Package library){
       this.library = library;
       this.context = context;
    }

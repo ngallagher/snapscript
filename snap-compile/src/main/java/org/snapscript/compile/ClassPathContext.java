@@ -2,7 +2,7 @@ package org.snapscript.compile;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.LibraryLinker;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Model;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.TypeLoader;
@@ -15,7 +15,7 @@ public class ClassPathContext implements Context {
    private final ImportResolver resolver;
    private final FunctionBinder binder;
    private final ModuleBuilder builder;
-   private final LibraryLinker linker;
+   private final PackageLinker linker;
    private final ResourceReader reader;
    private final TypeLoader loader; 
 
@@ -49,7 +49,7 @@ public class ClassPathContext implements Context {
    }
 
    @Override
-   public LibraryLinker getLinker() {
+   public PackageLinker getLinker() {
       return linker;
    }
 }

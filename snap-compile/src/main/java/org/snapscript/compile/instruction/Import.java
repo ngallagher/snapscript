@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Library;
+import org.snapscript.core.Package;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -29,13 +29,13 @@ public class Import extends Statement {
       System.err.println("Import.compile() importing [" +qualifier+ "]");
       
       if(target == null) {
-         Library library = loader.importPackage(location);
+         Package library = loader.importPackage(location);
          
          if(library != null) {
             library.include(scope);
          }
       } else {
-         Library library = loader.importType(target, location);
+         Package library = loader.importType(target, location);
          
          if(library != null) {
             module.addImport(target, location);
