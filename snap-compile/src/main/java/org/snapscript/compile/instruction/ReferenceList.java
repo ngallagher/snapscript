@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Scope;
-import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class ReferenceList implements Evaluation {

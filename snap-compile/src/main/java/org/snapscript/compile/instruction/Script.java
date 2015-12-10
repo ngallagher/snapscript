@@ -17,6 +17,7 @@ public class Script extends Statement {
    public Result execute(Scope scope) throws Exception {
       Result last = new Result();
       
+      // TODO why do we need to compile every time??? declarations go missing???
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
          ResultFlow type = result.getFlow();

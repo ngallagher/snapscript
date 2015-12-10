@@ -7,16 +7,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.MapModel;
-import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
@@ -57,9 +53,9 @@ public class ScriptAgent {
          Package library = linker.link("moduleForTheScriptAgent", SOURCE);
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
-         Statement statement = library.compile(scope);
+         Statement script = library.compile(scope);
          
-         statement.execute(scope);
+         script.execute(scope);
       }catch(Exception e) {
          e.printStackTrace();
       }

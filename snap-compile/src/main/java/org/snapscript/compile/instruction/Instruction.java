@@ -143,7 +143,7 @@ public enum Instruction {
    MODULE_FUNCTION(FunctionDeclaration.class, "module-function"),     
    MODULE_DEFINITION(ModuleDefinition.class, "module-definition"),    
    SCRIPT_FUNCTION(FunctionDeclaration.class, "script-function"),
-   SCRIPT_PACKAGE(Script.class, "script-package"),
+   SCRIPT_PACKAGE(ScriptPackage.class, "script-package"),
    SCRIPT(Script.class, "script");
    
    public final Class type;

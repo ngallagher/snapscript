@@ -28,9 +28,9 @@ public class ContextExecutable implements Executable{
    @Override
    public void execute(Model model) throws Exception{ 
       Scope scope = merger.merge(model);
-      Statement statement = library.compile(scope);
+      Statement script = library.compile(scope);
       
-      statement.execute(scope);// this can only be executed one for 'null' the default module, we need to reset it
+      script.execute(scope);// this can only be executed one for 'null' the default module, we need to reset it
    }
 
 }

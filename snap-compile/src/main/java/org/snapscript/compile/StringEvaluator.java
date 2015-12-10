@@ -49,7 +49,7 @@ public class StringEvaluator implements Evaluator{
          SyntaxParser parser = compiler.compile();
          SyntaxNode node = parser.parse(source, instruction.name);
          
-         evaluation = (Evaluation)assembler.assemble(node, source);
+         evaluation = assembler.assemble(node, source);
          cache.cache(source, evaluation);      
       }
       Scope scope = merger.merge(model);

@@ -4,19 +4,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StatementLibrary implements Package {
    
-   private final AtomicBoolean done;
-   private final Statement script;
+   private final AtomicBoolean compile;
+   private final Statement statement;
    private final String name;
    
-   public StatementLibrary(Statement script, String name) {
-      this.done = new AtomicBoolean();
-      this.script = script;
+   public StatementLibrary(Statement statement, String name) {
+      this.compile = new AtomicBoolean(true);
+      this.statement = statement;
       this.name = name;
    }
 
    @Override
    public Statement compile(Scope scope) throws Exception {
-      if(done.compareAndSet(false, true)) {
+      if(compile.compareAndSet(true, false)) {
          Module module = scope.getModule();
          Context context = module.getContext();
          
@@ -25,7 +25,7 @@ public class StatementLibrary implements Package {
             Module library = builder.create(name); // create a new named module
             Scope inner = library.getScope();
            
-            script.compile(inner); // compile it with a different module, all will go in to context
+            statement.compile(inner); // compile it with a different module, all will go in to context
          } catch(Exception e) {
             if(name != null) {
                throw new IllegalStateException("Error occured in '" + name + "'", e);
@@ -33,7 +33,7 @@ public class StatementLibrary implements Package {
             throw new IllegalStateException("Error occured in script", e);
          }
       }
-      return script;
+      return statement;
    }
 
 }
