@@ -31,7 +31,7 @@ public class StatementInvocation implements Invocation<Object> {
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope outer = scope.getOuter();
+      Scope outer = scope.getOuter(); // do not inherit a compound scope or function scope
       Scope inner = outer.getInner();
       State state = inner.getState();
       
