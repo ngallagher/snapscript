@@ -30,14 +30,14 @@ public class Import extends Statement {
          Package library = loader.importPackage(location);
          
          if(library != null) {
-            library.include(scope);
+            library.compile(scope);
          }
       } else {
          Package library = loader.importType(target, location);
          
          if(library != null) {
             module.addImport(target, location);
-            library.include(scope);
+            library.compile(scope);
          }
       }
       return new Result();

@@ -15,18 +15,17 @@ public class StatementLibrary implements Package {
    }
 
    @Override
-   public void include(Scope scope) throws Exception {
+   public Statement compile(Scope scope) throws Exception {
       if(done.compareAndSet(false, true)) {
          Module module = scope.getModule();
          Context context = module.getContext();
          
          try {
             ModuleBuilder builder = context.getBuilder();
-            Module inner = builder.create(name); // create a new named module
-            Scope scp = inner.getScope();
+            Module library = builder.create(name); // create a new named module
+            Scope inner = library.getScope();
            
-            script.compile(scp); // compile it with a different module, all will go in to context
-            script.execute(scp);
+            script.compile(inner); // compile it with a different module, all will go in to context
          } catch(Exception e) {
             if(name != null) {
                throw new IllegalStateException("Error occured in '" + name + "'", e);
@@ -34,6 +33,7 @@ public class StatementLibrary implements Package {
             throw new IllegalStateException("Error occured in script", e);
          }
       }
+      return script;
    }
 
 }

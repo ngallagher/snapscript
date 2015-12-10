@@ -29,7 +29,7 @@ public class TypeTest extends TestCase {
    public void testTypes() throws Exception {
       Model model = new EmptyModel();
       ResourceReader reader = new ClassPathReader();
-      Context context =new ClassPathContext(model);
+      Context context =new ClassPathContext();
       Evaluator evaluator = new StringEvaluator(context);
       PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);

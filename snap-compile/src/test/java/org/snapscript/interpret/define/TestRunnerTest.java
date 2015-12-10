@@ -35,8 +35,8 @@ public class TestRunnerTest extends TestCase{
             
             Map<String, Object> map = new HashMap<String, Object>();
             Model s = new MapModel(map);
-            Context context =new ClassPathContext(s);
-            ContextModule m = new ContextModule(context, s);
+            Context context =new ClassPathContext();
+            ContextModule m = new ContextModule(context);
             StringCompiler compiler = new StringCompiler(context);
    
             
@@ -49,7 +49,7 @@ public class TestRunnerTest extends TestCase{
                
             Executable e=compiler.compile(script);
             long compile=System.currentTimeMillis()-start;
-            e.execute();
+            e.execute(s);
             
             long finish=System.currentTimeMillis();
             long duration=finish-start;        

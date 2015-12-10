@@ -5,9 +5,10 @@ import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
-import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Value;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
@@ -17,9 +18,10 @@ public class StringEvaluator implements Evaluator{
    
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
+   private final ScopeMerger merger; 
    private final Instruction instruction;
    private final Assembler assembler;
-   private final Context context;
+   private final Model model;
    
    public StringEvaluator(Context context){
       this(context, Instruction.EXPRESSION);
@@ -28,16 +30,20 @@ public class StringEvaluator implements Evaluator{
    public StringEvaluator(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new ContextAssembler(context);
+      this.merger = new ScopeMerger(context);
       this.compiler = new SyntaxCompiler();
-      this.instruction = instruction;;
-      this.context = context;
+      this.model = new EmptyModel();
+      this.instruction = instruction;
    }
    
    @Override
    public <T> T evaluate(String source) throws Exception{
+      return evaluate(source, model);
+   }
+   
+   @Override
+   public <T> T evaluate(String source, Model model) throws Exception{
       Evaluation evaluation = cache.fetch(source);
-      ModuleBuilder builder = context.getBuilder();
-      Module module = builder.resolve();
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
@@ -46,10 +52,9 @@ public class StringEvaluator implements Evaluator{
          evaluation = (Evaluation)assembler.assemble(node, source);
          cache.cache(source, evaluation);      
       }
-      Scope base = module.getScope();
-      Scope scope = base.getScope();
-      
+      Scope scope = merger.merge(model);
       Value reference = evaluation.evaluate(scope,null);
+      
       return (T)reference.getValue();
       
    }

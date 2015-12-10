@@ -5,17 +5,13 @@ import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.EmptyModel;
-import org.snapscript.core.Model;
 
 public class Interpreter {
    
    private final SourceLoader loader;
-   private final Model model;
    
    public Interpreter() {
       this.loader = new SourceLoader();
-      this.model = new EmptyModel();
    }
    
    public void interpret(String script) {
@@ -26,7 +22,7 @@ public class Interpreter {
       }catch(Exception e) {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
-      Context context = new ClassPathContext(model);
+      Context context = new ClassPathContext();
       Compiler compiler = new StringCompiler(context);
       
       try {

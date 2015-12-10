@@ -27,9 +27,8 @@ import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
 import org.snapscript.parse.SyntaxCompiler;
+import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
 /**
@@ -156,6 +155,7 @@ public class ScriptEngine {
       
       public void run() {
          try {
+            parse();
             compile();
             syntax();
             socket.setSoTimeout(0);
@@ -181,10 +181,26 @@ public class ScriptEngine {
          }
       }
       
+      private void parse() {
+         try {
+            SyntaxCompiler compiler = new SyntaxCompiler();
+            long start = System.nanoTime();
+            SyntaxParser parser = compiler.compile();
+            SyntaxNode node = parser.parse(file, "script");
+            node.getNodes();
+            long finish = System.nanoTime();
+            long duration = finish - start;
+            long millis = TimeUnit.NANOSECONDS.toMillis(duration);
+            listener.onUpdate("info", "Time taken to parse was " + millis + " ms, size was " + file.length());
+         }catch(Exception e) {
+            listener.onUpdate("info", ExceptionBuilder.build(e));
+            throw new RuntimeException("Script does not compile", e);
+         }
+      }
+      
       private void compile() {
          try {
-            Model model = new EmptyModel();
-            Context context =new ClassPathContext(model);
+            Context context =new ClassPathContext();
             StringCompiler compiler = new StringCompiler(context);
             long start = System.nanoTime();
             compiler.compile(file);

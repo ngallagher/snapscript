@@ -4,9 +4,8 @@ import java.io.File;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.PackageLinker;
-import org.snapscript.core.Model;
 import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.resource.FileReader;
@@ -21,9 +20,9 @@ public class FileContext implements Context {
    private final ResourceReader reader;
    private final TypeLoader loader; 
 
-   public FileContext(Model model, File file){
+   public FileContext(File file){
       this.reader = new FileReader(file);
-      this.builder = new ModuleBuilder(this, model);
+      this.builder = new ModuleBuilder(this);
       this.linker = new ContextLinker(this);
       this.resolver = new ImportResolver(linker, reader);      
       this.loader = new TypeLoader(resolver);

@@ -13,6 +13,7 @@ import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
+import org.snapscript.core.EmptyModel;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 
@@ -21,10 +22,8 @@ public class CompilerTest extends TestCase{
       new CompilerTest().testCompilerPerformance();
    }
    public void testCompilerPerformance() throws Exception {
-      Map<String,Object>map=new LinkedHashMap<String, Object>();
-      Model model = new MapModel(map);
-      Context c =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(c);
+      Model model = new EmptyModel();
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       
       compileScripts(compiler);
    }
@@ -64,67 +63,59 @@ public class CompilerTest extends TestCase{
       }
    }   
    public void testCompiler() throws Exception{
-      Map<String,Object>map=new LinkedHashMap<String, Object>();
-      Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("var x=\"xx\";x.toString();");
       executable.execute();     
    }
    public void testCompilerWithArgument() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("map.put('y',x.substring(1));");
       map.put("map", map);
       map.put("x", "blah");
-      executable.execute();
+      executable.execute(model);
       assertEquals(map.get("y"), "lah");
    }
    public void testImportStatic() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("import static lang.Math.*;var x = 1.6; var y = round(x); map.put('x',x); map.put('y',y);");
       map.put("map", map);
-      executable.execute();
+      executable.execute(model);
       assertEquals(map.get("x"), 1.6d);
       assertEquals(map.get("y"), 2l);      
    }
    public void testImport() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("import security.SecureRandom; var rand = new SecureRandom(); var val = rand.nextInt(10); map.put('rand', rand); map.put('val', val);");
       map.put("map", map);
-      executable.execute();
+      executable.execute(model);
       assertEquals(map.get("rand").getClass(), java.security.SecureRandom.class);
       assertEquals(map.get("val").getClass(), Integer.class);      
    }
    public void testTypeConstraint() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("var num : Number = 1.0d; var decimal : Double = 5*num; map.put('num', num); map.put('decimal', decimal);");
       map.put("map", map);
-      executable.execute();
+      executable.execute(model);
       assertEquals(map.get("num"), 1.0);
       assertEquals(map.get("decimal"), 5.0);      
    }
    public void testTypeConstraintFailure() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("var num : Number = 1.0d; map.put('num',num); var decimal : String = 5*num;");
       map.put("map", map);
       boolean failure=false;
       try {  
-         executable.execute();
+         executable.execute(model);
       }catch(Exception e){
          failure=true;
          e.printStackTrace();
@@ -135,23 +126,21 @@ public class CompilerTest extends TestCase{
    public void testParameterTypeConstraint() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("function fun(x:String){return \"done=\"+x;}var y =fun(\"x\");map.put('y',y);");
 
       map.put("map", map);
-      executable.execute();
+      executable.execute(model);
       assertEquals(map.get("y"), "done=x");
    }
    public void testParameterTypeConstraintFailure() throws Exception{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
-      Context context =new ClassPathContext(model);
-      Compiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile("function fun(x:Date){return \"done=\"+x;}var y =fun(11.2);");
       boolean failure=false;
       try {  
-         executable.execute();
+         executable.execute(model);
       }catch(Exception e){
          e.printStackTrace();
          failure=true;

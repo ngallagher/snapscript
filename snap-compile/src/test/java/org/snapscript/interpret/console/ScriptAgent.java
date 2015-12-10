@@ -21,12 +21,11 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 
 public class ScriptAgent {
 
-   private static final Map<String, Object> MAP = new HashMap<String, Object>();
-   private static final Model MODEL = new MapModel(MAP);
-   private static final Context CONTEXT = new ClassPathContext(MODEL);
+   private static final Context CONTEXT = new ClassPathContext();
    private static final StringCompiler COMPILER = new StringCompiler(CONTEXT);
    private static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
@@ -58,8 +57,9 @@ public class ScriptAgent {
          Package library = linker.link("moduleForTheScriptAgent", SOURCE);
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
+         Statement statement = library.compile(scope);
          
-         library.include(scope);
+         statement.execute(scope);
       }catch(Exception e) {
          e.printStackTrace();
       }

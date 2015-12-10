@@ -32,15 +32,14 @@ public class PackageLinkerTest extends TestCase {
       //LexerBuilder.print(LexerBuilder.create(), script, "script");
       
       Model model = new MapModel(map);
-      ResourceReader reader = new ClassPathReader();
-      Context c =new ClassPathContext(model);
+      Context c =new ClassPathContext();
       StringCompiler compiler = new StringCompiler(c);
    
-      executeScript(compiler, "script1.snap");      
+      executeScript(compiler, model, "script1.snap");      
  /*     executeScript(compiler, "perf2.js");    
       executeScript(compiler, "perf3.js"); */   
    }
-   public static Object executeScript(StringCompiler compiler, String source) throws Exception {
+   public static Object executeScript(StringCompiler compiler, Model model, String source) throws Exception {
       File file = new File("c:\\Work\\development\\github\\snapscript\\snap-compile\\src\\test\\java\\org\\snapscript\\interpret\\link\\"+source);
       String script = load(file);
 
@@ -49,7 +48,7 @@ public class PackageLinkerTest extends TestCase {
       for(int j=0;j<ITERATIONS;j++){
          last=System.currentTimeMillis();
 
-         compiler.compile(script).execute();
+         compiler.compile(script).execute(model);
       }
       long finish=System.currentTimeMillis();
       long duration=finish-start;

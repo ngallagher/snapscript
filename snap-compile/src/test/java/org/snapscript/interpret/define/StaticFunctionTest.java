@@ -5,15 +5,11 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.ClassPathContext;
-import org.snapscript.compile.StringCompiler;
-import org.snapscript.core.Context;
-import org.snapscript.core.ContextModule;
+import org.snapscript.compile.Compiler;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Value;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
+import org.snapscript.interpret.ClassPathCompilerBuilder;
 
 public class StaticFunctionTest extends TestCase{
    public static class Pet{
@@ -48,9 +44,7 @@ public class StaticFunctionTest extends TestCase{
       Map map = new HashMap<String,Value>();
       map.put("out",System.out);
       Model s = new MapModel(map);
-      Context context =new ClassPathContext(s);
-      ContextModule m = new ContextModule(context, s);
-      StringCompiler compiler = new StringCompiler(context);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       boolean failure=false;
       System.err.println(SOURCE_1);
       compiler.compile(SOURCE_1).execute();

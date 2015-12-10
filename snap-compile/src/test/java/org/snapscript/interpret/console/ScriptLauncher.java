@@ -141,8 +141,7 @@ public class ScriptLauncher implements ScriptTask, Runnable {
    
    private void compile() {
       try {
-         Model model = new EmptyModel();
-         Context context =new ClassPathContext(model);
+         Context context =new ClassPathContext();
          StringCompiler compiler = new StringCompiler(context);
          long start = System.nanoTime();
          compiler.compile(source);

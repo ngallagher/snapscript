@@ -25,8 +25,6 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 
@@ -43,9 +41,9 @@ public class ClassDefinitionTest extends TestCase {
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
-      Context context =new ClassPathContext(model);
-      ContextModule m = new ContextModule(context, model);
-      ModuleScope scope = new ModuleScope(m, model);
+      Context context =new ClassPathContext();
+      ContextModule m = new ContextModule(context);
+      ModuleScope scope = new ModuleScope(m);
       Type type = definer.compile(scope).getValue();
 
       assertEquals(type.getName(), "Test");
@@ -65,10 +63,10 @@ public class ClassDefinitionTest extends TestCase {
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Model model = new MapModel(Collections.EMPTY_MAP);
-      Context context =new ClassPathContext(model);
-      ContextModule m = new ContextModule(context, model);
-      Module module = new ContextModule(context, model);
-      ModuleScope scope = new ModuleScope(module, model);
+      Context context =new ClassPathContext();
+      ContextModule m = new ContextModule(context);
+      Module module = new ContextModule(context);
+      ModuleScope scope = new ModuleScope(module);
 
       Type type = definer.compile(scope).getValue(); 
       FunctionBinder binder = context.getBinder();

@@ -20,6 +20,7 @@ import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Statement;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
@@ -200,10 +201,11 @@ public class EvaluationTest extends TestCase {
    }
    public static ResultFlow statement(String source, String grammar, Map<String, Object> map) throws Exception {
       Model model = new MapModel(map);
-      Context cc =new ClassPathContext(model);
-      Scope s = cc.getBuilder().resolve().getScope();
+      Context cc =new ClassPathContext();
       Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
+      ScopeMerger b = new ScopeMerger(cc);
+      Scope s = b.merge(model);
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following
@@ -212,10 +214,11 @@ public class EvaluationTest extends TestCase {
    }   
    public static Object evaluate(String source, String grammar, Map<String, Object> map, int repeat) throws Exception {
       Model model = new MapModel(map);
-      Context cc =new ClassPathContext(model);
-      Scope s = cc.getBuilder().resolve().getScope();
+      Context cc =new ClassPathContext();
       Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
+      ScopeMerger b = new ScopeMerger(cc);
+      Scope s = b.merge(model);
       SyntaxParser analyzer =  bb.compile();
       SyntaxNode token = analyzer.parse(source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following

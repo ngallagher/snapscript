@@ -3,6 +3,7 @@ package org.snapscript.core;
 public class NoLibrary implements Package {
 
    @Override
-   public void include(Scope scope) throws Exception {}
-
+   public Statement compile(Scope scope) throws Exception {
+      return new NoStatement();
+   }
 }

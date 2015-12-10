@@ -1,28 +1,36 @@
 package org.snapscript.compile;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
 import org.snapscript.core.Package;
 import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeMerger;
+import org.snapscript.core.Statement;
 
 public class ContextExecutable implements Executable{
    
+   private final ScopeMerger merger;
    private final Package library;
-   private final Context context;
+   private final Model model;
  
    public ContextExecutable(Context context, Package library){
+      this.merger = new ScopeMerger(context);
+      this.model = new EmptyModel();
       this.library = library;
-      this.context = context;
    }
    
    @Override
-   public void execute() throws Exception{ 
-      ModuleBuilder builder = context.getBuilder();
-      Module module = builder.resolve();
-      Scope scope = module.getScope();
-
-      library.include(scope); // this can only be executed one for 'null' the default module, we need to reset it
+   public void execute() throws Exception {
+      execute(model);
+   }
+   
+   @Override
+   public void execute(Model model) throws Exception{ 
+      Scope scope = merger.merge(model);
+      Statement statement = library.compile(scope);
+      
+      statement.execute(scope);// this can only be executed one for 'null' the default module, we need to reset it
    }
 
 }

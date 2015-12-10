@@ -8,21 +8,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.MapModel;
-import org.snapscript.core.Model;
 
 public class ScriptProcess {
 
-   private static final Map<String, Object> MAP = new HashMap<String, Object>();
-   private static final Model MODEL = new MapModel(MAP);
-   private static final Context CONTEXT = new ClassPathContext(MODEL);
+   private static final Context CONTEXT = new ClassPathContext();
    private static final StringCompiler COMPILER = new StringCompiler(CONTEXT);
    
    public static void main(String[] list) throws Exception {

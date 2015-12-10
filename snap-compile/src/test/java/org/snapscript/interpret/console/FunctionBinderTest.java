@@ -31,7 +31,7 @@ public class FunctionBinderTest extends TestCase {
    public void testBinderMethod() throws Exception {
       Model model = new EmptyModel();
       ResourceReader reader = new ClassPathReader();
-      Context context =new ClassPathContext(model);
+      Context context =new ClassPathContext();
       Evaluator evaluator = new StringEvaluator(context);
       PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
@@ -52,7 +52,7 @@ public class FunctionBinderTest extends TestCase {
    public void testBinderConstruct() throws Exception {
       Model model = new EmptyModel();
       ResourceReader reader = new ClassPathReader();
-      Context context =new ClassPathContext(model);
+      Context context =new ClassPathContext();
       Evaluator evaluator = new StringEvaluator(context);
       PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);

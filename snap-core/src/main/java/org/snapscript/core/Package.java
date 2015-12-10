@@ -1,5 +1,5 @@
 package org.snapscript.core;
 
 public interface Package {
-   void include(Scope scope) throws Exception;
+   Statement compile(Scope scope) throws Exception;
 }

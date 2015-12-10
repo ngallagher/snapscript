@@ -6,6 +6,8 @@ import java.util.concurrent.FutureTask;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
 
 public class ExcecutorCompiler implements Compiler {
    
@@ -47,19 +49,26 @@ public class ExcecutorCompiler implements Compiler {
    private class FutureExecutable implements Executable {
       
       private final FutureTask<Executable> result;
+      private final Model model;
       
       public FutureExecutable(FutureTask<Executable> result) {
+         this.model = new EmptyModel();
          this.result = result;
       }
 
       @Override
       public void execute() throws Exception {
+         execute(model);
+      }
+      
+      @Override
+      public void execute(Model model) throws Exception {
          Executable executable = result.get();
          
          if(executable == null) {
             throw new IllegalStateException("Could not compile script");
          }
-         executable.execute();
+         executable.execute(model);
       }      
    }
    
@@ -91,7 +100,7 @@ public class ExcecutorCompiler implements Compiler {
       
       private final Exception cause;
       private final String message;
-
+      
       public ExceptionExecutable(String message, Exception cause) {
          this.message = message;
          this.cause = cause;
@@ -99,6 +108,11 @@ public class ExcecutorCompiler implements Compiler {
 
       @Override
       public void execute() throws Exception {
+         throw new IllegalStateException(message, cause);
+      } 
+      
+      @Override
+      public void execute(Model model) throws Exception {
          throw new IllegalStateException(message, cause);
       }             
    }  
