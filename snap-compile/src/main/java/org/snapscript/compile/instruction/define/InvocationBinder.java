@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.collection.ArrayConverter;
 import org.snapscript.core.Context;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
@@ -16,6 +16,16 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class InvocationBinder {
 
+   /*
+    * These are the only types to worry about!!!!!
+    * 
+    * 1) Scope of a type [if type then use the object]
+    *       a) What if in a member function, then where do I get instance scope
+    *       
+    * 2) Scope of local [if local the the module scope is what to use]
+    * 3) Scope of a module [if module use the module scope]
+    * 
+    */
    public InvocationDispatcher dispatch(Scope scope, Object left) {
       if(left != null) {
          Class type = left.getClass();
@@ -69,7 +79,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
-         return new Holder(data);           
+         return new Transient(data);           
       } 
    } 
    
@@ -100,7 +110,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
          }
-         return new Holder(data);           
+         return new Transient(data);           
       }
    }     
    
@@ -132,7 +142,7 @@ public class InvocationBinder {
                if(flow == ResultFlow.THROW) {
                   throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
                }
-               return new Holder(data);   
+               return new Transient(data);   
             }
          }
          Type type = object.getType();
@@ -147,7 +157,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
-         return new Holder(data);           
+         return new Transient(data);           
       }
    }  
    
@@ -182,7 +192,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
-         return new Holder(value);
+         return new Transient(value);
       }
    }
    
@@ -214,7 +224,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
-         return new Holder(value);
+         return new Transient(value);
       }
    }
    
@@ -243,7 +253,7 @@ public class InvocationBinder {
          if(flow == ResultFlow.THROW) {
             throw new IllegalStateException("Method '" + name + "' had an exception");
          }
-         return new Holder(value);  
+         return new Transient(value);  
       }
       
    }

@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -19,6 +19,6 @@ public class ModuleName implements Evaluation {
       Value value = literal.evaluate(scope, left);
       String name = value.getValue();
       
-      return new Holder(name);
+      return new Transient(name);
    }  
 }

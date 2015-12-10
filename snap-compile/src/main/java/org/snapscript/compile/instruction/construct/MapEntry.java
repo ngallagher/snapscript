@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.construct;
 import java.util.Map.Entry;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Value;
@@ -38,7 +38,7 @@ public class MapEntry implements Evaluation {
          }
       }
       Entry entry = new Pair(keyObject, valueObject);
-      Holder holder =  new Holder(entry);
+      Transient holder =  new Transient(entry);
       
       return holder;
    }

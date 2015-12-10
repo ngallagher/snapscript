@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyBuilder;
@@ -44,6 +44,6 @@ public class ConstructSet implements Evaluation {
             result.add(proxy);
          }         
       }   
-      return new Holder(result);
+      return new Transient(result);
    }
 }

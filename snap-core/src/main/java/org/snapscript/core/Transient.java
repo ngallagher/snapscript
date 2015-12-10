@@ -1,15 +1,15 @@
 package org.snapscript.core;
 
-public class Holder extends Value {
+public class Transient extends Value {
    
    private final String constraint;
    private final Object object;
    
-   public Holder(Object object) {
+   public Transient(Object object) {
       this(object, null);
    }
    
-   public Holder(Object object, String constraint) {
+   public Transient(Object object, String constraint) {
       this.constraint = constraint;
       this.object = object;
    }
@@ -26,6 +26,6 @@ public class Holder extends Value {
    
    @Override
    public void setValue(Object value){
-      throw new IllegalStateException("Holder value modified");
+      throw new IllegalStateException("Transient value modified");
    } 
 }

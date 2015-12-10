@@ -28,7 +28,7 @@ public class ForStatement extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      Scope compound = scope.getScope();
+      Scope compound = scope.getInner();
       
       declaration.execute(compound);
       

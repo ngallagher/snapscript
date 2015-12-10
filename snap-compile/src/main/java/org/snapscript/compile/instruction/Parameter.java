@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -26,8 +26,8 @@ public class Parameter implements Evaluation{
          Value value = constraint.evaluate(scope, left);  
          String type = value.getString();
          
-         return new Holder(name, type);
+         return new Transient(name, type);
       }
-      return new Holder(name);
+      return new Transient(name);
    }
 }

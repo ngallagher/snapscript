@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Value;
@@ -45,7 +45,7 @@ public class TextTemplate implements Evaluation {
       }
       String result = interpolate(scope, text);
    
-      return new Holder(result);
+      return new Transient(result);
    }
    
    private String interpolate(Scope scope, String text) throws Exception {

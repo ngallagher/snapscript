@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -63,7 +63,7 @@ public class Declaration extends Statement {
          }
          state.setValue(name, result);
       } else {
-         Value constant = new Holder(null); // bit rubbish!!
+         Value constant = new Transient(null); // bit rubbish!!
          state.setValue(name, constant);
       }
       return new Result();

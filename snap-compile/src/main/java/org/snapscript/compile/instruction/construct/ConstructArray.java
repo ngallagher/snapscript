@@ -6,7 +6,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.compile.instruction.collection.ArrayConverter;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -49,9 +49,9 @@ public class ConstructArray implements Evaluation {
                list.set(i, arguments[i]);
             } 
          }
-         return new Holder(array);
+         return new Transient(array);
       }
       Object array = converter.create(entry, 0);
-      return new Holder(array);
+      return new Transient(array);
    }
 }

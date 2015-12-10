@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.snapscript.core.Accessor;
 import org.snapscript.core.Context;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Property;
@@ -89,11 +89,11 @@ public class VariableResolver {
                Object result = builder.resolve(name);
                
                if(result != null) {
-                  return new Holder(result);
+                  return new Transient(result);
                }
                return null;
             }
-            return new Holder(type);
+            return new Transient(type);
          }
          return variable;
       }

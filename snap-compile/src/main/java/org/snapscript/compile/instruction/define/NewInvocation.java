@@ -45,7 +45,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope inner = scope.getScope();
+      Scope inner = scope.getInner();
       State state = inner.getState();
       
       for(int i = 0; i < arguments.length; i++) {

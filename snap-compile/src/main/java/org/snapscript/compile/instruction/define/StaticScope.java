@@ -19,14 +19,14 @@ public class StaticScope implements Scope {
    }
    
    @Override
-   public Type getType(){
-      return null;
-   }
+   public Scope getInner() {
+      return new CompoundScope(this, scope); // this goes too deep!!
+   } 
    
    @Override
-   public Scope getScope() {
-      return new CompoundScope(this); // this goes too deep!!
-   }   
+   public Scope getOuter() {
+      return scope;
+   }
 
    @Override
    public Module getModule() {
@@ -37,6 +37,11 @@ public class StaticScope implements Scope {
    public Context getContext() {
       return scope.getContext();
    }   
+   
+   @Override
+   public Type getType(){
+      return null;
+   }  
    
    @Override
    public State getState() {

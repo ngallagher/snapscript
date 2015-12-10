@@ -5,7 +5,7 @@ import java.util.List;
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Constant;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
@@ -39,7 +39,7 @@ public class SuperConstructor implements TypePart {
 
       @Override
       public Value evaluate(Scope scope, Object left) throws Exception {
-         return new Holder("new");
+         return new Transient("new");
       }
       
    }

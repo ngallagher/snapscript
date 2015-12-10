@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.TextLiteral;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -20,6 +20,6 @@ public class TraitName extends TypeName {
       Module module = scope.getModule();
       Type base = module.addType(name);
       
-      return new Holder(base);
+      return new Transient(base);
    }  
 }

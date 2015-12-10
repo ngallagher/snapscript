@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
@@ -11,7 +10,7 @@ public class PrimitiveConstructor extends Initializer {
 
    @Override
    public Result execute(Scope scope, Type type) throws Exception {
-      CompoundScope instance= new CompoundScope(scope);      
+      Scope instance = scope.getInner();     
       return new Result(ResultFlow.NORMAL,instance);
    }
 

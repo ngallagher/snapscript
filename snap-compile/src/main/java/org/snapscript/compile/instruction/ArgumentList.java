@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -22,6 +22,6 @@ public class ArgumentList implements Evaluation{
          
          values[i] = result;
       }
-      return new Holder(values);
+      return new Transient(values);
    }
 }

@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.collection;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -24,7 +24,7 @@ public class Array implements Evaluation {
       if(type.isArray()) {
          list = converter.convert(list);
       }     
-      return new Holder(list);
+      return new Transient(list);
    }  
    
 

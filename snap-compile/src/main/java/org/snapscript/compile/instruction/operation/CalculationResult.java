@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -14,7 +14,7 @@ public class CalculationResult implements Evaluation {
    }
 
    public Value evaluate(Scope scope, Object left) throws Exception {
-      return new Holder(value);
+      return new Transient(value);
    }
 
 }

@@ -86,7 +86,7 @@ public class TryCatchStatement extends Statement {
                   }
                }
             }
-            Scope compound = scope.getScope();
+            Scope compound = scope.getInner();
             State state = compound.getState();
             Constant constant = new Constant(value, name);
             

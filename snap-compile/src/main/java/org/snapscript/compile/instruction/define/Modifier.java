@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
@@ -20,7 +20,7 @@ public class Modifier implements Evaluation {
       String name = token.getValue();
       ModifierType modifier = ModifierType.resolveModifier(name);
       
-      return new Holder(modifier);
+      return new Transient(modifier);
    }
 
 }

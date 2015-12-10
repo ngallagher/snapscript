@@ -6,7 +6,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.core.Context;
-import org.snapscript.core.Holder;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -46,7 +46,7 @@ public class ConstructObject implements Evaluation {
       Result result = call.call();
       Object instance = result.getValue();
       
-      return new Holder(instance);
+      return new Transient(instance);
    }
    
    private Callable<Result> bind(Scope scope, Type type) throws Exception {

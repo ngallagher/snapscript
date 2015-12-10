@@ -34,7 +34,7 @@ public class StaticInvocation implements Invocation<Object> {
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope scope = inner.getScope();
+      Scope scope = inner.getInner();
       State state = scope.getState();
       
       for(int i = 0; i < arguments.length; i++) {

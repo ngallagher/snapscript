@@ -22,6 +22,7 @@ public class FunctionInvocation implements Evaluation {
    }
    
    public Value evaluate(Scope scope, Object left) throws Exception {
+      //System.err.println("FunctionInvocation="+scope.getClass());
       InvocationDispatcher handler = dispatcher.dispatch(scope, left);
       Value reference = function.evaluate(scope, left);
       String name = reference.getString();      

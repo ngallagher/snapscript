@@ -3,31 +3,36 @@ package org.snapscript.core;
 public class CompoundScope implements Scope {
    
    private final State state;
-   private final Scope scope;
+   private final Scope outer;
    
-   public CompoundScope(Scope scope) {
-      this.state = new MapState(scope);    
-      this.scope = scope;
+   public CompoundScope(Scope inner, Scope outer) {
+      this.state = new MapState(inner);  
+      this.outer = outer;
    } 
   
    @Override
-   public Scope getScope() {
-      return new StateScope(scope, this);
+   public Scope getInner() {
+      return new StateScope(this, outer);
+   }  
+   
+   @Override
+   public Scope getOuter() {
+      return outer;
    }  
    
    @Override
    public Type getType() {
-      return scope.getType();
+      return outer.getType();
    }
   
    @Override
    public Module getModule() {
-      return scope.getModule();
+      return outer.getModule();
    }
    
    @Override
    public Context getContext() {
-      return scope.getContext();
+      return outer.getContext();
    }   
 
    @Override
@@ -40,14 +45,19 @@ public class CompoundScope implements Scope {
       private final State state;
       private final Scope outer;
       
-      public StateScope(Scope outer, Scope inner) {
+      public StateScope(Scope inner, Scope outer) {
          this.state = new MapState(inner);
          this.outer = outer;
       }
 
       @Override
-      public Scope getScope() {
-         return new StateScope(outer, this); // check state before deciding "outer" = quick, "inner" = slow
+      public Scope getInner() {
+         return new StateScope(this, outer);
+      }
+      
+      @Override
+      public Scope getOuter() {
+         return outer;
       }
 
       @Override

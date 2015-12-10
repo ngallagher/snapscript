@@ -20,7 +20,7 @@ public class CompoundStatement extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      Scope compound = scope.getScope(); 
+      Scope compound = scope.getInner(); 
       Result last = new Result();
       
       for(Statement statement : statements) {

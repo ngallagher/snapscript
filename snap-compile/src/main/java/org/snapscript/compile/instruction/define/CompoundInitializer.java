@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
@@ -17,8 +16,8 @@ public class CompoundInitializer extends Initializer {
 
    @Override
    public Result execute(Scope scope, Type type) throws Exception {
-      Scope compound = new CompoundScope(scope);
-      Result last = new Result();
+      Scope compound = scope.getInner();
+      Result last = null;
       
       for(Initializer initializer : initializers) {
          Result result = initializer.execute(compound, type);
@@ -28,6 +27,9 @@ public class CompoundInitializer extends Initializer {
             return result;
          }
          last = result;
+      }
+      if(last == null) {
+         return new Result();
       }
       return last;
    }

@@ -11,8 +11,13 @@ public class ModelScope implements Scope {
    }
    
    @Override
-   public Scope getScope() {
-      return new CompoundScope(this);
+   public Scope getInner() {
+      return new CompoundScope(this, this);
+   } 
+   
+   @Override
+   public Scope getOuter() {
+      return this;
    } 
    
    @Override
