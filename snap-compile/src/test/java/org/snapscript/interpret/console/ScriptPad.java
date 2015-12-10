@@ -224,8 +224,8 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       saveI = new JMenuItem("Save"); // menuitems
       saveAsI = new JMenuItem("Save As...");
       openI = new JMenuItem("Open"); // menuitems
-      runExternalI = new JMenuItem("Run External"); // menuitems
-      runInternalI = new JMenuItem("Run Internal"); // menuitems
+      runExternalI = new JMenuItem("Run"); // menuitems
+      runInternalI = new JMenuItem("Debug"); // menuitems
       stopI = new JMenuItem("Stop"); // menuitems
       toolBar = new JToolBar();
 
