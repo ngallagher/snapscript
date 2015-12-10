@@ -1,0 +1,41 @@
+<project>
+
+  <delete dir="output" />
+  <mkdir dir="output" />
+  <delete dir="lib" />
+  <mkdir dir="lib" />
+  <echo message="Deleted output directory" />
+  <copy todir="output">
+    <fileset dir="target/classes">
+      <include name="**/*.class" />
+    </fileset>
+  </copy>
+  <copy todir="output">
+    <fileset dir="../snap-common/target/classes">
+      <include name="**/*.class" />
+    </fileset>
+  </copy>
+  <copy todir="output">
+    <fileset dir="../snap-compile/target/classes">
+      <include name="**/*.class" />
+    </fileset>
+  </copy>
+  <copy todir="output">
+    <fileset dir="../snap-core/target/classes">
+      <include name="**/*.class" />
+    </fileset>
+  </copy>
+  <copy todir="output">
+    <fileset dir="../snap-parse/target/classes">
+      <include name="**/*.class" />
+    </fileset>
+  </copy>
+  <jar destfile="lib/snap.jar">
+    <fileset dir="output" />
+    <manifest>
+      <attribute name="Main-Class" value="org.snapscript.run.Interpreter" />
+    </manifest>
+  </jar>
+  <delete dir="output" />
+  
+</project>

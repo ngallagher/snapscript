@@ -1,6 +1,8 @@
 package org.snapscript.run;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class SourceLoader {
@@ -19,19 +21,23 @@ public class SourceLoader {
          return buffer.toString("UTF-8");
       } finally {
          source.close();         
-      }
-      
+      }  
    }
    
-   
    private InputStream open(String library) throws Exception {
-      Class type = getClass();
-      ClassLoader loader = type.getClassLoader();
-      InputStream stream = loader.getResourceAsStream(library);
+      File file = new File(library);
       
-      if(stream == null) {
-         throw new IllegalStateException("Could not find library '" + library + "'");
+      if(!file.exists()) {
+         Class type = getClass();
+         ClassLoader loader = type.getClassLoader();
+         InputStream stream = loader.getResourceAsStream(library);
+         String location = file.getCanonicalPath();
+         
+         if(stream == null) {
+            throw new IllegalStateException("Could not find library '" + location + "'");
+         }
+         return stream;
       }
-      return stream;
+      return new FileInputStream(file);
    }
 }
