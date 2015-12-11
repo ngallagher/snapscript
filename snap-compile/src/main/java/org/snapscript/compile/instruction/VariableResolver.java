@@ -1,31 +1,48 @@
 package org.snapscript.compile.instruction;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.core.Accessor;
 import org.snapscript.core.Context;
-import org.snapscript.core.Transient;
+import org.snapscript.core.HierarchyExtractor;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Property;
 import org.snapscript.core.PropertyValue;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class VariableResolver {
    
+   private final Map<Object, ValueResolver> resolvers;
+   private final HierarchyExtractor extractor;
+   private final VariableKeyBuilder builder;
    private final Evaluation identifier;
    
    public VariableResolver(Evaluation identifier) {
+      this.resolvers = new ConcurrentHashMap<Object, ValueResolver>();
+      this.extractor = new HierarchyExtractor();
+      this.builder = new VariableKeyBuilder();
       this.identifier = identifier;
    }
    
    public Value resolve(Scope scope, Object left) throws Exception {
       Value reference = identifier.evaluate(scope, left);
       String name = reference.getString();
-      ValueResolver resolver = match(scope, left, name);
+      Object key = builder.create(left, name);
+      ValueResolver resolver = resolvers.get(key);
+      
+      if(resolver == null) {
+         resolver = match(left, name);
+         resolvers.put(key, resolver);
+      }
       Value value = resolver.resolve(scope, left);
       
       if(value == null) {
@@ -34,7 +51,7 @@ public class VariableResolver {
       return value;
    }
    
-   private ValueResolver match(Scope scope, Object left, String name) {
+   private ValueResolver match(Object left, String name) {
       if(left == null) {
          return new LocalResolver(name);
       }
@@ -101,62 +118,72 @@ public class VariableResolver {
    
    private class TypeResolver implements ValueResolver<Type> {
       
+      private final AtomicReference<Accessor> reference;
       private final ObjectResolver resolver;
       private final String name;
       
       public TypeResolver(String name) {
+         this.reference = new AtomicReference<Accessor>();
          this.resolver = new ObjectResolver(name);
          this.name = name;
       }
       
+      @Override
       public Value resolve(Scope scope, Type left) {
-         List<Property> properties = left.getProperties();
+         Accessor accessor = reference.get();
          
-         for(Property property : properties){
-            String field = property.getName();
+         if(accessor == null) {
+            Set<Type> list = extractor.extract(left);
             
-            if(field.equals(name)) {
-               Accessor accessor = property.getAccessor();    
+            for(Type base : list) {
+               Accessor match = resolver.resolve(scope, left, base);
                
-               if(accessor != null) {
-                  return new PropertyValue(accessor, left, name);
+               if(match != null) {
+                  reference.set(match);
+                  return new PropertyValue(match, left, name);
                }
-            }
-         }  
-         return resolver.resolve(scope, left);
+            } 
+            return resolver.resolve(scope, left); // XXX this is totally wrong, needed for X.class.functions and MyEnum.VAL, which are different really!
+         }
+         return new PropertyValue(accessor, left, name);
       }
    }
    
    private class ObjectResolver implements ValueResolver<Object> {
       
+      private final AtomicReference<Accessor> reference;
       private final String name;
       
       public ObjectResolver(String name) {
+         this.reference = new AtomicReference<Accessor>();
          this.name = name;
       }
       
+      @Override
       public Value resolve(Scope scope, Object left) {
-         Module module = scope.getModule();
-         Class type = left.getClass();
-         String alias = type.getName();
-         Type source = module.getType(alias);
-         Value value = resolve(scope, left, source);
+         Accessor accessor = reference.get();
          
-         if(value == null) {
-            List<Type> list = source.getTypes(); // XXX does not exhaust hierarchy
+         if(accessor == null) {
+            Module module = scope.getModule();
+            Class type = left.getClass();
+            String alias = type.getName();
+            Type source = module.getType(alias);
+            Set<Type> list = extractor.extract(source);
             
             for(Type base : list) {
-               Value result = resolve(scope, left, base);
+               Accessor match = resolve(scope, left, base);
                
-               if(result != null) {
-                  return result;
+               if(match != null) {
+                  reference.set(match);
+                  return new PropertyValue(match, left, name);
                }
             }
-         }  
-         return value;
+            return null;
+         }
+         return new PropertyValue(accessor, left, name);
       }
       
-      public Value resolve(Scope scope, Object left, Type type) {
+      public Accessor resolve(Scope scope, Object left, Type type) {
          List<Property> properties = type.getProperties();
          
          for(Property property : properties){
@@ -166,7 +193,7 @@ public class VariableResolver {
                Accessor accessor = property.getAccessor();    
                
                if(accessor != null) {
-                  return new PropertyValue(accessor, left, name);
+                  return accessor;
                }
             }
          } 
