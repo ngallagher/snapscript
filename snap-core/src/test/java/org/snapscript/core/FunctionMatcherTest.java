@@ -76,5 +76,42 @@ public class FunctionMatcherTest extends TestCase {
       call6.call(null, object);
 
    }
+   
+   public void testMatcherPerformance() throws Exception {
+      ExampleObject object = new ExampleObject();
+      PackageLinker linker = new PackageLinker() {
+         
+         @Override
+         public Package link(String name, String source) throws Exception {
+            return null;
+         }
+         @Override
+         public Package link(String name, String source, String grammar) throws Exception {
+            return null;
+         }
+      };
+      ResourceReader reader = new ClassPathReader();
+      ImportResolver resolver = new ImportResolver(linker, reader);
+      TypeLoader loader = new TypeLoader(resolver);
+      FunctionMatcher matcher = new FunctionMatcher(loader);
+      Type type = loader.loadType(ExampleObject.class);
+      
+      assertNotNull(type);
+      
+      long start = System.currentTimeMillis();
+      
+      for(int i = 0; i < 1000000; i++) {
+         matcher.match(type, "method", "x", 12, 44f);
+         matcher.match(type, "method", "x", 12d, 44f);
+         matcher.match(type, "method", "x", 1L, 44f);
+         matcher.match(type, "method", "x", "l", 2,3,4,5);
+         matcher.match(type, "method", "x", 10, 10);
+         matcher.match(type, "method", "x", "10", "10");
+      }
+      long finish = System.currentTimeMillis();
+      long duration = finish - start;
+      
+      System.err.println("Duration " + duration);
+   }
 
 }
