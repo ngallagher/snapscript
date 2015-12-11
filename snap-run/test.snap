@@ -1,3 +1,8 @@
-for(var x in arguments){
-   System.err.println(x);
-}
+var x="hello";
+System.out.println("
+
+                This is a test
+
+'${x}'
+${arguments}
+                ");

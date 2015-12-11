@@ -1,19 +1,20 @@
 package org.snapscript.core.convert;
 
-import java.util.List;
-
+import org.snapscript.core.InstanceChecker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends TypeConverter {
    
-   private final ProxyBuilder builder;
    private final TypeExtractor extractor;
+   private final InstanceChecker checker;
+   private final ProxyBuilder builder;
    private final Type type;
    
-   public ObjectConverter(TypeExtractor extractor, Type type) {
+   public ObjectConverter(TypeExtractor extractor, InstanceChecker checker, Type type) {
       this.builder = new ProxyBuilder();
       this.extractor = extractor;
+      this.checker = checker;
       this.type = type;
    }
 
@@ -25,9 +26,7 @@ public class ObjectConverter extends TypeConverter {
          if(match.equals(type)) {
             return EXACT;
          }
-         List<Type> types = match.getTypes();
-         
-         if(types.contains(type)) { // here we are checking the class hierarchy
+         if(checker.check(match, type)) {
             return SIMILAR;
          }
          return INVALID;

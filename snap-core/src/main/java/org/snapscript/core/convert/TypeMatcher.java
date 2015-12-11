@@ -3,6 +3,7 @@ package org.snapscript.core.convert;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.snapscript.core.InstanceChecker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
@@ -15,10 +16,12 @@ public class TypeMatcher {
    private final TypeExtractor extractor;
    private final TypeVerifier comparator;
    private final TypeConverter converter;
+   private final InstanceChecker checker;
    
    public TypeMatcher(TypeLoader loader) {
       this.converters = new HashMap<Type, TypeConverter>();
-      this.comparator = new TypeVerifier(loader);
+      this.checker = new InstanceChecker();
+      this.comparator = new TypeVerifier(loader, checker);
       this.extractor = new TypeExtractor(loader);
       this.converter = new NullConverter();
    }
@@ -94,6 +97,6 @@ public class TypeMatcher {
       if(comparator.like(Enum.class, type)) {
          return new EnumConverter(extractor, type);
       }      
-      return new ObjectConverter(extractor, type);
+      return new ObjectConverter(extractor, checker, type);
    }
 }

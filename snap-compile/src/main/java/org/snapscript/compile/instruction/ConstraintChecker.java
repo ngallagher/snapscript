@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
+import org.snapscript.core.InstanceChecker;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -9,9 +10,11 @@ import org.snapscript.core.Type;
 public class ConstraintChecker {
    
    private final ConstraintExtractor extractor;
+   private final InstanceChecker checker;
    
    public ConstraintChecker() {
       this.extractor = new ConstraintExtractor();
+      this.checker = new InstanceChecker();
    }
 
    public boolean compatible(Scope scope, Object value, String name) throws Exception {
@@ -38,9 +41,7 @@ public class ConstraintChecker {
                }
                return true;
             }
-            List<Type> compatible = actual.getTypes();
-            
-            if(!compatible.contains(type)) {
+            if(!checker.check(actual, type)) {
                return false;
             }
          }

@@ -16,6 +16,7 @@ import org.snapscript.core.Value;
 
 public class TryCatchStatement extends Statement {
    
+   private final ConstraintChecker checker;
    private final Statement statement;
    private final Parameter parameter;
    private final Statement handle;
@@ -30,6 +31,7 @@ public class TryCatchStatement extends Statement {
    }   
    
    public TryCatchStatement(Statement statement, Parameter parameter, Statement handle, Statement finish) {
+      this.checker = new ConstraintChecker();
       this.statement = statement;
       this.parameter = parameter;  
       this.handle = handle;
@@ -72,18 +74,12 @@ public class TryCatchStatement extends Statement {
 
          if(value != null) {
             Module module = scope.getModule();
-            Class type = value.getClass();
-            Type actual = module.getType(type);
             
             if(constraint != null) {
                Type require = module.getType(constraint);
                
-               if(require != actual) {
-                  List<Type> compatible = actual.getTypes();
-               
-                  if(!compatible.contains(require)) {
-                     return result;
-                  }
+               if(!checker.compatible(scope, value, require)) {
+                  return result;
                }
             }
             Scope compound = scope.getInner();

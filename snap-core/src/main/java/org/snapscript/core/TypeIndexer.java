@@ -124,7 +124,7 @@ public class TypeIndexer {
          Map<String,Type> hier = new LinkedHashMap<String,Type>();
          List<Function> mapL = new ArrayList<Function>();
          List<Property> varsL = new ArrayList<Property>();
-         List<Type> hierL = new ArrayList<Type>();
+         List<Type> hierLLL = new ArrayList<Type>();
          Type bbse=null;
          if(base!=null) {
             bbse=load(base);
@@ -132,22 +132,22 @@ public class TypeIndexer {
          }
          Type done=null;
          if(type.isArray()){
-            done=new Type(simpleName,pack,load(type.getComponentType()),hierL,varsL,mapL,cls);
+            done=new Type(simpleName,pack,load(type.getComponentType()),hierLLL,varsL,mapL,cls);
          }else {
-            done=new Type(simpleName,pack,null,hierL,varsL,mapL,cls);
+            done=new Type(simpleName,pack,null,hierLLL,varsL,mapL,cls);
          }
          if(type==Object.class){
             Type any=load("Any", null,true);
-            hierL.add(any);
+            hier.put("Any",any);
          }
          registerType(cls,done);
          if(!cls.isPrimitive()&&!cls.isArray()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
             registerType(key,done);
             indexMethods(type, mapL, varsL);
             indexConstructors(type, mapL);
-            indexFields(type, base, interfaces, hier, varsL, hierL);
+            indexFields(type, interfaces, hier, varsL);
          }
-         hierL.addAll(hier.values());
+         hierLLL.addAll(hier.values());
          return done;
       }
       return t;
@@ -213,7 +213,7 @@ public class TypeIndexer {
          }
       }
    }
-   private void indexFields(Class type, Class base, Class[] interfaces, Map<String, Type> hier, List<Property> varsL, List<Type> hierL) throws Exception {
+   private void indexFields(Class type, Class[] interfaces, Map<String, Type> hier, List<Property> varsL) throws Exception {
       Field[] fields= type.getDeclaredFields();
       for(Field f:fields){
          int mod=f.getModifiers();
@@ -228,18 +228,18 @@ public class TypeIndexer {
       for(Class i:interfaces){
          Type baset=load(i);
          hier.put(i.getName(),baset);
-         hierL.addAll(baset.getTypes());
-         for(Type ttp:baset.getTypes()){
-            hier.put(ttp.getName(),ttp);
-         }
+         //hierL.addAll(baset.getTypes());
+         //for(Type ttp:baset.getTypes()){
+         //   hier.put(ttp.getName(),ttp);
+         //}
       }
-      if(base != null) {
-         Type baset=load(base); 
-         hier.put(base.getName(), baset);
-         for(Type ttp:baset.getTypes()){
-            hier.put(ttp.getName(),ttp);
-         }
-      }
+      //if(base != null) {
+         //Type baset=load(base); 
+         //hier.put(base.getName(), baset);
+         //for(Type ttp:baset.getTypes()){
+         //   hier.put(ttp.getName(),ttp);
+         //}
+      //}
    }
    private String getProperty(Method method)throws Exception{
       PropertyType[] types = PropertyType.values();

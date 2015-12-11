@@ -1,14 +1,12 @@
 package org.snapscript.core;
 
-import java.util.List;
-
 public class TypeVerifier {
    
-   private final PrimitivePromoter converter;
+   private final InstanceChecker checker;
    private final TypeLoader loader;
    
-   public TypeVerifier(TypeLoader loader) {
-      this.converter = new PrimitivePromoter();
+   public TypeVerifier(TypeLoader loader, InstanceChecker checker) {
+      this.checker = checker;
       this.loader = loader;
    }
 
@@ -23,11 +21,10 @@ public class TypeVerifier {
    
    public boolean like(Class require, Type type) throws Exception {
       Type actual = loader.loadType(require);
-      List<Type> types = actual.getTypes();
       
-      if(actual != type) {
-         return types.contains(type);
+      if(checker.check(actual, type)) {
+         return true;
       }
-      return true;
+      return false;
    }
 }

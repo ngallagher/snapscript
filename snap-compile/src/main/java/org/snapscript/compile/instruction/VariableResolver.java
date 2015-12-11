@@ -143,7 +143,7 @@ public class VariableResolver {
          Value value = resolve(scope, left, source);
          
          if(value == null) {
-            List<Type> list = source.getTypes();
+            List<Type> list = source.getTypes(); // XXX does not exhaust hierarchy
             
             for(Type base : list) {
                Value result = resolve(scope, left, base);

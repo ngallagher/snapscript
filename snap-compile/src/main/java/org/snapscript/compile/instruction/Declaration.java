@@ -2,17 +2,18 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
-import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class Declaration extends Statement {
    
+   private final ConstraintChecker checker;
    private final Evaluation identifier;
    private final Constraint constraint;
    private final Evaluation value;
@@ -30,6 +31,7 @@ public class Declaration extends Statement {
    }
    
    public Declaration(Evaluation identifier, Constraint constraint, Evaluation value) {
+      this.checker = new ConstraintChecker();
       this.constraint = constraint;
       this.identifier = identifier;
       this.value = value;
@@ -50,15 +52,10 @@ public class Declaration extends Statement {
             Value qualifier = constraint.evaluate(scope, null);
             String alias = qualifier.getString();
             Class type = value.getClass(); 
-            Type actual = module.getType(type);
             Type require = module.getType(alias); 
             
-            if(actual != require) {
-               List<Type> compatible = actual.getTypes();
-               
-               if(!compatible.contains(require)) {
-                  throw new IllegalStateException("Constraint '" + require + "' does not match " + actual);
-               }
+            if(!checker.compatible(scope, value, require)) {
+               throw new IllegalStateException("Constraint '" + require + "' does not match " + type);
             }
          }
          state.setValue(name, result);
