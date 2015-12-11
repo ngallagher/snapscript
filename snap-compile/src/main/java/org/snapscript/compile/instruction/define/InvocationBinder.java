@@ -16,16 +16,6 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class InvocationBinder {
 
-   /*
-    * These are the only types to worry about!!!!!
-    * 
-    * 1) Scope of a type [if type then use the object]
-    *       a) What if in a member function, then where do I get instance scope
-    *       
-    * 2) Scope of local [if local the the module scope is what to use]
-    * 3) Scope of a module [if module use the module scope]
-    * 
-    */
    public InvocationDispatcher dispatch(Scope scope, Object left) {
       if(left != null) {
          Class type = left.getClass();

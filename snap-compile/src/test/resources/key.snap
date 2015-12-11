@@ -178,7 +178,7 @@ class KeyPressCalculator {
 
 }
 
-var calculator = new KeyPressCalculator(32, 2);
+var calculator = new KeyPressCalculator(10, 2);
 var result = calculator.calculate();
          
 System.out.println(result);

@@ -20,8 +20,8 @@ public class Interpreter {
    
    private final SourceLoader loader;
    private final String[] arguments;
-   
-   public Interpreter(String[] arguments) {
+
+   public Interpreter(String... arguments) {
       this.loader = new SourceLoader();
       this.arguments = arguments;
    }

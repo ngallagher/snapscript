@@ -1,7 +1,5 @@
 package org.snapscript.compile.instruction;
 
-import java.util.List;
-
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;

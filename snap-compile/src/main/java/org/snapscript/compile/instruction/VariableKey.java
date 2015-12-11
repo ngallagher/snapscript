@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction;
 
-
 public class VariableKey {
 
    private final String name;
