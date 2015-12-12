@@ -32,7 +32,7 @@ public class InstructionBuilder {
       Callable<Result> callable = binder.bind(null, type, "new", arguments);
       
       if(callable == null) {
-         throw new IllegalStateException("No constructor for " + type);
+         throw new IllegalStateException("No constructor for " + type + " at line " + line);
       }
       Result result = callable.call();
       Object value = result.getValue();
