@@ -180,6 +180,9 @@ public class TypeIndexer {
                   Method read=m;
                   Class readT=read.getReturnType();
                   Method write=getPropertySetterMatch(methods,readT,prop);
+                  if(write!=null){
+                     write.setAccessible(true);
+                  }
                   Type propT=load(readT);
                   MethodAccessor acc=new MethodAccessor(converter.convert(readT),read,write);
                   Property v=new Property(prop,propT,acc);               

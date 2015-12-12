@@ -2,11 +2,11 @@ package org.snapscript.core.convert;
 
 import org.snapscript.core.Type;
 
-public class CharacterConverter extends TypeConverter {
+public class BooleanConverter extends TypeConverter {
 
    private final Type type;
    
-   public CharacterConverter(Type type) {
+   public BooleanConverter(Type type) {
       this.type = type;
    }
    
@@ -26,7 +26,7 @@ public class CharacterConverter extends TypeConverter {
    private int match(Object value) throws Exception {
       Class type = value.getClass();
       
-      if(type == Character.class) {
+      if(type == Boolean.class) {
          return EXACT;
       }
       if(type == String.class) {
@@ -41,12 +41,12 @@ public class CharacterConverter extends TypeConverter {
       
       if(type == String.class) {
          String text = String.valueOf(value);
-         return convert(Character.class, text);
+         return convert(Boolean.class, text);
       }
-      if(type == Character.class) {
-         Character number = (Character)value;
-         return number.charValue();
+      if(type == Boolean.class) {
+         Boolean number = (Boolean)value;
+         return number.booleanValue();
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to character is not possible");
+      throw new IllegalArgumentException("Conversion from " + type + " to boolean is not possible");
    }
 }

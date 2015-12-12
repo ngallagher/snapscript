@@ -64,6 +64,9 @@ public class TypeMatcher {
       if(comparator.same(char.class, type)) {
          return new CharacterConverter(type);
       }
+      if(comparator.same(boolean.class, type)) {
+         return new BooleanConverter(type);
+      }
       if(comparator.same(Number.class, type)) {
          return new NumberConverter(type);
       }
@@ -87,6 +90,9 @@ public class TypeMatcher {
       }
       if(comparator.same(Character.class, type)) {
          return new CharacterConverter(type);
+      }
+      if(comparator.same(Boolean.class, type)) {
+         return new BooleanConverter(type);
       }
       if(comparator.same(String.class, type)) {
          return new StringConverter();

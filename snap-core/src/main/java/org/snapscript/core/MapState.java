@@ -35,6 +35,15 @@ public class MapState implements State {
    @Override
    public void setValue(String name, Value value) {
       Value variable = values.get(name);
+      
+      if(variable == null && scope != null) {
+         State state = scope.getState();
+         
+         if(state == null) {
+            throw new IllegalStateException("Scope for '" + name + "' does not exist");
+         }
+         variable = state.getValue(name);
+      }
       Object data = value.getValue();
 
       if(variable == null) {
