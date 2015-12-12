@@ -15,9 +15,6 @@ public class ImportResolver {
       "java.", 
       "java.lang.", 
       "java.util.", 
-      "java.util.concurrent.", 
-      "java.util.concurrent.atomic.", 
-      "java.util.concurrent.locks.",
       "java.io.",
       "java.net.",     
       "java.math."};

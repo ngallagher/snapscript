@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Result;
@@ -12,9 +13,11 @@ import org.snapscript.parse.Line;
 
 public class InstructionBuilder {
    
+   private final AtomicInteger counter;
    private final Context context;
 
    public InstructionBuilder(Context context) {
+      this.counter = new AtomicInteger();
       this.context = context;
    }
    
@@ -36,14 +39,15 @@ public class InstructionBuilder {
       
       if(trace) {
          Class instruction = value.getClass();
+         int key = counter.getAndIncrement();
          
          if(Statement.class.isAssignableFrom(instruction)) {
             Statement statement = (Statement)value;
-            return new TraceStatement(analyzer, statement, line);
+            return new TraceStatement(analyzer, statement, line, key);
          }
          if(Evaluation.class.isAssignableFrom(instruction)) {
             Evaluation evaluation = (Evaluation)value;
-            return new TraceEvaluation(analyzer, evaluation, line);
+            return new TraceEvaluation(analyzer, evaluation, line, key);
          }
       }
       return value;

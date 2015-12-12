@@ -10,11 +10,13 @@ public class TraceEvaluation implements Evaluation {
    private final TraceAnalyzer analyzer;
    private final Evaluation evaluation;
    private final Line line;
+   private final int key;
    
-   public TraceEvaluation(TraceAnalyzer analyzer, Evaluation evaluation, Line line) {
+   public TraceEvaluation(TraceAnalyzer analyzer, Evaluation evaluation, Line line, int key) {
       this.analyzer = analyzer;
       this.evaluation = evaluation;
       this.line = line;
+      this.key = key;
    }
    
    @Override
@@ -22,10 +24,10 @@ public class TraceEvaluation implements Evaluation {
       int number = line.getNumber();
       
       try {
-         analyzer.before(scope, evaluation, number);
+         analyzer.before(scope, evaluation, number, key);
          return evaluation.evaluate(scope, left); 
       } finally {
-         analyzer.after(scope, evaluation, number);
+         analyzer.after(scope, evaluation, number, key);
       }
    }
 

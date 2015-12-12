@@ -11,11 +11,13 @@ public class TraceStatement extends Statement {
    private final TraceAnalyzer analyzer;
    private final Statement statement;
    private final Line line;
+   private final int key;
    
-   public TraceStatement(TraceAnalyzer analyzer, Statement statement, Line line) {
+   public TraceStatement(TraceAnalyzer analyzer, Statement statement, Line line, int key) {
       this.analyzer = analyzer;
       this.statement = statement;
       this.line = line;
+      this.key = key;
    }
    
    @Override
@@ -28,10 +30,10 @@ public class TraceStatement extends Statement {
       int number = line.getNumber();
       
       try {
-         analyzer.before(scope, statement, number);
+         analyzer.before(scope, statement, number, key);
          return statement.execute(scope); 
       } finally {
-         analyzer.after(scope, statement, number);
+         analyzer.after(scope, statement, number, key);
       }
    }
 }

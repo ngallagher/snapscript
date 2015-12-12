@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.ClassPathContext;
@@ -25,6 +28,7 @@ public class ScriptAgent {
 
    private static final Context CONTEXT = new ClassPathContext();
    private static final StringCompiler COMPILER = new StringCompiler(CONTEXT);
+   private static final Profiler INTERCEPTOR = new Profiler();
    private static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
    "   static const ARR = [\"a\",\"b\",\"c\"];\n"+
@@ -62,7 +66,7 @@ public class ScriptAgent {
          e.printStackTrace();
       }
       TraceAnalyzer analyzer = CONTEXT.getAnalyzer();
-      analyzer.register(new ScriptAgentInterceptor());
+      analyzer.register(INTERCEPTOR);
       try {
          Socket socket = new Socket("localhost", serverPort);
          ClientListener listener = new ClientListener(socket);
@@ -73,21 +77,84 @@ public class ScriptAgent {
 
    }
    
-   private static class ScriptAgentInterceptor implements TraceInterceptor {
-
-      @Override
-      public void before(Scope scope, Object instruction, int line) {
-         System.err.println(instruction.getClass().getSimpleName() + " at line " + line);
+   private static class Profiler implements TraceInterceptor {
+      
+      private int[] counts;
+      private long[] start;
+      private long[] times;
+      private int max;
+      
+      public Profiler() {
+         this.start = new long[500];
+         this.counts = new int[500];
+         this.times = new long[500];
+         this.max = 0;
       }
 
-      @Override
-      public void after(Scope scope, Object instruction, int line) {
-         // TODO Auto-generated method stub
-         
+      public SortedSet<ProfileResult> lines() {
+         SortedSet<ProfileResult> result=new TreeSet<ProfileResult>();
+       
+         for(int i = 0; i < max; i++){
+            if(times[i] > 0) {
+               result.add(new ProfileResult(times[i], i));
+            }
+         }
+         return result;
       }
       
+      @Override
+      public void before(Scope scope, Object instruction, int line, int key) {
+         // thread local required, also recursion counter
+         if(times.length < line) {
+            counts = Arrays.copyOf(counts, line + 50);
+            times = Arrays.copyOf(times, line + 50);
+            start = Arrays.copyOf(start, line + 50);
+         }
+         int currentCount = counts[line]++;// we just entered an instruction
+         
+         if(currentCount == 0) {
+            start[line] = System.nanoTime(); // first instruction to enter
+         }
+      }
+
+      @Override
+      public void after(Scope scope, Object instruction, int line, int key) {
+         int currentCount = --counts[line]; // exit instruction
+         
+         if(currentCount == 0) {
+            times[line] += (System.nanoTime() - start[line]);
+            start[line] = 0L; // reset as we are now at zero
+         }
+         if(line > max) {
+            max=line;
+         }
+      }
+
+      
    }
-   
+   private static class ProfileResult implements Comparable<ProfileResult>{
+      private final Long time;
+      private final Integer line;
+      
+      private ProfileResult(Long time, Integer line) {
+         this.time = time;
+         this.line = line;
+      }
+      @Override
+      public int compareTo(ProfileResult e) {
+         int compare = e.time.compareTo(time);
+         if(compare == 0) {
+            return e.line.compareTo(line);
+         }
+         return compare;
+      }
+      public int getLine(){
+         return line;
+      }
+      public long getTime(){
+         return TimeUnit.NANOSECONDS.toMillis(time);
+      }
+   }
    private static class ClientListener extends Thread {
       
       private final Socket socket;
@@ -113,6 +180,16 @@ public class ScriptAgent {
                   }finally {
                      System.err.flush(); // flush output to sockets
                      System.out.flush();
+                     Thread.sleep(200);
+                     // should really be a heat map for the editor
+                     SortedSet<ProfileResult> lines = INTERCEPTOR.lines();
+                     System.err.println();
+                     for(ProfileResult entry : lines) {
+                        int line = entry.getLine();
+                        long time = entry.getTime();
+                        System.err.println("Line " + line + " took " + time + " ms");
+                     }
+                     System.err.flush();
                      Thread.sleep(2000);
                      System.err.close();
                      System.out.close();
@@ -141,9 +218,19 @@ public class ScriptAgent {
             listener.start();
             long start = System.nanoTime();
             Executable executable = COMPILER.compile(script);
+            long middle = System.nanoTime();
             executable.execute();
             long stop = System.nanoTime();
-            System.err.println("time="+TimeUnit.NANOSECONDS.toMillis(stop-start));
+            System.out.flush();
+            System.err.flush();
+            System.err.println();
+            System.err.println("Compile took "+
+                  TimeUnit.NANOSECONDS.toMillis(middle-start) + 
+                  " ms");
+            System.err.println("Execute took "+
+                  TimeUnit.NANOSECONDS.toMillis(stop-middle) +
+                  " ms");
+            
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }
