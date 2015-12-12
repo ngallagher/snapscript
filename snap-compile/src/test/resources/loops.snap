@@ -31,3 +31,7 @@ for(var i = 0; i < 10;i++){
    x+=i;
    System.err.println(x);
 }
+for(var i in 0..9){
+   x+=i;
+   System.err.println(x);
+}
