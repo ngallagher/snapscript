@@ -6,6 +6,7 @@ import org.snapscript.core.Context;
 import org.snapscript.core.ImportResolver;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.PackageLinker;
+import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.resource.FileReader;
@@ -14,6 +15,7 @@ import org.snapscript.core.resource.ResourceReader;
 public class FileContext implements Context {
 
    private final ImportResolver resolver;
+   private final TraceAnalyzer analyzer;
    private final FunctionBinder binder;
    private final ModuleBuilder builder;
    private final PackageLinker linker;
@@ -21,12 +23,18 @@ public class FileContext implements Context {
    private final TypeLoader loader; 
 
    public FileContext(File file){
+      this.analyzer = new TraceAnalyzer();
       this.reader = new FileReader(file);
       this.builder = new ModuleBuilder(this);
       this.linker = new ContextLinker(this);
       this.resolver = new ImportResolver(linker, reader);      
       this.loader = new TypeLoader(resolver);
       this.binder = new FunctionBinder(loader);
+   }
+   
+   @Override
+   public TraceAnalyzer getAnalyzer() {
+      return analyzer;
    }
    
    @Override

@@ -24,7 +24,6 @@ public class LexerBuilder {
    public static void print(SyntaxNode token, int parent, int depth) throws Exception{   
       String grammar = token.getGrammar();
       List<SyntaxNode> children = token.getNodes();
-      Token t = token.getToken();
       
       for (int i = 0; i < depth; i++) {
          System.err.print(" ");
@@ -41,13 +40,10 @@ public class LexerBuilder {
          System.err.printf(child);
       }
       System.err.print(")");
-      
-      if(t != null) {
-         System.err.print(" = \"");
-         System.err.print(t.getValue());
-         System.err.print("\" ");
-         System.err.print(t.getValue().getClass().getSimpleName());
-      }
+      System.err.print(" = <");
+      System.err.print(token.getLine().getSource().trim());
+      System.err.print("> at line ");
+      System.err.print(token.getLine().getNumber());
       System.err.println();
       System.err.flush();
       

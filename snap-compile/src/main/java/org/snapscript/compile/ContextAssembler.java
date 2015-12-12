@@ -3,26 +3,29 @@ package org.snapscript.compile;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.Instruction;
+import org.snapscript.compile.instruction.InstructionBuilder;
 import org.snapscript.core.Context;
-import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.parse.Line;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.Token;
 
 public class ContextAssembler implements Assembler {
    
    private final Map<String, Instruction> codes;
-   private final Map<String, Type> types;
+   private final Map<String, Operation> types;
+   private final InstructionBuilder builder;
    private final Context context;
+   private final Object[] empty;
 
    public ContextAssembler(Context context) {
       this.codes = new LinkedHashMap<String, Instruction>();
-      this.types = new LinkedHashMap<String, Type>();
+      this.types = new LinkedHashMap<String, Operation>();
+      this.builder = new InstructionBuilder(context);
+      this.empty = new Object[]{};
       this.context = context;
    }
    
@@ -38,7 +41,7 @@ public class ContextAssembler implements Assembler {
             Type type = loader.loadType(value);
             
             codes.put(id, instruction);
-            types.put(id, type);
+            types.put(id, new Operation(instruction, type));
          }  
       } 
       return (T)create(token, name, 0);
@@ -47,7 +50,7 @@ public class ContextAssembler implements Assembler {
    private Object create(SyntaxNode node, String name, int depth) throws Exception {
       List<SyntaxNode> children = node.getNodes();
       String grammar = node.getGrammar();
-      Type type = types.get(grammar);
+      Operation type = types.get(grammar);
       int size = children.size();
       
       if (type == null) {
@@ -59,9 +62,9 @@ public class ContextAssembler implements Assembler {
       return createLeaf(node, name, children, type,depth);
    }
    
-   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Type type,int depth) throws Exception {
-      FunctionBinder binder = context.getBinder();
+   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Operation type,int depth) throws Exception {
       TypeLoader loader = context.getLoader();
+      Line line = node.getLine();
       int size = children.size();
       
       Object[] arguments = new Object[size];
@@ -76,16 +79,11 @@ public class ContextAssembler implements Assembler {
          arguments[i] = argument;
          parameters[i] = t;
       }
-      Callable<Result> callable = binder.bind(null, type, "new", arguments);
-      if(callable == null) {
-         throw new IllegalStateException("No constructor for " + type);
-      }
-      Result result = callable.call();
-      return result.getValue();
+      return builder.create(type.type, arguments, line, type.instruction.trace);
    }
 
    // this is essentially a skip of an unknown node!!
-   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Type type, int depth) throws Exception {
+   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Operation type, int depth) throws Exception {
       String grammar = node.getGrammar();
       int size = children.size();
       
@@ -106,26 +104,27 @@ public class ContextAssembler implements Assembler {
       return createLeaf(node, name, children, type,depth);
    }
    
-   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Type type, int depth) throws Exception {
-      FunctionBinder binder = context.getBinder();  
-      Token token = node.getToken();      
-
+   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Operation type, int depth) throws Exception {
+      Token token = node.getToken();     
+      Line line = node.getLine();
+      
       if (type != null) {
          if (token == null) {
-            Callable<Result> callable = binder.bind(null, type, "new");
-            Result result = callable.call();
-            return result.getValue();
+            return builder.create(type.type, empty, line, type.instruction.trace); // no line number????
          }      
-         Callable<Result> callable = binder.bind(null, type, "new", token);    
-         
-         if(callable == null) {
-            throw new IllegalStateException("No constructor for " + type);
-         }
-         Result result = callable.call();
-         Object value = token.getValue();
- 
-         return result.getValue();
+         return builder.create(type.type, new Object[]{token}, line, type.instruction.trace);
       }
       return token;
+   }
+   
+   private class Operation{
+      
+      private final Instruction instruction;
+      private final Type type;
+      
+      public Operation(Instruction instruction, Type type) {
+         this.instruction = instruction;
+         this.type = type;
+      }
    }
 }

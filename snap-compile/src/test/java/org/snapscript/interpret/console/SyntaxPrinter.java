@@ -39,19 +39,10 @@ public class SyntaxPrinter {
          builder.printf(child);
       }
       builder.print(")");
-      
-      if(t != null) {
-         builder.print(" = \"");
-         builder.print(t.getValue());
-         builder.print("\" <");
-         builder.print(t.getValue().getClass().getSimpleName());
-         builder.print("> [");
-         builder.print(t.getLine().getNumber());
-         builder.print(": ");
-         builder.print(t.getLine().getSource().trim());
-         builder.print("]");
-      }
-         
+      builder.print(" = <");
+      builder.print(token.getLine().getSource().trim());
+      builder.print("> at line ");
+      builder.print(token.getLine().getNumber()); 
       builder.println();
       builder.flush();
       

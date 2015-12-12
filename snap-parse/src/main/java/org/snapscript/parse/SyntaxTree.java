@@ -76,7 +76,6 @@ public class SyntaxTree {
       private List<SyntaxCursor> nodes;
       private Token value;
       private int grammar;
-      private int mark;
       private int key;
       private int start;
       private int depth;
@@ -129,14 +128,11 @@ public class SyntaxTree {
 
       @Override
       public void commit() {
-         int current = analyzer.mark();
-         
          while (!stack.isEmpty()) {
             int top = stack.pop();
 
             if (top == key) {
                parent.add(this);
-               mark = current;
                break;
             }
          }
@@ -272,6 +268,11 @@ public class SyntaxTree {
       @Override
       public String getGrammar() {
          return indexer.value(grammar);
+      }
+      
+      @Override
+      public Line getLine() {
+         return analyzer.line(start);
       }
 
       @Override

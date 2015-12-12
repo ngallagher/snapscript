@@ -18,6 +18,8 @@ import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
+import org.snapscript.core.TraceAnalyzer;
+import org.snapscript.core.TraceInterceptor;
 
 public class ScriptAgent {
 
@@ -54,11 +56,13 @@ public class ScriptAgent {
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
          Statement script = library.compile(scope);
-         
+
          script.execute(scope);
       }catch(Exception e) {
          e.printStackTrace();
       }
+      TraceAnalyzer analyzer = CONTEXT.getAnalyzer();
+      analyzer.register(new ScriptAgentInterceptor());
       try {
          Socket socket = new Socket("localhost", serverPort);
          ClientListener listener = new ClientListener(socket);
@@ -67,6 +71,21 @@ public class ScriptAgent {
          e.printStackTrace();
       }
 
+   }
+   
+   private static class ScriptAgentInterceptor implements TraceInterceptor {
+
+      @Override
+      public void before(Scope scope, Object instruction, int line) {
+         System.err.println(instruction.getClass().getSimpleName() + " at line " + line);
+      }
+
+      @Override
+      public void after(Scope scope, Object instruction, int line) {
+         // TODO Auto-generated method stub
+         
+      }
+      
    }
    
    private static class ClientListener extends Thread {

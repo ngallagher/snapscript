@@ -21,7 +21,7 @@ public class CompoundStatement extends Statement {
    @Override
    public Result execute(Scope scope) throws Exception {
       Scope compound = scope.getInner(); 
-      Result last = new Result();
+      Result last = null;
       
       for(Statement statement : statements) {
          Result result = statement.compile(compound);
@@ -39,6 +39,9 @@ public class CompoundStatement extends Statement {
             return result;
          }
          last = result;
+      }
+      if(last == null) {
+         return new Result();
       }
       return last;
    }
