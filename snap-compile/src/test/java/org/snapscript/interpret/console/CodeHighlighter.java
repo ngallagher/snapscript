@@ -21,33 +21,47 @@ public class CodeHighlighter {
       this.styles = styles;
    }
 
-   public List<CodeHighlight> createHighlights(String text) {
+   public List<CodeHighlight> createHighlights(String text, HeatMap map) {
       List<CodeHighlight> highlights = cache.get(text);
+      // not really working
+      //map.setHeat(2, 10);
+      char[] data = text.toCharArray();
+      short[] lines = new short[data.length];
+      short count = 1;
       
+      for(int i = 0; i < data.length; i++) {
+         char next = data[i];
+         lines[i]=count;
+         if(next == '\n') {
+            count++;
+         }
+      }
       if(highlights == null) {
          List<CodeHighlight> list = new ArrayList<CodeHighlight>();
          int length = text.length();
          int pos = 0;
          int prev = 0;
-
+         int skip = 0;
          // Search for pattern
          // see I have updated now its not case sensitive
          while (pos < length) {
-            CodeHighlight highlight = checkHighlight(text, pos);
+            CodeHighlight highlight = checkHighlight(text, map, lines[pos], pos);
 
             if (highlight != null) {
                if (prev < pos) {
-                  list.add(new CodeHighlight(text, NORMAL, prev, pos - prev));
+                  list.add(new CodeHighlight(map, text, NORMAL, lines[prev], prev, pos - prev));
                }
                list.add(highlight);
                pos = highlight.getOffset() + highlight.getLength();
                prev = pos;
+               skip = 0;
             } else {
+               skip++;
                pos++;
             }
          }
          if (prev < pos) {
-            list.add(new CodeHighlight(text, NORMAL, prev, pos - prev));
+            list.add(new CodeHighlight(map, text, NORMAL, -1, prev, pos - prev));
          }
          cache.put(text, list);
          return list;
@@ -55,7 +69,7 @@ public class CodeHighlighter {
       return highlights;
    }
 
-   private CodeHighlight checkHighlight(String text, final int pos) {
+   private CodeHighlight checkHighlight(String text, HeatMap map, final int line, final int pos) {
       int length = text.length();
       
       //System.err.println(text.substring(pos).replace("\n", "[\\n]").replaceAll("\r",  "[\\r]").replace("\t", "[\\t]"));
@@ -68,19 +82,19 @@ public class CodeHighlighter {
                char prev = text.charAt(i - 1);
                
                if(prev != '\\') {
-                  return new CodeHighlight(text, STRING, pos, (i - pos) + 1);
+                  return new CodeHighlight(map, text, STRING, line, pos, (i - pos) + 1);
                } else {
                   if(i - 2 > 0) {
                      char escape = text.charAt(i - 2);
                      
                      if(escape == '\\') {
-                        return new CodeHighlight(text, STRING, pos, (i - pos) + 1);
+                        return new CodeHighlight(map, text, STRING, line, pos, (i - pos) + 1);
                      }
                   }
                }
             }
          }
-         return new CodeHighlight(text, STRING, pos, length - pos);
+         return new CodeHighlight(map, text, STRING, line, pos, length - pos);
       }
       if(text.startsWith("\"", pos)) {
          for(int i = pos + 1; i < length; i++) {
@@ -90,35 +104,35 @@ public class CodeHighlighter {
                char prev = text.charAt(i - 1);
                
                if(prev != '\\') {
-                  return new CodeHighlight(text, STRING, pos, (i - pos) + 1);
+                  return new CodeHighlight(map, text, STRING, line, pos, (i - pos) + 1);
                } else {
                   if(i - 2 > 0) {
                      char escape = text.charAt(i - 2);
                      
                      if(escape == '\\') {
-                        return new CodeHighlight(text, STRING, pos, (i - pos) + 1);
+                        return new CodeHighlight(map, text, STRING, line, pos, (i - pos) + 1);
                      }
                   }
                }
             }
          }
-         return new CodeHighlight(text, STRING, pos, length - pos);
+         return new CodeHighlight(map, text, STRING, line, pos, length - pos);
       }
       if (text.startsWith("//", pos)) {
          int last = text.indexOf("\n", pos);
 
          if (last == -1) {
-            return new CodeHighlight(text, COMMENT, pos, length - pos);
+            return new CodeHighlight(map, text, COMMENT, line, pos, length - pos);
          }
-         return new CodeHighlight(text, COMMENT, pos, last - pos);
+         return new CodeHighlight(map, text, COMMENT, line, pos, last - pos);
       }
       if (text.startsWith("/*", pos)) {
          int last = text.indexOf("*/", pos);
 
          if (last == -1) {
-            return new CodeHighlight(text, COMMENT, pos, length - pos);
+            return new CodeHighlight(map, text, COMMENT, line, pos, length - pos);
          }
-         return new CodeHighlight(text, COMMENT, pos, (last + 2)  - pos);
+         return new CodeHighlight(map, text, COMMENT, line, pos, (last + 2)  - pos);
       }
       Set<String> keys = styles.keySet();
       
@@ -142,7 +156,7 @@ public class CodeHighlighter {
                   continue;
                }
             }
-            return new CodeHighlight(text, style, pos, size);
+            return new CodeHighlight(map, text, style, line, pos, size);
          }
       }
       return null;

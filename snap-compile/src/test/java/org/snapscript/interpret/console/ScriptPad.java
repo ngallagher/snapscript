@@ -51,6 +51,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -101,6 +102,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       STYLE_WORDS.put("from", "keyword");
    }
 
+   private HeatMap heatMap;
    private Queue<ScriptTask> tasks;
    private ScriptEngine engine;
    private Executor executor;
@@ -159,6 +161,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       engine = new ScriptEngine(this);
       engine.start();
       
+      heatMap = new HeatMap();
       tasks = new LinkedBlockingQueue<ScriptTask>();
       executor = new ThreadPool(5);
       highlighter = new CodeHighlighter(STYLE_WORDS);
@@ -297,6 +300,36 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       runExternalI.addActionListener(this);
       stopI.addActionListener(this);
       
+      Color hot = Color.RED;
+      int alpha = 180;
+      int scale = 20;
+      double subtract = (180.0 / (scale - 1));
+      
+      for(int i = scale; i >= 0; i--) {
+         Color color = new Color(hot.getRed(), hot.getGreen(), hot.getBlue(), alpha >= 0 ? alpha : 0);
+         alpha -= subtract; // reduce the alpha 
+         
+         //System.err.println("i="+i+" color="+color + " alpha=" + alpha);
+         Style keyword = doc.addStyle(CodeHighlight.KEYWORD + i, null);
+         Style number = doc.addStyle(CodeHighlight.NUMBER + i, null);
+         Style string = doc.addStyle(CodeHighlight.STRING + i, null);
+         Style normal = doc.addStyle(CodeHighlight.NORMAL + i, null);
+         Style comment = doc.addStyle(CodeHighlight.COMMENT + i, null);
+   
+         StyleConstants.setForeground(keyword, Color.decode("#b03060"));
+         StyleConstants.setBold(keyword, true);
+         StyleConstants.setForeground(comment, Color.decode("#006400"));
+         StyleConstants.setItalic(comment, true);
+         StyleConstants.setForeground(number, Color.PINK);
+         StyleConstants.setForeground(string, Color.BLUE);
+         StyleConstants.setForeground(normal, Color.BLACK);
+         
+         StyleConstants.setBackground(keyword, color);
+         StyleConstants.setBackground(number, color);
+         StyleConstants.setBackground(string, color);
+         StyleConstants.setBackground(normal, color);
+         StyleConstants.setBackground(comment, color); 
+      }
       Style keyword = doc.addStyle(CodeHighlight.KEYWORD, null);
       Style number = doc.addStyle(CodeHighlight.NUMBER, null);
       Style string = doc.addStyle(CodeHighlight.STRING, null);
@@ -310,7 +343,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       StyleConstants.setForeground(number, Color.PINK);
       StyleConstants.setForeground(string, Color.BLUE);
       StyleConstants.setForeground(normal, Color.BLACK);
-
+      
       setVisible(true);
    }
 
@@ -550,7 +583,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
 
                   try {
                      long startTime = System.currentTimeMillis();
-                     List<CodeHighlight> highlights = highlighter.createHighlights(text);
+                     List<CodeHighlight> highlights = highlighter.createHighlights(text, heatMap);
                      long highlightTime = System.currentTimeMillis();
                      
                      CodeDocument change = new CodeDocument();
@@ -572,6 +605,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
                      }
                      ta.setDocument(doc);
                      ta.setCaretPosition(pos);
+
                      //ta.setDocument(doc);
                      long finishTime = System.currentTimeMillis();
                      //System.err.println("Highlight took " + (highlightTime - startTime) + " ms and render took " + (finishTime - highlightTime) + "  ms");

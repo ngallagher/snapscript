@@ -8,16 +8,24 @@ public class CodeHighlight {
    public static final String STRING = "string";
    public static final String NUMBER = "number";
    
+   private final HeatMap map;
    private final String source;
    private final String style;
    private final int offset;
    private final int length;
-
-   public CodeHighlight(String source, String style, int offset, int length) {
+   private final int line;
+   
+   public CodeHighlight(HeatMap map, String source, String style, int line, int offset, int length) {
       this.source = source;
       this.offset = offset;
       this.length = length;
       this.style = style;
+      this.map = map;
+      this.line = line;
+   }
+   
+   public int getLine() {
+      return line;
    }
    
    public int getOffset() {
@@ -29,7 +37,7 @@ public class CodeHighlight {
    }
    
    public String getStyle() {
-      return style;
+      return style + map.getHeat(line);
    }
    
    public String getSource() {

@@ -94,8 +94,9 @@ public class CodeHighlighterTest extends TestCase {
    public void testStringCodeHighlighter() throws Exception {
       CodeHighlighter highligher = new CodeHighlighter(STYLE_WORDS);
       StringBuilder builder = new StringBuilder();
+      HeatMap map = new HeatMap();
       
-      List<CodeHighlight> highlights = highligher.createHighlights(SOURCE_2);
+      List<CodeHighlight> highlights = highligher.createHighlights(SOURCE_2, map);
       
       for(CodeHighlight highlight : highlights) {
          String code = highlight.getCode();
