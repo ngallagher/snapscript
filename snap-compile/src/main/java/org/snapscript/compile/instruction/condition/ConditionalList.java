@@ -5,7 +5,6 @@ import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
-
 public class ConditionalList implements Evaluation {
    
    private final ConditionalPart[] parts;

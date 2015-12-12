@@ -9,16 +9,16 @@ import org.snapscript.core.Value;
 
 public class ForStatement extends Statement {
 
-   private final ConditionalList evaluation;
+   private final Evaluation evaluation;
    private final Statement declaration;
    private final Evaluation assignment;
    private final Statement statement;
    
-   public ForStatement(Statement declaration, ConditionalList evaluation, Statement statement) {
+   public ForStatement(Statement declaration, Evaluation evaluation, Statement statement) {
       this(declaration, evaluation, null, statement);
    }
    
-   public ForStatement(Statement declaration, ConditionalList evaluation, Evaluation assignment, Statement statement) {
+   public ForStatement(Statement declaration, Evaluation evaluation, Evaluation assignment, Statement statement) {
       this.declaration = declaration;
       this.evaluation = evaluation;
       this.assignment = assignment;
