@@ -69,6 +69,16 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
    public Object get(int index) {
       return Array.get(array, index);
    }
+  
+   @Override
+   public boolean add(Object element) {
+      throw new IllegalArgumentException("Array cannot be resized");
+   }
+   
+   @Override
+   public void add(int index, Object element) {
+      throw new IllegalArgumentException("Array cannot be resized");
+   }
 
    @Override
    public Object set(int index, Object value) {

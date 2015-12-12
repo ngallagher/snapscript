@@ -20,6 +20,7 @@ public enum Syntax {
    CLASS("class", "'class'"),
    VARIABLE("variable", "{<this>|<class>|[identifier]|[type]}"),          // ((array[x])[x] -> (<var>[])
    VARIABLE_REFERENCE("variable-reference", "<variable>"),
+   RANGE("range", "<number>'..'<number>"),
    ARRAY("array", "{<function-invocation>|<variable-reference>}"),
    ARRAY_INDEX("array-index", "<array>+('['<argument>']')"),   
    FUNCTION("function", "[identifier]"),
@@ -91,7 +92,7 @@ public enum Syntax {
    WHILE_STATEMENT("while-statement", "'while('<conditional>')'<statement>"),
    FOR_STATEMENT("for-statement", "'for('(<declaration-statement>|<assignment-statement>|<terminal-statement>)<conditional>';'?(<assignment>|<increment-decrement>)')'<statement>"),
    FOR_INFINITE_STATEMENT("for-infinite-statement", "'for(;;)'<statement>"),
-   FOR_IN_STATEMENT("for-in-statement", "'for('?('var'' ')([identifier])' ''in'?' '<reference>')'<statement>"),
+   FOR_IN_STATEMENT("for-in-statement", "'for('?('var'' ')([identifier])' ''in'?' '{<range>|<reference>}')'<statement>"),
    TRY_BODY("try-body", "<group-statement>"),
    CATCH_BODY("catch-body", "<group-statement>"),
    FINALLY_BODY("finally-body", "<group-statement>"),

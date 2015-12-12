@@ -37,7 +37,7 @@ public class ArrayConverter {
       if(type == boolean[].class || type == Boolean[].class) {
          return new PrimitiveBooleanList(array, Character.class);
       }
-      return Arrays.asList((Object[])array);
+      return new ObjectList((Object[])array, type);
    }
    
    public Object create(Class type, int size) throws Exception {

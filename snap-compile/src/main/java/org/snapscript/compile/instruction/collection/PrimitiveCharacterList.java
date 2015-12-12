@@ -37,7 +37,6 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
       Class type = copy.getClass();
       int require = copy.length;
      
-      if(type != Character.class)
       for(int i = 0; i < length && i < require; i++) {
          Character character = (Character)Array.get(array, i);
          Object value = character;
@@ -61,6 +60,16 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
       return (Character)Array.get(array, index);
    }
 
+   @Override
+   public boolean add(Character element) {
+      throw new IllegalArgumentException("Array cannot be resized");
+   }
+   
+   @Override
+   public void add(int index, Character element) {
+      throw new IllegalArgumentException("Array cannot be resized");
+   }
+   
    @Override
    public Character set(int index, Character value) {
       Object previous = Array.get(array, index);

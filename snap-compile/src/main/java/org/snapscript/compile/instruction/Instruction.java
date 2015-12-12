@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import org.snapscript.compile.instruction.collection.Array;
 import org.snapscript.compile.instruction.collection.ArrayIndex;
+import org.snapscript.compile.instruction.collection.Range;
 import org.snapscript.compile.instruction.condition.Choice;
 import org.snapscript.compile.instruction.condition.Comparison;
 import org.snapscript.compile.instruction.condition.ConditionalList;
@@ -63,6 +64,7 @@ public enum Instruction {
    NUMBER(SignedNumber.class, "number"), 
    VARIABLE(Variable.class, "variable"),
    ARGUMENT(Argument.class, "argument"),
+   Range(Range.class, "range"),     
    ARRAY(Array.class, "array"),      
    ARRAY_INDEX(ArrayIndex.class, "array-index"),                
    FUNCTION_INVOCATION(FunctionInvocation.class, "function-invocation"),           

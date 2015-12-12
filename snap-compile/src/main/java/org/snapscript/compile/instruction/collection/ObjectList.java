@@ -4,14 +4,14 @@ import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
-public class PrimitiveBooleanList extends AbstractList<Boolean> implements RandomAccess {
+public class ObjectList extends AbstractList<Object> implements RandomAccess {
 
-   private final Object array;
+   private final Object[] array;
    private final Class type;
    private final int length;
 
-   public PrimitiveBooleanList(Object array, Class type) {
-      this.length = Array.getLength(array);
+   public ObjectList(Object[] array, Class type) {
+      this.length = array.length;
       this.array = array;
       this.type = type;
    }
@@ -27,7 +27,7 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -37,53 +37,40 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
       Class type = copy.getClass();
       int require = copy.length;
      
-      for(int i = 0; i < length && i < require; i++) {
-         Boolean flag = (Boolean)Array.get(array, i);
-         Object value = flag;
-         
-         if(type == String[].class) {
-            value = value.toString();
-         } else if(type == Boolean[].class) {
-            value = flag;
-         } else if(type == Object[].class) {
-            value = flag;
-         } else {
-            throw new IllegalArgumentException("Incompatible array type");
+      if(require >= length) {
+         for(int i = 0; i < length; i++) {
+            copy[i] = (T)array[i];
          }
-         copy[i] = (T)value;
       }
-      return copy;
+      return (T[])toArray();
    }
 
    @Override
-   public Boolean get(int index) {
-      return (Boolean)Array.get(array, index);
+   public Object get(int index) {
+      return array[index];
    }
    
    @Override
-   public boolean add(Boolean element) {
+   public boolean add(Object element) {
       throw new IllegalArgumentException("Array cannot be resized");
    }
    
    @Override
-   public void add(int index, Boolean element) {
+   public void add(int index, Object element) {
       throw new IllegalArgumentException("Array cannot be resized");
    }
 
    @Override
-   public Boolean set(int index, Boolean value) {
-      Object previous = Array.get(array, index);
-      Boolean result = (Boolean)previous;
-      Array.set(array, index, value);
-      return result;
+   public Object set(int index, Object value) {
+      Object previous = array[index];
+      array[index] = value;
+      return previous;
    }
 
    @Override
    public int indexOf(Object object) {
-      Class type = object.getClass();
-      
       for (int i = 0; i < length; i++) {
-         Object value = Array.get(array, i);
+         Object value = array[i];
 
          if (object.equals(value)) {
             return i;

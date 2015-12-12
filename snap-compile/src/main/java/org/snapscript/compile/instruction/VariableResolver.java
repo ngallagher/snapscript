@@ -39,7 +39,7 @@ public class VariableResolver {
       Object key = builder.create(left, name);
       ValueResolver resolver = resolvers.get(key);
       
-      if(resolver == null) {
+      if(resolver == null) { // XXX is this really right?? 
          resolver = match(left, name);
          resolvers.put(key, resolver);
       }
