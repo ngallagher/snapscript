@@ -13,6 +13,7 @@ public class ImportResolver {
    private static final String[] DEFAULTS = {
       "",
       "java.", 
+      "javax.",
       "java.lang.", 
       "java.util.", 
       "java.io.",
