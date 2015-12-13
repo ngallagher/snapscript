@@ -58,6 +58,7 @@ public class ClassDefinition extends Statement {
       if(count==0){
          constructor.define(other, collector, t); // add the default no arg constructor!!
       }
+      collector.compile(other, t); // do all of the static initialization!! 
       return NORMAL.getResult(t);
    }
 

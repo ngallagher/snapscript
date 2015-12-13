@@ -21,7 +21,7 @@ public class StaticInitializer extends Initializer {
    }
 
    @Override
-   public Result execute(Scope instance, Type type) throws Exception {
+   public Result compile(Scope instance, Type type) throws Exception {
       if(done.compareAndSet(false, true)) {
          evaluation.evaluate(scope, null);
       }

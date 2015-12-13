@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.ResultFlow.NORMAL;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
@@ -51,11 +52,12 @@ public class EnumInitializer extends Initializer {
       
       // Add a static accessor to the enum type
       type.getProperties().add(property);
-      
+      Constant c=new Constant(instance, name);
       instance.getState().addConstant("name", new Constant(name, "name"));
       instance.getState().addConstant("ordinal", new Constant(index, "ordinal"));  
-      scope.getState().addConstant(name, new Constant(instance, name));
-      
+      scope.getState().addConstant(name, c);
+      List l =scope.getState().getValue("values").getValue();
+      l.add(instance);
       return NORMAL.getResult(instance);
    }
    

@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
-import org.snapscript.compile.instruction.DeclarationConverter;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;

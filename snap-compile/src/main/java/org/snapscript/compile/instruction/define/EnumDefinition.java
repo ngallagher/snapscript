@@ -2,14 +2,19 @@ package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.ResultFlow.NORMAL;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Accessor;
+import org.snapscript.core.Constant;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
+import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
+import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 
 public class EnumDefinition extends Statement {
@@ -30,30 +35,30 @@ public class EnumDefinition extends Statement {
       this.name = name;
    }
 
-   /**
-    * 1) Define the constructors and the variables
-    * 2) instantiate the static enum keys
-    * 3) init the statics
-    * 
-    */
    @Override
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);
-      InitializerCollector duh = new InitializerCollector();
+      //InitializerCollector duh = new InitializerCollector();
       InitializerCollector collector = new InitializerCollector();
+
       // this should be passed in to the ClassHierarchy to define the type hierarchy!!!
       String n=name.evaluate(other, null).getString();
       
       Module module = other.getModule();
       Type t = module.addType(n);
       List<Type>types=t.getTypes();
-     
+      List values = new ArrayList();
+      Constant ref = new Constant(values, "values");
+      Accessor a = new StaticAccessor(collector, other, t, "values");
+      Property p = new Property("values", t, a);
+      t.getProperties().add(p);
+      other.getState().addConstant("values", ref);
       Initializer keys = list.define(other, collector, t);
      
       types.addAll(hierarchy.create(other)); // add in the type hierarchy!!
 
       for(TypePart part : parts) {
-         Initializer s=part.define(other, duh, t);
+         Initializer s=part.define(other, collector, t);
          collector.update(s);
       }  
       initializer.execute(scope, t);
@@ -68,8 +73,9 @@ public class EnumDefinition extends Statement {
       if(count==0){
          constructor.define(other, collector, t); // add the default no arg constructor!!
       }
+      //collector.compile(scope, t); // initialize the static scope
       keys.execute(other, t);
-      collector.execute(scope, t);
+      collector.compile(other, t); // compile the fields after we are done!!!!
       
       return NORMAL.getResult(t);
    }
