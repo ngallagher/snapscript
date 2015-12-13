@@ -21,12 +21,14 @@ public enum CombinationOperator {
   }
   
   public static CombinationOperator resolveOperator(StringToken token){
-     String value = token.getValue();
-     CombinationOperator[] operators = CombinationOperator.values();
-     
-     for(CombinationOperator operator : operators) {
-        if(operator.operator.equals(value)) {
-           return operator;
+     if(token != null) {
+        String value = token.getValue();
+        CombinationOperator[] operators = CombinationOperator.values();
+        
+        for(CombinationOperator operator : operators) {
+           if(operator.operator.equals(value)) {
+              return operator;
+           }
         }
      }
      return null;

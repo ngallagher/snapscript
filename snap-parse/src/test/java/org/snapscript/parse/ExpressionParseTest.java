@@ -12,6 +12,10 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "f1 < f2 ? f1 : f2", "expression");
+      analyze(tree, "x=f1 < f2 ? f1 : f2", "expression");
+      analyze(tree, "x=(f1 < f2 ? f1 : f2)", "expression");
+      //analyze(tree, "x+(f1 < f2 ? f1 : f2)", "expression");
       analyze(tree, "[1,2,3]", "expression"); 
       analyze(tree, "x[0]", "expression");  
       analyze(tree, "x[0][1]", "expression");  

@@ -82,12 +82,14 @@ public enum RelationalOperator {
    public abstract Value operate(Value left, Value right);
    
    public static RelationalOperator resolveOperator(StringToken token) {
-      String value = token.getValue();
-      RelationalOperator[] operators = RelationalOperator.values();
-      
-      for(RelationalOperator operator : operators) {
-         if(operator.operator.equals(value)) {
-            return operator;
+      if(token != null) {
+         String value = token.getValue();
+         RelationalOperator[] operators = RelationalOperator.values();
+         
+         for(RelationalOperator operator : operators) {
+            if(operator.operator.equals(value)) {
+               return operator;
+            }
          }
       }
       return null;

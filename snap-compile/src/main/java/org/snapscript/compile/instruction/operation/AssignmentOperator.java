@@ -55,12 +55,14 @@ public enum AssignmentOperator {
    }
    
    public static AssignmentOperator resolveOperator(StringToken token) {
-      String value = token.getValue();
-      AssignmentOperator[] roperators = AssignmentOperator.values();
-      
-      for(AssignmentOperator operator : roperators) {
-         if(operator.symbol.equals(value)) {
-            return operator;
+      if(token != null) {
+         String value = token.getValue();
+         AssignmentOperator[] roperators = AssignmentOperator.values();
+         
+         for(AssignmentOperator operator : roperators) {
+            if(operator.symbol.equals(value)) {
+               return operator;
+            }
          }
       }
       return null;

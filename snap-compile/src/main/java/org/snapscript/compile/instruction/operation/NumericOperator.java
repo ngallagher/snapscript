@@ -26,7 +26,7 @@ public enum NumericOperator {
          NumericConverter converter = NumericConverter.resolveConverter(left, right);
          Double first = left.getDouble(); 
          Double second = right.getDouble();
-         
+
          return converter.convert(first - second);
       }      
    },
@@ -132,12 +132,14 @@ public enum NumericOperator {
    public abstract Value operate(Value left, Value right);
    
    public static NumericOperator resolveOperator(StringToken token) {
-      String value = token.getValue();
-      NumericOperator[] operators = NumericOperator.values();
-      
-      for(NumericOperator operator : operators) {
-         if(operator.operator.equals(value)) {
-            return operator;
+      if(token != null) {
+         String value = token.getValue();
+         NumericOperator[] operators = NumericOperator.values();
+         
+         for(NumericOperator operator : operators) {
+            if(operator.operator.equals(value)) {
+               return operator;
+            }
          }
       }
       return null;

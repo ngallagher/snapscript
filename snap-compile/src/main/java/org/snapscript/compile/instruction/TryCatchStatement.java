@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction;
 import static org.snapscript.core.ResultFlow.THROW;
 
 import org.snapscript.core.Constant;
-import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultFlow;
 import org.snapscript.core.Scope;

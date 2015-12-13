@@ -11,6 +11,10 @@ public class Comparison implements Evaluation {
    private final Evaluation left;
    private final Evaluation right;
    
+   public Comparison(Evaluation left) {
+      this(left, null, null);
+   }
+   
    public Comparison(Evaluation left, StringToken operator, Evaluation right) {
       this.operator = RelationalOperator.resolveOperator(operator);
       this.left = left;
@@ -19,9 +23,12 @@ public class Comparison implements Evaluation {
    
    @Override
    public Value evaluate(Scope scope, Object context) throws Exception {
-      Value leftResult = left.evaluate(scope, null);
-      Value rightResult = right.evaluate(scope, null);
-      
-      return operator.operate(leftResult, rightResult);
+      if(right != null) {
+         Value leftResult = left.evaluate(scope, null);
+         Value rightResult = right.evaluate(scope, null);
+         
+         return operator.operate(leftResult, rightResult);
+      }
+      return left.evaluate(scope, null);
    }      
 }
