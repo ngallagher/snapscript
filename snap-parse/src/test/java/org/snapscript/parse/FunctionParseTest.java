@@ -92,7 +92,7 @@ public class FunctionParseTest extends TestCase {
             long last=start;
             for(int j=0;j<iterations;j++){
                last=System.currentTimeMillis();
-               SyntaxNode list = analyzer.parse(source, "script");
+               SyntaxNode list = analyzer.parse(file.getCanonicalPath(),source, "script");
                assertNotNull(list);
             }
             long finish=System.currentTimeMillis();
@@ -123,7 +123,7 @@ public class FunctionParseTest extends TestCase {
          long last=start;
          for(int j=0;j<iterations;j++){
             last=System.currentTimeMillis();
-            SyntaxNode list = analyzer.parse(source, "script");
+            SyntaxNode list = analyzer.parse(file.getCanonicalPath(),source, "script");
             assertNotNull(list);
          }
          long finish=System.currentTimeMillis();
@@ -152,7 +152,7 @@ public class FunctionParseTest extends TestCase {
       keep.add("arithmetic-expression");
       
       long start=System.currentTimeMillis();
-      SyntaxNode list = analyzer.parse(source, grammar);
+      SyntaxNode list = analyzer.parse(null,source, grammar);
       long finish=System.currentTimeMillis();
       long duration=finish-start;
 

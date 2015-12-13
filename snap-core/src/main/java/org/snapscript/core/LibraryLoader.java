@@ -30,10 +30,10 @@ public class LibraryLoader {
          String path = qualifier.replace('.', '/');
          
          try {
-            String text = reader.read(path + suffix);
+            String source = reader.read(path + suffix);
             
             try {
-               return linker.link(qualifier, text);
+               return linker.link(qualifier, source);
             } catch(Exception e) {
                throw new IllegalStateException("Could not load library '" + path + suffix + "'", e);
             }

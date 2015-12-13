@@ -16,6 +16,9 @@ public class ClassPathReader implements ResourceReader {
          ClassLoader loader = thread.getContextClassLoader();
          InputStream source = loader.getResourceAsStream(path);
          
+         if(source == null) {
+            throw new IllegalArgumentException("Could not find '" + path + "'");
+         }
          try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             byte[] chunk = new byte[1024];

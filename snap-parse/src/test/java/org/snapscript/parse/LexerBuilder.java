@@ -15,7 +15,7 @@ public class LexerBuilder {
    }
   
    public static void print(SyntaxParser analyzer, String source, String name) throws Exception {
-      SyntaxNode node=analyzer.parse(source, name);
+      SyntaxNode node=analyzer.parse(null, source, name);
       print(node, 0, 0);             
       System.err.println();
       System.err.println();

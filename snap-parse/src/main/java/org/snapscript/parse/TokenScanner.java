@@ -20,8 +20,8 @@ public class TokenScanner implements LexicalAnalyzer {
    private int count;
    private int mark;
 
-   public TokenScanner(GrammarIndexer indexer, char[] original, char[] source, short[] lines, short[] types) {
-      this.indexer = new TokenIndexer(indexer, original, source, lines, types);
+   public TokenScanner(GrammarIndexer indexer, String resource, char[] original, char[] source, short[] lines, short[] types) {
+      this.indexer = new TokenIndexer(indexer, resource, original, source, lines, types);
       this.tokens = new ArrayList<Token>();
       this.count = source.length;
    }

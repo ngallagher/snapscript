@@ -11,7 +11,7 @@ import org.snapscript.parse.Token;
 public class SyntaxPrinter {
   
    public static String print(SyntaxParser analyzer, String source, String name) throws Exception {
-      SyntaxNode node=analyzer.parse(source, name);
+      SyntaxNode node=analyzer.parse(null, source, name);
       StringWriter writer = new StringWriter();
       PrintWriter printer = new PrintWriter(writer);
       print(printer, node, 0, 0);

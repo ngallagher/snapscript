@@ -229,7 +229,7 @@ public class LexicalAnalyzerTest extends TestCase {
       keep.add("calculation-operator");
       keep.add("calculation");
       
-      SyntaxNode list = analyzer.parse(source, grammar);
+      SyntaxNode list = analyzer.parse(null,source, grammar);
       assertNotNull(list);
       if (list != null) {
          //String remaining = iterator.ready();

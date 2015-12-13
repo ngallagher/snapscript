@@ -32,21 +32,21 @@ public class ContextLinker implements PackageLinker {
    }
    
    @Override
-   public Package link(String name, String source) throws Exception {
-      return link(name, source, instruction.name);
+   public Package link(String resource, String source) throws Exception {
+      return link(resource, source, instruction.name);
    }
    
    @Override
-   public Package link(String name, String source, String grammar) throws Exception {
-      Statement linked = cache.fetch(name);
+   public Package link(String resource, String source, String grammar) throws Exception {
+      Statement linked = cache.fetch(resource);
       
       if(linked == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(source, grammar);
-         Statement statement = assembler.assemble(node, name);
+         SyntaxNode node = parser.parse(resource, source, grammar);
+         Statement statement = assembler.assemble(node, resource);
          
-         cache.cache(name, statement); 
-         return new StatementLibrary(statement, name);
+         cache.cache(resource, statement); 
+         return new StatementLibrary(statement, resource);
       }
       return new NoLibrary(); 
    } 

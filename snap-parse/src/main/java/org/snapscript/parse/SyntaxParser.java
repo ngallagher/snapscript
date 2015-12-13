@@ -10,13 +10,13 @@ public class SyntaxParser {
       this.resolver = resolver;
    }   
 
-   public SyntaxNode parse(String expression, String name) {     
+   public SyntaxNode parse(String resource, String expression, String name) {     
       Grammar grammar = resolver.resolve(name);
       
       if(grammar == null) {
          throw new IllegalArgumentException("Grammar " + name + " is not defined");
       }
-      SyntaxTree tree = builder.create(expression, name);
+      SyntaxTree tree = builder.create(resource, expression, name);
       SyntaxReader root = tree.mark();
          
       if(grammar.read(root, 0)) {

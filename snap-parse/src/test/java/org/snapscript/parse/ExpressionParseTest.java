@@ -86,7 +86,7 @@ public class ExpressionParseTest extends TestCase {
       keep.add("calculation-operator");
       keep.add("arithmetic-expression");
       
-      SyntaxNode list = analyzer.parse(source, grammar);
+      SyntaxNode list = analyzer.parse(null, source, grammar);
 
       if (list != null) {
          LexerBuilder.print(analyzer, source, grammar);

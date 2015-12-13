@@ -180,7 +180,7 @@ public class ConstructEvaluationTest extends TestCase {
       SyntaxParser lexer = LexerBuilder.create();      
       LexerBuilder.print(lexer, source, root);
       
-      SyntaxNode node = lexer.parse(source, root);
+      SyntaxNode node = lexer.parse(null, source, root);
 
       if(node != null) {
          return match(node, parent, child, 0);

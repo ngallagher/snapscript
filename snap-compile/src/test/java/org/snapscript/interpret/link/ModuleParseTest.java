@@ -40,7 +40,7 @@ public class ModuleParseTest extends TestCase {
       keep.add("calculation-operator");
       keep.add("arithmetic-expression");
       
-      SyntaxNode list = analyzer.parse(source, grammar);
+      SyntaxNode list = analyzer.parse(null,source, grammar);
 
       if (list != null) {
          SyntaxPrinter.print(analyzer, source, grammar);

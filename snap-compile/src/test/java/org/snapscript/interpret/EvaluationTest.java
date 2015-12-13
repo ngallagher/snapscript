@@ -207,7 +207,7 @@ public class EvaluationTest extends TestCase {
       ScopeMerger b = new ScopeMerger(cc);
       Scope s = b.merge(model);
       SyntaxParser analyzer =  bb.compile();
-      SyntaxNode token = analyzer.parse(source, grammar);
+      SyntaxNode token = analyzer.parse(null, source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following
       Statement statement = (Statement)builder.assemble(token,"xx");
       return statement.execute(s).getFlow();
@@ -220,7 +220,7 @@ public class EvaluationTest extends TestCase {
       ScopeMerger b = new ScopeMerger(cc);
       Scope s = b.merge(model);
       SyntaxParser analyzer =  bb.compile();
-      SyntaxNode token = analyzer.parse(source, grammar);
+      SyntaxNode token = analyzer.parse(null,source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the following
       Evaluation evaluation = (Evaluation)builder.assemble(token,"xx");
       

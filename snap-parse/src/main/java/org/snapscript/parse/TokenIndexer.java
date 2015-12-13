@@ -22,8 +22,8 @@ public class TokenIndexer {
    private final List<String> values;
    private final short[] lines;
 
-   public TokenIndexer(GrammarIndexer indexer, char[] original, char[] source, short[] lines, short[] types) {
-      this.extractor = new LineExtractor(original);
+   public TokenIndexer(GrammarIndexer indexer, String resource, char[] original, char[] source, short[] lines, short[] types) {
+      this.extractor = new LineExtractor(resource, original);
       this.reader = new TextReader(source, types);
       this.comparator = new LengthComparator();
       this.values = new ArrayList<String>();

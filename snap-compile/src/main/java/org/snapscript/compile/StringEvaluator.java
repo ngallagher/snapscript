@@ -47,7 +47,7 @@ public class StringEvaluator implements Evaluator{
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(source, instruction.name);
+         SyntaxNode node = parser.parse(null, source, instruction.name);
          
          evaluation = assembler.assemble(node, source);
          cache.cache(source, evaluation);      

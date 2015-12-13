@@ -2,9 +2,11 @@ package org.snapscript.parse;
 
 public class LineExtractor {
 
+   private final String resource;
    private final char[] source;
    
-   public LineExtractor(char[] source) {
+   public LineExtractor(String resource, char[] source) {
+      this.resource = resource;
       this.source = source;
    }
    
@@ -45,6 +47,10 @@ public class LineExtractor {
       
       public String getSource() {
          return create(line);
+      }
+      
+      public String getResource() {
+         return resource;
       }
       
       public int getNumber() {

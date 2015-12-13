@@ -22,11 +22,9 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.snapscript.compile.ClassPathContext;
-import org.snapscript.compile.StringCompiler;
+import org.snapscript.compile.FileContext;
+import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.EmptyModel;
-import org.snapscript.core.Model;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
@@ -186,7 +184,9 @@ public class ScriptEngine {
             SyntaxCompiler compiler = new SyntaxCompiler();
             long start = System.nanoTime();
             SyntaxParser parser = compiler.compile();
-            SyntaxNode node = parser.parse(file, "script");
+            File resource = new File(file);
+            String source = load(resource);
+            SyntaxNode node = parser.parse(file, source, "script");
             node.getNodes();
             long finish = System.nanoTime();
             long duration = finish - start;
@@ -200,10 +200,13 @@ public class ScriptEngine {
       
       private void compile() {
          try {
-            Context context =new ClassPathContext();
-            StringCompiler compiler = new StringCompiler(context);
+            File path = new File(file);
+            String name = path.getName();
+            File root = path.getParentFile();
+            Context context =new FileContext(root);
+            ResourceCompiler compiler = new ResourceCompiler(context);
             long start = System.nanoTime();
-            compiler.compile(file);
+            compiler.compile(name);
             long finish = System.nanoTime();
             long duration = finish - start;
             long millis = TimeUnit.NANOSECONDS.toMillis(duration);
@@ -218,41 +221,11 @@ public class ScriptEngine {
          try {
             SyntaxCompiler analyzer = new SyntaxCompiler();
             SyntaxParser parser = analyzer.compile();
-            String syntax = SyntaxPrinter.print(parser, file, "script");
+            String source = load(new File(file));
+            String syntax = SyntaxPrinter.print(parser, source, "script");
             listener.onUpdate("info", syntax);
          }catch(Exception e){
             //ignore for now
-         }
-      }
-   }
-   
-   private class AgentConnection  {
-      
-      private final Socket socket;
-      
-      public AgentConnection(Socket socket) {
-         this.socket = socket;
-      }
-      
-      public synchronized ScriptTask execute(File script, AgentListener listener) {
-         try {
-            socket.setSoTimeout(10000);
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            String source = load(script);
-            out.writeUTF("type=execute");
-            out.writeUTF(script.getCanonicalPath());
-            AgentConsoleReader reader = new AgentConsoleReader(socket, listener, source);
-            Thread thread = new Thread(reader, "AgentConsoleReader");
-            thread.start();
-            return reader;
-         }catch(Exception e) {
-            e.printStackTrace();
-            try {
-               socket.close();
-            }catch(Exception ex) {
-               ex.printStackTrace();
-            }
-            throw new IllegalStateException("Could not execute script ["+script+"]", e);
          }
       }
       
@@ -269,6 +242,36 @@ public class ScriptEngine {
             in.close();
          }
          return out.toString();
+      }
+   }
+   
+   private class AgentConnection  {
+      
+      private final Socket socket;
+      
+      public AgentConnection(Socket socket) {
+         this.socket = socket;
+      }
+      
+      public synchronized ScriptTask execute(File script, AgentListener listener) {
+         try {
+            socket.setSoTimeout(10000);
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("type=execute");
+            out.writeUTF(script.getCanonicalPath());
+            AgentConsoleReader reader = new AgentConsoleReader(socket, listener, script.getCanonicalPath());
+            Thread thread = new Thread(reader, "AgentConsoleReader");
+            thread.start();
+            return reader;
+         }catch(Exception e) {
+            e.printStackTrace();
+            try {
+               socket.close();
+            }catch(Exception ex) {
+               ex.printStackTrace();
+            }
+            throw new IllegalStateException("Could not execute script ["+script+"]", e);
+         }
       }
       
       public synchronized boolean ping() {

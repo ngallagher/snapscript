@@ -49,7 +49,7 @@ public class ExpressionBuilderTest extends TestCase {
             long start=System.currentTimeMillis();
             long last=start;
             for(int j=0;j<iterations;j++){
-               SyntaxNode list=analyzer.parse(source, "script");
+               SyntaxNode list=analyzer.parse(file.getCanonicalPath(),source, "script");
                assertNotNull(list);
                last=System.currentTimeMillis();
             }

@@ -12,8 +12,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
-import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Executable;
+import org.snapscript.compile.FileContext;
+import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
@@ -26,8 +27,9 @@ import org.snapscript.core.TraceInterceptor;
 
 public class ScriptAgent {
 
-   private static final Context CONTEXT = new ClassPathContext();
-   private static final StringCompiler COMPILER = new StringCompiler(CONTEXT);
+   private static final File ROOT = new File("c:\\");
+   private static final Context CONTEXT = new FileContext(ROOT);
+   private static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
    private static final Profiler INTERCEPTOR = new Profiler();
    private static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
@@ -172,9 +174,14 @@ public class ScriptAgent {
                String request = in.readUTF();
                if(request.equals("type=execute")) {
                   String filePath = in.readUTF();
-                  String source = load(filePath);
+                  if(filePath.startsWith("c:\\") || filePath.startsWith("C:\\")) {
+                     filePath = filePath.substring(2, filePath.length());
+                  } else {
+                     throw new IllegalArgumentException("Could not find root path for " + filePath);
+                  }
+                  //String source = load(filePath);
                   try {
-                     execute(source); // execute the script
+                     execute(filePath); // execute the script
                   } catch(Exception e) {
                      e.printStackTrace();
                   }finally {
@@ -207,7 +214,7 @@ public class ScriptAgent {
          }
       }
 
-      private void execute(String script) {
+      private void execute(String filePath) {
          try {
             TerminateListener listener = new TerminateListener(socket);
             // redirect all output to the streams
@@ -217,7 +224,7 @@ public class ScriptAgent {
             // start and listen for the socket close
             listener.start();
             long start = System.nanoTime();
-            Executable executable = COMPILER.compile(script);
+            Executable executable = COMPILER.compile(filePath);
             long middle = System.nanoTime();
             executable.execute();
             long stop = System.nanoTime();
@@ -234,22 +241,6 @@ public class ScriptAgent {
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }
-      }
-      
-      private String load(String source) throws Exception {
-         File file = new File(source);
-         FileInputStream in = new FileInputStream(file);
-         ByteArrayOutputStream out = new ByteArrayOutputStream();
-         try {
-            byte[] buffer = new byte[1024];
-            int count = 0;
-            while ((count = in.read(buffer)) != -1) {
-               out.write(buffer, 0, count);
-            }
-         } finally {
-            in.close();
-         }
-         return out.toString();
       }
    }
    

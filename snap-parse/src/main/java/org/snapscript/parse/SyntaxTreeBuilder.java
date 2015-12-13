@@ -14,7 +14,7 @@ public class SyntaxTreeBuilder {
       this.indexer = indexer;
    }
 
-   public SyntaxTree create(String text, String grammar) {
+   public SyntaxTree create(String resource, String text, String grammar) {
       int serial = counter.getAndIncrement();
       char[] array = text.toCharArray();
       
@@ -27,7 +27,7 @@ public class SyntaxTreeBuilder {
       short[] lines = source.getLines();
       short[]types = source.getTypes();
 
-      return new SyntaxTree(indexer, grammar, original, compress, lines, types, serial);
+      return new SyntaxTree(indexer, resource, grammar, original, compress, lines, types, serial);
    }       
 }
 

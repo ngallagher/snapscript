@@ -14,15 +14,17 @@ public class SyntaxTree {
    private final GrammarIndexer indexer;
    private final AtomicInteger commit;
    private final IntegerStack stack;
+   private final String resource;
    private final String grammar;
    private final long serial;
 
-   public SyntaxTree(GrammarIndexer indexer, String grammar, char[] original, char[] source, short[] lines, short[] types, int serial) {
-      this.analyzer = new TokenScanner(indexer, original, source, lines, types);
+   public SyntaxTree(GrammarIndexer indexer, String resource, String grammar, char[] original, char[] source, short[] lines, short[] types, int serial) {
+      this.analyzer = new TokenScanner(indexer, resource, original, source, lines, types);
       this.comparator = new SyntaxNodeComparator();
       this.nodes = new ArrayList<SyntaxCursor>();
       this.commit = new AtomicInteger();
       this.stack = new IntegerStack();
+      this.resource = resource;
       this.indexer = indexer;
       this.grammar = grammar;
       this.serial = serial;
@@ -52,9 +54,10 @@ public class SyntaxTree {
          int error = commit.get(); // last successful commit
          Line line = analyzer.line(error);
          
-         if(size <= 1) {
-            throw new IllegalStateException("Syntax error in source at line " + line);
+         if(resource != null) {
+            throw new IllegalStateException("Syntax error in '" + resource + "' at line " + line);
          }  
+         throw new IllegalStateException("Syntax error at line " + line);
       }
       return create();
    }
