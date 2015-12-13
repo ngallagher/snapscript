@@ -42,7 +42,9 @@ public class MemberFunction implements TypePart {
          String qualifier=type.getName();
          //XXX invocation
          Statement init = new InitializerStatement(statements, type); // initialize static scope first
-         Statement compound = new CompoundStatement(init, statement);
+         Statement compound = new CompoundStatement(init, statement); // this should call onlt the init stuff
+         
+         
          Invocation invocation = new StaticInvocation(compound, signature, scope);
          Function functionStatic = new Function(signature, invocation, name);// description is wrong here.....      
          Function function = new Function(signature, invocation, name);// description is wrong here.....

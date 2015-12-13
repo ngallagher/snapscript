@@ -78,7 +78,9 @@ class Tetris {
                 }
                 try {
                     Thread.sleep(20);
-                } catch (e) { }
+                } catch (e) { 
+                   e.printStackTrace();
+                }
             }
             draw();
         }
@@ -121,7 +123,7 @@ class Tetris {
             drawCells(g);
             drawGameOver(g);
         }
-
+        
         drawStatus(g);
         drawPlayTetris(g);
 
@@ -223,19 +225,19 @@ class Tetris {
 
     getPieceColor(pieceType) {
         if(pieceType == PieceType.I){
-                return Color.RED;
+            return Color.RED;
         }
         if(pieceType == PieceType.J) {
-                return Color.GRAY;
+            return Color.GRAY;
         }
         if(pieceType == PieceType.L) {
-                return Color.CYAN;
+            return Color.CYAN;
        }
         if(pieceType == PieceType.O) {
-                return Color.BLUE;
+            return Color.BLUE;
         }
         if(pieceType == PieceType.S) {
-                return Color.GREEN;
+            return Color.GREEN;
         }
         return Color.MAGENTA;
     }
@@ -704,7 +706,6 @@ class Board {
             var y = point.y + pieceCenter.y;
             dest[x][y] = BoardCell.getCell(currentPiece.getType());
         }
-
         return dest;
     }
 
@@ -736,4 +737,3 @@ class Board {
 }
 
 new Tetris().gameLoop();
-Thread.sleep(100000);

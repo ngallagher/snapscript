@@ -212,7 +212,8 @@ public class Tetris {
 
     private void drawPiecePreview(Graphics2D g, PieceType type) {
         for (Point p : type.getPoints()) {
-            drawBlock(g, 60 + p.x * PIECE_WIDTH, 380 + (3 - p.y) * 20, getPieceColor(type));
+           System.err.println("type="+type+" p.x="+p.x+" p.y="+p.y);
+           drawBlock(g, 60 + p.x * PIECE_WIDTH, 380 + (3 - p.y) * 20, getPieceColor(type));
         }
     }
 
@@ -220,27 +221,31 @@ public class Tetris {
         if (boardCell.isEmpty()) {
             return Color.BLACK;
         }
+        System.err.println("zzzzzz");
         return getPieceColor(boardCell.getPieceType());
     }
 
     private Color getPieceColor(PieceType pieceType) {
-        switch (pieceType) {
-            case I:
+        if (pieceType == PieceType.I) {
                 return Color.RED;
-            case J:
-                return Color.GRAY;
-            case L:
-                return Color.CYAN;
-            case O:
-                return Color.BLUE;
-            case S:
-                return Color.GREEN;
-            default:
-                return Color.MAGENTA;
         }
+        if(pieceType == PieceType.J) {
+                return Color.GRAY;
+        }
+        if(pieceType == PieceType.L) {
+                return Color.CYAN;
+        }
+        if(pieceType == PieceType.O) {
+                return Color.BLUE;
+        }
+        if(pieceType == PieceType.S) {
+                return Color.GREEN;
+        }
+        return Color.MAGENTA;
     }
 
     private void drawBlock(Graphics g, int x, int y, Color color) {
+       //System.err.println("x="+x+" y="+y+" color="+color);
         g.setColor(color);
         g.fillRect(x, y, PIECE_WIDTH, PIECE_WIDTH);
         g.drawRect(x, y, PIECE_WIDTH, PIECE_WIDTH);

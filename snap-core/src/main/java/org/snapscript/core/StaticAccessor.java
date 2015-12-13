@@ -23,7 +23,7 @@ public class StaticAccessor implements Accessor {
          Value field = state.getValue(name);
          
          if(field == null) {
-            initializer.execute(scope, type);           
+            initializer.compile(scope, type);           
          }
       }catch(Exception e){
          throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
@@ -39,7 +39,7 @@ public class StaticAccessor implements Accessor {
          Value field = state.getValue(name);
          
          if(field == null) {
-            initializer.execute(scope, type);           
+            initializer.compile(scope, type);           
          }    
       }catch(Exception e){
          throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);

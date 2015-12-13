@@ -84,6 +84,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
       if(body != null) {
+         body.compile(scope, real); // static stuff if needed
          body.execute(wrapper, real);
       }
       constructor.invoke(wrapper, wrapper, list);
