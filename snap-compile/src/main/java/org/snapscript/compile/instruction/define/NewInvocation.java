@@ -25,8 +25,13 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
    private final Initializer factory;
    private final Initializer body;
    private final Type type;
+   private final boolean e;
    
    public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor) {
+      this(type, signature, factory, body, constructor, false);
+   }
+   
+   public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enm) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
       this.constructor = constructor;
@@ -34,6 +39,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       this.factory = factory;
       this.body = body;
       this.type = type;
+      this.e = enm;
    }
 
    @Override
@@ -84,7 +90,10 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
       if(body != null) {
-         body.compile(scope, real); // static stuff if needed
+         // This should be done only for non-enums!!
+         if(!e) {
+            body.compile(scope, real); // static stuff if needed
+         }
          body.execute(wrapper, real);
       }
       constructor.invoke(wrapper, wrapper, list);

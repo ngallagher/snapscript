@@ -22,6 +22,7 @@ import org.snapscript.compile.instruction.construct.ConstructSet;
 import org.snapscript.compile.instruction.construct.MapEntry;
 import org.snapscript.compile.instruction.construct.MapEntryList;
 import org.snapscript.compile.instruction.define.ClassDefinition;
+import org.snapscript.compile.instruction.define.EnumConstructor;
 import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
 import org.snapscript.compile.instruction.define.EnumList;
@@ -126,7 +127,10 @@ public enum Instruction {
    TRAIT_FUNCTION(TraitFunction.class, "trait-function", false),
    ENUM_KEY(EnumKey.class, "enum-key", false),
    ENUM_HIERARCHY(TypeHierarchy.class, "enum-hierarchy", false),
+   ENUM_FIELD(MemberField.class, "enum-field", false),
+   ENUM_FUNCTION(MemberFunction.class, "enum-function", false),   
    ENUM_DEFINITION(EnumDefinition.class, "enum-definition", false), 
+   ENUM_CONSTRUCTOR(EnumConstructor.class, "enum-constructor", false), 
    ENUM_VALUE(EnumValue.class, "enum-value", false),
    ENUM_LIST(EnumList.class, "enum-list", false),     
    CLASS_HIERARCHY(TypeHierarchy.class, "class-hierarchy", false),

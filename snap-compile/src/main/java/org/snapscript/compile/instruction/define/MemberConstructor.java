@@ -35,6 +35,10 @@ public class MemberConstructor implements TypePart {
    } 
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
+      return define(scope, statements, type, false);
+   }
+   
+   protected Initializer define(Scope scope, Initializer statements, Type type, boolean enm) throws Exception {
       Signature signature = parameters.create(scope, "class");
       Value mod = modifier.evaluate(scope, null);
       int modifiers = mod.getInteger();
@@ -59,7 +63,8 @@ public class MemberConstructor implements TypePart {
             signature,
             baseCall, // first we need to call the super constructor to create everything
             statements, // the body of the class needs to be defined next
-            bodyCall); // now call the constructor code!!!
+            bodyCall,
+            enm); // now call the constructor code!!!
       Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
       //
       // this function does the following in order...

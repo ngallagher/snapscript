@@ -27,7 +27,7 @@ public class EnumDefinition extends Statement {
    private final TypePart[] parts;
    
    public EnumDefinition(TypeName name, TypeHierarchy hierarcy, EnumList list, TypePart... parts) {
-      this.constructor = new DefaultConstructor();
+      this.constructor = new DefaultConstructor(true);
       this.initializer = new DefaultInitializer();
       this.hierarchy = hierarcy;
       this.parts = parts;

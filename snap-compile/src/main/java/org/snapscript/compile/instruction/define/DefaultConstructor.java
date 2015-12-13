@@ -21,13 +21,24 @@ public class DefaultConstructor implements TypePart {
    
    private final ParameterList parameters;
    private final Statement statement;
+   private final boolean e;
 
-   public DefaultConstructor(){ 
+   public DefaultConstructor(){
+      this(false);
+   }
+   
+   public DefaultConstructor(boolean e) {
       this.parameters = new ParameterList();
       this.statement = new NoOperation();
+      this.e=e;
    } 
+   
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
+      return define(scope, statements, type, e);
+   }
+   
+   protected Initializer define(Scope scope, Initializer statements, Type type, boolean enm) throws Exception {
       Signature signature = parameters.create(scope, "class");
       Initializer baseCall = null;
       
@@ -46,7 +57,8 @@ public class DefaultConstructor implements TypePart {
             signature,
             baseCall, // first we need to call the super constructor to create everything
             statements, // the body of the class needs to be defined next
-            bodyCall); // now call the constructor code!!!
+            bodyCall,
+            enm); // now call the constructor code!!!
       Invocation scopeCall = new TypeInvocation(invocation, scope);
       //
       // this function does the following in order...
