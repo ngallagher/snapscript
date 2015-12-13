@@ -26,17 +26,17 @@ public class ImportStatic extends Statement {
       Module module = scope.getModule();
       Type type = module.addType(location);
       List<Function> methods = type.getFunctions();
-      List<Function> funs = module.getFunctions();
+      List<Function> functions = module.getFunctions();
       
       for(Function method : methods){
          Signature signature = method.getSignature();
          int modifiers = signature.getModifiers();
          
-         if(Modifier.isStatic(modifiers)&&Modifier.isPublic(modifiers)){
+         if(Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)){
             String name = method.getName();
             
             if(target == null || target.equals(name)) {
-               funs.add(method);
+               functions.add(method);
             }
          }
       }

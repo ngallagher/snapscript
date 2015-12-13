@@ -1,5 +1,6 @@
 package org.snapscript.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Type {
@@ -12,16 +13,16 @@ public class Type {
    private final String module;
    private final String name;
    
-   public Type(String name, String module, Type entry, List<Type> types, List<Property> properties, List<Function> functions){
-      this(name, module, entry, types, properties, functions, null);
+   public Type(String name, String module, Type entry){
+      this(name, module, entry, null);
    }
    
-   public Type(String name, String module, Type entry, List<Type> types, List<Property> properties, List<Function> functions, Class type){
-      this.functions = functions;
-      this.properties = properties;
+   public Type(String name, String module, Type entry, Class type){
+      this.properties = new ArrayList<Property>();
+      this.functions = new ArrayList<Function>();
+      this.types = new ArrayList<Type>();
       this.module = module;
       this.entry = entry;
-      this.types = types;
       this.type = type;
       this.name = name;
    }

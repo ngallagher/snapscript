@@ -1,5 +1,7 @@
 package org.snapscript.core;
 
+import org.snapscript.core.index.TypeIndexer;
+
 public class TypeLoader {
    
    private final TypeIndexer indexer;

@@ -1,9 +1,6 @@
 package org.snapscript.core.bind;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -27,20 +24,21 @@ public class SearchPathFinderTest extends TestCase {
     */
    public void testSearchPath() throws Exception {
       TypePathBuilder finder = new TypePathBuilder();
-      List<Type> typesA = new ArrayList<Type>();
-      List<Type> typesB = new ArrayList<Type>();
-      List<Type> typesC = new ArrayList<Type>();
-      List<Type> typesD = new ArrayList<Type>();
-      Type a = new Type("A", "", null, typesA, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type b = new Type("B", "", null, typesB, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type c = new Type("C", "", null, typesC, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type d = new Type("D", "", null, typesD, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type x = new Type("X", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type y = new Type("Y", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type z = new Type("Z", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type i = new Type("I", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type j = new Type("J", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-      Type k = new Type("K", "", null, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+      Type a = new Type("A", "", null);
+      Type b = new Type("B", "", null);
+      Type c = new Type("C", "", null);
+      Type d = new Type("D", "", null);
+      Type x = new Type("X", "", null);
+      Type y = new Type("Y", "", null);
+      Type z = new Type("Z", "", null);
+      Type i = new Type("I", "", null);
+      Type j = new Type("J", "", null);
+      Type k = new Type("K", "", null);
+      
+      List<Type> typesA = a.getTypes();
+      List<Type> typesB = b.getTypes();
+      List<Type> typesC = c.getTypes();
+      List<Type> typesD = d.getTypes();
       
       typesB.add(a); // class B extends A with X,Y,Z
       typesB.add(x);
