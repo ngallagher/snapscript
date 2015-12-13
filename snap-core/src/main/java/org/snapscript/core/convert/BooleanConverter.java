@@ -2,7 +2,7 @@ package org.snapscript.core.convert;
 
 import org.snapscript.core.Type;
 
-public class BooleanConverter extends TypeConverter {
+public class BooleanConverter extends ConstraintConverter {
 
    private final Type type;
    
@@ -30,7 +30,9 @@ public class BooleanConverter extends TypeConverter {
          return EXACT;
       }
       if(type == String.class) {
-         return POSSIBLE;
+         if(compatible(Boolean.class, value)) {
+            return POSSIBLE;
+         }
       }
       return INVALID;
    }
@@ -40,8 +42,7 @@ public class BooleanConverter extends TypeConverter {
       Class type = value.getClass();
       
       if(type == String.class) {
-         String text = String.valueOf(value);
-         return convert(Boolean.class, text);
+         return convert(Boolean.class, value);
       }
       if(type == Boolean.class) {
          Boolean number = (Boolean)value;

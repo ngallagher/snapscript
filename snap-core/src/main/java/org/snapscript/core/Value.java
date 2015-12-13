@@ -74,12 +74,7 @@ public abstract class Value {
       return null;
    }     
    
-   public String getConstraint(){
-      Class type = getType();
-      
-      if(type != null) {
-         return type.getSimpleName();         
-      }
+   public Type getConstraint(){
       return null; 
    }   
 

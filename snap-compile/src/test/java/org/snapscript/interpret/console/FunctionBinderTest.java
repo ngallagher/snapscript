@@ -8,21 +8,22 @@ import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.ContextLinker;
 import org.snapscript.compile.ClassPathContext;
+import org.snapscript.compile.ContextLinker;
 import org.snapscript.compile.Evaluator;
 import org.snapscript.compile.StringEvaluator;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportResolver;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Model;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
 
@@ -36,7 +37,8 @@ public class FunctionBinderTest extends TestCase {
       PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionBinder binder = new FunctionBinder(loader);
+      ConstraintMatcher matcher = new ConstraintMatcher(loader);
+      FunctionBinder binder = new FunctionBinder(matcher, loader);
       
       Type type =loader.loadType(PrintStream.class);
       List<Function> functions = type.getFunctions();
@@ -57,7 +59,8 @@ public class FunctionBinderTest extends TestCase {
       PackageLinker linker = new ContextLinker(context);
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionBinder binder = new FunctionBinder(loader);
+      ConstraintMatcher matcher = new ConstraintMatcher(loader);
+      FunctionBinder binder = new FunctionBinder(matcher, loader);
       Map<String, Property>v=new LinkedHashMap<String,Property>();
       Type type =loader.loadType(String.class);
       List<Function> functions = type.getFunctions();

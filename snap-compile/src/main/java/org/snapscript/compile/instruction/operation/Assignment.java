@@ -42,6 +42,6 @@ public class Assignment implements Evaluation {
             return leftResult;
          }
       }
-      return operator.operate(leftResult, rightResult);      
+      return operator.operate(scope, leftResult, rightResult);      
    }
 }

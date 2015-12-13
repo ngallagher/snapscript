@@ -1,6 +1,6 @@
 package org.snapscript.core.convert;
 
-public class AnyConverter extends TypeConverter {
+public class AnyConverter extends ConstraintConverter {
    
    private final ProxyBuilder builder;
    

@@ -67,16 +67,12 @@ public class TryCatchStatement extends Statement {
       
       if(parameter != null) {
          Value reference = parameter.evaluate(scope, null);
-         String constraint = reference.getConstraint();
+         Type constraint = reference.getConstraint();
          String name = reference.getString();
 
          if(value != null) {
-            Module module = scope.getModule();
-            
             if(constraint != null) {
-               Type require = module.getType(constraint);
-               
-               if(!checker.compatible(scope, value, require)) {
+               if(!checker.compatible(scope, value, constraint)) {
                   return result;
                }
             }

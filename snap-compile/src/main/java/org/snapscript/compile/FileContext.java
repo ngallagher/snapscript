@@ -9,11 +9,13 @@ import org.snapscript.core.PackageLinker;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.resource.FileReader;
 import org.snapscript.core.resource.ResourceReader;
 
 public class FileContext implements Context {
 
+   private final ConstraintMatcher matcher;
    private final ImportResolver resolver;
    private final TraceAnalyzer analyzer;
    private final FunctionBinder binder;
@@ -29,7 +31,13 @@ public class FileContext implements Context {
       this.linker = new ContextLinker(this);
       this.resolver = new ImportResolver(linker, reader);      
       this.loader = new TypeLoader(resolver);
-      this.binder = new FunctionBinder(loader);
+      this.matcher = new ConstraintMatcher(loader);
+      this.binder = new FunctionBinder(matcher, loader);
+   }
+   
+   @Override
+   public ConstraintMatcher getMatcher() {
+      return matcher;
    }
    
    @Override

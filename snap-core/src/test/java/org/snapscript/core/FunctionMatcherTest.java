@@ -4,8 +4,10 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.bind.FunctionMatcher;
 import org.snapscript.core.bind.FunctionPointer;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
 
@@ -42,7 +44,8 @@ public class FunctionMatcherTest extends TestCase {
       ResourceReader reader = new ClassPathReader();
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionMatcher matcher = new FunctionMatcher(loader);
+      ConstraintMatcher matcher2 = new ConstraintMatcher(loader);
+      FunctionMatcher matcher = new FunctionMatcher(matcher2, loader);
       Type type = loader.loadType(ExampleObject.class);
       
       assertNotNull(type);
@@ -93,7 +96,8 @@ public class FunctionMatcherTest extends TestCase {
       ResourceReader reader = new ClassPathReader();
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionMatcher matcher = new FunctionMatcher(loader);
+      ConstraintMatcher matcher2 = new ConstraintMatcher(loader);
+      FunctionMatcher matcher = new FunctionMatcher(matcher2, loader);
       Type type = loader.loadType(ExampleObject.class);
       
       assertNotNull(type);

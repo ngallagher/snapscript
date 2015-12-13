@@ -3,13 +3,13 @@ package org.snapscript.compile.instruction;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class DeclareVariable implements Evaluation {
    
-   private final ConstraintChecker checker;
+   private final DeclarationConverter checker;
    private final TextLiteral identifier;
-   private final Constraint constraint;
    private final Evaluation value;
    
    public DeclareVariable(TextLiteral identifier) {
@@ -25,8 +25,7 @@ public class DeclareVariable implements Evaluation {
    }
    
    public DeclareVariable(TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.checker = new ConstraintChecker();
-      this.constraint = constraint;
+      this.checker = new DeclarationConverter(constraint);
       this.identifier = identifier;
       this.value = value;
    }   
@@ -35,33 +34,35 @@ public class DeclareVariable implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       Value variable = identifier.evaluate(scope, null);
       String name = variable.getString();
-      State state = scope.getState();
+      Value value = create(scope, name);
+
+      return declare(scope, value, name);
+   }
+   
+   protected Value create(Scope scope, String name) throws Exception {
+      Object object = null;
       
       if(value != null) {         
          Value result = value.evaluate(scope, null);         
-         Object value = result.getValue();
-
-         if(constraint != null && value != null) {
-            Value qualifier = constraint.evaluate(scope, null);
-            String alias = qualifier.getString();
-
-            if(!checker.compatible(scope, value, alias)) {
-               throw new IllegalStateException("Variable '" + name + "' does not match constraint '" + alias + "'");
-            }
+         
+         if(result != null) {
+            object = result.getValue();
          }
-         return declare(state, name, value);
       }
-      return declare(state, name, null);
+      return checker.convert(scope, object, name);
    }
    
-   protected Value declare(State state, String name, Object value) throws Exception {
-      Reference reference = new Reference(value);         
+   protected Value declare(Scope scope, Value value, String name) throws Exception {
+      Object object = value.getValue();
+      Type type = value.getConstraint();
+      State state = scope.getState();
       
-      try {
+      try {      
+         Reference reference = new Reference(object, type, name);
          state.addVariable(name, reference);
-      } catch(Exception e) {
-         throw new IllegalStateException("Declaration of variable '" + name + "' failed", e);
-      }
-      return reference;      
+         return reference;
+      }catch(Exception e) {
+         throw new IllegalStateException("Declaration of variable '" + name +"' failed", e);
+      }      
    }
 }

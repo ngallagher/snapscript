@@ -6,6 +6,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
 
@@ -27,7 +28,8 @@ public class FunctionBinderTest extends TestCase {
       ResourceReader reader = new ClassPathReader();
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionBinder binder = new FunctionBinder(loader);
+      ConstraintMatcher matcher = new ConstraintMatcher(loader);
+      FunctionBinder binder = new FunctionBinder(matcher, loader);
       Type type = loader.loadType(Map.class);
       
       binder.bind(null, map, "put", "x", 11).call();
@@ -67,7 +69,8 @@ public class FunctionBinderTest extends TestCase {
       ResourceReader reader = new ClassPathReader();
       ImportResolver resolver = new ImportResolver(linker, reader);
       TypeLoader loader = new TypeLoader(resolver);
-      FunctionBinder binder = new FunctionBinder(loader);
+      ConstraintMatcher matcher = new ConstraintMatcher(loader);
+      FunctionBinder binder = new FunctionBinder(matcher, loader);
       Type type = loader.loadType(Map.class);
       long start = System.currentTimeMillis();
       

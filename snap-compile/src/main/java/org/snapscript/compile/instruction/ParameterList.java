@@ -41,14 +41,11 @@ public class ParameterList {
          }
          for(int i = 0; i < list.length; i++) {
             Value value = list[i].evaluate(scope, null);
-            String constraint = value.getConstraint();
+            Type constraint = value.getConstraint();
             String name = value.getString();
             
             if(constraint != null) {
-               Module module = scope.getModule();
-               Type type = module.addType(constraint); // add type if not declared yet
-               
-               constraints.add(type);
+               constraints.add(constraint);
             } else {
                constraints.add(null);
             }

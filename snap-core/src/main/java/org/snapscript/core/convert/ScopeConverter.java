@@ -2,7 +2,7 @@ package org.snapscript.core.convert;
 
 import org.snapscript.core.Scope;
 
-public class ScopeConverter extends TypeConverter {
+public class ScopeConverter extends ConstraintConverter {
    
    @Override
    public int score(Object value) throws Exception {

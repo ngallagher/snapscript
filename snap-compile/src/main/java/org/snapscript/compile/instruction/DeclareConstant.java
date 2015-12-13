@@ -1,7 +1,9 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Constant;
+import org.snapscript.core.Scope;
 import org.snapscript.core.State;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class DeclareConstant extends DeclareVariable {
@@ -23,14 +25,17 @@ public class DeclareConstant extends DeclareVariable {
    }
    
    @Override
-   protected Value declare(State state, String name, Object object) throws Exception {
-      Constant constant = new Constant(object);
+   protected Value declare(Scope scope, Value value, String name) throws Exception {
+      Object object = value.getValue();
+      Type type = value.getConstraint();
+      State state = scope.getState();
       
-      try {
-         state.addConstant(name, constant);
-      } catch(Exception e) {
-         throw new IllegalStateException("Declaration of constant '" + name + "' failed", e);
-      }
-      return constant;
-   }   
+      try {      
+         Constant reference = new Constant(object, type, name);
+         state.addVariable(name, reference);
+         return reference;
+      }catch(Exception e) {
+         throw new IllegalStateException("Declaration of constant '" + name +"' failed", e);
+      }      
+   }  
 }

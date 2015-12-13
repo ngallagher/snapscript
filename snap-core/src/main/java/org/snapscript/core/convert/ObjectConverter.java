@@ -4,7 +4,7 @@ import org.snapscript.core.InstanceChecker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
-public class ObjectConverter extends TypeConverter {
+public class ObjectConverter extends ConstraintConverter {
    
    private final TypeExtractor extractor;
    private final InstanceChecker checker;

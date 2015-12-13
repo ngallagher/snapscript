@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.core.Type;
 
-public class IntegerConverter extends TypeConverter {
+public class IntegerConverter extends ConstraintConverter {
    
    private final Type type;
    
@@ -62,7 +62,9 @@ public class IntegerConverter extends TypeConverter {
          return COMPATIBLE;
       }
       if(type == String.class) {
-         return POSSIBLE;
+         if(compatible(Integer.class, value)) {
+            return POSSIBLE;
+         }
       }
       return INVALID;
    }
@@ -72,8 +74,7 @@ public class IntegerConverter extends TypeConverter {
       Class type = value.getClass();
       
       if(type == String.class) {
-         String text = String.valueOf(value);
-         return convert(Integer.class, text);
+         return convert(Integer.class, value);
       }
       Class parent = type.getSuperclass();
       

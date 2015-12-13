@@ -1,6 +1,6 @@
 package org.snapscript.core.convert;
 
-public class NullConverter extends TypeConverter {
+public class NullConverter extends ConstraintConverter {
    
    @Override
    public int score(Object value) throws Exception {

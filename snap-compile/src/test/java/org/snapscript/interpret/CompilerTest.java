@@ -111,7 +111,7 @@ public class CompilerTest extends TestCase{
       Map<String,Object>map=new LinkedHashMap<String, Object>();
       Model model = new MapModel(map);
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-      Executable executable = compiler.compile("var num : Number = 1.0d; map.put('num',num); var decimal : String = 5*num;");
+      Executable executable = compiler.compile("var num : Number = 1.0d; map.put('num',num); var decimal : Boolean = num*2;");
       map.put("map", map);
       boolean failure=false;
       try {  

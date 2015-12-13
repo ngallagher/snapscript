@@ -1,6 +1,6 @@
 package org.snapscript.core.convert;
 
-public class StringConverter extends TypeConverter {
+public class StringConverter extends ConstraintConverter {
    
    @Override
    public int score(Object value) throws Exception {

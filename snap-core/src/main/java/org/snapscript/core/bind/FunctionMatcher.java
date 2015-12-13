@@ -9,6 +9,7 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class FunctionMatcher {
    
@@ -17,13 +18,13 @@ public class FunctionMatcher {
    private final FunctionKeyBuilder builder;
    private final ArgumentMatcher matcher;
    
-   public FunctionMatcher(TypeLoader loader) {
-      this(loader, 50000);
+   public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader) {
+      this(matcher, loader, 50000);
    }
    
-   public FunctionMatcher(TypeLoader loader, int capacity) {
+   public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, int capacity) {
       this.cache = new LeastRecentlyUsedMap<Object, Function>(capacity);
-      this.matcher = new ArgumentMatcher(loader, capacity);
+      this.matcher = new ArgumentMatcher(matcher, loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
       this.finder = new TypePathBuilder();
    }

@@ -2,7 +2,7 @@ package org.snapscript.core.convert;
 
 import org.snapscript.core.Type;
 
-public class CharacterConverter extends TypeConverter {
+public class CharacterConverter extends ConstraintConverter {
 
    private final Type type;
    
@@ -30,7 +30,9 @@ public class CharacterConverter extends TypeConverter {
          return EXACT;
       }
       if(type == String.class) {
-         return POSSIBLE;
+         if(compatible(Character.class, value)) {
+            return POSSIBLE;
+         }
       }
       return INVALID;
    }
@@ -40,8 +42,7 @@ public class CharacterConverter extends TypeConverter {
       Class type = value.getClass();
       
       if(type == String.class) {
-         String text = String.valueOf(value);
-         return convert(Character.class, text);
+         return convert(Character.class, value);
       }
       if(type == Character.class) {
          Character number = (Character)value;

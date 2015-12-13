@@ -1,6 +1,12 @@
 package org.snapscript.compile.instruction.operation;
 
+import org.snapscript.core.Context;
+import org.snapscript.core.Module;
+import org.snapscript.core.Scope;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.convert.ConstraintConverter;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.parse.StringToken;
 
 public enum AssignmentOperator {
@@ -25,10 +31,25 @@ public enum AssignmentOperator {
       this.symbol = symbol;
    }
    
-   public Value operate(Value left, Value right) {
+   public Value operate(Scope scope, Value left, Value right) throws Exception {
+      Type type = left.getConstraint();
       Value result = operator.operate(left, right);
       Object value = result.getValue();
       
+      if(type != null) {
+         Module module = scope.getModule();
+         Context context = module.getContext();
+         ConstraintMatcher matcher = context.getMatcher();
+         ConstraintConverter converter = matcher.match(type);
+         int score = converter.score(value);
+         
+         if(score <= 0) {
+            throw new IllegalStateException("Illegal assignment to variable of type '" + type + "'");
+         }
+         if(value != null) {
+            value = converter.convert(value);
+         }
+      }
       left.setValue(value);
       return left;
    }

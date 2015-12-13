@@ -7,24 +7,24 @@ import org.snapscript.common.LeastRecentlyUsedMap;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.convert.ConstraintConverter;
+import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FixedArgumentConverter;
 import org.snapscript.core.convert.NoArgumentConverter;
-import org.snapscript.core.convert.TypeConverter;
-import org.snapscript.core.convert.TypeMatcher;
 import org.snapscript.core.convert.VariableArgumentConverter;
 
 public class ArgumentMatcher {
 
    private final Map<Signature, ArgumentConverter> converters;
-   private final TypeMatcher matcher;
+   private final ConstraintMatcher matcher;
    
-   public ArgumentMatcher(TypeLoader loader) {
-      this(loader, 50000);
+   public ArgumentMatcher(ConstraintMatcher matcher, TypeLoader loader) {
+      this(matcher, loader, 50000);
    }
    
-   public ArgumentMatcher(TypeLoader loader, int capacity) {
+   public ArgumentMatcher(ConstraintMatcher matcher, TypeLoader loader, int capacity) {
       this.converters = new LeastRecentlyUsedMap<Signature, ArgumentConverter>(capacity);
-      this.matcher = new TypeMatcher(loader);
+      this.matcher = matcher;
    }
    
    public ArgumentConverter match(Signature signature) throws Exception {
@@ -43,7 +43,7 @@ public class ArgumentMatcher {
       int size = types.size();
       
       if(size > 0) {
-         TypeConverter[] converters = new TypeConverter[size];
+         ConstraintConverter[] converters = new ConstraintConverter[size];
          
          for(int i = 0; i < size - 1; i++) {
             Type type = types.get(i);

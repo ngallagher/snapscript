@@ -10,25 +10,25 @@ import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.TypeVerifier;
 
-public class TypeMatcher {
+public class ConstraintMatcher {
    
-   private final Map<Type, TypeConverter> converters;
+   private final Map<Type, ConstraintConverter> converters;
    private final TypeExtractor extractor;
    private final TypeVerifier comparator;
-   private final TypeConverter converter;
+   private final ConstraintConverter converter;
    private final InstanceChecker checker;
    
-   public TypeMatcher(TypeLoader loader) {
-      this.converters = new HashMap<Type, TypeConverter>();
+   public ConstraintMatcher(TypeLoader loader) {
+      this.converters = new HashMap<Type, ConstraintConverter>();
       this.checker = new InstanceChecker();
       this.comparator = new TypeVerifier(loader, checker);
       this.extractor = new TypeExtractor(loader);
       this.converter = new NullConverter();
    }
    
-   public TypeConverter match(Type type) throws Exception { // type declared in signature
+   public ConstraintConverter match(Type type) throws Exception { // type declared in signature
       if(type != null) {
-         TypeConverter converter = converters.get(type);
+         ConstraintConverter converter = converters.get(type);
          
          if(converter == null) {
             converter = resolve(type);
@@ -39,7 +39,7 @@ public class TypeMatcher {
       return converter;
    }
    
-   private TypeConverter resolve(Type type) throws Exception {
+   private ConstraintConverter resolve(Type type) throws Exception {
       if(comparator.same(Object.class, type)) {
          return new AnyConverter();
       }

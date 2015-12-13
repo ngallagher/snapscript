@@ -2,25 +2,40 @@ package org.snapscript.core;
 
 public class Constant extends Value {
    
+   private final Object value;
    private final String name;
-   private final Object object;
+   private final Type type;
    
-   public Constant(Object object) {
-      this(object, null);
+   public Constant(Object value) {
+      this(value, null, null);
    }
    
-   public Constant(Object object, String name) {
+   public Constant(Object value, String name) {
+      this(value, null, name);
+   }
+   
+   public Constant(Object value, Type type) {
+      this(value, type, null);
+   }
+   
+   public Constant(Object value, Type type, String name) {
       this.name = name;
-      this.object = object;
+      this.value = value;
+      this.type = type;
    }
-   
+
    public String getName(){
       return name;
    }
    
    @Override
-   public Object getValue(){
-      return object;
+   public Type getConstraint() {
+      return type;
+   }
+   
+   @Override
+   public <T> T getValue() {
+      return (T)value;
    }
    
    @Override

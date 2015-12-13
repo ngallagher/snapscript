@@ -1,18 +1,16 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.InstanceChecker;
+import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ConstraintConverter;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class ConstraintChecker {
    
-   private final ConstraintExtractor extractor;
-   private final InstanceChecker checker;
-   
    public ConstraintChecker() {
-      this.extractor = new ConstraintExtractor();
-      this.checker = new InstanceChecker();
+      super();
    }
 
    public boolean compatible(Scope scope, Object value, String name) throws Exception {
@@ -24,25 +22,16 @@ public class ConstraintChecker {
       }
       return true;
    }
-   
-   // this might not work!!!
+
    public boolean compatible(Scope scope, Object value, Type type) throws Exception {
       if(type != null) {
-         Type actual = extractor.extract(scope, value);
-
-         if(type != actual) {
-            if(actual == null) {
-               Class real = type.getType();
-               
-               if(real != null) {
-                  return !real.isPrimitive();
-               }
-               return true;
-            }
-            if(!checker.check(actual, type)) {
-               return false;
-            }
-         }
+         Module module = scope.getModule();
+         Context context = module.getContext();
+         ConstraintMatcher matcher = context.getMatcher();
+         ConstraintConverter converter = matcher.match(type);
+         int score = converter.score(value);
+         
+         return score > 0;
       }
       return true;
    }

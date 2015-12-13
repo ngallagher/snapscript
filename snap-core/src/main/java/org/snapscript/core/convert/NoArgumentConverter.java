@@ -1,7 +1,7 @@
 package org.snapscript.core.convert;
 
-import static org.snapscript.core.convert.TypeConverter.EXACT;
-import static org.snapscript.core.convert.TypeConverter.INVALID;
+import static org.snapscript.core.convert.ConstraintConverter.EXACT;
+import static org.snapscript.core.convert.ConstraintConverter.INVALID;
 
 import org.snapscript.core.bind.ArgumentConverter;
 

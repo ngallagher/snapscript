@@ -8,14 +8,15 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class FunctionBinder {
    
    private final FunctionMatcher matcher;
    private final TypeExtractor extractor;
    
-   public FunctionBinder(TypeLoader loader) {
-      this.matcher = new FunctionMatcher(loader);
+   public FunctionBinder(ConstraintMatcher matcher, TypeLoader loader) {
+      this.matcher = new FunctionMatcher(matcher, loader);
       this.extractor = new TypeExtractor(loader);
    }
    

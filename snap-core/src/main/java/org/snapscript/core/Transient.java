@@ -2,21 +2,21 @@ package org.snapscript.core;
 
 public class Transient extends Value {
    
-   private final String constraint;
    private final Object object;
+   private final Type type;
    
    public Transient(Object object) {
       this(object, null);
    }
    
-   public Transient(Object object, String constraint) {
-      this.constraint = constraint;
+   public Transient(Object object, Type type) {
       this.object = object;
+      this.type = type;
    }
    
    @Override
-   public String getConstraint(){
-      return constraint;
+   public Type getConstraint(){
+      return type;
    }
    
    @Override

@@ -19,11 +19,6 @@ public class BooleanValue extends Value {
    }     
    
    @Override
-   public String getConstraint(){
-      return Boolean.class.getSimpleName();
-   } 
-   
-   @Override
    public Boolean getValue(){
       return value;
    }

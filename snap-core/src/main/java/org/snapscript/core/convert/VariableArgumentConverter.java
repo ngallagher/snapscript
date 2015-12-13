@@ -1,14 +1,14 @@
 package org.snapscript.core.convert;
 
-import static org.snapscript.core.convert.TypeConverter.*;
+import static org.snapscript.core.convert.ConstraintConverter.*;
 
 import org.snapscript.core.bind.ArgumentConverter;
 
 public class VariableArgumentConverter implements ArgumentConverter { 
    
-   private final TypeConverter[] converters;
+   private final ConstraintConverter[] converters;
 
-   public VariableArgumentConverter(TypeConverter[] converters) {
+   public VariableArgumentConverter(ConstraintConverter[] converters) {
       this.converters = converters;
    }
    
@@ -23,7 +23,7 @@ public class VariableArgumentConverter implements ArgumentConverter {
             return INVALID;
          }
          for(int i = 0; i < start; i++){
-            TypeConverter converter = converters[i];
+            ConstraintConverter converter = converters[i];
             Object value = list[i];
             int score = converter.score(value);
             
@@ -34,7 +34,7 @@ public class VariableArgumentConverter implements ArgumentConverter {
          }
          if (remaining > 0) {
             for (int i = 0; i < remaining; i++) {
-               TypeConverter converter = converters[require - 1];
+               ConstraintConverter converter = converters[require - 1];
                Object value = list[i + start];
                int score = converter.score(value);
                
@@ -60,14 +60,14 @@ public class VariableArgumentConverter implements ArgumentConverter {
          int remaining = list.length - start;
          
          for(int i = 0; i < start; i++){
-            TypeConverter converter = converters[i];
+            ConstraintConverter converter = converters[i];
             Object value = list[i];
             
             list[i] = converter.convert(value);
          }
          if (remaining > 0) {
             for (int i = 0; i < remaining; i++) {
-               TypeConverter converter = converters[require - 1];
+               ConstraintConverter converter = converters[require - 1];
                Object value = list[i + start];
                
                list[i + start] = converter.convert(value);
