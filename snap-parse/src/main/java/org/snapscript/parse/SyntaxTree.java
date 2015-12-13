@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SyntaxTree {
 
@@ -11,6 +12,7 @@ public class SyntaxTree {
    private final List<SyntaxCursor> nodes;
    private final LexicalAnalyzer analyzer;
    private final GrammarIndexer indexer;
+   private final AtomicInteger commit;
    private final IntegerStack stack;
    private final String grammar;
    private final long serial;
@@ -19,6 +21,7 @@ public class SyntaxTree {
       this.analyzer = new TokenScanner(indexer, original, source, lines, types);
       this.comparator = new SyntaxNodeComparator();
       this.nodes = new ArrayList<SyntaxCursor>();
+      this.commit = new AtomicInteger();
       this.stack = new IntegerStack();
       this.indexer = indexer;
       this.grammar = grammar;
@@ -46,7 +49,8 @@ public class SyntaxTree {
       int count = analyzer.count();
       
       if(mark != count) {
-         Line line = analyzer.line(mark);
+         int error = commit.get(); // last successful commit
+         Line line = analyzer.line(error);
          
          if(size <= 1) {
             throw new IllegalStateException("Syntax error in source at line " + line);
@@ -113,7 +117,7 @@ public class SyntaxTree {
 
       @Override
       public int reset() {
-         int current = analyzer.mark();
+         int mark = analyzer.mark();
          
          while (!stack.isEmpty()) {
             int top = stack.pop();
@@ -123,15 +127,21 @@ public class SyntaxTree {
             }
          }
          analyzer.reset(start); // sets the global offset
-         return current;
+         return mark;
       }
 
       @Override
       public void commit() {
+         int mark = analyzer.mark();
+         int error = commit.get();
+         
          while (!stack.isEmpty()) {
             int top = stack.pop();
 
             if (top == key) {
+               if(mark > error) {
+                  commit.set(mark);
+               }
                parent.add(this);
                break;
             }
