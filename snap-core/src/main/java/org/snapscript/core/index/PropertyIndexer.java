@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.FieldAccessor;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -18,6 +19,7 @@ import org.snapscript.core.PropertyType;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
+@Bug("This is rubbish and needs to be cleaned up")
 public class PropertyIndexer {
    
    private final PrimitivePromoter promoter;

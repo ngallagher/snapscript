@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.collection;
 
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyBuilder;
 import org.snapscript.core.convert.ProxyExtractor;
@@ -35,6 +36,7 @@ public class ListValue extends Value {
       return value;
    }
    
+   @Bug("Is list.add(null) right here??? what about arrays")
    @Override
    public void setValue(Object value){
       Object proxy = builder.create(value);

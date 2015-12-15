@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Context;
 import org.snapscript.core.Initializer;
@@ -34,6 +35,7 @@ public class EnumInitializer extends Initializer {
       this.key = key;
    }
    
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result execute(Scope scope, Type type) throws Exception {
       Value value = key.evaluate(scope, null);

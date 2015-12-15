@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.compile.instruction.InstructionBuilder;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -117,6 +118,7 @@ public class ContextAssembler implements Assembler {
       return token;
    }
    
+   @Bug("This needs ot be a proper type, InstructionBuilder -> OperationBuilder")
    private class Operation{
       
       private final Instruction instruction;

@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.define;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
@@ -18,12 +19,9 @@ public class InstanceInitializer extends Initializer {
 
    @Override
    public Result execute(Scope instance, Type type) throws Exception {
-      Type current = instance.getType();
-      
-      // This check is probably rubbish!!!
-      //if(current == type) {
+      if(evaluation != null) {
          evaluation.evaluate(instance, null);
-      //}
-      return new Result();
+      }
+      return ResultType.getNormal();
    }
 }

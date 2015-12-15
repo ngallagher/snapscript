@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.ImportResolver;
 import org.snapscript.core.NoStatement;
 import org.snapscript.core.Package;
@@ -12,6 +13,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
+@Bug("This is rubbish and needs to be cleaned up")
 public class TypeIndexer {
 
    private final Map<Object, Type> types;

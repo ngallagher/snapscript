@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
@@ -25,6 +26,7 @@ public class SuperFunction implements Evaluation {
       this.type = type;
    }
    
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Value evaluate(Scope instance, Object left) throws Exception {
       if(left == null) {

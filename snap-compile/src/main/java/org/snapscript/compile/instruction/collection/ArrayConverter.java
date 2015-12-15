@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 public class ArrayConverter {

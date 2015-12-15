@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.define;
 import org.snapscript.compile.instruction.CompoundStatement;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.ParameterList;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
@@ -28,6 +29,7 @@ public class MemberFunction implements TypePart {
       this.modifier = modifier;
    } 
 
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       // XXX if this function is called it must be called on the internal scope of the instance...

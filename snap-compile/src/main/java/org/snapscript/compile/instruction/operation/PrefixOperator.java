@@ -43,12 +43,14 @@ public enum PrefixOperator {
    public abstract Value operate(Value right);   
    
    public static PrefixOperator resolveOperator(StringToken token) {
-      String value = token.getValue();
-      PrefixOperator[] operators = PrefixOperator.values();
-      
-      for(PrefixOperator operator : operators) {
-         if(operator.operator.equals(value)) {
-            return operator;
+      if(token != null) {
+         String value = token.getValue();
+         PrefixOperator[] operators = PrefixOperator.values();
+         
+         for(PrefixOperator operator : operators) {
+            if(operator.operator.equals(value)) {
+               return operator;
+            }
          }
       }
       return null;

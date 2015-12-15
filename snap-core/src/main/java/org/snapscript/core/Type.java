@@ -17,6 +17,7 @@ public class Type {
       this(name, module, entry, null);
    }
    
+   @Bug("Needs some information regarding the type of type, for example enum, trait")
    public Type(String name, String module, Type entry, Class type){
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();

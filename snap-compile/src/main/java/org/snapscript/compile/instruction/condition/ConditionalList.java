@@ -14,7 +14,7 @@ public class ConditionalList implements Evaluation {
    }
    
    @Override
-   public Value evaluate(Scope scope, Object context) throws Exception { // this is rubbish
+   public Value evaluate(Scope scope, Object context) throws Exception { 
       Boolean result = evaluate(scope, context, 0);
       
       for(int i = 1; i < parts.length; i+=2) {
@@ -44,11 +44,7 @@ public class ConditionalList implements Evaluation {
       ConditionalPart part = parts[off];
       Evaluation evaluation = part.getEvaluation();         
       Value reference = evaluation.evaluate(scope, context);
-      try{
+      
       return reference.getBoolean();
-      }catch(Exception e){
-         e.printStackTrace();
-      }
-      return null;
    }
 }

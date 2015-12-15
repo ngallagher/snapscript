@@ -8,6 +8,7 @@ import java.util.List;
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.compile.instruction.StatementInvocation;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
@@ -16,9 +17,6 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
-
-
-// blah(a,b,c):super(a,b);
 
 public class MemberConstructor implements TypePart {
    
@@ -36,11 +34,13 @@ public class MemberConstructor implements TypePart {
       this.modifier = modifier;
       this.list = list;
    } 
+   
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       return define(scope, statements, type, false);
    }
    
+   @Bug("This is rubbish and needs to be cleaned up, also better way of passing enum bool")
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean enm) throws Exception {
       Signature signature = parameters.create(scope, TYPE_CLASS);
       Value mod = modifier.evaluate(scope, null);

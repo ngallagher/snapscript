@@ -3,6 +3,8 @@ package org.snapscript.compile.instruction.define;
 import static org.snapscript.core.Reserved.TYPE_CLASS;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
+import java.util.List;
+
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
@@ -13,22 +15,26 @@ import org.snapscript.core.Type;
 
 public class DefaultInitializer extends Initializer {
    
-   private final ScopeAccessor type;
-   private final ScopeAccessor self;
-   
+   private final String[] names;
+
    public DefaultInitializer() {
-      this.type = new ScopeAccessor(TYPE_CLASS);
-      this.self = new ScopeAccessor(TYPE_THIS);
+      this(TYPE_CLASS, TYPE_THIS);
+   }
+   
+   public DefaultInitializer(String... names) {
+      this.names = names;
    }
 
    @Override
-   public Result execute(Scope scope, Type real) throws Exception {  
-      Property property = new Property(TYPE_THIS, real, self);
-      Property property2 = new Property(TYPE_CLASS, real, type);      
-
-      real.getProperties().add(property);
-      real.getProperties().add(property2);
-
+   public Result execute(Scope scope, Type type) throws Exception {  
+      List<Property> properties = type.getProperties();
+      
+      for(String name : names) {
+         ScopeAccessor accessor = new ScopeAccessor(name);
+         Property property = new Property(name, type, accessor);
+         
+         properties.add(property);
+      }
       return ResultType.getNormal();
    }
 }

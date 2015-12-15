@@ -1,5 +1,7 @@
 package org.snapscript.core.bind;
 
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
 public class TypePathBuilder {
@@ -17,8 +20,9 @@ public class TypePathBuilder {
       this.paths = new HashMap<Type, List<Type>>();
    }
 
+   @Bug("Need better checking for constructor here")
    public List<Type> createPath(Type type, String name) {
-      if(name.equals("new")) {
+      if(name.equals(TYPE_CONSTRUCTOR)) {
          return Arrays.asList(type);
       }
       List<Type> path = paths.get(type);

@@ -11,10 +11,6 @@ public class Result {
    private final ResultType type;
    private final Object value;
 
-   public Result() {
-      this(NORMAL);
-   }
-
    public Result(ResultType type) {
       this(type, null);
    }

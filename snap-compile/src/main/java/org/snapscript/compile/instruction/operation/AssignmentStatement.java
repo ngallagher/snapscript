@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
@@ -25,6 +26,7 @@ public class AssignmentStatement extends Statement {
       String name = variable.getString();
       
       state.setValue(name, result);
-      return new Result();
+      
+      return ResultType.getNormal();
    }
 }

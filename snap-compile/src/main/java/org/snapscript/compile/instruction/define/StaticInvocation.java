@@ -33,7 +33,7 @@ public class StaticInvocation implements Invocation<Object> {
    public Result invoke(Scope outer, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
-      Object[] arguments = aligner.align(list); // combine variable arguments to a single array
+      Object[] arguments = aligner.align(list); 
       Scope scope = inner.getInner();
       State state = scope.getState();
       

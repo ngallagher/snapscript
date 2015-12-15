@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
@@ -26,6 +27,7 @@ public class SuperConstructor implements TypePart {
       this.list = list;
    }
 
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {
       List<Type> types=type.getTypes();

@@ -14,7 +14,7 @@ public class InstanceScope implements Scope {
    
    @Override
    public Scope getInner() {
-      return new CompoundScope(this, this); // this goes too deep!!
+      return new CompoundScope(this, this);
    } 
    
    @Override

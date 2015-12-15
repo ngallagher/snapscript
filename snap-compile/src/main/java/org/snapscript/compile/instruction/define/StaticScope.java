@@ -20,7 +20,7 @@ public class StaticScope implements Scope {
    
    @Override
    public Scope getInner() {
-      return new CompoundScope(this, scope); // this goes too deep!!
+      return new CompoundScope(this, scope); 
    } 
    
    @Override

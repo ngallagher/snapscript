@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Accessor;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
@@ -37,6 +38,7 @@ public class EnumDefinition extends Statement {
       this.name = name;
    }
 
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);

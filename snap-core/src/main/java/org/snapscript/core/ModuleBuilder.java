@@ -15,10 +15,12 @@ public class ModuleBuilder {
       this.context = context;
    }
    
+   @Bug("Resolve is not the right name here")
    public Module resolve() {
       return module;
    }
 
+   @Bug("Resolve is not the right name here")
    public Module resolve(String name) {
       if(name != null) {
          return modules.get(name);

@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Module;
@@ -12,6 +13,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
 
+@Bug("This is rubbish and needs to be cleaned up")
 public class FunctionDeclaration extends Statement {
    
    private final ParameterList parameters;

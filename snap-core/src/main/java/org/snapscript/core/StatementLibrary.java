@@ -22,10 +22,10 @@ public class StatementLibrary implements Package {
          
          try {
             ModuleBuilder builder = context.getBuilder();
-            Module library = builder.create(name); // create a new named module
+            Module library = builder.create(name);
             Scope inner = library.getScope();
            
-            statement.compile(inner); // compile it with a different module, all will go in to context
+            statement.compile(inner); 
          } catch(Exception e) {
             if(name != null) {
                throw new IllegalStateException("Error occured in '" + name + "'", e);

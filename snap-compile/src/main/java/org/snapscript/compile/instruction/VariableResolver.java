@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.core.Accessor;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.HierarchyExtractor;
 import org.snapscript.core.Module;
@@ -19,6 +20,7 @@ import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
+@Bug("This should be cleaned up")
 public class VariableResolver {
    
    private final Map<Object, ValueResolver> resolvers;
@@ -128,6 +130,7 @@ public class VariableResolver {
          this.name = name;
       }
       
+      @Bug("This is totally wrong, needed for X.class.functions and MyEnum.VAL, which are different really! consider enums also here!!")
       @Override
       public Value resolve(Scope scope, Type left) {
          Accessor accessor = reference.get();
@@ -143,7 +146,7 @@ public class VariableResolver {
                   return new PropertyValue(match, left, name);
                }
             } 
-            return resolver.resolve(scope, left); // XXX this is totally wrong, needed for X.class.functions and MyEnum.VAL, which are different really!
+            return resolver.resolve(scope, left);
          }
          return new PropertyValue(accessor, left, name);
       }

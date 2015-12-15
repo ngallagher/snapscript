@@ -27,6 +27,7 @@ public class MethodAccessor implements Accessor<Object> {
       }
    }
 
+   @Bug("Proper type conversion needed")
    @Override
    public void setValue(Object source, Object value) {
       try {

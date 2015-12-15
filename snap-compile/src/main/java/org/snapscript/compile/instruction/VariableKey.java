@@ -9,6 +9,7 @@ public class VariableKey {
       this.name = name;
       this.type = type;
    }
+   
    @Override
    public boolean equals(Object object) {
       if(this != object) {

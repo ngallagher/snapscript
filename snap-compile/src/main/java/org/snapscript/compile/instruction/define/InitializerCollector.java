@@ -29,9 +29,8 @@ public class InitializerCollector extends Initializer {
 
       for(Initializer initializer : list) {
          Result result = initializer.compile(scope, type);
-         ResultType flow = result.getType();
          
-         if(flow != ResultType.NORMAL){
+         if(!result.isNormal()){
             return result;
          }
          last = result;
@@ -48,9 +47,8 @@ public class InitializerCollector extends Initializer {
 
       for(Initializer initializer : list) {
          Result result = initializer.execute(scope, type);
-         ResultType flow = result.getType();
          
-         if(flow != ResultType.NORMAL){
+         if(!result.isNormal()){
             return result;
          }
          last = result;

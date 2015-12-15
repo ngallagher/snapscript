@@ -6,6 +6,7 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;
@@ -34,6 +35,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       this(type, signature, factory, body, constructor, false);
    }
    
+   @Bug("Find better way to pass enum bool")
    public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enm) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
@@ -45,6 +47,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       this.e = enm;
    }
 
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
       if(list.length == 0) {

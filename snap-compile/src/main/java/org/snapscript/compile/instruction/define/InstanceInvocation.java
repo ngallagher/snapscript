@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
@@ -27,6 +28,7 @@ public class InstanceInvocation implements Invocation<Scope> {
       this.signature = signature;
    }
    
+   @Bug("This needs to be cleaned up")
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
       List<String> names = signature.getNames();

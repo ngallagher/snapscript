@@ -30,8 +30,8 @@ public class StatementInvocation implements Invocation<Object> {
    public Result invoke(Scope scope, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
-      Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope outer = scope.getOuter(); // do not inherit a compound scope or function scope
+      Object[] arguments = aligner.align(list); 
+      Scope outer = scope.getOuter(); 
       Scope inner = outer.getInner();
       State state = inner.getState();
       

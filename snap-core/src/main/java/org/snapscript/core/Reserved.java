@@ -20,5 +20,6 @@ public interface Reserved {
    String IMPORT_JAVA_IO = "java.io.";
    String IMPORT_JAVA_LANG = "java.lang.";
    String IMPORT_JAVA_NET = "java.net.";
+   String SCRIPT_EXTENSION = ".snap";
 }
 

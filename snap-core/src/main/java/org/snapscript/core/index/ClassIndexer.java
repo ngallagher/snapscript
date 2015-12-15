@@ -4,11 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
+@Bug("This is rubbish and needs to be cleaned up, also consider TypeReference cache so we can partially index")
 public class ClassIndexer {
 
    private final ConstructorIndexer constructors;

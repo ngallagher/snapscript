@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.operation;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -31,6 +32,7 @@ public enum AssignmentOperator {
       this.symbol = symbol;
    }
    
+   @Bug("Better way to convert types???")
    public Value operate(Scope scope, Value left, Value right) throws Exception {
       Type type = left.getConstraint();
       Value result = operator.operate(left, right);

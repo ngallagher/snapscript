@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
@@ -25,6 +26,6 @@ public class StaticInitializer extends Initializer {
       if(done.compareAndSet(false, true)) {
          evaluation.evaluate(scope, null);
       }
-      return new Result();
+      return ResultType.getNormal();
    }
 }

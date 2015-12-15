@@ -6,7 +6,7 @@ import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
-public class CalculationList implements Evaluation { // maybe this should be optimistic?? On exception then check stuff!!
+public class CalculationList implements Evaluation { 
    
    private final AtomicReference<Evaluation> cache;
    private final CalculationPart[] parts;   

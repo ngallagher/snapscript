@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction;
 
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,7 +23,6 @@ public class InstructionBuilder {
       this.context = context;
    }
    
-   // line numbers not working!!
    public Object create(Type type, Object[] arguments, Line line) throws Exception {
       return create(type, arguments, line, false);
    }
@@ -29,7 +30,7 @@ public class InstructionBuilder {
    public Object create(Type type, Object[] arguments, Line line, boolean trace) throws Exception {
       FunctionBinder binder = context.getBinder();
       TraceAnalyzer analyzer = context.getAnalyzer();
-      Callable<Result> callable = binder.bind(null, type, "new", arguments);
+      Callable<Result> callable = binder.bind(null, type, TYPE_CONSTRUCTOR, arguments);
       
       if(callable == null) {
          throw new IllegalStateException("No constructor for " + type + " at line " + line);

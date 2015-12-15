@@ -9,6 +9,7 @@ import static org.snapscript.core.Reserved.METHOD_TO_STRING;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -29,6 +30,7 @@ public class AnyDefinition extends Statement {
       this.constructor = new DefaultConstructor();
    }
 
+   @Bug("Is there a conflict with TypeIndexer creating the Any type?")
    @Override
    public Result compile(Scope scope) throws Exception {
       Module module = scope.getModule();
@@ -93,7 +95,9 @@ public class AnyDefinition extends Statement {
       
       @Override
       public Result invoke(Scope scope, Object object, Object... list) throws Exception {
-         boolean equal = object.equals(list[0]);
+         Object argument = list[0];
+         boolean equal = object.equals(argument)
+               ;
          return ResultType.getNormal(equal);
       }
    }

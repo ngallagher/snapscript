@@ -5,6 +5,7 @@ import org.snapscript.compile.instruction.DeclareConstant;
 import org.snapscript.compile.instruction.DeclareVariable;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
@@ -40,6 +41,7 @@ public class MemberField implements TypePart {
       this.value = value;
    }
 
+   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception { // declare variable
       //DeclarationStatement s = new DeclarationStatement(identifier, constraint, value);

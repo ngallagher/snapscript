@@ -20,8 +20,8 @@ public class Transient extends Value {
    }
    
    @Override
-   public Object getValue(){
-      return object;
+   public <T> T getValue(){
+      return (T)object;
    }
    
    @Override

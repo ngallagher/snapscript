@@ -1,5 +1,7 @@
 package org.snapscript.core;
 
+import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
+
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -7,15 +9,13 @@ import org.snapscript.core.resource.ResourceReader;
 
 public class LibraryLoader {
    
-   private static final String EXTENSION = ".snap";
-   
    private final ResourceReader reader;
    private final PackageLinker linker;
    private final String suffix;
    private final Set libraries;
 
    public LibraryLoader(PackageLinker linker, ResourceReader reader){
-      this(linker, reader, EXTENSION);
+      this(linker, reader, SCRIPT_EXTENSION);
    }
    
    public LibraryLoader(PackageLinker linker, ResourceReader reader, String suffix){

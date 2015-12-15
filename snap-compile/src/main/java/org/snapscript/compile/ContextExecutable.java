@@ -30,7 +30,7 @@ public class ContextExecutable implements Executable{
       Scope scope = merger.merge(model);
       Statement script = library.compile(scope);
       
-      script.execute(scope);// this can only be executed one for 'null' the default module, we need to reset it
+      script.execute(scope);
    }
 
 }

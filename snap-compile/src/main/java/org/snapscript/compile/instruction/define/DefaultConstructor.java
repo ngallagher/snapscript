@@ -1,11 +1,15 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.Reserved.TYPE_CLASS;
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
+
 import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.NoOperation;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.compile.instruction.StatementInvocation;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
@@ -14,9 +18,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-
-// blah(a,b,c):super(a,b);
-
+@Bug("This is rubbish and needs to be cleaned up")
 public class DefaultConstructor implements TypePart {
    
    private final ParameterList parameters;
@@ -39,7 +41,7 @@ public class DefaultConstructor implements TypePart {
    }
    
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean enm) throws Exception {
-      Signature signature = parameters.create(scope, "class");
+      Signature signature = parameters.create(scope, TYPE_CLASS);
       Initializer baseCall = null;
       
       List<Type> types=type.getTypes();
@@ -68,7 +70,7 @@ public class DefaultConstructor implements TypePart {
       // 3) if no super type is defined via "extends" it creates a default constructor
       // 4) After invoking the super constructor the result will be a scope object
       //
-      Function function = new Function(signature, invocation, "new", 1);// description is wrong here.....
+      Function function = new Function(signature, invocation, TYPE_CONSTRUCTOR, 1);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
 public class IntegerConverter extends ConstraintConverter {
@@ -28,6 +29,7 @@ public class IntegerConverter extends ConstraintConverter {
       return POSSIBLE;
    }
    
+   @Bug("Some form of martix lookup here would be good")
    private int match(Object value) throws Exception {
       Class type = value.getClass();
       

@@ -5,12 +5,14 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.MethodInvocation;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
+@Bug("This is rubbish and needs to be cleaned up")
 public class FunctionIndexer {
    
    private final TypeIndexer indexer;

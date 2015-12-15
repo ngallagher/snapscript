@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.snapscript.core.resource.ResourceReader;
 
+@Bug("This needs refactoring")
 public class ImportResolver {
    
    private static final String[] DEFAULTS = {

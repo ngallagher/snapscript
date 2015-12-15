@@ -1,7 +1,9 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Bug;
 import org.snapscript.parse.StringToken;
 
+@Bug("Do we really need this?, maybe for import static??")
 public class WildQualifier implements Qualifier {
 
    private final StringToken[] tokens;

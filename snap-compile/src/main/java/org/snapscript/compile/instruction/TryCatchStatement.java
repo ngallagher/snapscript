@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
@@ -57,6 +58,7 @@ public class TryCatchStatement extends Statement {
       }
    }
    
+   @Bug("Consider a ValueType.getConstant")
    private Result handle(Scope scope, Result result) throws Exception {
       Object value = result.getValue();
       

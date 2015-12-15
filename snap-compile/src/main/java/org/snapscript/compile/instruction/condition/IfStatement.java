@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
@@ -34,6 +35,6 @@ public class IfStatement extends Statement {
             return negative.execute(scope);
          }
       }            
-      return new Result();
+      return ResultType.getNormal();
    }
 }
