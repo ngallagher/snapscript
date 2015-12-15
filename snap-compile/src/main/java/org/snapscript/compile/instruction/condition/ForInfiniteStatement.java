@@ -18,13 +18,12 @@ public class ForInfiniteStatement extends Statement {
       Scope compound = scope.getInner();
       
       while(true) {
-         Result next = statement.execute(compound);
-         ResultType type = next.getType();
+         Result result = statement.execute(compound);
          
-         if (type.isReturn() || type.isThrow()) {
-            return next;
+         if(result.isReturn() || result.isThrow()) {
+            return result;
          }
-         if(type.isBreak()) {
+         if(result.isBreak()) {
             return ResultType.getNormal();
          }
       }

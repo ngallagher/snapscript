@@ -19,17 +19,15 @@ public class ModuleBody extends Statement {
       
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             return result;
          }
       }
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             return result;
          }
          last = result;

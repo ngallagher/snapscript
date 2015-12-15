@@ -21,9 +21,8 @@ public class CompoundInitializer extends Initializer {
       
       for(Initializer initializer : initializers) {
          Result result = initializer.execute(compound, type);
-         ResultType flow = result.getType();
          
-         if(!flow.isNormal()){
+         if(!result.isNormal()){
             return result;
          }
          last = result;

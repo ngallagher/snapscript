@@ -34,10 +34,9 @@ public class ProxyHandler implements InvocationHandler {
          throw new IllegalStateException("Method '" + name + "' not found");
       }
       Result result = call.call();
-      ResultType type = result.getType();
       Object data = result.getValue();
       
-      if(type.isThrow()) {
+      if(result.isThrow()) {
          throw new IllegalStateException("Method '" + name + "' had an exception");
       }
       return data;   

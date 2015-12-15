@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 
@@ -19,9 +18,8 @@ public class ScriptPackage extends Statement {
       
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             throw new IllegalStateException("Illegal statement");
          }
       }

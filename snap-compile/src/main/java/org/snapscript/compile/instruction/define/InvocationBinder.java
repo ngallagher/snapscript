@@ -63,10 +63,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
          }
          Result result = call.call();
-         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
          return new Transient(data);           
@@ -94,10 +93,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found in module '" + module + "'");
          }
          Result result = call.call();
-         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
          }
          return new Transient(data);           
@@ -126,10 +124,9 @@ public class InvocationBinder {
             
             if(external != null) {
                Result result = external.call();
-               ResultType flow = result.getType();
                Object data = result.getValue();
                
-               if(flow.isThrow()) {
+               if(result.isThrow()) {
                   throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
                }
                return new Transient(data);   
@@ -141,10 +138,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
          }
          Result result = local.call();
-         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
          return new Transient(data);           
@@ -176,10 +172,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for " + type);
          }
          Result result = call.call();
-         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
          return new Transient(value);
@@ -208,10 +203,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for " + type);
          }
          Result result = call.call();
-         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
          return new Transient(value);
@@ -237,10 +231,9 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found in scope");
          }
          Result result = call.call();
-         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' had an exception");
          }
          return new Transient(value);  

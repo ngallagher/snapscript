@@ -37,12 +37,11 @@ public class ForStatement extends Statement {
          
          if(value.booleanValue()) {
             Result next = statement.execute(compound);
-            ResultType type = next.getType();
             
-            if (type.isReturn() || type.isThrow()) {
+            if(next.isReturn() || next.isThrow()) {
                return next;
             }
-            if(type.isBreak()) {
+            if(next.isBreak()) {
                return ResultType.getNormal();
             }
          } else {

@@ -7,32 +7,6 @@ public enum ResultType{
    CONTINUE,
    NORMAL;
    
-   public final Result result;
-   
-   private ResultType(){
-      this.result = new Result(this);
-   }
-   
-   public boolean isReturn() {
-      return this == RETURN;
-   }
-   
-   public boolean isNormal() {
-      return this == NORMAL;
-   }
-   
-   public boolean isBreak() {
-      return this == BREAK;
-   }
-   
-   public boolean isThrow()  {
-      return this == THROW;
-   }
-   
-   public boolean isContinue() {
-      return this == CONTINUE;
-   }
-   
    public static Result getNormal(){
       return new Result(NORMAL);
    }

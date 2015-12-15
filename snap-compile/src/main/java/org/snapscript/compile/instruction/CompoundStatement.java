@@ -25,17 +25,15 @@ public class CompoundStatement extends Statement {
       
       for(Statement statement : statements) {
          Result result = statement.compile(compound);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             return result;
          }
       }
       for(Statement statement : statements) {
          Result result = statement.execute(compound);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             return result;
          }
          last = result;

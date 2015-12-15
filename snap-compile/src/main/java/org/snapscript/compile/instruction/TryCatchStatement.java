@@ -38,9 +38,7 @@ public class TryCatchStatement extends Statement {
       Result result = handle(scope);
       
       try {
-         ResultType type = result.getType();
-         
-         if(type.isThrow()) {
+         if(result.isThrow()) {
             return handle(scope, result);            
          }   
       } finally {

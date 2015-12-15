@@ -25,12 +25,11 @@ public class WhileStatement extends Statement {
          
          if(value.booleanValue()) {
             Result next = statement.execute(scope);
-            ResultType type = next.getType();
             
-            if(type.isReturn()) {
+            if(next.isReturn()) {
                return next;
             }
-            if(type.isBreak()) {
+            if(next.isBreak()) {
                return ResultType.getNormal();
             }
          } else {

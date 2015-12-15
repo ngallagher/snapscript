@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 
@@ -20,20 +19,18 @@ public class Script extends Statement {
       // TODO why do we need to compile every time??? declarations go missing???
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
-         ResultType type = result.getType();
          
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             throw new IllegalStateException("Illegal statement");
          }
       }
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
-         ResultType type = result.getType();
          
-         if(type.isThrow()) {
+         if(result.isThrow()) {
             throw new IllegalStateException("Exception not caught");
          }
-         if(!type.isNormal()){
+         if(!result.isNormal()){
             throw new IllegalStateException("Illegal statement");
          }
          last = result;

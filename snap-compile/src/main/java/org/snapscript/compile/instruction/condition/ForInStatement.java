@@ -44,13 +44,12 @@ public class ForInStatement extends Statement {
          } else {
             variable.setValue(entry);
          }
-         Result result = statement.execute(scope);
-         ResultType flow = result.getType();    
+         Result result = statement.execute(scope);   
 
-         if (flow.isReturn() || flow.isThrow()) {
+         if (result.isReturn() || result.isThrow()) {
             return result;
          }
-         if (flow.isBreak()) {
+         if (result.isBreak()) {
             return ResultType.getNormal();
          }
       }    
