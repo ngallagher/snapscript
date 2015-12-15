@@ -1,6 +1,9 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.ResultFlow.NORMAL;
+import static org.snapscript.core.Reserved.ENUM_NAME;
+import static org.snapscript.core.Reserved.ENUM_ORDINAL;
+import static org.snapscript.core.Reserved.ENUM_VALUES;
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -12,6 +15,7 @@ import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
@@ -53,12 +57,12 @@ public class EnumInitializer extends Initializer {
       // Add a static accessor to the enum type
       type.getProperties().add(property);
       Constant c=new Constant(instance, name);
-      instance.getState().addConstant("name", new Constant(name, "name"));
-      instance.getState().addConstant("ordinal", new Constant(index, "ordinal"));  
+      instance.getState().addConstant(ENUM_NAME, new Constant(name, ENUM_NAME));
+      instance.getState().addConstant(ENUM_ORDINAL, new Constant(index, ENUM_ORDINAL));  
       scope.getState().addConstant(name, c);
-      List l =scope.getState().getValue("values").getValue();
+      List l =scope.getState().getValue(ENUM_VALUES).getValue();
       l.add(instance);
-      return NORMAL.getResult(instance);
+      return ResultType.getNormal(instance);
    }
    
    private Callable<Result> bind(Scope scope, Type type) throws Exception {
@@ -76,8 +80,8 @@ public class EnumInitializer extends Initializer {
          }
          expand[0] = type;
          
-         return binder.bind(scope, type, "new", expand);
+         return binder.bind(scope, type, TYPE_CONSTRUCTOR, expand);
       }
-      return binder.bind(scope, type, "new", type);
+      return binder.bind(scope, type, TYPE_CONSTRUCTOR, type);
    }
 }

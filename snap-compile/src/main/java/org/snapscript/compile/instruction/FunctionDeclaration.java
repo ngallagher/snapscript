@@ -6,7 +6,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -35,6 +35,7 @@ public class FunctionDeclaration extends Statement {
       Function function = new Function(signature, invocation, name);// description is wrong here.....
       
       functions.add(function);
-      return new Result(ResultFlow.NORMAL, function);
+      
+      return ResultType.getNormal(function);
    }
 }

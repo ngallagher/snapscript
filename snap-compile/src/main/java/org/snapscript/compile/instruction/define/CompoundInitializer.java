@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
@@ -21,15 +21,15 @@ public class CompoundInitializer extends Initializer {
       
       for(Initializer initializer : initializers) {
          Result result = initializer.execute(compound, type);
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          
-         if(flow != ResultFlow.NORMAL){
+         if(!flow.isNormal()){
             return result;
          }
          last = result;
       }
       if(last == null) {
-         return new Result();
+         return ResultType.getNormal();
       }
       return last;
    }

@@ -1,6 +1,10 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.ResultFlow.NORMAL;
+import static org.snapscript.core.Reserved.ANY_TYPE;
+import static org.snapscript.core.Reserved.METHOD_ARGUMENT;
+import static org.snapscript.core.Reserved.METHOD_EQUALS;
+import static org.snapscript.core.Reserved.METHOD_HASH_CODE;
+import static org.snapscript.core.Reserved.METHOD_TO_STRING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +14,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -29,7 +34,7 @@ public class AnyDefinition extends Statement {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
-      Type type = loader.defineType("Any", null);
+      Type type = loader.defineType(ANY_TYPE, null);
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {
@@ -42,7 +47,7 @@ public class AnyDefinition extends Statement {
          functions.add(toString);
          constructor.define(scope, null, type);
       }
-      return NORMAL.getResult(type);
+      return ResultType.getNormal(type);
    }
    
    private Function createHashCode() {
@@ -51,7 +56,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types, 1);
       Invocation<Object> invocation = new HashCodeInvocation();
       
-      return new Function<Object>(signature, invocation, "hashCode");
+      return new Function<Object>(signature, invocation, METHOD_HASH_CODE);
    }
    
    private Function createEquals() {
@@ -61,9 +66,9 @@ public class AnyDefinition extends Statement {
       Invocation<Object> invocation = new EqualsInvocation();
       
       types.add(null);
-      names.add("object");
+      names.add(METHOD_ARGUMENT);
       
-      return new Function<Object>(signature, invocation, "equals");
+      return new Function<Object>(signature, invocation, METHOD_EQUALS);
    }
    
    private Function createToString() {
@@ -72,7 +77,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types, 1);
       Invocation<Object> invocation = new ToStringInvocation();
       
-      return new Function<Object>(signature, invocation, "toString");
+      return new Function<Object>(signature, invocation, METHOD_TO_STRING);
    }
    
    private static class HashCodeInvocation implements Invocation<Object> {
@@ -80,7 +85,7 @@ public class AnyDefinition extends Statement {
       @Override
       public Result invoke(Scope scope, Object object, Object... list) throws Exception {
          int hash = object.hashCode();
-         return NORMAL.getResult(hash);
+         return ResultType.getNormal(hash);
       }
    }
    
@@ -89,7 +94,7 @@ public class AnyDefinition extends Statement {
       @Override
       public Result invoke(Scope scope, Object object, Object... list) throws Exception {
          boolean equal = object.equals(list[0]);
-         return NORMAL.getResult(equal);
+         return ResultType.getNormal(equal);
       }
    }
    
@@ -100,7 +105,7 @@ public class AnyDefinition extends Statement {
          String value = object.toString();
          int hash = object.hashCode();
          
-         return NORMAL.getResult(value + "@" + hash);
+         return ResultType.getNormal(value + "@" + hash);
       }
    }
 }

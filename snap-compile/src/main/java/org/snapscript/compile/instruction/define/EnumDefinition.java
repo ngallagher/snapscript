@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.ResultFlow.NORMAL;
+import static org.snapscript.core.Reserved.ENUM_VALUES;
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.StaticAccessor;
@@ -48,11 +50,11 @@ public class EnumDefinition extends Statement {
       Type t = module.addType(n);
       List<Type>types=t.getTypes();
       List values = new ArrayList();
-      Constant ref = new Constant(values, "values");
-      Accessor a = new StaticAccessor(collector, other, t, "values");
-      Property p = new Property("values", t, a);
+      Constant ref = new Constant(values, ENUM_VALUES);
+      Accessor a = new StaticAccessor(collector, other, t, ENUM_VALUES);
+      Property p = new Property(ENUM_VALUES, t, a);
       t.getProperties().add(p);
-      other.getState().addConstant("values", ref);
+      other.getState().addConstant(ENUM_VALUES, ref);
       Initializer keys = list.define(other, collector, t);
      
       types.addAll(hierarchy.create(other)); // add in the type hierarchy!!
@@ -66,7 +68,7 @@ public class EnumDefinition extends Statement {
       List<Function>mapL=t.getFunctions();
       int count=0;
       for(Function f:mapL){
-         if(f.getName().equals("new")) {
+         if(f.getName().equals(TYPE_CONSTRUCTOR)) {
             count++;
          }
       }
@@ -77,7 +79,7 @@ public class EnumDefinition extends Statement {
       keys.execute(other, t);
       collector.compile(other, t); // compile the fields after we are done!!!!
       
-      return NORMAL.getResult(t);
+      return ResultType.getNormal(t);
    }
 
 

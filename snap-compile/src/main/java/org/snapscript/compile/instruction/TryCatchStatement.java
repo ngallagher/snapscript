@@ -1,10 +1,8 @@
 package org.snapscript.compile.instruction;
 
-import static org.snapscript.core.ResultFlow.THROW;
-
 import org.snapscript.core.Constant;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
@@ -40,9 +38,9 @@ public class TryCatchStatement extends Statement {
       Result result = handle(scope);
       
       try {
-         ResultFlow type = result.getFlow();
+         ResultType type = result.getType();
          
-         if(type == ResultFlow.THROW) {
+         if(type.isThrow()) {
             return handle(scope, result);            
          }   
       } finally {
@@ -57,7 +55,7 @@ public class TryCatchStatement extends Statement {
       try {
          return statement.execute(scope);
       } catch(Exception cause) {
-         return THROW.getResult(cause);
+         return ResultType.getThrow(cause);
       }
    }
    

@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 
@@ -19,13 +19,13 @@ public class ForInfiniteStatement extends Statement {
       
       while(true) {
          Result next = statement.execute(compound);
-         ResultFlow type = next.getFlow();
+         ResultType type = next.getType();
          
-         if (type == ResultFlow.RETURN || type == ResultFlow.THROW) {
+         if (type.isReturn() || type.isThrow()) {
             return next;
          }
-         if(type == ResultFlow.BREAK) {
-            return new Result();
+         if(type.isBreak()) {
+            return ResultType.getNormal();
          }
       }
    }

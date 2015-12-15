@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.ResultFlow.NORMAL;
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
@@ -51,7 +52,7 @@ public class ClassDefinition extends Statement {
       List<Function>mapL=t.getFunctions();
       int count=0;
       for(Function f:mapL){
-         if(f.getName().equals("new")) {
+         if(f.getName().equals(TYPE_CONSTRUCTOR)) {
             count++;
          }
       }
@@ -59,7 +60,7 @@ public class ClassDefinition extends Statement {
          constructor.define(other, collector, t); // add the default no arg constructor!!
       }
       //collector.compile(other, t); // do all of the static initialization!! 
-      return NORMAL.getResult(t);
+      return ResultType.getNormal(t);
    }
 
 }

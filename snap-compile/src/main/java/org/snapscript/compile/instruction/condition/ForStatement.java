@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
@@ -37,16 +37,16 @@ public class ForStatement extends Statement {
          
          if(value.booleanValue()) {
             Result next = statement.execute(compound);
-            ResultFlow type = next.getFlow();
+            ResultType type = next.getType();
             
-            if (type == ResultFlow.RETURN || type == ResultFlow.THROW) {
+            if (type.isReturn() || type.isThrow()) {
                return next;
             }
-            if(type == ResultFlow.BREAK) {
-               return new Result();
+            if(type.isBreak()) {
+               return ResultType.getNormal();
             }
          } else {
-            return new Result();
+            return ResultType.getNormal();
          } 
          if(assignment != null) {
             assignment.evaluate(compound, null);

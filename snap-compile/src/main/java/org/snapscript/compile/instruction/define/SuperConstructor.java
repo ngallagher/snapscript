@@ -1,17 +1,20 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
+import static org.snapscript.core.Reserved.TYPE_SUPER;
+
 import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Constant;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.SuperScope;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
@@ -39,7 +42,7 @@ public class SuperConstructor implements TypePart {
 
       @Override
       public Value evaluate(Scope scope, Object left) throws Exception {
-         return new Transient("new");
+         return new Transient(TYPE_CONSTRUCTOR);
       }
       
    }
@@ -64,10 +67,10 @@ public class SuperConstructor implements TypePart {
          // super then it needs to bind to a 
          
          Scope compound = new SuperScope(value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
-         Constant constant = new Constant(compound, "super");
+         Constant constant = new Constant(compound, TYPE_SUPER);
          State state = compound.getState();
-         state.addConstant("super", constant);
-         return new Result(ResultFlow.NORMAL, compound);
+         state.addConstant(TYPE_SUPER, constant);
+         return ResultType.getNormal(compound);
       }
    }
 }

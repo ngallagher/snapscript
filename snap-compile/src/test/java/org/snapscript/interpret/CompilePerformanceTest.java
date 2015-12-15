@@ -12,7 +12,7 @@ import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 
 //Assembly time  took 376
 //Binary assemble time was 2004 normal was 376
@@ -66,7 +66,7 @@ public class CompilePerformanceTest extends TestCase {
             System.err.println("Time taken to execute  was " + duration);
          }
       }
-      return ResultFlow.NORMAL;
+      return ResultType.getNormal();
    }
    private static String load(File file) throws Exception{      
       FileInputStream in = new FileInputStream(file);

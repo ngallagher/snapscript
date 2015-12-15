@@ -44,6 +44,6 @@ public class MethodInvocation implements Invocation<Object>{
       Object value = method.invoke(left, list);
       Object result = extractor.extract(value);
       
-      return new Result(ResultFlow.NORMAL, result);
+      return ResultType.getNormal(result);
    }
 }

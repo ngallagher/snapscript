@@ -231,7 +231,7 @@ class PhysicsCannon {
     var renderGridWidth = 0;
     var renderGridHeight = 0;
 
-    var timeInMsForRenderUpdate = 80;
+    var timeInMsForRenderUpdate = 40;
 
     var data = new CannonLogic(this);
 

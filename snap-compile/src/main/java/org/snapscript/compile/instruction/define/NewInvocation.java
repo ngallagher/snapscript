@@ -1,5 +1,8 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.Reserved.TYPE_CLASS;
+import static org.snapscript.core.Reserved.TYPE_THIS;
+
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
@@ -9,7 +12,7 @@ import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
@@ -78,11 +81,11 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       InstanceScope wrapper = new InstanceScope(instance, real);// we need to pass the base type up!!
       
       // Super should probably be a special variable and have special instructions!!!!!
-      Constant self = new Constant(wrapper, "this");
-      Constant info = new Constant(real, "class"); // give it the REAL type
+      Constant self = new Constant(wrapper, TYPE_THIS);
+      Constant info = new Constant(real, TYPE_CLASS); // give it the REAL type
       
-      wrapper.getState().addConstant("class", info);    
-      wrapper.getState().addConstant("this", self);
+      wrapper.getState().addConstant(TYPE_CLASS, info);    
+      wrapper.getState().addConstant(TYPE_THIS, self);
       //
       // functoin calls need to be handled better!!!
       // super is actually a very special value!!! its no good to just provide the base!!
@@ -98,7 +101,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       }
       constructor.invoke(wrapper, wrapper, list);
       
-      return new Result(ResultFlow.NORMAL, wrapper);
+      return ResultType.getNormal(wrapper);
    }
 
 }

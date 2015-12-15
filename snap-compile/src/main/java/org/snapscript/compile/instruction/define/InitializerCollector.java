@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
@@ -25,32 +25,38 @@ public class InitializerCollector extends Initializer {
    
    @Override
    public Result compile(Scope scope, Type type) throws Exception {
-      Result last = new Result();
+      Result last = null;
 
       for(Initializer initializer : list) {
          Result result = initializer.compile(scope, type);
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          
-         if(flow != ResultFlow.NORMAL){
+         if(flow != ResultType.NORMAL){
             return result;
          }
          last = result;
+      }
+      if(last == null) {
+         return ResultType.getNormal();
       }
       return last;
    } 
 
    @Override
    public Result execute(Scope scope, Type type) throws Exception {
-      Result last = new Result();
+      Result last = null;
 
       for(Initializer initializer : list) {
          Result result = initializer.execute(scope, type);
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          
-         if(flow != ResultFlow.NORMAL){
+         if(flow != ResultType.NORMAL){
             return result;
          }
          last = result;
+      }
+      if(last == null) {
+         return ResultType.getNormal();
       }
       return last;
    }              

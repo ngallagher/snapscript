@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.bind.FunctionBinder;
 
@@ -34,10 +34,10 @@ public class ProxyHandler implements InvocationHandler {
          throw new IllegalStateException("Method '" + name + "' not found");
       }
       Result result = call.call();
-      ResultFlow flow = result.getFlow();
+      ResultType type = result.getType();
       Object data = result.getValue();
       
-      if(flow == ResultFlow.THROW) {
+      if(type.isThrow()) {
          throw new IllegalStateException("Method '" + name + "' had an exception");
       }
       return data;   

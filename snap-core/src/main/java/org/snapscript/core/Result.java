@@ -2,24 +2,24 @@ package org.snapscript.core;
 
 public class Result {
    
-   private final ResultFlow flow;
+   private final ResultType type;
    private final Object value;
 
    public Result() {
-      this(ResultFlow.NORMAL);
+      this(ResultType.NORMAL);
    }
 
-   public Result(ResultFlow flow) {
-      this(flow, null);
+   public Result(ResultType type) {
+      this(type, null);
    }
 
-   public Result(ResultFlow flow, Object value) {
-      this.flow = flow;
+   public Result(ResultType type, Object value) {
       this.value = value;
+      this.type = type;
    }
 
-   public ResultFlow getFlow() {
-      return flow;
+   public ResultType getType() {
+      return type;
    }
 
    public <T> T getValue() {

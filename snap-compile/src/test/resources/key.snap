@@ -36,9 +36,6 @@ enum Key {
       this.x = x;
       this.y = y;
    }
-}
-
-class KeyFinder {
 
    static at(index) {
       if(index < 0 || index > 19) {
@@ -58,23 +55,23 @@ class KeyFinder {
    }
    
    static const INDEX = [ // all the enums here are not initialized properly
-   Key.KEY_A, Key.KEY_B, Key.KEY_C, Key.KEY_D, 
-   Key.KEY_E, Key.KEY_F, Key.KEY_G, Key.KEY_H, 
-   Key.KEY_I, Key.KEY_J, Key.KEY_K, Key.KEY_L, 
-   Key.KEY_M, Key.KEY_N, Key.KEY_O, null, 
-   Key.KEY_1, Key.KEY_2, Key.KEY_3, null];
+   KEY_A, KEY_B, KEY_C, KEY_D, 
+   KEY_E, KEY_F, KEY_G, KEY_H, 
+   KEY_I, KEY_J, KEY_K, KEY_L, 
+   KEY_M, KEY_N, KEY_O, null, 
+   KEY_1, KEY_2, KEY_3, null];
    
    static const POSITION = [ // all of these enums are rubbish
-   [Key.KEY_A, Key.KEY_F, Key.KEY_K, null],
-   [Key.KEY_B, Key.KEY_G, Key.KEY_L, Key.KEY_1],
-   [Key.KEY_C, Key.KEY_H, Key.KEY_M, Key.KEY_2],
-   [Key.KEY_D, Key.KEY_I, Key.KEY_N, Key.KEY_3],
-   [Key.KEY_E, Key.KEY_J, Key.KEY_O, null]];
+   [KEY_A, KEY_F, KEY_K, null],
+   [KEY_B, KEY_G, KEY_L, KEY_1],
+   [KEY_C, KEY_H, KEY_M, KEY_2],
+   [KEY_D, KEY_I, KEY_N, KEY_3],
+   [KEY_E, KEY_J, KEY_O, null]];
 }
 
-System.out.println(KeyFinder.at(1,1));
-System.out.println(KeyFinder.at(0,0));
-System.out.println(KeyFinder.INDEX);
+System.out.println(Key.at(1,1));
+System.out.println(Key.at(0,0));
+System.out.println(Key.INDEX);
 
 
 class KeyPressCalculator {
@@ -107,7 +104,7 @@ class KeyPressCalculator {
       var total = 0;
    
       for(var i = 0; i < KEY_COUNT; i++) {
-         var key = KeyFinder.at(i);
+         var key = Key.at(i);
          
          if(key != null) {
             total += calculate(key);
@@ -126,7 +123,7 @@ class KeyPressCalculator {
          var keys = new Key[KEY_COUNT];
          
          for(var i = 0; i < KEY_COUNT; i++) {
-            var key = KeyFinder.at(i);
+            var key = Key.at(i);
      
             if(key != null) {
                var count = 0; // how many moves are possible
@@ -134,7 +131,7 @@ class KeyPressCalculator {
                for(var j = 0; j < JUMP_OFFSETS.size(); j++) {
                   var x = JUMP_OFFSETS[j][0];
                   var y = JUMP_OFFSETS[j][1];
-                  var next = KeyFinder.at(key.x + x, key.y + y); // make 'L' move
+                  var next = Key.at(key.x + x, key.y + y); // make 'L' move
                
                   if(next != null) { // did we jump off keypad?
                      keys[count++] = next; 
@@ -182,5 +179,6 @@ var calculator = new KeyPressCalculator(10, 2);
 var result = calculator.calculate();
          
 System.out.println(result);
+
 
 

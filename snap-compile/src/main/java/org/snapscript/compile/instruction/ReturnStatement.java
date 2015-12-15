@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
@@ -31,8 +31,8 @@ public class ReturnStatement extends Statement {
          Value value = evaluation.evaluate(scope, null);
          Object object = value.getValue();
          
-         return new Result(ResultFlow.RETURN, object);
+         return ResultType.getReturn(object);
       }
-      return new Result(ResultFlow.RETURN);
+      return ResultType.getReturn();
    }
 }

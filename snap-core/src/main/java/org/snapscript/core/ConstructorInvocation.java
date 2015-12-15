@@ -40,6 +40,6 @@ public class ConstructorInvocation implements Invocation<Object> {
          }
       }     
       Object value = constructor.newInstance(list);
-      return new Result(ResultFlow.NORMAL, value);
+      return ResultType.getNormal(value);
    }
 }

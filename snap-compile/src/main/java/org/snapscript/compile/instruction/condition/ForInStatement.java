@@ -5,7 +5,7 @@ import org.snapscript.compile.instruction.collection.Iteration;
 import org.snapscript.compile.instruction.collection.IterationConverter;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
@@ -45,15 +45,15 @@ public class ForInStatement extends Statement {
             variable.setValue(entry);
          }
          Result result = statement.execute(scope);
-         ResultFlow flow = result.getFlow();    
+         ResultType flow = result.getType();    
 
-         if (flow == ResultFlow.RETURN || flow == ResultFlow.THROW) {
+         if (flow.isReturn() || flow.isThrow()) {
             return result;
          }
-         if (flow == ResultFlow.BREAK) {
-            return new Result();
+         if (flow.isBreak()) {
+            return ResultType.getNormal();
          }
       }    
-      return new Result();
+      return ResultType.getNormal();
    }
 }

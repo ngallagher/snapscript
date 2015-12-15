@@ -8,7 +8,7 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
@@ -63,10 +63,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
          }
          Result result = call.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
          return new Transient(data);           
@@ -94,10 +94,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found in module '" + module + "'");
          }
          Result result = call.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
          }
          return new Transient(data);           
@@ -126,10 +126,10 @@ public class InvocationBinder {
             
             if(external != null) {
                Result result = external.call();
-               ResultFlow flow = result.getFlow();
+               ResultType flow = result.getType();
                Object data = result.getValue();
                
-               if(flow == ResultFlow.THROW) {
+               if(flow.isThrow()) {
                   throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
                }
                return new Transient(data);   
@@ -141,10 +141,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
          }
          Result result = local.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object data = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
          return new Transient(data);           
@@ -176,10 +176,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for " + type);
          }
          Result result = call.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
          return new Transient(value);
@@ -208,10 +208,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found for " + type);
          }
          Result result = call.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
          return new Transient(value);
@@ -237,10 +237,10 @@ public class InvocationBinder {
             throw new IllegalStateException("Method '" + name + "' not found in scope");
          }
          Result result = call.call();
-         ResultFlow flow = result.getFlow();
+         ResultType flow = result.getType();
          Object value = result.getValue();
          
-         if(flow == ResultFlow.THROW) {
+         if(flow.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' had an exception");
          }
          return new Transient(value);  

@@ -13,7 +13,7 @@ import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.ResultFlow;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.resource.ClassPathReader;
 import org.snapscript.core.resource.ResourceReader;
 
@@ -55,7 +55,7 @@ public class PackageLinkerTest extends TestCase {
       long once=finish-last;
       
       System.err.println("Time taken to execute "+ITERATIONS+" times was " + duration + " last was "+once);
-      return ResultFlow.NORMAL;
+      return ResultType.getNormal();
    }
    private static String load(File file) throws Exception{      
       FileInputStream in = new FileInputStream(file);
