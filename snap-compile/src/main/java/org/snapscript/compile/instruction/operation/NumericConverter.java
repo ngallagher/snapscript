@@ -10,12 +10,32 @@ public enum NumericConverter {
          Double value = reference.doubleValue();
          return new Reference(value);
       }
+      @Override
+      public Value increment(Number reference) {
+         Double value = reference.doubleValue();
+         return new Reference(value + 1.0d);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Double value = reference.doubleValue();
+         return new Reference(value - 1.0d);
+      }
    },
    LONG {
       @Override
       public Value convert(Number reference) {
          Long value = reference.longValue();
          return new Reference(value);
+      }
+      @Override
+      public Value increment(Number reference) {
+         Long value = reference.longValue();
+         return new Reference(value + 1L);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Long value = reference.longValue();
+         return new Reference(value - 1L);
       }
    },
    FLOAT {
@@ -24,6 +44,16 @@ public enum NumericConverter {
          Float value = reference.floatValue();
          return new Reference(value);
       }
+      @Override
+      public Value increment(Number reference) {
+         Float value = reference.floatValue();
+         return new Reference(value + 1.0f);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Float value = reference.floatValue();
+         return new Reference(value - 1.0f);
+      }
    },
    INTEGER {
       @Override
@@ -31,9 +61,55 @@ public enum NumericConverter {
          Integer value = reference.intValue();
          return new Reference(value);
       }
+      @Override
+      public Value increment(Number reference) {
+         Integer value = reference.intValue();
+         return new Reference(value + 1);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Integer value = reference.intValue();
+         return new Reference(value - 1);
+      }
+   },
+   SHORT {
+      @Override
+      public Value convert(Number reference) {
+         Short value = reference.shortValue();
+         return new Reference(value);
+      }
+      @Override
+      public Value increment(Number reference) {
+         Short value = reference.shortValue();
+         return new Reference(value + 1);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Short value = reference.shortValue();
+         return new Reference(value - 1);
+      }
+   },
+   BYTE {
+      @Override
+      public Value convert(Number reference) {
+         Byte value = reference.byteValue();
+         return new Reference(value);
+      }
+      @Override
+      public Value increment(Number reference) {
+         Byte value = reference.byteValue();
+         return new Reference(value + 1);
+      }
+      @Override
+      public Value decrement(Number reference) {
+         Byte value = reference.byteValue();
+         return new Reference(value - 1);
+      }
    };
    
    public abstract Value convert(Number value);
+   public abstract Value increment(Number value);
+   public abstract Value decrement(Number value);
    
    public static NumericConverter resolveConverter(Number value) {
       Class type = value.getClass();
@@ -48,6 +124,12 @@ public enum NumericConverter {
          return FLOAT;
       }
       if (Integer.class == type) {
+         return INTEGER;
+      }
+      if (Short.class == type) {
+         return INTEGER;
+      }
+      if (Byte.class == type) {
          return INTEGER;
       }
       return DOUBLE;
@@ -68,6 +150,12 @@ public enum NumericConverter {
       }
       if (Integer.class == primary || Integer.class == secondary) {
          return INTEGER;
+      }
+      if (Short.class == primary || Short.class == secondary) {
+         return SHORT;
+      }
+      if (Byte.class == primary || Byte.class == secondary) {
+         return BYTE;
       }
       return DOUBLE;
    }
