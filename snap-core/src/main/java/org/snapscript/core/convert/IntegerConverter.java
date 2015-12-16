@@ -19,7 +19,8 @@ public class IntegerConverter extends NumberConverter {
       Float.class, 
       BigDecimal.class, 
       Short.class, 
-      Byte.class};
+      Byte.class
+   };
    
    private static final int[] INTEGER_SCORES = {
       EXACT,
@@ -36,29 +37,5 @@ public class IntegerConverter extends NumberConverter {
 
    public IntegerConverter(Type type) {
       super(type, INTEGER_TYPES, INTEGER_SCORES);
-   }
-   
-   @Override
-   public Object convert(Object value) throws Exception {
-      Class require = type.getType();
-      
-      if(value != null) {
-         Class actual = value.getClass();
-         
-         if(actual == String.class) {
-            return convert(Integer.class, value);
-         }
-         Class parent = actual.getSuperclass();
-         
-         if(parent == Number.class) {
-            Number number = (Number)value;
-            return number.intValue();
-         }
-         throw new IllegalArgumentException("Conversion from " + actual + " to integer is not possible");
-      }
-      if(require.isPrimitive()) {
-         throw new IllegalArgumentException("Invalid conversion from null to primitive integer");
-      }
-      return null;
    }
 }

@@ -7,35 +7,34 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.core.Type;
 
-public class ByteConverter extends NumberConverter {
+public class AtomicIntegerConverter extends NumberConverter {
 
-   private static final Class[] BYTE_TYPES = {
-      Byte.class, 
-      Short.class, 
-      Integer.class, 
+   private static final Class[] ATOMIC_INTEGER_TYPES = {
       AtomicInteger.class, 
+      Integer.class,
+      Short.class, 
+      BigInteger.class, 
       Long.class,
       AtomicLong.class, 
-      BigInteger.class, 
       Double.class, 
       Float.class, 
-      BigDecimal.class
-   };
+      BigDecimal.class, 
+      Byte.class};
    
-   private static final int[] BYTE_SCORES = {
+   private static final int[] ATOMIC_INTEGER_SCORES = {
       EXACT,
       SIMILAR,
       SIMILAR,
       SIMILAR,
       SIMILAR,
       SIMILAR,
-      SIMILAR,
+      COMPATIBLE,
       COMPATIBLE,
       COMPATIBLE,
       COMPATIBLE
    };
    
-   public ByteConverter(Type type) {
-      super(type, BYTE_TYPES, BYTE_SCORES);
+   public AtomicIntegerConverter(Type type) {
+      super(type, ATOMIC_INTEGER_TYPES, ATOMIC_INTEGER_SCORES);
    }
 }

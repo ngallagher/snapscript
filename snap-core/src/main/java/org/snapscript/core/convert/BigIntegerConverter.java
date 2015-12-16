@@ -7,35 +7,35 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.core.Type;
 
-public class DoubleConverter extends NumberConverter {
-   
-   private static final Class[] DOUBLE_TYPES = {
+public class BigIntegerConverter extends NumberConverter {
+
+   private static final Class[] BIG_INTEGER_TYPES = {
+      BigInteger.class, 
+      Integer.class, 
+      AtomicInteger.class, 
+      Short.class, 
+      Long.class,
+      AtomicLong.class, 
       Double.class, 
       Float.class, 
       BigDecimal.class, 
-      Long.class, 
-      AtomicLong.class,
-      Integer.class, 
-      BigInteger.class, 
-      AtomicInteger.class, 
-      Short.class, 
       Byte.class
    };
    
-   private static final int[] DOUBLE_SCORES = {
+   private static final int[] BIG_INTEGER_SCORES = {
       EXACT,
       SIMILAR,
       SIMILAR,
-      COMPATIBLE,
-      COMPATIBLE,
-      COMPATIBLE,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
       COMPATIBLE,
       COMPATIBLE,
       COMPATIBLE,
       COMPATIBLE
    };
    
-   public DoubleConverter(Type type) {
-      super(type, DOUBLE_TYPES, DOUBLE_SCORES);
+   public BigIntegerConverter(Type type) {
+      super(type, BIG_INTEGER_TYPES, BIG_INTEGER_SCORES);
    }
 }

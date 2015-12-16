@@ -1,7 +1,11 @@
 package org.snapscript.core.convert;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.core.InstanceChecker;
 import org.snapscript.core.Scope;
@@ -93,6 +97,18 @@ public class ConstraintMatcher {
       }
       if(comparator.same(Boolean.class, type)) {
          return new BooleanConverter(type);
+      }
+      if(comparator.same(BigDecimal.class, type)) {
+         return new BigDecimalConverter(type);
+      }
+      if(comparator.same(BigInteger.class, type)) {
+         return new BigIntegerConverter(type);
+      }
+      if(comparator.same(AtomicLong.class, type)) {
+         return new AtomicLongConverter(type);
+      }
+      if(comparator.same(AtomicInteger.class, type)) {
+         return new AtomicIntegerConverter(type);
       }
       if(comparator.same(String.class, type)) {
          return new StringConverter();

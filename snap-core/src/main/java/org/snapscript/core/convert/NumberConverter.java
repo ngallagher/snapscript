@@ -76,6 +76,7 @@ public class NumberConverter extends ConstraintConverter {
       return POSSIBLE;
    }
    
+   @Override
    public Object convert(Object value) throws Exception {
       Class require = type.getType();
       
@@ -83,14 +84,14 @@ public class NumberConverter extends ConstraintConverter {
          Class actual = value.getClass();
          
          if(actual == String.class) {
-            return convert(Double.class, value);
+            return convert(require, (String)value);
          }
          Class parent = actual.getSuperclass();
          
          if(parent == Number.class) {
-            return (Number)value;
+            return convert(require, (Number)value);
          }
-         throw new IllegalArgumentException("Conversion from " + actual + " to number is not possible");
+         throw new IllegalArgumentException("Conversion from " + actual + " to " + require + " is not possible");
       }
       if(require.isPrimitive()) {
          throw new IllegalArgumentException("Invalid conversion from null to primitive number");

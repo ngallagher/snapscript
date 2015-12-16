@@ -45,11 +45,10 @@ public class CharacterConverter extends ConstraintConverter {
          Class type = value.getClass();
          
          if(type == String.class) {
-            return convert(Character.class, value);
+            return convert(require, (String)value);
          }
          if(type == Character.class) {
-            Character number = (Character)value;
-            return number.charValue();
+            return value;
          }
          throw new IllegalArgumentException("Conversion from " + type + " to character is not possible");
       }

@@ -45,11 +45,10 @@ public class BooleanConverter extends ConstraintConverter {
          Class actual = value.getClass();
          
          if(actual == String.class) {
-            return convert(Boolean.class, value);
+            return convert(require, (String)value);
          }
          if(actual == Boolean.class) {
-            Boolean number = (Boolean)value;
-            return number.booleanValue();
+            return value;
          }
          throw new IllegalArgumentException("Conversion from " + actual + " to boolean is not possible");
       }
