@@ -4,50 +4,58 @@ import org.snapscript.core.Type;
 
 public class BooleanConverter extends ConstraintConverter {
 
+   private final BooleanMatcher matcher;
    private final Type type;
    
    public BooleanConverter(Type type) {
+      this.matcher = new BooleanMatcher();
       this.type = type;
    }
    
    @Override
    public int score(Object value) throws Exception {
-      Class actual = type.getType();
+      Class require = type.getType();
       
       if(value != null) {
-         return match(value);
+         Class actual = value.getClass();
+         
+         if(actual == Boolean.class) {
+            return EXACT;
+         }
+         if(actual == String.class) {
+            String text = String.valueOf(value);
+            
+            if(matcher.matchBoolean(text)) {
+               return POSSIBLE;
+            }
+         }
+         return INVALID;
       }
-      if(actual.isPrimitive()) {
+      if(require.isPrimitive()) {
          return INVALID;
       }
       return POSSIBLE;
    }
    
-   private int match(Object value) throws Exception {
-      Class type = value.getClass();
-      
-      if(type == Boolean.class) {
-         return EXACT;
-      }
-      if(type == String.class) {
-         if(compatible(Boolean.class, value)) {
-            return POSSIBLE;
-         }
-      }
-      return INVALID;
-   }
-   
    @Override
    public Object convert(Object value) throws Exception {
-      Class type = value.getClass();
+      Class require = type.getType();
       
-      if(type == String.class) {
-         return convert(Boolean.class, value);
+      if(value != null) {
+         Class actual = value.getClass();
+         
+         if(actual == String.class) {
+            return convert(Boolean.class, value);
+         }
+         if(actual == Boolean.class) {
+            Boolean number = (Boolean)value;
+            return number.booleanValue();
+         }
+         throw new IllegalArgumentException("Conversion from " + actual + " to boolean is not possible");
       }
-      if(type == Boolean.class) {
-         Boolean number = (Boolean)value;
-         return number.booleanValue();
+      if(require.isPrimitive()) {
+         throw new IllegalArgumentException("Invalid conversion from null to primitive boolean");
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to boolean is not possible");
+      return null;
    }
 }

@@ -101,7 +101,7 @@ public class ConstraintMatcher {
          return new ScopeConverter();
       }
       if(comparator.like(Enum.class, type)) {
-         return new EnumConverter(extractor, type);
+         return new EnumConverter(type);
       }      
       return new ObjectConverter(extractor, checker, type);
    }

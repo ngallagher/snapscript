@@ -5,85 +5,60 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
-public class ShortConverter extends ConstraintConverter {
+public class ShortConverter extends NumberConverter {
 
-   private final Type type;
+   private static final Class[] SHORT_TYPES = {
+      Short.class, 
+      Integer.class, 
+      BigInteger.class, 
+      AtomicInteger.class, 
+      Long.class,
+      AtomicLong.class, 
+      Double.class, 
+      Float.class, 
+      BigDecimal.class, 
+      Byte.class};
+   
+   private static final int[] SHORT_SCORES = {
+      EXACT,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE
+   };
    
    public ShortConverter(Type type) {
-      this.type = type;
-   }
-   
-   @Override
-   public int score(Object value) throws Exception {
-      Class actual = type.getType();
-      
-      if(value != null) {
-         return match(value);
-      }
-      if(actual.isPrimitive()) {
-         return INVALID;
-      }
-      return POSSIBLE;
-   }
-   
-   @Bug("Some form of martix lookup here would be good")
-   private int match(Object value) throws Exception {
-      Class type = value.getClass();
-      
-      if(type == Short.class) {
-         return EXACT;
-      }
-      if(type == Integer.class) {
-         return SIMILAR;
-      }
-      if(type == BigInteger.class) {
-         return SIMILAR;
-      }
-      if(type == AtomicInteger.class) {
-         return SIMILAR;
-      }
-      if(type == Long.class) {
-         return SIMILAR;
-      }
-      if(type == AtomicLong.class) {
-         return SIMILAR;
-      }
-      if(type == Double.class) {
-         return COMPATIBLE;
-      }
-      if(type == Float.class) {
-         return COMPATIBLE;
-      }
-      if(type == BigDecimal.class) {
-         return COMPATIBLE;
-      }
-      if(type == Byte.class) {
-         return COMPATIBLE;
-      }
-      if(type == String.class) {
-         if(compatible(Short.class, value)) {
-            return POSSIBLE;
-         }
-      }
-      return INVALID;
+      super(type, SHORT_TYPES, SHORT_SCORES);
    }
    
    @Override
    public Object convert(Object value) throws Exception {
-      Class type = value.getClass();
+      Class require = type.getType();
       
-      if(type == String.class) {
-         return convert(Short.class, value);
+      if(value != null) {
+         Class actual = value.getClass();
+         
+         if(actual == String.class) {
+            return convert(Short.class, value);
+         }
+         Class parent = actual.getSuperclass();
+         
+         if(parent == Number.class) {
+            Number number = (Number)value;
+            return number.shortValue();
+         }
+         throw new IllegalArgumentException("Conversion from " + actual + " to short is not possible");
       }
-      Class parent = type.getSuperclass();
-      
-      if(parent == Number.class) {
-         Number number = (Number)value;
-         return number.shortValue();
+      if(require.isPrimitive()) {
+         throw new IllegalArgumentException("Invalid conversion from null to primitive short");
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to short is not possible");
+      return null;
    }
 }

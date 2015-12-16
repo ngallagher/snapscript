@@ -1,5 +1,6 @@
 package org.snapscript.core.convert;
 
+import org.snapscript.core.PrimitiveParser;
 import org.snapscript.core.PrimitivePromoter;
 
 public abstract class ConstraintConverter  {
@@ -11,57 +12,49 @@ public abstract class ConstraintConverter  {
    public static final int INVALID = 0;
    
    protected final PrimitivePromoter promoter;
+   protected final PrimitiveParser parser;
    
    protected ConstraintConverter() {
       this.promoter = new PrimitivePromoter();
+      this.parser = new PrimitiveParser();
    }
    
    protected Object convert(Class type, Object value) throws Exception {
       Class actual = promoter.convert(type);
-
+      String text = String.valueOf(value);
+      
       try {
-         String text = String.valueOf(value);
-         
          if (actual == String.class) {
             return text;
          }
          if (actual == Integer.class) {
-            return Integer.parseInt(text);
+            return parser.parseInteger(text);
          }
          if (actual == Double.class) {
-            return Double.parseDouble(text);
+            return parser.parseDouble(text);
          }
          if (actual == Float.class) {
-            return Float.parseFloat(text);
+            return parser.parseFloat(text);
          }
          if (actual == Boolean.class) {
-            return Boolean.parseBoolean(text);
+            return parser.parseBoolean(text);
          }
          if (actual == Byte.class) {
-            return Byte.parseByte(text);
+            return parser.parseByte(text);
          }
          if (actual == Short.class) {
-            return Short.parseShort(text);
+            return parser.parseShort(text);
          }
          if (actual == Long.class) {
-            return Long.parseLong(text);
+            return parser.parseLong(text);
          }
          if (actual == Character.class) {
-            return text.charAt(0);
+            return parser.parseCharacter(text);
          }
       } catch(Exception e) {
          throw new IllegalStateException("Could not convert '" + value + "' to " + actual, e);
       }
       return value;
-   }
-   
-   protected boolean compatible(Class type, Object value) throws Exception {
-      try {
-         convert(type, value);
-      } catch(Exception e) {
-         return false;
-      }
-      return true;
    }
    
    public abstract int score(Object type) throws Exception;

@@ -5,83 +5,96 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
 public class NumberConverter extends ConstraintConverter {
    
-   private final Type type;
+   private static final Class[] NUMBER_TYPES = {
+      Integer.class, 
+      Long.class, 
+      Double.class, 
+      Float.class, 
+      Short.class, 
+      Byte.class,
+      BigInteger.class, 
+      AtomicInteger.class, 
+      AtomicLong.class,
+      BigDecimal.class
+   };
+   
+   private static final int[] NUMBER_SCORES = {
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR,
+      SIMILAR
+   };
+   
+   protected final NumberMatcher matcher;
+   protected final ScoreChecker checker;
+   protected final Type type;
    
    public NumberConverter(Type type) {
+      this(type, NUMBER_TYPES, NUMBER_SCORES);
+   }
+   
+   public NumberConverter(Type type, Class[] types, int[] scores) {
+      this.checker = new ScoreChecker(types, scores);
+      this.matcher = new NumberMatcher();
       this.type = type;
    }
    
    @Override
    public int score(Object value) throws Exception {
-      Class actual = type.getType();
+      Class require = type.getType();
       
       if(value != null) {
-         return match(value);
+         Class actual = value.getClass();
+         Integer score = checker.score(actual);
+         
+         if(score == null) {
+            if(actual == String.class) {
+               String text = String.valueOf(value);
+               NumberType type = matcher.matchNumber(text);
+               
+               if(type.isDecimal()) {
+                  return POSSIBLE;
+               }
+            }
+            return INVALID;
+         }
+         return score;
       }
-      if(actual.isPrimitive()) {
+      if(require.isPrimitive()) {
          return INVALID;
       }
       return POSSIBLE;
    }
    
-   @Bug("Some form of martix lookup here would be good")
-   private int match(Object value) throws Exception {
-      Class type = value.getClass();
-      
-      if(type == Double.class) {
-         return SIMILAR;
-      }
-      if(type == Float.class) {
-         return SIMILAR;
-      }
-      if(type == BigDecimal.class) {
-         return SIMILAR;
-      }
-      if(type == Long.class) {
-         return SIMILAR;
-      }
-      if(type == AtomicLong.class) {
-         return SIMILAR;
-      }
-      if(type == Integer.class) {
-         return SIMILAR;
-      }
-      if(type == BigInteger.class) {
-         return SIMILAR;
-      }
-      if(type == AtomicInteger.class) {
-         return SIMILAR;
-      }
-      if(type == Short.class) {
-         return SIMILAR;
-      }
-      if(type == Byte.class) {
-         return SIMILAR;
-      }
-      if(type == String.class) {
-         if(compatible(Double.class, value)) {
-            return POSSIBLE;
-         }
-      }
-      return INVALID;
-   }
-   
    public Object convert(Object value) throws Exception {
-      Class type = value.getClass();
+      Class require = type.getType();
       
-      if(type == String.class) {
-         return convert(Double.class, value);
+      if(value != null) {
+         Class actual = value.getClass();
+         
+         if(actual == String.class) {
+            return convert(Double.class, value);
+         }
+         Class parent = actual.getSuperclass();
+         
+         if(parent == Number.class) {
+            return (Number)value;
+         }
+         throw new IllegalArgumentException("Conversion from " + actual + " to number is not possible");
       }
-      Class parent = type.getSuperclass();
-      
-      if(parent == Number.class) {
-         return (Number)value;
+      if(require.isPrimitive()) {
+         throw new IllegalArgumentException("Invalid conversion from null to primitive number");
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to number is not possible");
+      return null;
    }
 }

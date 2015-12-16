@@ -1,15 +1,12 @@
 package org.snapscript.core.convert;
 
 import org.snapscript.core.Type;
-import org.snapscript.core.TypeExtractor;
 
 public class EnumConverter extends ConstraintConverter {
    
-   private final TypeExtractor extractor;
    private final Type type;
    
-   public EnumConverter(TypeExtractor extractor, Type type) {
-      this.extractor = extractor;
+   public EnumConverter(Type type) {
       this.type = type;
    }
 
@@ -30,17 +27,20 @@ public class EnumConverter extends ConstraintConverter {
       return POSSIBLE;
    }
    
-   public Object convert(Object object) throws Exception {
-      Class actual = object.getClass();
-      Class parent = actual.getSuperclass();
-      
-      if(parent == Enum.class) {
-         return object;
+   public Object convert(Object value) throws Exception {
+      if(value != null) {
+         Class actual = value.getClass();
+         Class parent = actual.getSuperclass();
+         
+         if(parent == Enum.class) {
+            return value;
+         }
+         String text = String.valueOf(value);
+         String name = type.getName();
+         Class require = Class.forName(name);
+       
+         return Enum.valueOf(require, text);
       }
-      String text = String.valueOf(object);
-      String name = type.getName();
-      Class require = Class.forName(name);
-    
-      return Enum.valueOf(require, text);
+      return null;
    }
 }

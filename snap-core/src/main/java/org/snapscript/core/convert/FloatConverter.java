@@ -5,85 +5,60 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
-public class FloatConverter extends ConstraintConverter {
+public class FloatConverter extends NumberConverter {
    
-   private final Type type;
+   private static final Class[] FLOAT_TYPES = {
+      Float.class, 
+      Double.class, 
+      BigDecimal.class, 
+      Long.class, 
+      AtomicLong.class,
+      Integer.class, 
+      BigInteger.class, 
+      AtomicInteger.class, 
+      Short.class, 
+      Byte.class};
+   
+   private static final int[] FLOAT_SCORES = {
+      EXACT,
+      SIMILAR,
+      SIMILAR,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE,
+      COMPATIBLE
+   };
    
    public FloatConverter(Type type) {
-      this.type = type;
+      super(type, FLOAT_TYPES, FLOAT_SCORES);
    }
-   
-   @Override
-   public int score(Object value) throws Exception {
-      Class actual = type.getType();
-      
-      if(value != null) {
-         return match(value);
-      }
-      if(actual.isPrimitive()) {
-         return INVALID;
-      }
-      return POSSIBLE;
-   }
-   
-   @Bug("Some form of martix lookup here would be good")
-   private int match(Object value) throws Exception {
-      Class type = value.getClass();
-      
-      if(type == Float.class) {
-         return EXACT;
-      }
-      if(type == Double.class) {
-         return SIMILAR;
-      }
-      if(type == BigDecimal.class) {
-         return SIMILAR;
-      }
-      if(type == Integer.class) {
-         return COMPATIBLE;
-      }
-      if(type == BigInteger.class) {
-         return COMPATIBLE;
-      }
-      if(type == AtomicInteger.class) {
-         return COMPATIBLE;
-      }
-      if(type == Long.class) {
-         return COMPATIBLE;
-      }
-      if(type == AtomicLong.class) {
-         return COMPATIBLE;
-      }
-      if(type == Short.class) {
-         return COMPATIBLE;
-      }
-      if(type == Byte.class) {
-         return COMPATIBLE;
-      }
-      if(type == String.class) {
-         if(compatible(Float.class, value)) {
-            return POSSIBLE;
-         }
-      }
-      return INVALID;
-   }
-   
+
    @Override
    public Object convert(Object value) throws Exception {
-      Class type = value.getClass();
+      Class require = type.getType();
       
-      if(type == String.class) {
-         return convert(Float.class, value);
+      if(value != null) {
+         Class actual = value.getClass();
+         
+         if(actual == String.class) {
+            return convert(Float.class, value);
+         }
+         Class parent = actual.getSuperclass();
+         
+         if(parent == Number.class) {
+            Number number = (Number)value;
+            return number.floatValue();
+         }
+         throw new IllegalArgumentException("Conversion from " + actual + " to float is not possible");
       }
-      Class parent = type.getSuperclass();
-      
-      if(parent == Number.class) {
-         Number number = (Number)value;
-         return number.floatValue();
+      if(require.isPrimitive()) {
+         throw new IllegalArgumentException("Invalid conversion from null to primitive float");
       }
-      throw new IllegalArgumentException("Conversion from " + type + " to float is not possible");
+      return null;
    }
 }
