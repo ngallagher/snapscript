@@ -82,7 +82,7 @@ public class PropertyIndexer {
                         write.setAccessible(true);
                      }
                      Type propT=indexer.load(readT);
-                     MethodAccessor acc=new MethodAccessor(promoter.convert(readT),read,write);
+                     MethodAccessor acc=new MethodAccessor(promoter.promote(readT),read,write);
                      Property v=new Property(prop,propT,acc);               
                      properties.add(v);
                      

@@ -6,7 +6,7 @@ public class PrimitivePromoter {
       super();
    }
    
-   public Class convert(Class type) {
+   public Class promote(Class type) {
       if (type == int.class) {
          return Integer.class;
       }

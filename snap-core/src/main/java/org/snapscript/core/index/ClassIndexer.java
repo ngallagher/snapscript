@@ -28,7 +28,7 @@ public class ClassIndexer {
    }
    
    public Type index(Class cls) throws Exception {
-      Class type = promoter.convert(cls);
+      Class type = promoter.promote(cls);
       Type t=indexer.resolveType(cls); // XXX there should be some form of TypeCache
       
       if(t==null){
