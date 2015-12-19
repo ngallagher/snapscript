@@ -58,13 +58,17 @@ public class ScriptAgent {
    public static void run(int serverPort) throws Exception {
       try {
          System.err.println(SOURCE);
+         long start = System.currentTimeMillis();
          PackageLinker linker = CONTEXT.getLinker();
          Package library = linker.link("moduleForTheScriptAgent", SOURCE, "script");
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
          Statement script = library.compile(scope);
-
+         long middle = System.currentTimeMillis();
          script.execute(scope);
+         long finish = System.currentTimeMillis();
+         System.err.println("Compile time="+(middle-start));
+         System.err.println("Execute time="+(finish-middle));
       }catch(Exception e) {
          e.printStackTrace();
       }

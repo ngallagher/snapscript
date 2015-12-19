@@ -38,7 +38,7 @@ public class ScriptEngine {
 
    public static final int CLASSPATH_PORT = 4457;
    public static final int COMMAND_PORT = 4456;
-   public static final int AGENT_POOL = 0;
+   public static final int AGENT_POOL = 4;
   
    private final BlockingQueue<AgentConnection> connections;
    private final AtomicReference<AgentConnection> current;
