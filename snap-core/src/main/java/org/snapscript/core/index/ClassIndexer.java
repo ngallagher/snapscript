@@ -18,18 +18,20 @@ public class ClassIndexer {
    private final PropertyIndexer properties;
    private final PrimitivePromoter promoter;
    private final TypeIndexer indexer;
+   private final TypeCache cache;
    
-   public ClassIndexer(TypeIndexer indexer){
+   public ClassIndexer(TypeIndexer indexer, TypeCache cache){
       this.constructors = new ConstructorIndexer(indexer);
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer);
       this.promoter = new PrimitivePromoter();
       this.indexer = indexer;
+      this.cache = cache;
    }
    
-   public Type index(Class cls) throws Exception {
+   public synchronized Type index(Class cls) throws Exception {
       Class type = promoter.promote(cls);
-      Type t=indexer.resolveType(cls); // XXX there should be some form of TypeCache
+      Type t=cache.resolveType(cls); // XXX there should be some form of TypeCache
       
       if(t==null){
          String key = type.getName();
@@ -52,9 +54,9 @@ public class ClassIndexer {
          }
          Type done=null;
          if(type.isArray()){
-            done=new Type(simpleName,pack,indexer.load(type.getComponentType()),cls);
+            done=new ClassType(simpleName,pack,indexer.load(type.getComponentType()),cls);
          }else {
-            done=new Type(simpleName,pack,null,cls);
+            done=new ClassType(simpleName,pack,null,cls);
          }
          List<Function> functions = done.getFunctions();
          List<Property> properties = done.getProperties();
@@ -64,7 +66,7 @@ public class ClassIndexer {
             Type any=indexer.load("Any", null,true);// XXX there should be some form of TypeCache
             hier.put("Any",any);
          }
-         indexer.registerType(cls,done);
+         cache.registerType(cls,done);
          for(Class i:interfaces){
             Type baset=indexer.load(i);
             hier.put(i.getName(),baset);
@@ -74,7 +76,7 @@ public class ClassIndexer {
             //}
          }
          if(!cls.isPrimitive()&&!cls.isArray()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
-            indexer.registerType(key,done);// XXX there should be some form of TypeCache
+            cache.registerType(key,done);// XXX there should be some form of TypeCache
             List<Function> f = this.functions.index(type);
             List<Property> pd = this.properties.index(type);
             List<Function> cons = this.constructors.index(type);

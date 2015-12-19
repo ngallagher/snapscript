@@ -1,4 +1,12 @@
 package org.snapscript.core;
+  
+import static org.snapscript.core.Reserved.IMPORT_JAVA;
+import static org.snapscript.core.Reserved.IMPORT_JAVAX;
+import static org.snapscript.core.Reserved.IMPORT_JAVA_IO;
+import static org.snapscript.core.Reserved.IMPORT_JAVA_LANG;
+import static org.snapscript.core.Reserved.IMPORT_JAVA_MATH;
+import static org.snapscript.core.Reserved.IMPORT_JAVA_NET;
+import static org.snapscript.core.Reserved.IMPORT_JAVA_UTIL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,14 +20,14 @@ import org.snapscript.core.resource.ResourceReader;
 public class ImportResolver {
    
    private static final String[] DEFAULTS = {
-      "",
-      "java.", 
-      "javax.",
-      "java.lang.", 
-      "java.util.", 
-      "java.io.",
-      "java.net.",     
-      "java.math."};
+      IMPORT_JAVA, 
+      IMPORT_JAVAX,
+      IMPORT_JAVA_LANG, 
+      IMPORT_JAVA_UTIL, 
+      IMPORT_JAVA_IO,
+      IMPORT_JAVA_NET,     
+      IMPORT_JAVA_MATH
+   };
    
    private final Map<String, Class> types;
    private final List<String> imports;
@@ -45,17 +53,24 @@ public class ImportResolver {
    }
    
    public Package addType(String name, String location) {
-      for(String prefix : imports) {
-         try {
-            String title=prefix+location+"."+name;
-            Class type = Class.forName(title);
-            types.put(name, type); 
-            types.put(location+"."+name, type);           
-            return null;
-         } catch(Exception e) {
-            continue;
-         }
+      Class type = getType(location+"."+name);
+      
+      if(type != null) {
+         types.put(name, type); 
+         types.put(location+"."+name, type);
+         return null;
       }
+//      for(String prefix : imports) {
+//         try {
+//            String title=prefix+location+"."+name;
+//            Class type = Class.forName(title);
+//            types.put(name, type); 
+//            types.put(location+"."+name, type);           
+//            return null;
+//         } catch(Exception e) {
+//            continue;
+//         }
+//      }
       try {
          return loader.load(location);
       } catch(Exception e){
@@ -67,6 +82,11 @@ public class ImportResolver {
       Class type = types.get(name);
       
       if(type == null) {
+         try {
+            return Class.forName(name);
+         }catch(Exception e){
+            //e.printStackTrace();
+         }
          for(String prefix : imports) {
             try {
                return Class.forName(prefix + name);

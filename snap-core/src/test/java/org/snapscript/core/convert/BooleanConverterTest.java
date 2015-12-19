@@ -3,11 +3,12 @@ package org.snapscript.core.convert;
 import junit.framework.TestCase;
 
 import org.snapscript.core.Type;
+import org.snapscript.core.index.ClassType;
 
 public class BooleanConverterTest extends TestCase {
 
    public void testBoolean() throws Exception {
-      Type type = new Type(null, null, null, Boolean.class);
+      Type type = new ClassType(null, null, null, Boolean.class);
       BooleanConverter converter = new BooleanConverter(type);
       
       assertEquals(converter.score(true), ConstraintConverter.EXACT);
@@ -30,7 +31,7 @@ public class BooleanConverterTest extends TestCase {
    }
    
    public void testPrimitiveBoolean() throws Exception {
-      Type type = new Type(null, null, null, boolean.class);
+      Type type = new ClassType(null, null, null, boolean.class);
       BooleanConverter converter = new BooleanConverter(type);
       
       assertEquals(converter.score(true), ConstraintConverter.EXACT);

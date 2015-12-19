@@ -4,14 +4,15 @@ import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.Type;
-
 import junit.framework.TestCase;
+
+import org.snapscript.core.Type;
+import org.snapscript.core.index.ClassType;
 
 public class ByteConverterTest extends TestCase {
 
    public void testByte() throws Exception {
-      Type type = new Type(null, null, null, Byte.class);
+      Type type = new ClassType(null, null, null, Byte.class);
       ByteConverter converter = new ByteConverter(type);
       
       assertEquals(converter.score((byte)11), ConstraintConverter.EXACT);
@@ -34,7 +35,7 @@ public class ByteConverterTest extends TestCase {
    }
    
    public void testPrimitiveDouble() throws Exception {
-      Type type = new Type(null, null, null, byte.class);
+      Type type = new ClassType(null, null, null, byte.class);
       ByteConverter converter = new ByteConverter(type);
       
       assertEquals(converter.score((byte)11), ConstraintConverter.EXACT);

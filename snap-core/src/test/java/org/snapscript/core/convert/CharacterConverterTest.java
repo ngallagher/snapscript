@@ -1,13 +1,14 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.Type;
-
 import junit.framework.TestCase;
+
+import org.snapscript.core.Type;
+import org.snapscript.core.index.ClassType;
 
 public class CharacterConverterTest extends TestCase {
 
    public void testCharacter() throws Exception {
-      Type type = new Type(null, null, null, Character.class);
+      Type type = new ClassType(null, null, null, Character.class);
       CharacterConverter converter = new CharacterConverter(type);
       
       assertEquals(converter.score('s'), ConstraintConverter.EXACT);
@@ -21,7 +22,7 @@ public class CharacterConverterTest extends TestCase {
    }
    
    public void testPrimitiveCharacter() throws Exception {
-      Type type = new Type(null, null, null, char.class);
+      Type type = new ClassType(null, null, null, char.class);
       CharacterConverter converter = new CharacterConverter(type);
       
       assertEquals(converter.score('s'), ConstraintConverter.EXACT);

@@ -20,11 +20,13 @@ public class TypeIndexer {
    private final ImportResolver resolver;
    private final ClassIndexer indexer;
    private final List<String> modules;
+   private final TypeCache cache;
    
    public TypeIndexer(ImportResolver resolver){
       this.types = new LinkedHashMap<Object, Type>(); 
       this.modules = new ArrayList<String>();
-      this.indexer = new ClassIndexer(this);
+      this.cache = new TypeCache();
+      this.indexer = new ClassIndexer(this, cache);
       this.resolver = resolver;
    }
    public Package addImport(String name) {
@@ -51,10 +53,13 @@ public class TypeIndexer {
       }
       return library;
    }
-   protected void registerType(Object name, Type type) {
+   private void registerType(Object name, Type type) {
+      if(types.containsKey(name)) {
+         throw new IllegalStateException("Key " + name + " already registered");
+      }
       types.put(name, type);
    }
-   protected Type resolveType(Object name) {
+   private Type resolveType(Object name) {
       return types.get(name);
    }
    private Type define(String name,String moduleName) throws Exception {
@@ -63,7 +68,7 @@ public class TypeIndexer {
     
       
       if(t==null) {
-         t=new Type(name, moduleName,null);
+         t=new ScopeType(name, moduleName);
          registerType(full,t);
       }
       return t;
@@ -97,12 +102,19 @@ public class TypeIndexer {
             return null;
          }
          t=load(cls);
-         registerType(name, t);
       }
       return t;
    }
    public Type load(final Class cls) throws Exception {
-      return indexer.index(cls);
+      Type done=resolveType(cls);
+      if(done == null) {
+         String name = cls.getName();
+         Type type = new ClassReference(indexer, cls);
+         registerType(cls, type);
+         registerType(name, type);
+         return type;
+      }
+      return done;
    }
 
 }
