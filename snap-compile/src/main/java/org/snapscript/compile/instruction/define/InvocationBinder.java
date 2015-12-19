@@ -8,9 +8,9 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.bind.FunctionBinder;
 
 public class InvocationBinder {
@@ -67,7 +67,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
-         return new Transient(data);           
+         return ValueType.getTransient(data);           
       } 
    } 
    
@@ -97,7 +97,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
          }
-         return new Transient(data);           
+         return ValueType.getTransient(data);           
       }
    }     
    
@@ -128,7 +128,7 @@ public class InvocationBinder {
                if(result.isThrow()) {
                   throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
                }
-               return new Transient(data);   
+               return ValueType.getTransient(data);   
             }
          }
          Type type = object.getType();
@@ -142,7 +142,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for type '" + type + "' had an exception");
          }
-         return new Transient(data);           
+         return ValueType.getTransient(data);           
       }
    }  
    
@@ -176,7 +176,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
-         return new Transient(value);
+         return ValueType.getTransient(value);
       }
    }
    
@@ -207,7 +207,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
          }
-         return new Transient(value);
+         return ValueType.getTransient(value);
       }
    }
    
@@ -235,7 +235,7 @@ public class InvocationBinder {
          if(result.isThrow()) {
             throw new IllegalStateException("Method '" + name + "' had an exception");
          }
-         return new Transient(value);  
+         return ValueType.getTransient(value);  
       }
       
    }

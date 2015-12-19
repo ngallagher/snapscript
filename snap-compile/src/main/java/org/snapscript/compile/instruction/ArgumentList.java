@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ArgumentList implements Evaluation{
    
@@ -22,6 +22,6 @@ public class ArgumentList implements Evaluation{
          
          values[i] = result;
       }
-      return new Transient(values);
+      return ValueType.getTransient(values);
    }
 }

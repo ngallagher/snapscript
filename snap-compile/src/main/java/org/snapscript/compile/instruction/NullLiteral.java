@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
 public class NullLiteral implements Evaluation {
@@ -18,6 +18,6 @@ public class NullLiteral implements Evaluation {
    }
 
    public Value evaluate(Scope scope, Object left) throws Exception {
-      return new Transient(null);
+      return ValueType.getTransient(null);
    }
 }

@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
 public class ConstructMap implements Evaluation {
@@ -34,6 +34,6 @@ public class ConstructMap implements Evaluation {
       if(list != null) {
          return list.evaluate(scope, context);
       }
-      return new Transient(map);
+      return ValueType.getTransient(map);
    }
 }

@@ -28,7 +28,6 @@ public class StaticAccessor implements Accessor {
       }catch(Exception e){
          throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
       }
-
       return accessor.getValue(scope);
    }
 

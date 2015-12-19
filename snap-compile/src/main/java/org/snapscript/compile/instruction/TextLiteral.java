@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
 public class TextLiteral implements Evaluation {
@@ -19,6 +19,6 @@ public class TextLiteral implements Evaluation {
       if(text == null) {
          throw new IllegalStateException("Text value was null");
       }
-      return new Reference(text);
+      return ValueType.getTransient(text);
    }
 }

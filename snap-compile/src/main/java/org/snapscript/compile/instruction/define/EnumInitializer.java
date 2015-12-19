@@ -21,6 +21,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.bind.FunctionBinder;
 
 public class EnumInitializer extends Initializer {
@@ -58,9 +59,9 @@ public class EnumInitializer extends Initializer {
       
       // Add a static accessor to the enum type
       type.getProperties().add(property);
-      Constant c=new Constant(instance, name);
-      instance.getState().addConstant(ENUM_NAME, new Constant(name, ENUM_NAME));
-      instance.getState().addConstant(ENUM_ORDINAL, new Constant(index, ENUM_ORDINAL));  
+      Value c=ValueType.getConstant(instance, type);
+      instance.getState().addConstant(ENUM_NAME, ValueType.getConstant(name));
+      instance.getState().addConstant(ENUM_ORDINAL, ValueType.getConstant(index));  
       scope.getState().addConstant(name, c);
       List l =scope.getState().getValue(ENUM_VALUES).getValue();
       l.add(instance);

@@ -1,11 +1,10 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Bug;
-import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class DeclareVariable implements Evaluation {
    
@@ -53,14 +52,13 @@ public class DeclareVariable implements Evaluation {
       return checker.convert(scope, object, name);
    }
    
-   @Bug("Maybe a Value.getReference or ValueType.getValue would be good here rather than new Reference(..)")
    protected Value declare(Scope scope, Value value, String name) throws Exception {
       Object object = value.getValue();
       Type type = value.getConstraint();
       State state = scope.getState();
       
       try {      
-         Reference reference = new Reference(object, type, name);
+         Value reference = ValueType.getReference(object, type);
          state.addVariable(name, reference);
          return reference;
       }catch(Exception e) {

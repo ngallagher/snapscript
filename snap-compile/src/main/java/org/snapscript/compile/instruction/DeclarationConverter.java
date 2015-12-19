@@ -3,9 +3,9 @@ package org.snapscript.compile.instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
 
@@ -38,8 +38,8 @@ public class DeclarationConverter {
          if(value != null) {
             value = converter.convert(value);
          }
-         return new Transient(value, type);
+         return ValueType.getTransient(value, type);
       }
-      return new Transient(value, null);
+      return ValueType.getTransient(value, null);
    }
 }

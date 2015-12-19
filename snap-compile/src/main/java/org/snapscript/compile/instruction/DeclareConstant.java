@@ -1,10 +1,10 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Constant;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class DeclareConstant extends DeclareVariable {
 
@@ -31,9 +31,9 @@ public class DeclareConstant extends DeclareVariable {
       State state = scope.getState();
       
       try {      
-         Constant reference = new Constant(object, type, name);
-         state.addVariable(name, reference);
-         return reference;
+         Value constant = ValueType.getConstant(object, type);
+         state.addVariable(name, constant);
+         return constant;
       }catch(Exception e) {
          throw new IllegalStateException("Declaration of constant '" + name +"' failed", e);
       }      

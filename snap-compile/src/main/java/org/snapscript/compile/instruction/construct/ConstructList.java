@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.convert.ProxyBuilder;
 import org.snapscript.parse.StringToken;
 
@@ -44,6 +44,6 @@ public class ConstructList implements Evaluation {
             result.add(proxy);
          }         
       }   
-      return new Transient(result);
+      return ValueType.getTransient(result);
    }
 }

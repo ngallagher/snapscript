@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -12,6 +11,8 @@ import org.snapscript.core.SignatureAligner;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class StaticInvocation implements Invocation<Object> {
 
@@ -45,7 +46,7 @@ public class StaticInvocation implements Invocation<Object> {
          if(!checker.compatible(outer, argument, require)) {
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
-         Reference reference = new Reference(argument);         
+         Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
       return statement.execute(scope);

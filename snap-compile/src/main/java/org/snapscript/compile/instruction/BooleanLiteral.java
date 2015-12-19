@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
 public class BooleanLiteral implements Evaluation {
@@ -23,6 +23,6 @@ public class BooleanLiteral implements Evaluation {
          }
          value = Boolean.parseBoolean(text);
       }
-      return new Reference(value);
+      return ValueType.getTransient(value);
    }      
 }

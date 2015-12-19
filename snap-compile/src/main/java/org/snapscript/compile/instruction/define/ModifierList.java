@@ -1,10 +1,10 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ModifierList implements Evaluation {
    
@@ -29,7 +29,7 @@ public class ModifierList implements Evaluation {
             mask |= type.mask;
          }
       }
-      return new Transient(mask);
+      return ValueType.getTransient(mask);
    }
 
 }

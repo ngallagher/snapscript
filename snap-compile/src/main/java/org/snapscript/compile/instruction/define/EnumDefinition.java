@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.snapscript.core.Accessor;
 import org.snapscript.core.Bug;
-import org.snapscript.core.Constant;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
@@ -19,6 +18,8 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class EnumDefinition extends Statement {
 
@@ -52,7 +53,7 @@ public class EnumDefinition extends Statement {
       Type t = module.addType(n);
       List<Type>types=t.getTypes();
       List values = new ArrayList();
-      Constant ref = new Constant(values, ENUM_VALUES);
+      Value ref = ValueType.getConstant(values);
       Accessor a = new StaticAccessor(collector, other, t, ENUM_VALUES);
       Property p = new Property(ENUM_VALUES, t, a);
       t.getProperties().add(p);

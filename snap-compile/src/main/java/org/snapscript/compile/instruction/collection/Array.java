@@ -1,9 +1,9 @@
 package org.snapscript.compile.instruction.collection;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class Array implements Evaluation {
    
@@ -24,7 +24,7 @@ public class Array implements Evaluation {
       if(type.isArray()) {
          list = converter.convert(list);
       }     
-      return new Transient(list);
+      return ValueType.getTransient(list);
    }  
    
 

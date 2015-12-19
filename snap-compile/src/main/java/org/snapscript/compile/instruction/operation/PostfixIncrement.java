@@ -2,8 +2,8 @@ package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.Token;
 
 public class PostfixIncrement implements Evaluation {
@@ -26,6 +26,6 @@ public class PostfixIncrement implements Evaluation {
       
       reference.setValue(result);
       
-      return new Transient(number);
+      return ValueType.getTransient(number);
    }
 }

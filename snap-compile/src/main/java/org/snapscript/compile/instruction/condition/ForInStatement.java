@@ -3,13 +3,13 @@ package org.snapscript.compile.instruction.condition;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.collection.Iteration;
 import org.snapscript.compile.instruction.collection.IterationConverter;
-import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ForInStatement extends Statement {
    
@@ -30,8 +30,8 @@ public class ForInStatement extends Statement {
       Value reference = identifier.evaluate(scope, null);
       Value list = collection.evaluate(scope, null);
       String name = reference.getString();
-      Object value = list.getValue();
-      Iteration iteration = converter.convert(value);
+      Object object = list.getValue();
+      Iteration iteration = converter.convert(object);
       Iterable iterable = iteration.getIterable(scope);
       State state = scope.getState();
       
@@ -39,8 +39,8 @@ public class ForInStatement extends Statement {
          Value variable = state.getValue(name);
          
          if(variable == null) {
-            Reference constant = new Reference(entry);
-            state.addVariable(name, constant);
+            Value value = ValueType.getReference(entry);
+            state.addVariable(name, value);
          } else {
             variable.setValue(entry);
          }

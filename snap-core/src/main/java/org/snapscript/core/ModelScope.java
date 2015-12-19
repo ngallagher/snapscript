@@ -58,7 +58,7 @@ public class ModelScope implements Scope {
             Object object = model.getAttribute(name);
             
             if(object != null) {
-               return new Constant(object, name);
+               return ValueType.getConstant(object);
             }
          }
          return variable;

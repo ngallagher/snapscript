@@ -1,9 +1,9 @@
 package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class CalculationResult implements Evaluation {
 
@@ -14,7 +14,7 @@ public class CalculationResult implements Evaluation {
    }
 
    public Value evaluate(Scope scope, Object left) throws Exception {
-      return new Transient(value);
+      return ValueType.getTransient(value);
    }
 
 }

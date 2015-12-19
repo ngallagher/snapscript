@@ -1,36 +1,45 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.core.Reference;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
 public enum PrefixOperator {
    NOT("!"){
       @Override
-      public Value operate(Value right) {
+      public Value operate(Value right) { 
          Boolean value = right.getBoolean();         
-         return new Reference(!value);
+         return ValueType.getTransient(!value);
       }      
    }, 
    COMPLEMENT("~"){
       @Override
-      public Value operate(Value right) {      
-         Integer value = right.getInteger(); 
-         return new Reference(~value);
+      public Value operate(Value right) {
+         Number value = right.getNumber(); 
+         NumericConverter converter = NumericConverter.resolveConverter(value);   
+         Long number = value.longValue();
+         
+         return converter.convert(~number);
       }      
    },
    PLUS("+"){
       @Override
       public Value operate(Value right) {
-         Integer value = right.getInteger(); 
-         return new Reference(+value);
+         Number value = right.getNumber(); 
+         NumericConverter converter = NumericConverter.resolveConverter(value);   
+         Double number = value.doubleValue();
+         
+         return converter.convert(+number);
       }      
    },
    MINUS("-"){
       @Override
       public Value operate(Value right) { 
-         Integer value = right.getInteger(); 
-         return new Reference(-value);
+         Number value = right.getNumber(); 
+         NumericConverter converter = NumericConverter.resolveConverter(value);   
+         Double number = value.doubleValue();
+         
+         return converter.convert(-number);
       }      
    };
    

@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class Range implements Evaluation {
 
@@ -21,7 +21,7 @@ public class Range implements Evaluation {
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       Iterable<Number> range = create(scope, left);
-      return new Transient(range);
+      return ValueType.getTransient(range);
    }
    
    private Iterable<Number> create(Scope scope, Object left) throws Exception {

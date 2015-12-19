@@ -4,11 +4,12 @@ import org.snapscript.compile.instruction.Argument;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.compile.instruction.collection.ArrayConverter;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ConstructObjectArray implements Evaluation {
    
@@ -44,14 +45,14 @@ public class ConstructObjectArray implements Evaluation {
             int size = dimensions[0];   
             Object array = converter.create(entry, size);
             
-            return new Transient(array);
+            return ValueType.getTransient(array);
          }
          if(arguments.length == 2) {
             int first = dimensions[0]; 
             int second = dimensions[1];
             Object array = converter.create(entry, first, second);
             
-            return new Transient(array);
+            return ValueType.getTransient(array);
          }
          if(arguments.length == 3) {
             int first = dimensions[0]; 
@@ -59,11 +60,11 @@ public class ConstructObjectArray implements Evaluation {
             int third = dimensions[2];
             Object array = converter.create(entry, first, second, third);
             
-            return new Transient(array);
+            return ValueType.getTransient(array);
          }
          throw new IllegalArgumentException("Maximum or three dimensions exceeded");
       }
       Object array = converter.create(entry, 0);
-      return new Transient(array);
+      return ValueType.getTransient(array);
    }
 }

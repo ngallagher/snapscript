@@ -1,9 +1,9 @@
 package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class CalculationOperation implements Evaluation {
 
@@ -31,7 +31,7 @@ public class CalculationOperation implements Evaluation {
             String rightText = String.valueOf(rightValue);            
             String text = leftText.concat(rightText);
             
-            return new Transient(text);
+            return ValueType.getTransient(text);
          }
       }
       return operator.operate(leftResult, rightResult);

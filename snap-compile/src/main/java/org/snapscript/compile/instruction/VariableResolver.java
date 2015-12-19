@@ -16,9 +16,9 @@ import org.snapscript.core.Property;
 import org.snapscript.core.PropertyValue;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 @Bug("This should be cleaned up")
 public class VariableResolver {
@@ -108,11 +108,11 @@ public class VariableResolver {
                Object result = builder.resolve(name);
                
                if(result != null) {
-                  return new Transient(result);
+                  return ValueType.getTransient(result);
                }
                return null;
             }
-            return new Transient(type);
+            return ValueType.getTransient(type);
          }
          return variable;
       }

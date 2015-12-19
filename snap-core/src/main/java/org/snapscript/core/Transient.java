@@ -26,6 +26,6 @@ public class Transient extends Value {
    
    @Override
    public void setValue(Object value){
-      throw new IllegalStateException("Transient value modified");
+      throw new IllegalStateException("Illegal modification of transient");
    } 
 }

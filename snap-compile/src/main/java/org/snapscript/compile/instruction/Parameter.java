@@ -2,9 +2,9 @@ package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class Parameter implements Evaluation{
    
@@ -33,8 +33,8 @@ public class Parameter implements Evaluation{
          if(type == null) {
             throw new IllegalStateException("Constraint '" + alias + "' for '" +name + "' was not imported");
          }
-         return new Transient(name, type);
+         return ValueType.getTransient(name, type);
       }
-      return new Transient(name);
+      return ValueType.getTransient(name);
    }
 }

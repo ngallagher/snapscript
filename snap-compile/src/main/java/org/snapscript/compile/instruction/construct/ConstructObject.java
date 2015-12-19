@@ -6,12 +6,12 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.core.Context;
-import org.snapscript.core.Transient;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.bind.FunctionBinder;
 
 public class ConstructObject implements Evaluation {
@@ -46,7 +46,7 @@ public class ConstructObject implements Evaluation {
       Result result = call.call();
       Object instance = result.getValue();
       
-      return new Transient(instance);
+      return ValueType.getTransient(instance);
    }
    
    private Callable<Result> bind(Scope scope, Type type) throws Exception {

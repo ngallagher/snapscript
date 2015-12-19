@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Bug;
-import org.snapscript.core.Constant;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -9,6 +8,7 @@ import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class TryCatchStatement extends Statement {
    
@@ -57,8 +57,7 @@ public class TryCatchStatement extends Statement {
          return ResultType.getThrow(cause);
       }
    }
-   
-   @Bug("Consider a ValueType.getConstant")
+
    private Result handle(Scope scope, Result result) throws Exception {
       Object value = result.getValue();
       
@@ -75,7 +74,7 @@ public class TryCatchStatement extends Statement {
             }
             Scope compound = scope.getInner();
             State state = compound.getState();
-            Constant constant = new Constant(value, name);
+            Value constant = ValueType.getConstant(value);
             
             state.addConstant(name, constant);
                

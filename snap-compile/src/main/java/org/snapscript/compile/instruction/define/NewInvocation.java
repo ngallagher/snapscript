@@ -11,7 +11,6 @@ import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.Reference;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -19,6 +18,8 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class NewInvocation implements Invocation<Scope> { // every constructor created must have an extra parameter 'this' for example new(x: String) is actually new(t: Type, s: String), so we pass up the parameter of type!!!
    
@@ -68,7 +69,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
          if(!checker.compatible(scope, argument, require)) {
             throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
-         Reference reference = new Reference(argument);         
+         Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
       // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
@@ -84,9 +85,9 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       InstanceScope wrapper = new InstanceScope(instance, real);// we need to pass the base type up!!
       
       // Super should probably be a special variable and have special instructions!!!!!
-      Constant self = new Constant(wrapper, TYPE_THIS);
-      Constant info = new Constant(real, TYPE_CLASS); // give it the REAL type
-      
+      Value self = ValueType.getConstant(wrapper, real);
+      Value info = ValueType.getConstant(real); // give it the REAL type
+
       wrapper.getState().addConstant(TYPE_CLASS, info);    
       wrapper.getState().addConstant(TYPE_THIS, self);
       //
