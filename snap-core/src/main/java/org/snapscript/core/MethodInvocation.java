@@ -37,8 +37,15 @@ public class MethodInvocation implements Invocation<Object>{
                   throw new IllegalStateException("Invalid argument at " + i + " for" + method, e);
                }
             }
-            list = Arrays.copyOf(list, require);            
-            list[start] = array;
+            Object[] copy = new Object[require];
+            
+            if(require > list.length) {
+               System.arraycopy(list, 0, copy, 0, list.length);
+            } else {
+               System.arraycopy(list, 0, copy, 0, require);
+            }
+            copy[start] = array;
+            list = copy;
          }
       }
       Object value = method.invoke(left, list);

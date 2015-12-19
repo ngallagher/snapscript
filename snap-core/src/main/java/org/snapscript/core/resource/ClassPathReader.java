@@ -1,7 +1,6 @@
 package org.snapscript.core.resource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class ClassPathReader implements ResourceReader {
@@ -10,7 +9,7 @@ public class ClassPathReader implements ResourceReader {
       super();
    }
    
-   public String read(String path) throws Exception {
+   public String read(String path) {
       try {
          Thread thread = Thread.currentThread();
          ClassLoader loader = thread.getContextClassLoader();
@@ -32,7 +31,7 @@ public class ClassPathReader implements ResourceReader {
             source.close();
          }
       } catch(Exception e) {
-         throw new IOException("Could not load resource '" + path + "'", e);
+         throw new ResourceException("Could not load resource '" + path + "'", e);
       }
    }
 }

@@ -1,7 +1,5 @@
 package org.snapscript.parse;
 
-import java.util.Arrays;
-
 public class IntegerStack {
 
    private int[] stack;
@@ -56,7 +54,12 @@ public class IntegerStack {
       int capacity = stack.length;
       
       if(count >= capacity) {
-         stack = Arrays.copyOf(stack, capacity * 2);
+         int[] copy = new int[capacity * 2];
+         
+         if(count > 0) {
+            System.arraycopy(stack, 0, copy, 0, stack.length);
+         }
+         stack = copy;
       }
       stack[count++] = value;
    }

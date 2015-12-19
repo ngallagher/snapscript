@@ -33,7 +33,12 @@ public class SignatureAligner {
             }
             list[start] = array;
          }
-         return Arrays.copyOf(list, length);
+         Object[] copy = new Object[length];
+         
+         for(int i = 0; i < length; i++) {
+            copy[i] = list[i];
+         }
+         return copy;
       }
       return list;
    }

@@ -36,8 +36,9 @@ import org.snapscript.parse.SyntaxParser;
  */
 public class ScriptEngine {
 
-   public static final int PORT = 4456;
-   public static final int POOL = 4;
+   public static final int CLASSPATH_PORT = 4457;
+   public static final int COMMAND_PORT = 4456;
+   public static final int AGENT_POOL = 0;
   
    private final BlockingQueue<AgentConnection> connections;
    private final AtomicReference<AgentConnection> current;
@@ -323,7 +324,7 @@ public class ScriptEngine {
       private void ping() {
          try {
             List<AgentConnection> ready = new ArrayList<AgentConnection>();
-            int require = POOL;
+            int require = AGENT_POOL;
             
             for(int i = 0; i < require; i++) {
                AgentConnection connection = connections.poll();
@@ -366,7 +367,7 @@ public class ScriptEngine {
             String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
             String classpath = System.getProperty("java.class.path");
             String className = ScriptAgent.class.getCanonicalName();
-            ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, String.valueOf(PORT));
+            ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, String.valueOf(COMMAND_PORT));
             builder.redirectErrorStream(true);
             builder.start();
          }catch(Exception e) {
@@ -379,7 +380,7 @@ public class ScriptEngine {
     
       public void run() {
          try {
-            ServerSocket sock = new ServerSocket(PORT);
+            ServerSocket sock = new ServerSocket(COMMAND_PORT);
             while(true) {
                Socket socket = sock.accept();
                AgentConnection connection = new AgentConnection(socket);

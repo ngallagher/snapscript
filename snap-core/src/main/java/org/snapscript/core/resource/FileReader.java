@@ -3,7 +3,6 @@ package org.snapscript.core.resource;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class FileReader implements ResourceReader {
@@ -17,7 +16,7 @@ public class FileReader implements ResourceReader {
    }
    
    @Override
-   public String read(String path) throws Exception {
+   public String read(String path) {
       try {
          File resource = new File(file, path);
          
@@ -38,7 +37,7 @@ public class FileReader implements ResourceReader {
             }
          }
       } catch(Exception e) {
-         throw new IOException("Could not load resource '" + path + "'", e);
+         throw new ResourceException("Could not load resource '" + path + "'", e);
       }
       return reader.read(path);
    }

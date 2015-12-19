@@ -2,9 +2,6 @@ package org.snapscript.core;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-
-import org.snapscript.core.Scope;
 
 public class ConstructorInvocation implements Invocation<Object> {
 
@@ -35,8 +32,15 @@ public class ConstructorInvocation implements Invocation<Object> {
                   throw new IllegalStateException("Invalid argument at " + i + " for" + constructor, e);
                }
             }
-            list = Arrays.copyOf(list, require);                        
-            list[start] = array;
+            Object[] copy = new Object[require];
+            
+            if(require > list.length) {
+               System.arraycopy(list, 0, copy, 0, list.length);
+            } else {
+               System.arraycopy(list, 0, copy, 0, require);
+            }
+            copy[start] = array;
+            list = copy;
          }
       }     
       Object value = constructor.newInstance(list);

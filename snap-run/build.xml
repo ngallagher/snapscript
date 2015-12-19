@@ -1,41 +1,55 @@
 <project>
 
-  <delete dir="output" />
-  <mkdir dir="output" />
-  <delete dir="lib" />
-  <mkdir dir="lib" />
-  <echo message="Deleted output directory" />
-  <copy todir="output">
-    <fileset dir="target/classes">
-      <include name="**/*.class" />
-    </fileset>
-  </copy>
-  <copy todir="output">
-    <fileset dir="../snap-common/target/classes">
-      <include name="**/*.class" />
-    </fileset>
-  </copy>
-  <copy todir="output">
-    <fileset dir="../snap-compile/target/classes">
-      <include name="**/*.class" />
-    </fileset>
-  </copy>
-  <copy todir="output">
-    <fileset dir="../snap-core/target/classes">
-      <include name="**/*.class" />
-    </fileset>
-  </copy>
-  <copy todir="output">
-    <fileset dir="../snap-parse/target/classes">
-      <include name="**/*.class" />
-    </fileset>
-  </copy>
-  <jar destfile="lib/snap.jar">
-    <fileset dir="output" />
-    <manifest>
-      <attribute name="Main-Class" value="org.snapscript.run.Interpreter" />
-    </manifest>
-  </jar>
-  <delete dir="output" />
+  <target name="build" description="Build a JAR with everything">
+    <delete dir="output" />
+    <mkdir dir="output" />
+    <delete dir="jar" />
+    <mkdir dir="jar" />
+    <echo message="Deleted output directory" />
+    <copy todir="output">
+      <fileset dir="target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-common/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-compile/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-core/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-parse/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <jar destfile="jar/snap.jar">
+      <fileset dir="output" />
+      <manifest>
+        <attribute name="Main-Class" value="org.snapscript.run.Interpreter" />
+      </manifest>
+    </jar>
+    <delete dir="output" />
+  </target>
   
+  <target name="obfuscate" depends="build" description="Obfuscates and optimizes the JAR">
+    <echo message="Running the pro guard task" />
+    <java classname="proguard.ProGuard" fork="yes">
+      <classpath>
+        <fileset dir="libs">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <arg value="@proguard.pro" />
+    </java>
+  </target>
+
 </project>

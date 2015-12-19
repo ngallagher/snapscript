@@ -1,13 +1,12 @@
-package org.snapscript.interpret.console;
+package org.snapscript.android.agent;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.FileContext;
 import org.snapscript.compile.ResourceCompiler;
-import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Package;
@@ -25,7 +23,10 @@ import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TraceInterceptor;
 
-public class ScriptAgent {
+import android.app.Activity;
+import android.os.Bundle;
+
+public class ScriptAgent extends Activity {
 
    private static final File ROOT = new File("c:\\");
    private static final Context CONTEXT = new FileContext(ROOT);
@@ -47,31 +48,28 @@ public class ScriptAgent {
    "System.err.println(privateVariableInScriptAgent.x);\n"+
    "System.err.println(InternalTypeForScriptAgent.ARR);";
    
-   public static void main(String[] list) throws Exception {
-      if(list.length > 0) {
-         run(Integer.parseInt(list[0]));
-      }else{
-         run(ScriptEngine.COMMAND_PORT);
-      }
-   }
-   
-   public static void run(int serverPort) throws Exception {
+
+   public void onCreate(Bundle bundle) {
+      super.onCreate(bundle);
       try {
-         System.err.println(SOURCE);
+         long start = System.currentTimeMillis();
          PackageLinker linker = CONTEXT.getLinker();
          Package library = linker.link("moduleForTheScriptAgent", SOURCE, "script");
          Module module = CONTEXT.getBuilder().create("moduleForTheScriptAgent");
          Scope scope = module.getScope();
          Statement script = library.compile(scope);
-
+         long middle = System.currentTimeMillis();
          script.execute(scope);
+         long finish = System.currentTimeMillis();
+         System.err.println("Compile time="+(middle-start));
+         System.err.println("Execute time="+(finish-middle));
       }catch(Exception e) {
          e.printStackTrace();
       }
       TraceAnalyzer analyzer = CONTEXT.getAnalyzer();
       analyzer.register(INTERCEPTOR);
       try {
-         Socket socket = new Socket("localhost", serverPort);
+         Socket socket = new Socket("192.168.56.1", 4456);
          ClientListener listener = new ClientListener(socket);
          listener.start();
       } catch (Exception e) {
@@ -122,13 +120,13 @@ public class ScriptAgent {
       
       private int[] copyOf(int[] array, int newSize) {
          int[] copy = new int[newSize];
-         System.arraycopy(array, 0, copy, 0, Math.min(newSize, array.length));
+         System.arraycopy(array, 0, copy, 0, Math.min(array.length, newSize));
          return copy;
       }
       
       private long[] copyOf(long[] array, int newSize) {
          long[] copy = new long[newSize];
-         System.arraycopy(array, 0, copy, 0, Math.min(newSize, array.length));
+         System.arraycopy(array, 0, copy, 0, Math.min(array.length, newSize));
          return copy;
       }
 
@@ -274,6 +272,19 @@ public class ScriptAgent {
          }finally {
             System.exit(0);
          }
+      }
+   }
+   
+   private static class ExceptionBuilder {
+
+      public static String build(Exception cause) {
+         StringWriter w = new StringWriter();
+         PrintWriter p = new PrintWriter(w);
+         cause.printStackTrace(p);
+         p.flush();
+         p.close();
+         return w.toString();
+         
       }
    }
   
