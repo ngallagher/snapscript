@@ -51,7 +51,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -141,7 +140,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    private JFileChooser fc;
    private File file;
 
-   public ScriptPad() {
+   public ScriptPad() throws Exception {
       super("ScriptPad");
       setSize(600, 600);
       setLocationRelativeTo(null);
@@ -519,12 +518,27 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
          }
       }).start();
    }
+   
+   private void purge(File file) {
+      if(file.isFile()) {
+         file.delete();
+      } else if(file.isDirectory()){
+         File[] list = file.listFiles();
+         for(File entry : list){
+            purge(entry);
+         }
+      }
+   }
 
    private void executeScript(boolean internal) {
       try {
          ThreadGroup group = Thread.currentThread().getThreadGroup();
-         File file = File.createTempFile("Script", ".snap");
-         file.deleteOnExit();
+         File tempPath = new File("temp");
+         purge(tempPath);
+         if(!tempPath.exists()) {
+            tempPath.mkdirs();
+         }
+         File file = new File(tempPath, "temp"+System.currentTimeMillis()+".snap");
          ConsoleWriter outputWriter = new ConsoleWriter(executor, console);
          ConsoleWriter infoWriter = new ConsoleWriter(executor, info);
          console.setText("");

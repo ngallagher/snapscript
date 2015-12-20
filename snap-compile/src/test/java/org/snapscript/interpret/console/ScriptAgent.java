@@ -1,21 +1,16 @@
 package org.snapscript.interpret.console;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.Executable;
-import org.snapscript.compile.FileContext;
 import org.snapscript.compile.ResourceCompiler;
-import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Package;
@@ -27,8 +22,7 @@ import org.snapscript.core.TraceInterceptor;
 
 public class ScriptAgent {
 
-   private static final File ROOT = new File("c:\\");
-   private static final Context CONTEXT = new FileContext(ROOT);
+   private static final Context CONTEXT = new ScriptAgentContext(ScriptEngine.CLASSPATH_ROOT);
    private static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
    private static final Profiler INTERCEPTOR = new Profiler();
    private static final String SOURCE =
@@ -191,11 +185,6 @@ public class ScriptAgent {
                String request = in.readUTF();
                if(request.equals("type=execute")) {
                   String filePath = in.readUTF();
-                  if(filePath.startsWith("c:\\") || filePath.startsWith("C:\\")) {
-                     filePath = filePath.substring(2, filePath.length());
-                  } else {
-                     throw new IllegalArgumentException("Could not find root path for " + filePath);
-                  }
                   //String source = load(filePath);
                   try {
                      execute(filePath); // execute the script

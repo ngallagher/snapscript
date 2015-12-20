@@ -55,7 +55,7 @@ public class RemoteReader implements ResourceReader {
          if(!original.endsWith("/")) {
             original = original + "/";
          }
-         if(path.endsWith("/")) {
+         if(path.startsWith("/")) {
             path = path.substring(1);
          }
          return new URL(scheme + "://" +  host + ":" + port + original + path);
