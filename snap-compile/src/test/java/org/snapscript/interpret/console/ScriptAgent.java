@@ -51,7 +51,7 @@ public class ScriptAgent {
          CONTENT_TYPES.put(".gif", "image/gif");
          CONTENT_TYPES.put(".jpg", "image/jpeg");
       }catch(Exception e){
-         throw new InternalError("Invalid root", e);
+         throw new InternalError("Invalid root");
       }
    }
    public static final Context CONTEXT = new ScriptAgentContext(CLASSPATH_ROOT);

@@ -399,13 +399,17 @@ public class ScriptEngine {
       
       public void launch() {
          try {
-            String javaHome = System.getProperty("java.home");
-            String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
-            String classpath = System.getProperty("java.class.path");
-            String className = ScriptAgent.class.getCanonicalName();
-            ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, String.valueOf(COMMAND_PORT));
-            builder.redirectErrorStream(true);
-            builder.start();
+            BlockingQueue queue = connections.get(System.getProperty("os.name"));
+            
+            if(queue == null || queue.size() < AGENT_POOL) {
+               String javaHome = System.getProperty("java.home");
+               String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
+               String classpath = System.getProperty("java.class.path");
+               String className = ScriptAgent.class.getCanonicalName();
+               ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, String.valueOf(COMMAND_PORT));
+               builder.redirectErrorStream(true);
+               builder.start();
+            }
          }catch(Exception e) {
             e.printStackTrace();
          }
@@ -423,9 +427,12 @@ public class ScriptEngine {
                String os = in.readUTF();
                AgentConnection connection = new AgentConnection(socket, os);
                BlockingQueue<AgentConnection> queue = connections.get(os);
+               
+               // add to menu
+               frame.addNewRun(os);
+               
                if(queue == null) {
                   queue = new LinkedBlockingQueue<AgentConnection>();
-                  frame.addNewRun(os);
                   connections.put(os, queue);
                }
                queue.offer(connection);

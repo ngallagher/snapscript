@@ -34,7 +34,7 @@ public class ScriptAgent extends Activity {
    public static final int CLASSPATH_PORT = 4457;
    public static final int COMMAND_PORT = 4456;
    public static final int AGENT_POOL = 4;
-   public static final String REMOTE_HOST = "192.168.56.1";
+   public static final String REMOTE_HOST = "192.168.1.66";
    static {
       try{
          CONTENT_TYPES = new ConcurrentHashMap<String, String>();

@@ -348,6 +348,8 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    }
    
    public void addNewRun(String os) {
+      System.err.println("Add " + os);
+      
       if(!runAgentI.containsKey(os)) {
          JMenuItem item = new JMenuItem("Run " + os); // menuitems
          programM.add(item);

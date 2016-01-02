@@ -24,7 +24,7 @@ var s={};
 var m={:};
 var random=new SecureRandom();
 var array = [];
-for(var i = 0; i < 10000; i++){
+for(var i = 0; i < 1000; i++){
    var value = random.nextInt(100000);   
    array.add(value);
 }
