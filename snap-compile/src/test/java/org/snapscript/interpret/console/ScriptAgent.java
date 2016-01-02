@@ -4,9 +4,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URI;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.Executable;
@@ -22,10 +28,36 @@ import org.snapscript.core.TraceInterceptor;
 
 public class ScriptAgent {
 
-   private static final Context CONTEXT = new ScriptAgentContext(ScriptEngine.CLASSPATH_ROOT);
-   private static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
-   private static final Profiler INTERCEPTOR = new Profiler();
-   private static final String SOURCE =
+   public static final Map<String, String> CONTENT_TYPES;
+   public static final File CLASSPATH_PATH;
+   public static final File CLASSPATH_TEMP_PATH;
+   public static final URI CLASSPATH_ROOT;
+   public static final int CLASSPATH_PORT = 4457;
+   public static final int COMMAND_PORT = 4456;
+   public static final int AGENT_POOL = 4;
+  
+   static {
+      try{
+         CLASSPATH_PATH = new File("C:\\Work\\development\\github\\snapscript");
+         CLASSPATH_TEMP_PATH = new File("C:\\Work\\development\\github\\snapscript\\snap-compile");
+         CONTENT_TYPES = new ConcurrentHashMap<String, String>();
+         CLASSPATH_ROOT = new URI("http://"+InetAddress.getLocalHost().getCanonicalHostName()+":"+CLASSPATH_PORT+"/");
+         CONTENT_TYPES.put(".snap", "text/plain");
+         CONTENT_TYPES.put(".html", "text/html");
+         CONTENT_TYPES.put(".css", "text/css");
+         CONTENT_TYPES.put(".json", "application/json");
+         CONTENT_TYPES.put(".js", "application/javascript");
+         CONTENT_TYPES.put(".png", "image/png");
+         CONTENT_TYPES.put(".gif", "image/gif");
+         CONTENT_TYPES.put(".jpg", "image/jpeg");
+      }catch(Exception e){
+         throw new InternalError("Invalid root", e);
+      }
+   }
+   public static final Context CONTEXT = new ScriptAgentContext(CLASSPATH_ROOT);
+   public static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
+   public static final Profiler INTERCEPTOR = new Profiler();
+   public static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
    "   static const ARR = [\"a\",\"b\",\"c\"];\n"+
    "   var x;\n"+
@@ -45,7 +77,7 @@ public class ScriptAgent {
       if(list.length > 0) {
          run(Integer.parseInt(list[0]));
       }else{
-         run(ScriptEngine.COMMAND_PORT);
+         run(COMMAND_PORT);
       }
    }
    
@@ -269,5 +301,18 @@ public class ScriptAgent {
          }
       }
    }
-  
+   
+   private static class ExceptionBuilder {
+
+      public static String build(Exception cause) {
+         StringWriter w = new StringWriter();
+         PrintWriter p = new PrintWriter(w);
+         cause.printStackTrace(p);
+         p.flush();
+         p.close();
+         return w.toString();
+         
+      }
+   }
+
 }

@@ -1,5 +1,8 @@
 package org.snapscript.interpret.console;
 
+import static org.snapscript.interpret.console.ScriptAgent.AGENT_POOL;
+import static org.snapscript.interpret.console.ScriptAgent.COMMAND_PORT;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -7,18 +10,11 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,19 +25,9 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.simpleframework.http.Path;
-import org.simpleframework.http.Protocol;
-import org.simpleframework.http.Request;
-import org.simpleframework.http.Response;
-import org.simpleframework.http.core.Container;
-import org.simpleframework.http.core.ContainerSocketProcessor;
-import org.simpleframework.transport.SocketProcessor;
-import org.simpleframework.transport.connect.Connection;
-import org.simpleframework.transport.connect.SocketConnection;
 import org.snapscript.compile.FileContext;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.resource.FileReader;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
@@ -53,33 +39,10 @@ import org.snapscript.parse.SyntaxParser;
  */
 public class ScriptEngine {
 
-   public static final Map<String, String> CONTENT_TYPES;
-   public static final URI CLASSPATH_ROOT;
-   public static final int CLASSPATH_PORT = 4457;
-   public static final int COMMAND_PORT = 4456;
-   public static final int AGENT_POOL = 4;
-  
-   static {
-      try{
-         CONTENT_TYPES = new ConcurrentHashMap<String, String>();
-         CLASSPATH_ROOT = new URI("http://"+InetAddress.getLocalHost().getCanonicalHostName()+":"+CLASSPATH_PORT+"/");
-         CONTENT_TYPES.put(".snap", "text/plain");
-         CONTENT_TYPES.put(".html", "text/html");
-         CONTENT_TYPES.put(".css", "text/css");
-         CONTENT_TYPES.put(".json", "application/json");
-         CONTENT_TYPES.put(".js", "application/javascript");
-         CONTENT_TYPES.put(".png", "image/png");
-         CONTENT_TYPES.put(".gif", "image/gif");
-         CONTENT_TYPES.put(".jpg", "image/jpeg");
-      }catch(Exception e){
-         throw new InternalError("Invalid root", e);
-      }
-   }
-   
    private final BlockingQueue<AgentConnection> connections;
    private final AtomicReference<AgentConnection> current;
    private final AgentPoolLauncher launcher;
-   private final AgentContainer container;
+   private final ScriptFileServer container;
    private final AgentServer server;
    private final AtomicBoolean active;
    private final JFrame frame;
@@ -88,7 +51,7 @@ public class ScriptEngine {
       this.connections = new LinkedBlockingQueue<AgentConnection>();
       this.current = new AtomicReference<AgentConnection>();
       this.launcher = new AgentPoolLauncher();
-      this.container = new AgentContainer();
+      this.container = new ScriptFileServer(ScriptAgent.CLASSPATH_PATH, ScriptAgent.CLASSPATH_TEMP_PATH, ScriptAgent.CLASSPATH_PORT);
       this.server = new AgentServer();
       this.active = new AtomicBoolean();
       this.frame = frame;
@@ -142,7 +105,12 @@ public class ScriptEngine {
       if(active.compareAndSet(false, true)) {
          new Thread(launcher, "AgentPoolLauncher").start();
          new Thread(server, "AgentServer").start();
-         container.start();
+         
+         try {
+            container.start(); 
+         }catch(Exception e) {
+            e.printStackTrace();
+         }
       }
    }
    
@@ -436,60 +404,61 @@ public class ScriptEngine {
       }
    }
    
-   private class AgentContainer implements Container {
-      
-      private final SocketProcessor processor;
-      private final InetSocketAddress address;
-      private final Connection connection;
-      private final FileReader reader;
-      private final File root;
-      
-      public AgentContainer() throws Exception {
-         this.processor = new ContainerSocketProcessor(this);
-         this.address = new InetSocketAddress(CLASSPATH_PORT);
-         this.connection = new SocketConnection(processor);
-         this.root = new File(".");
-         this.reader = new FileReader(root);
-      }
-   
-      public void handle(Request request, Response response) {
-         try {
-            Path path = request.getPath();
-            String normal = path.getPath();
-            PrintStream output = response.getPrintStream();
-            // default
-            response.setContentType("application/octet-stream");
-            
-            for(Entry<String, String> entry : CONTENT_TYPES.entrySet()) {
-               if(normal.toLowerCase().endsWith(entry.getKey())){
-                  response.setContentType(entry.getValue());
-                  break;
-               }
-            }
-            response.setDate(Protocol.DATE, System.currentTimeMillis());
-            String relativePath = normal.substring(1);
-            String resource = reader.read(relativePath);
-            System.err.println("serving file '" + relativePath + "'");
-            output.print(resource);
-            output.close();
-         }catch(Exception e){
-            e.printStackTrace();
-         }finally {
-            try {
-               response.close();
-            }catch(Exception e){
-               e.printStackTrace();
-            }
-         }
-      }
-      
-      public void start() {
-         try {
-            connection.connect(address);
-         }catch(Exception e){
-            e.printStackTrace();
-         }
-      }
-      
-   }
+//   private class AgentContainer implements Container {
+//      
+//      private final SocketProcessor processor;
+//      private final InetSocketAddress address;
+//      private final Connection connection;
+//      private final FileReader reader;
+//      private final File root;
+//      
+//      public AgentContainer() throws Exception {
+//         this.processor = new ContainerSocketProcessor(this);
+//         this.address = new InetSocketAddress(CLASSPATH_PORT);
+//         this.connection = new SocketConnection(processor);
+//         this.root = new File(".");
+//         this.reader = new FileReader(root);
+//      }
+//   
+//      public void handle(Request request, Response response) {
+//         try {
+//            Path path = request.getPath();
+//            String normal = path.getPath();
+//            PrintStream output = response.getPrintStream();
+//            String relativePath = normal.substring(1);
+//            // default
+//            response.setContentType("application/octet-stream");
+//            
+//            for(Entry<String, String> entry : CONTENT_TYPES.entrySet()) {
+//               if(normal.toLowerCase().endsWith(entry.getKey())){
+//                  response.setContentType(entry.getValue());
+//                  break;
+//               }
+//            }
+//            response.setDate(Protocol.DATE, System.currentTimeMillis());
+//
+//            String resource = reader.read(relativePath);
+//            System.err.println("serving file '" + relativePath + "'");
+//            output.print(resource);
+//            output.close();
+//         }catch(Exception e){
+//            e.printStackTrace();
+//         }finally {
+//            try {
+//               response.close();
+//            }catch(Exception e){
+//               e.printStackTrace();
+//            }
+//         }
+//      }
+//      
+//      public void start() {
+//         try {
+//            connection.connect(address);
+//         }catch(Exception e){
+//            e.printStackTrace();
+//         }
+//      }
+//      
+//   }
 }

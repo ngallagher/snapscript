@@ -2,17 +2,18 @@ package org.snapscript.android.agent;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.Socket;
+import java.net.URI;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.compile.Executable;
-import org.snapscript.compile.FileContext;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
@@ -28,11 +29,32 @@ import android.os.Bundle;
 
 public class ScriptAgent extends Activity {
 
-   private static final File ROOT = new File("c:\\");
-   private static final Context CONTEXT = new FileContext(ROOT);
-   private static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
-   private static final Profiler INTERCEPTOR = new Profiler();
-   private static final String SOURCE =
+   public static final Map<String, String> CONTENT_TYPES;
+   public static final URI CLASSPATH_ROOT;
+   public static final int CLASSPATH_PORT = 4457;
+   public static final int COMMAND_PORT = 4456;
+   public static final int AGENT_POOL = 4;
+   public static final String REMOTE_HOST = "192.168.56.1";
+   static {
+      try{
+         CONTENT_TYPES = new ConcurrentHashMap<String, String>();
+         CLASSPATH_ROOT = new URI("http://"+REMOTE_HOST+":"+CLASSPATH_PORT+"/");
+         CONTENT_TYPES.put(".snap", "text/plain");
+         CONTENT_TYPES.put(".html", "text/html");
+         CONTENT_TYPES.put(".css", "text/css");
+         CONTENT_TYPES.put(".json", "application/json");
+         CONTENT_TYPES.put(".js", "application/javascript");
+         CONTENT_TYPES.put(".png", "image/png");
+         CONTENT_TYPES.put(".gif", "image/gif");
+         CONTENT_TYPES.put(".jpg", "image/jpeg");
+      }catch(Exception e){
+         throw new IllegalStateException("Invalid root", e);
+      }
+   }
+   public static final Context CONTEXT = new ScriptAgentContext(CLASSPATH_ROOT);
+   public static final ResourceCompiler COMPILER = new ResourceCompiler(CONTEXT);
+   public static final Profiler INTERCEPTOR = new Profiler();
+   public static final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
    "   static const ARR = [\"a\",\"b\",\"c\"];\n"+
    "   var x;\n"+
@@ -48,7 +70,6 @@ public class ScriptAgent extends Activity {
    "System.err.println(privateVariableInScriptAgent.x);\n"+
    "System.err.println(InternalTypeForScriptAgent.ARR);";
    
-
    public void onCreate(Bundle bundle) {
       super.onCreate(bundle);
       try {
@@ -69,7 +90,7 @@ public class ScriptAgent extends Activity {
       TraceAnalyzer analyzer = CONTEXT.getAnalyzer();
       analyzer.register(INTERCEPTOR);
       try {
-         Socket socket = new Socket("192.168.56.1", 4456);
+         Socket socket = new Socket(REMOTE_HOST, COMMAND_PORT);
          ClientListener listener = new ClientListener(socket);
          listener.start();
       } catch (Exception e) {
@@ -120,13 +141,13 @@ public class ScriptAgent extends Activity {
       
       private int[] copyOf(int[] array, int newSize) {
          int[] copy = new int[newSize];
-         System.arraycopy(array, 0, copy, 0, Math.min(array.length, newSize));
+         System.arraycopy(array, 0, copy, 0, Math.min(newSize, array.length));
          return copy;
       }
       
       private long[] copyOf(long[] array, int newSize) {
          long[] copy = new long[newSize];
-         System.arraycopy(array, 0, copy, 0, Math.min(array.length, newSize));
+         System.arraycopy(array, 0, copy, 0, Math.min(newSize, array.length));
          return copy;
       }
 
@@ -185,11 +206,6 @@ public class ScriptAgent extends Activity {
                String request = in.readUTF();
                if(request.equals("type=execute")) {
                   String filePath = in.readUTF();
-                  if(filePath.startsWith("c:\\") || filePath.startsWith("C:\\")) {
-                     filePath = filePath.substring(2, filePath.length());
-                  } else {
-                     throw new IllegalArgumentException("Could not find root path for " + filePath);
-                  }
                   //String source = load(filePath);
                   try {
                      execute(filePath); // execute the script
@@ -287,5 +303,5 @@ public class ScriptAgent extends Activity {
          
       }
    }
-  
+
 }

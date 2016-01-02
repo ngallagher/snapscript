@@ -49,6 +49,10 @@ public class ProxyIterable implements Iterable {
          return extractor.extract(value);
       }
       
+      @Override
+      public void remove() {
+         iterator.remove();
+      }
    }
    
    private class ProxyEntry implements Entry {
