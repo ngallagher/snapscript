@@ -1,6 +1,6 @@
 
-import org.snapscript.interpret.JPanelInterface;
-import org.snapscript.interpret.JPanelAdapter;
+import org.snapscript.ide.JPanelInterface;
+import org.snapscript.ide.JPanelAdapter;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;

@@ -1,4 +1,4 @@
-package org.snapscript.interpret;
+package org.snapscript.ide;
 
 import java.awt.Graphics;
 
