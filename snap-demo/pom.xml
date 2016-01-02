@@ -28,10 +28,10 @@
 	</build>
 
    <modules>
-           <module>snap-common</module>
-           <module>snap-core</module>
-           <module>snap-parse</module>           
-           <module>snap-compile</module>       
+           <module>snap-gae</module>
+           <module>snap-ide</module>
+           <module>snap-test</module>         
+           <module>snap-run</module>          
 	</modules>
 
 </project>
