@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -123,7 +124,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
    private JMenuItem saveAsI;
    private JMenuItem openI;
    private JMenuItem newI;
-   private JMenuItem runExternalI;
+   private Map<String, JMenuItem> runAgentI;
    private JMenuItem runInternalI;
    private JMenuItem stopI;
    private String pad;
@@ -156,6 +157,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       consolePanel.setLayout(new BorderLayout());
       outputPanel.setLayout(new BorderLayout());
 
+      runAgentI = new ConcurrentHashMap<String, JMenuItem>();
       // start a pool of workers
       engine = new ScriptEngine(this);
       engine.start();
@@ -226,7 +228,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       saveI = new JMenuItem("Save"); // menuitems
       saveAsI = new JMenuItem("Save As...");
       openI = new JMenuItem("Open"); // menuitems
-      runExternalI = new JMenuItem("Run"); // menuitems
+
       runInternalI = new JMenuItem("Debug"); // menuitems
       stopI = new JMenuItem("Stop"); // menuitems
       toolBar = new JToolBar();
@@ -267,7 +269,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       editM.add(pasteI);
       editM.add(selectI);
 
-      programM.add(runExternalI);
+
       programM.add(runInternalI);
       programM.add(stopI);
       
@@ -296,7 +298,6 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       pasteI.addActionListener(this);
       selectI.addActionListener(this);
       runInternalI.addActionListener(this);
-      runExternalI.addActionListener(this);
       stopI.addActionListener(this);
       
       Color hot = Color.RED;
@@ -344,6 +345,15 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       StyleConstants.setForeground(normal, Color.BLACK);
       
       setVisible(true);
+   }
+   
+   public void addNewRun(String os) {
+      if(!runAgentI.containsKey(os)) {
+         JMenuItem item = new JMenuItem("Run " + os); // menuitems
+         programM.add(item);
+         item.addActionListener(this);
+         runAgentI.put(os, item);
+      }
    }
 
    private void selectFile(File file) { // does not work
@@ -449,10 +459,14 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
          // ta.insert(pad, ta.getCaretPosition());
       } else if (choice == selectI) {
          ta.selectAll();
-      } else if (e.getSource() == runExternalI) {
-         stopCurrentAndExecute(false);
+      } else if (runAgentI.values().contains(e.getSource())) {
+         JMenuItem item = (JMenuItem)e.getSource();
+         String name = item.getText();
+         String os = name.substring(4);
+         
+         stopCurrentAndExecute(os);
       } else if (e.getSource() == runInternalI) {
-         stopCurrentAndExecute(true);
+         stopCurrentAndExecute(null);
       } else if (e.getSource() == stopI) {
          stopCurrent();
       }
@@ -501,7 +515,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       }
    }
    
-   private void stopCurrentAndExecute(final boolean internal) {
+   private void stopCurrentAndExecute(final String os) {
       new Thread(new Runnable() {
          public void run() {
             try {
@@ -511,7 +525,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
                      task.stop();
                   }
                }
-               executeScript(internal);
+               executeScript(os);
             } catch(Exception e){
                e.printStackTrace();
             }
@@ -530,7 +544,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
       }
    }
 
-   private void executeScript(boolean internal) {
+   private void executeScript(String os) {
       try {
          ThreadGroup group = Thread.currentThread().getThreadGroup();
          File tempPath = new File("temp");
@@ -547,7 +561,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
          OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
          encoder.write(source);
          encoder.close();
-         if(internal) {
+         if(os == null) {
             ScriptLauncher task = new ScriptLauncher(outputWriter, infoWriter, source, file, false); // create some stats and execute in separate process
             Thread thread = new Thread(group, task, "ScriptRunner");
 
@@ -556,7 +570,7 @@ public class ScriptPad extends JFrame implements ActionListener, DocumentListene
             }
             thread.start();
          } else {
-            ScriptTask task = engine.executeScript(outputWriter, infoWriter, file);
+            ScriptTask task = engine.executeScript(outputWriter, infoWriter, file, os);
             
             if(task != null) {
                tasks.offer(task); // ensure it can be stopped

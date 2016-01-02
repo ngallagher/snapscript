@@ -202,6 +202,7 @@ public class ScriptAgent extends Activity {
             socket.setSoTimeout(0);
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
+            out.writeUTF(System.getProperty("os.name"));
             while(true) {
                String request = in.readUTF();
                if(request.equals("type=execute")) {

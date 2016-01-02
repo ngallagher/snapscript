@@ -13,8 +13,12 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -39,40 +43,49 @@ import org.snapscript.parse.SyntaxParser;
  */
 public class ScriptEngine {
 
-   private final BlockingQueue<AgentConnection> connections;
+   private final Map<String, BlockingQueue<AgentConnection>> connections;
    private final AtomicReference<AgentConnection> current;
    private final AgentPoolLauncher launcher;
    private final ScriptFileServer container;
    private final AgentServer server;
    private final AtomicBoolean active;
-   private final JFrame frame;
+   private final ScriptPad frame;
    
-   public ScriptEngine(JFrame frame) throws Exception {
-      this.connections = new LinkedBlockingQueue<AgentConnection>();
+   public ScriptEngine(ScriptPad frame) throws Exception {
+      this.connections = new ConcurrentHashMap<String, BlockingQueue<AgentConnection>>();
       this.current = new AtomicReference<AgentConnection>();
       this.launcher = new AgentPoolLauncher();
       this.container = new ScriptFileServer(ScriptAgent.CLASSPATH_PATH, ScriptAgent.CLASSPATH_TEMP_PATH, ScriptAgent.CLASSPATH_PORT);
       this.server = new AgentServer();
       this.active = new AtomicBoolean();
       this.frame = frame;
+      
+      // add a default one
+      connections.put(System.getProperty("os.name"), new LinkedBlockingQueue<AgentConnection>());
+   }
+   
+   public Set<String> getOperatingSystems() {
+      Set<String> set = new HashSet<String>();
+      set.addAll(connections.keySet());
+      return set;
    }
 
    // launch a task and wait for it to finish
-   public ScriptTask executeScript(ConsoleWriter output, ConsoleWriter info, File file) {
+   public ScriptTask executeScript(ConsoleWriter output, ConsoleWriter info, File file, String os) {
       AgentListener listener = new AgentListener(output, info);
 
       try {
          killCurrentProcess(); // stop anything currently running
-         return launchNewProcess(file, listener); // launch a new script
+         return launchNewProcess(file, listener, os); // launch a new script
       }catch(Exception e) {
          e.printStackTrace();
       }
       return null;
    }
    
-   private ScriptTask launchNewProcess(File file, AgentListener listener) {
+   private ScriptTask launchNewProcess(File file, AgentListener listener, String os) {
       try {
-         AgentConnection conn = connections.poll(5, TimeUnit.SECONDS); // take a process from the pool
+         AgentConnection conn = connections.get(os).poll(5, TimeUnit.SECONDS); // take a process from the pool
          
          if(conn == null) {
             throw new IllegalStateException("Unable to execute " + file + " as agent pool is empty");
@@ -256,9 +269,15 @@ public class ScriptEngine {
    private class AgentConnection  {
       
       private final Socket socket;
+      private final String os;
       
-      public AgentConnection(Socket socket) {
+      public AgentConnection(Socket socket, String os) {
          this.socket = socket;
+         this.os = os;
+      }
+      
+      public synchronized String getOperatingSystem() {
+         return os;
       }
       
       public synchronized ScriptTask execute(File script, AgentListener listener) {
@@ -333,40 +352,46 @@ public class ScriptEngine {
       }
       
       private void ping() {
+         Set<String> osSet = connections.keySet();
+         
          try {
             List<AgentConnection> ready = new ArrayList<AgentConnection>();
             int require = AGENT_POOL;
             
-            for(int i = 0; i < require; i++) {
-               AgentConnection connection = connections.poll();
+            for(String os : osSet) {
+               BlockingQueue<AgentConnection> connections = ScriptEngine.this.connections.get(os);
                
-               if(connection == null) {
-                  break;
-               }
-               if(connection.ping()) {
-                  ready.add(connection);
-               }
-            }
-            final int pool = ready.size();
-            SwingUtilities.invokeLater(new Runnable() {
-               public void run() {
-                  String title = frame.getTitle();
-                  Pattern pattern = Pattern.compile("(.*) agents=\\d+.*");
-                  Matcher matcher = pattern.matcher(title);
-                        
-                  if(matcher.matches()) {
-                     frame.setTitle(matcher.group(1) + " agents="+pool);
-                  } else {
-                     frame.setTitle(title + " agents="+pool);
+               for(int i = 0; i < require; i++) {
+                  AgentConnection connection = connections.poll();
+                  
+                  if(connection == null) {
+                     break;
+                  }
+                  if(connection.ping()) {
+                     ready.add(connection);
                   }
                }
-            });
-            int remaining = require - pool;
-            
-            for(int i = 0; i < remaining; i++) {
-               launch();
+               final int pool = ready.size();
+               SwingUtilities.invokeLater(new Runnable() {
+                  public void run() {
+                     String title = frame.getTitle();
+                     Pattern pattern = Pattern.compile("(.*) agents=\\d+.*");
+                     Matcher matcher = pattern.matcher(title);
+                           
+                     if(matcher.matches()) {
+                        frame.setTitle(matcher.group(1) + " agents="+pool);
+                     } else {
+                        frame.setTitle(title + " agents="+pool);
+                     }
+                  }
+               });
+               int remaining = require - pool;
+               
+               for(int i = 0; i < remaining; i++) {
+                  launch();
+               }
+               connections.addAll(ready);
             }
-            connections.addAll(ready);
          }catch(Exception e){
             e.printStackTrace();
          }
@@ -394,8 +419,16 @@ public class ScriptEngine {
             ServerSocket sock = new ServerSocket(COMMAND_PORT);
             while(true) {
                Socket socket = sock.accept();
-               AgentConnection connection = new AgentConnection(socket);
-               connections.offer(connection);
+               DataInputStream in = new DataInputStream(socket.getInputStream());
+               String os = in.readUTF();
+               AgentConnection connection = new AgentConnection(socket, os);
+               BlockingQueue<AgentConnection> queue = connections.get(os);
+               if(queue == null) {
+                  queue = new LinkedBlockingQueue<AgentConnection>();
+                  frame.addNewRun(os);
+                  connections.put(os, queue);
+               }
+               queue.offer(connection);
                Thread.sleep(100);
             }
          }catch(Exception e) {
