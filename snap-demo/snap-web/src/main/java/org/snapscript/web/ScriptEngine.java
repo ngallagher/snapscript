@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.compile.FileContext;
@@ -27,6 +28,11 @@ import org.snapscript.core.Context;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
+import org.snapscript.web.message.Message;
+import org.snapscript.web.message.MessageListener;
+import org.snapscript.web.message.MessagePublisher;
+import org.snapscript.web.message.MessageReceiver;
+import org.snapscript.web.message.MessageType;
 
 /**
  * Create a pool of {@link ScriptAgent} processes that will stand idle waiting
@@ -37,12 +43,12 @@ public class ScriptEngine {
 
    private final Map<String, BlockingQueue<AgentConnection>> connections;
    private final AtomicReference<AgentConnection> current;
-   private final ScriptEngineListener listener;
+   private final MessageListener listener;
    private final AgentPoolLauncher launcher;
    private final AgentServer server;
    private final AtomicBoolean active;
 
-   public ScriptEngine(ScriptEngineListener listener, int listenPort, int commandPort, int agentPool) throws Exception {
+   public ScriptEngine(MessageListener listener, int listenPort, int commandPort, int agentPool) throws Exception {
       this.connections = new ConcurrentHashMap<String, BlockingQueue<AgentConnection>>();
       this.current = new AtomicReference<AgentConnection>();
       this.launcher = new AgentPoolLauncher("http://localhost:"+listenPort+"/", commandPort, agentPool);
@@ -61,19 +67,17 @@ public class ScriptEngine {
    }
 
    // launch a task and wait for it to finish
-   public ScriptTask executeScript(ConsoleWriter output, ConsoleWriter info, File file, String os) {
-      AgentListener listener = new AgentListener(output, info);
-
+   public ScriptTask executeScript(File file, String processId, String os) {
       try {
          killCurrentProcess(); // stop anything currently running
-         return launchNewProcess(file, listener, os); // launch a new script
+         return launchNewProcess(file, processId, os); // launch a new script
       }catch(Exception e) {
          e.printStackTrace();
       }
       return null;
    }
    
-   private ScriptTask launchNewProcess(File file, AgentListener listener, String os) {
+   private ScriptTask launchNewProcess(File file, String processId, String os) {
       try {
          AgentConnection conn = connections.get(os).poll(5, TimeUnit.SECONDS); // take a process from the pool
          
@@ -82,7 +86,7 @@ public class ScriptEngine {
          }
          try {
             current.set(conn); // ensure we can stop the agent if needed
-            return conn.execute(file, listener);
+            return conn.execute(file, processId);
          }catch(Exception e) {
             e.printStackTrace();
          }
@@ -111,39 +115,17 @@ public class ScriptEngine {
       }
    }
    
-   
-   private class AgentListener {
-      
-      private final ConsoleWriter output;
-      private final ConsoleWriter info;
-      
-      public AgentListener(ConsoleWriter output, ConsoleWriter info){
-         this.output = output;
-         this.info = info;
-      }
-      
-      public void onUpdate(String type, String text){
-         if(type.equals("info")) {
-            info.log(text);
-         } else if(type.equals("output")) {
-            output.log(text);
-         } else {
-            System.err.println(text);
-         }
-      }
-   }
-   
    private class AgentConsoleReader implements ScriptTask, Runnable {
       
-      private final AgentListener listener;
       private final AtomicBoolean done;
+      private final String processId;
       private final Socket socket;
       private final File file;
       private final String path;
       
-      public AgentConsoleReader(Socket socket, AgentListener listener, File file, String path) {
+      public AgentConsoleReader(Socket socket, String processId, File file, String path) {
          this.done = new AtomicBoolean();
-         this.listener = listener;
+         this.processId = processId;
          this.socket = socket;
          this.file = file;
          this.path = path;
@@ -170,7 +152,7 @@ public class ScriptEngine {
                String line = buffer.readLine();
                
                if(line != null) {
-                  listener.onUpdate("output", line);
+                  System.out.println(processId + ": " +line);
                } else {
                   break;
                }
@@ -197,9 +179,9 @@ public class ScriptEngine {
             long finish = System.nanoTime();
             long duration = finish - start;
             long millis = TimeUnit.NANOSECONDS.toMillis(duration);
-            listener.onUpdate("info", "Time taken to parse was " + millis + " ms, size was " + file.length());
+            System.out.println(processId + ": Time taken to parse was " + millis + " ms, size was " + file.length());
          }catch(Exception e) {
-            listener.onUpdate("info", ExceptionBuilder.build(e));
+            System.out.println(processId + ": " + ExceptionBuilder.build(e));
             throw new RuntimeException("Script does not compile", e);
          }
       }
@@ -215,9 +197,9 @@ public class ScriptEngine {
             long finish = System.nanoTime();
             long duration = finish - start;
             long millis = TimeUnit.NANOSECONDS.toMillis(duration);
-            listener.onUpdate("info", "Time taken to compile was " + millis + " ms, size was " + file.length());
+            System.out.println(processId + ": Time taken to compile was " + millis + " ms, size was " + file.length());
          }catch(Exception e) {
-            listener.onUpdate("info", ExceptionBuilder.build(e));
+            System.out.println(processId + ": " + ExceptionBuilder.build(e));
             throw new RuntimeException("Script does not compile", e);
          }
       }
@@ -228,7 +210,7 @@ public class ScriptEngine {
             SyntaxParser parser = analyzer.compile();
             String source = load(file);
             String syntax = SyntaxPrinter.print(parser, source, "script");
-            listener.onUpdate("info", syntax);
+            System.out.println(processId + ": " + syntax);
          }catch(Exception e){
             //ignore for now
          }
@@ -250,31 +232,28 @@ public class ScriptEngine {
       }
    }
    
-   private class AgentConnection  {
+   private class AgentConnection implements MessageListener {
       
+      private final MessageReceiver receiver;
+      private final MessagePublisher publisher;
       private final Socket socket;
-      private final String os;
       
-      public AgentConnection(Socket socket, String os) {
+      public AgentConnection(MessagePublisher publisher, Socket socket) {
+         this.receiver = new MessageReceiver(this, socket);
+         this.publisher = publisher;
          this.socket = socket;
-         this.os = os;
       }
       
-      public synchronized String getOperatingSystem() {
-         return os;
-      }
-      
-      public synchronized ScriptTask execute(File script, AgentListener listener) {
+      public synchronized ScriptTask execute(File script, String processId) {
          try {
             socket.setSoTimeout(10000);
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             File currentPath = new File(".");
             String relativePath = script.getCanonicalPath().substring(currentPath.getCanonicalPath().length());
             relativePath=relativePath.replace(File.separatorChar, '/');
             System.err.println("sending file '"+script.getCanonicalPath()+"' as '"+relativePath+"'");
-            out.writeUTF("type=execute");
-            out.writeUTF(relativePath.replace(File.separatorChar, '/'));
-            AgentConsoleReader reader = new AgentConsoleReader(socket, listener, script, relativePath);
+            publisher.publish(MessageType.PROCESS_ID, processId); // register a process id
+            publisher.publish(MessageType.SCRIPT, relativePath.replace(File.separatorChar, '/')); // send the script
+            AgentConsoleReader reader = new AgentConsoleReader(socket, processId, script, relativePath);
             Thread thread = new Thread(reader, "AgentConsoleReader");
             thread.start();
             return reader;
@@ -312,6 +291,10 @@ public class ScriptEngine {
          return false;
       }
       
+      public synchronized void start() {
+         receiver.start();
+      }
+      
       public synchronized void stop() {
          try {
             socket.getOutputStream().write(1);
@@ -320,15 +303,54 @@ public class ScriptEngine {
             e.printStackTrace();
          }
       }
+
+      @Override
+      public void onMessage(Message message) {
+         MessageType type = message.getType();
+         
+         if(type == MessageType.REGISTER) {
+            onJoin(message);
+         }
+         listener.onMessage(message);
+      }
+      
+      private void onJoin(Message message) {
+         try {
+            String os = message.getData("UTF-8");
+            BlockingQueue<AgentConnection> queue = connections.get(os);
+            
+            if(queue == null) {
+               queue = new LinkedBlockingQueue<AgentConnection>();
+               connections.put(os, queue);
+            }
+            queue.offer(this);
+            Thread.sleep(100);
+         } catch(Exception e){
+            e.printStackTrace();
+         }
+      }
+
+      @Override
+      public void onError(Exception cause) {
+         cause.printStackTrace(System.err);
+         stop();
+      }
+
+      @Override
+      public void onClose() {
+         stop();
+      }
    }
    
    private class AgentPoolLauncher implements Runnable {
       
+      private final AtomicLong counter;
       private final String rootURI;
       private final int commandPort;
       private final int agentPool;
       
       public AgentPoolLauncher(String rootURI, int commandPort, int agentPool) {
+         this.counter = new AtomicLong();
          this.agentPool = agentPool;
          this.commandPort = commandPort;
          this.rootURI = rootURI;
@@ -387,7 +409,14 @@ public class ScriptEngine {
                String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
                String classpath = System.getProperty("java.class.path");
                String className = ScriptAgent.class.getCanonicalName();
-               ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, String.valueOf(commandPort));
+               long agentId = counter.getAndIncrement();
+               ProcessBuilder builder = new ProcessBuilder(javaBin, 
+                     "-cp", 
+                     classpath, 
+                     className, 
+                     rootURI,
+                     String.valueOf(agentId),
+                     String.valueOf(commandPort));
                builder.redirectErrorStream(true);
                builder.start();
             }
@@ -399,9 +428,11 @@ public class ScriptEngine {
    
    private class AgentServer implements Runnable {
       
+      private final AtomicReference<String> reference;
       private final int commandPort;
       
       public AgentServer(int commandPort) {
+         this.reference = new AtomicReference<String>("server");
          this.commandPort = commandPort;
       }
     
@@ -410,20 +441,10 @@ public class ScriptEngine {
             ServerSocket sock = new ServerSocket(commandPort);
             while(true) {
                Socket socket = sock.accept();
-               DataInputStream in = new DataInputStream(socket.getInputStream());
-               String os = in.readUTF();
-               AgentConnection connection = new AgentConnection(socket, os);
-               BlockingQueue<AgentConnection> queue = connections.get(os);
+               MessagePublisher publisher = new MessagePublisher(reference, socket.getOutputStream());
+               AgentConnection connection = new AgentConnection(publisher, socket);
                
-               // add to menu
-               listener.onJoin(os);
-               
-               if(queue == null) {
-                  queue = new LinkedBlockingQueue<AgentConnection>();
-                  connections.put(os, queue);
-               }
-               queue.offer(connection);
-               Thread.sleep(100);
+               connection.start(); // start receiving messages
             }
          }catch(Exception e) {
             e.printStackTrace();

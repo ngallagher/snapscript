@@ -1,10 +1,23 @@
 package org.snapscript.web;
 
-public class LoggerEngineListener implements ScriptEngineListener {
+import org.snapscript.web.message.Message;
+import org.snapscript.web.message.MessageListener;
+
+public class LoggerEngineListener implements MessageListener {
 
    @Override
-   public void onJoin(String os) {
-      System.err.println("JOIN: "+os);
+   public void onMessage(Message message) {
+ 
+   }
+
+   @Override
+   public void onError(Exception cause) {
+
+   }
+
+   @Override
+   public void onClose() {
+
    }
 
 }

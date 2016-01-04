@@ -9,7 +9,7 @@ import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.snapscript.web.resource.Resource;
 
-// should execute the script and stream the result
+// NEEDS TO BE A WEBSOCKET SERVICE!!!!
 public class ScriptResource implements Resource {
 
    private final ScriptEngine engine;
@@ -22,6 +22,7 @@ public class ScriptResource implements Resource {
    public void handle(Request request, Response response) throws Exception {
       PrintStream stream = response.getPrintStream();
       String source = request.getParameter("script");
+      String processId = request.getParameter("processId");
       ConsoleWriter output = new ConsoleWriter(stream, "red");
       ConsoleWriter info = new ConsoleWriter(stream, "black");
       File tempPath = new File("temp");
@@ -34,6 +35,6 @@ public class ScriptResource implements Resource {
       encoder.write(source);
       encoder.close();
       response.setContentType("text/plain");
-      engine.executeScript(output, info, file, System.getProperty("os.name"));
+      engine.executeScript(file, processId, System.getProperty("os.name"));
    }
 }
