@@ -54,9 +54,8 @@
 
   <bean id="ScriptController" class="org.snapscript.web.ScriptController" />
 
-  <bean id="ScriptResource" class="org.snapscript.web.resource.template.TemplateResource">
-    <constructor-arg ref="TemplateEngine" />
-    <constructor-arg ref="ScriptController" />
+  <bean id="ScriptResource" class="org.snapscript.web.ScriptResource">
+    <constructor-arg ref="ScriptEngine" />
   </bean>
 
   <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
@@ -66,12 +65,17 @@
     <constructor-arg value="NOT_FOUND" />
   </bean>
 
-  <bean id="TemplateMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
+  <bean id="ScriptMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/.*.vm" value-ref="ScriptResource" />
+        <entry key="/execute" value-ref="ScriptResource" />
       </map>
     </constructor-arg>
+  </bean>
+
+  <bean id="TemplateMatcher" class="org.snapscript.web.resource.template.TemplateMatcher">
+    <constructor-arg ref="TemplateEngine" />
+    <constructor-arg ref="ScriptController" />
   </bean>
 
   <bean id="FileMatcher" class="org.snapscript.web.resource.FileMatcher">
@@ -82,6 +86,7 @@
   <bean id="CombinationMatcher" class="org.snapscript.web.resource.CombinationMatcher">
     <constructor-arg>
       <list>
+        <ref bean="ScriptMatcher" />
         <ref bean="TemplateMatcher" />
         <ref bean="FileMatcher" />
       </list>
