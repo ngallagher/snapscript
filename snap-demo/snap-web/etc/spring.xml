@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="ScriptEngineListener" class="org.snapscript.web.LoggerEngineListener" />
+
+  <bean id="ScriptEngine" class="org.snapscript.web.ScriptEngine" init-method="start">
+    <constructor-arg ref="ScriptEngineListener" />
+    <constructor-arg value="${script.listenPort}" />
+    <constructor-arg value="${script.commandPort}" />
+    <constructor-arg value="${script.agentPool}" />
+  </bean>
+
+  <bean id="ContentTypeResolver" class="org.snapscript.web.resource.ContentTypeResolver">
+    <constructor-arg>
+      <map>
+        <entry key=".*.vm" value="text/html" />
+        <entry key=".*.html" value="text/html" />
+        <entry key=".*.png" value="image/png" />
+        <entry key=".*.jpg" value="image/png" />
+        <entry key=".*.gif" value="image/gif" />
+        <entry key=".*.css" value="text/css" />
+        <entry key=".*.js" value="text/javascript" />
+        <entry key=".*.snap" value="text/plain" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <bean id="FileManager" class="org.snapscript.web.resource.FileManager">
+    <constructor-arg value="${script.resourcePath}" />
+  </bean>
+
+  <bean id="FileResolver" class="org.snapscript.web.resource.FileResolver">
+    <constructor-arg ref="FileManager" />
+    <constructor-arg value="index.html" />
+  </bean>
+
+  <bean id="VelocityEngine" class="org.apache.velocity.app.VelocityEngine" init-method="init">
+    <constructor-arg>
+      <props>
+        <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.Log4JLogChute</prop>
+        <prop key="runtime.log.logsystem.log4j.logger">root</prop>
+        <prop key="parser.pool.size">5</prop>
+      </props>
+    </constructor-arg>
+  </bean>
+
+  <bean id="TemplateEngine" class="org.snapscript.web.resource.template.VelocityTemplateEngine">
+    <constructor-arg ref="VelocityEngine" />
+    <constructor-arg ref="FileResolver" />
+    <constructor-arg value="/" />
+    <constructor-arg value=".vm" />
+  </bean>
+
+  <bean id="ScriptController" class="org.snapscript.web.ScriptController" />
+
+  <bean id="ScriptResource" class="org.snapscript.web.resource.template.TemplateResource">
+    <constructor-arg ref="TemplateEngine" />
+    <constructor-arg ref="ScriptController" />
+  </bean>
+
+  <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
+    <constructor-arg value="Resource could not be found!!" />
+    <constructor-arg value="text/plain; charset=UTF-8" />
+    <constructor-arg value="UTF-8" />
+    <constructor-arg value="NOT_FOUND" />
+  </bean>
+
+  <bean id="TemplateMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
+    <constructor-arg>
+      <map>
+        <entry key="/.*.vm" value-ref="ScriptResource" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <bean id="FileMatcher" class="org.snapscript.web.resource.FileMatcher">
+    <constructor-arg ref="FileResolver" />
+    <constructor-arg ref="ContentTypeResolver" />
+  </bean>
+
+  <bean id="CombinationMatcher" class="org.snapscript.web.resource.CombinationMatcher">
+    <constructor-arg>
+      <list>
+        <ref bean="TemplateMatcher" />
+        <ref bean="FileMatcher" />
+      </list>
+    </constructor-arg>
+    <constructor-arg ref="NotFoundResource" />
+  </bean>
+
+  <bean id="ResourceContainer" class="org.snapscript.web.resource.ResourceContainer">
+    <constructor-arg ref="CombinationMatcher" />
+  </bean>
+
+
+  <bean id="WebContainer" class="org.snapscript.web.WebContainer">
+    <constructor-arg ref="ResourceContainer" />
+    <constructor-arg value="SSO/1.0" />
+  </bean>
+
+  <bean id="WebServer" class="org.snapscript.web.WebServer" init-method="start">
+    <constructor-arg ref="WebContainer" />
+    <constructor-arg value="${script.listenPort}" />
+  </bean>
+</beans>
