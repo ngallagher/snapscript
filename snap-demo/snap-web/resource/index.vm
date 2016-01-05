@@ -41,6 +41,6 @@
 	<input type="hidden" name="processId" value="web"/>
 </form>
 <br>
-<div style="overflow: scroll; height: 400px;" id="output"></div>
+<div style="overflow: scroll; height: 400px; font-family: monospace;" id="output"></div>
 </body>
 </html>
