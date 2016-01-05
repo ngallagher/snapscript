@@ -2,10 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ScriptEngineListener" class="org.snapscript.web.LoggerEngineListener" />
-
-  <bean id="ScriptEngine" class="org.snapscript.web.ScriptEngine" init-method="start">
-    <constructor-arg ref="ScriptEngineListener" />
+  <bean id="ScriptEngine" class="org.snapscript.web.WebScriptEngine" init-method="start">
     <constructor-arg value="${script.listenPort}" />
     <constructor-arg value="${script.commandPort}" />
     <constructor-arg value="${script.agentPool}" />
@@ -58,6 +55,10 @@
     <constructor-arg ref="ScriptEngine" />
   </bean>
 
+  <bean id="ClassPathResource" class="org.snapscript.web.ClassPathResource">
+    <constructor-arg value="${script.tempPath}" />
+  </bean>
+
   <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
@@ -65,9 +66,15 @@
     <constructor-arg value="NOT_FOUND" />
   </bean>
 
+  <bean id="WebScriptService" class="org.snapscript.web.WebScriptService">
+    <constructor-arg ref="ScriptEngine" />
+    <constructor-arg value="${script.tempPath}" />
+  </bean>
+
   <bean id="ScriptMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
+        <entry key="/temp.*" value-ref="ClassPathResource" />
         <entry key="/execute" value-ref="ScriptResource" />
       </map>
     </constructor-arg>

@@ -1,5 +1,10 @@
 <html>
 <body>
-Hi index.vm
+<form action="/execute" method="POST">
+	<textarea style="width:600; height:400;" name="script"></textarea><br>
+	<input type="hidden" name="processId" value="web"/>
+  <input type="submit">
+</form>
+
 </body>
 </html>

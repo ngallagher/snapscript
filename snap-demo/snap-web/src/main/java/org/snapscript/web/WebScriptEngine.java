@@ -1,12 +1,8 @@
 package org.snapscript.web;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -29,35 +25,38 @@ import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 import org.snapscript.web.message.Message;
+import org.snapscript.web.message.MessageClient;
 import org.snapscript.web.message.MessageListener;
-import org.snapscript.web.message.MessagePublisher;
-import org.snapscript.web.message.MessageReceiver;
 import org.snapscript.web.message.MessageType;
 
 /**
- * Create a pool of {@link ScriptAgent} processes that will stand idle waiting
+ * Create a pool of {@link WebScriptAgent} processes that will stand idle waiting
  * for scripts to be dispatched for execution. This should speed up the time
  * it takes to run a script.
  */
-public class ScriptEngine {
+public class WebScriptEngine {
 
    private final Map<String, BlockingQueue<AgentConnection>> connections;
    private final AtomicReference<AgentConnection> current;
-   private final MessageListener listener;
+   private final AtomicReference<MessageListener> listener;
    private final AgentPoolLauncher launcher;
    private final AgentServer server;
    private final AtomicBoolean active;
 
-   public ScriptEngine(MessageListener listener, int listenPort, int commandPort, int agentPool) throws Exception {
+   public WebScriptEngine(int listenPort, int commandPort, int agentPool) throws Exception {
       this.connections = new ConcurrentHashMap<String, BlockingQueue<AgentConnection>>();
       this.current = new AtomicReference<AgentConnection>();
+      this.listener = new AtomicReference<MessageListener>();
       this.launcher = new AgentPoolLauncher("http://localhost:"+listenPort+"/", commandPort, agentPool);
       this.server = new AgentServer(commandPort);
       this.active = new AtomicBoolean();
-      this.listener = listener;
       
       // add a default one
       connections.put(System.getProperty("os.name"), new LinkedBlockingQueue<AgentConnection>());
+   }
+   
+   public void register(MessageListener listener){
+      this.listener.set(listener);
    }
    
    public Set<String> getOperatingSystems() {
@@ -115,18 +114,18 @@ public class ScriptEngine {
       }
    }
    
-   private class AgentConsoleReader implements ScriptTask, Runnable {
+   private class AgentTask implements ScriptTask  {
       
+      private final MessageClient client;
       private final AtomicBoolean done;
       private final String processId;
-      private final Socket socket;
       private final File file;
       private final String path;
       
-      public AgentConsoleReader(Socket socket, String processId, File file, String path) {
+      public AgentTask(MessageClient client, String processId, File file, String path) {
          this.done = new AtomicBoolean();
          this.processId = processId;
-         this.socket = socket;
+         this.client = client;
          this.file = file;
          this.path = path;
       }
@@ -134,37 +133,20 @@ public class ScriptEngine {
       public void stop(){
          done.set(true);
          try {
-            socket.getOutputStream().close();
+            client.close();
          }catch(Exception e) {
             e.printStackTrace();
          }
       }
       
-      public void run() {
+      public void start() {
          try {
             parse();
             compile();
             syntax();
-            socket.setSoTimeout(0);
-            InputStreamReader reader = new InputStreamReader(socket.getInputStream(),"UTF-8");
-            BufferedReader buffer = new BufferedReader(reader);
-            while(!done.get()) {
-               String line = buffer.readLine();
-               
-               if(line != null) {
-                  System.out.println(processId + ": " +line);
-               } else {
-                  break;
-               }
-            }
+            client.setTimeout(0);
          }catch(Exception e){
             e.printStackTrace();
-         }finally {
-            try {
-               socket.close();
-            }catch(Exception ex){
-               ex.printStackTrace();
-            }
          }
       }
       
@@ -234,33 +216,28 @@ public class ScriptEngine {
    
    private class AgentConnection implements MessageListener {
       
-      private final MessageReceiver receiver;
-      private final MessagePublisher publisher;
-      private final Socket socket;
+      private final MessageClient client;
       
-      public AgentConnection(MessagePublisher publisher, Socket socket) {
-         this.receiver = new MessageReceiver(this, socket);
-         this.publisher = publisher;
-         this.socket = socket;
+      public AgentConnection(MessageClient client) {
+         this.client = client;
       }
       
       public synchronized ScriptTask execute(File script, String processId) {
          try {
-            socket.setSoTimeout(10000);
+            client.setTimeout(10000);
             File currentPath = new File(".");
             String relativePath = script.getCanonicalPath().substring(currentPath.getCanonicalPath().length());
             relativePath=relativePath.replace(File.separatorChar, '/');
             System.err.println("sending file '"+script.getCanonicalPath()+"' as '"+relativePath+"'");
-            publisher.publish(MessageType.PROCESS_ID, processId); // register a process id
-            publisher.publish(MessageType.SCRIPT, relativePath.replace(File.separatorChar, '/')); // send the script
-            AgentConsoleReader reader = new AgentConsoleReader(socket, processId, script, relativePath);
-            Thread thread = new Thread(reader, "AgentConsoleReader");
-            thread.start();
-            return reader;
+            client.getPublisher().publish(MessageType.PROCESS_ID, processId); // register a process id
+            client.getPublisher().publish(MessageType.SCRIPT, relativePath.replace(File.separatorChar, '/')); // send the script
+            AgentTask task = new AgentTask(client, processId, script, relativePath);
+            task.start();
+            return task;
          }catch(Exception e) {
             e.printStackTrace();
             try {
-               socket.close();
+               client.close();
             }catch(Exception ex) {
                ex.printStackTrace();
             }
@@ -270,20 +247,13 @@ public class ScriptEngine {
       
       public synchronized boolean ping() {
          try {
-            socket.setSoTimeout(10000);
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            out.writeUTF("type=ping");
-            String response = in.readUTF();
-            if(!response.equals("type=pong")) {
-               socket.close(); // kills the agent;
-               return false;
-            }
+            client.setTimeout(10000);
+            client.getPublisher().publish(MessageType.PING, new byte[]{},0,0);
             return true;
          }catch(Exception e) {
-            e.printStackTrace();
+            System.err.println("PING FAILURE ["+e.getMessage()+"]");
             try {
-               socket.close();
+               client.close();
             }catch(Exception ex) {
                ex.printStackTrace();
             }
@@ -292,13 +262,12 @@ public class ScriptEngine {
       }
       
       public synchronized void start() {
-         receiver.start();
+         client.start();
       }
       
       public synchronized void stop() {
          try {
-            socket.getOutputStream().write(1);
-            socket.getOutputStream().close();
+            client.close();
          }catch(Exception e) {
             e.printStackTrace();
          }
@@ -307,13 +276,18 @@ public class ScriptEngine {
       @Override
       public void onMessage(Message message) {
          MessageType type = message.getType();
+         String processId = message.getProcessId();
+         
+         System.err.println(type + " [" + processId + "]");
          
          if(type == MessageType.REGISTER) {
             onJoin(message);
          }
-         listener.onMessage(message);
+         if(listener.get()!=null){
+            listener.get().onMessage(message);
+         }
       }
-      
+
       private void onJoin(Message message) {
          try {
             String os = message.getData("UTF-8");
@@ -375,9 +349,9 @@ public class ScriptEngine {
             int require = agentPool;
             
             for(String os : osSet) {
-               BlockingQueue<AgentConnection> connections = ScriptEngine.this.connections.get(os);
+               BlockingQueue<AgentConnection> connections = WebScriptEngine.this.connections.get(os);
                
-               for(int i = 0; i < require; i++) {
+               while(!connections.isEmpty()) {
                   AgentConnection connection = connections.poll();
                   
                   if(connection == null) {
@@ -408,14 +382,14 @@ public class ScriptEngine {
                String javaHome = System.getProperty("java.home");
                String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
                String classpath = System.getProperty("java.class.path");
-               String className = ScriptAgent.class.getCanonicalName();
+               String className = WebScriptAgent.class.getCanonicalName();
                long agentId = counter.getAndIncrement();
                ProcessBuilder builder = new ProcessBuilder(javaBin, 
                      "-cp", 
                      classpath, 
                      className, 
                      rootURI,
-                     String.valueOf(agentId),
+                     "agent-" + agentId,
                      String.valueOf(commandPort));
                builder.redirectErrorStream(true);
                builder.start();
@@ -428,11 +402,9 @@ public class ScriptEngine {
    
    private class AgentServer implements Runnable {
       
-      private final AtomicReference<String> reference;
       private final int commandPort;
       
       public AgentServer(int commandPort) {
-         this.reference = new AtomicReference<String>("server");
          this.commandPort = commandPort;
       }
     
@@ -441,9 +413,10 @@ public class ScriptEngine {
             ServerSocket sock = new ServerSocket(commandPort);
             while(true) {
                Socket socket = sock.accept();
-               MessagePublisher publisher = new MessagePublisher(reference, socket.getOutputStream());
-               AgentConnection connection = new AgentConnection(publisher, socket);
+               MessageClient client = new MessageClient("server", socket);
+               AgentConnection connection = new AgentConnection(client);
                
+               client.register(connection);
                connection.start(); // start receiving messages
             }
          }catch(Exception e) {

@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.simpleframework.common.encode.Base64Encoder;
+
 public class Message {
 
    private final MessageType type;
@@ -11,6 +13,10 @@ public class Message {
    private final byte[] octets;
    private final int offset;
    private final int length;
+   
+   public Message(MessageType type, String process) {
+      this(type, process, new byte[]{});
+   }
    
    public Message(MessageType type, String process, byte[] octets) {
       this(type, process, octets, 0, octets.length);
@@ -22,6 +28,10 @@ public class Message {
       this.octets = octets;
       this.offset = offset;
       this.length = length;
+   }
+   
+   public String getProcessId(){
+      return process;
    }
    
    public MessageType getType(){
@@ -50,12 +60,16 @@ public class Message {
    
    public static void writeMessage(Message message, DataOutputStream output) throws IOException{
       String header = message.type.name();
-      int length = message.length;
-      
       output.writeUTF(header);
       output.writeUTF(message.process);
-      output.writeInt(length);
-      output.write(message.octets, message.offset, message.length);
+      if(message.length == 0) {
+         output.writeBoolean(false);
+      } else {
+         output.writeBoolean(true);
+         char[] encoded = Base64Encoder.encode(message.octets, message.offset, message.length);
+         String text = new String(encoded);
+         output.writeUTF(text);
+      }
       output.flush();
    }
    
@@ -63,10 +77,13 @@ public class Message {
       String header = input.readUTF();
       String process = input.readUTF();
       MessageType type = Enum.valueOf(MessageType.class, header);
-      int length = input.readInt();
-      byte[] array = new byte[length];
-      input.readFully(array);
-      
-      return new Message(type, process, array);
+      if(input.readBoolean()) {
+         String text = input.readUTF();
+         char[] encoded = text.toCharArray();
+         byte[] data = Base64Encoder.decode(encoded);
+         
+         return new Message(type, process, data);
+      }
+      return new Message(type, process);
    }
 }

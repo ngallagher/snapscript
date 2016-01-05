@@ -5,11 +5,11 @@ import java.io.OutputStream;
 
 public class MessageOutputStream extends OutputStream {
 
-   private final MessagePublisher publisher;
+   private final MessageClient client;
    private final MessageType type;
    
-   public MessageOutputStream(MessageType type, MessagePublisher publisher) {
-      this.publisher = publisher;
+   public MessageOutputStream(MessageType type, MessageClient client) {
+      this.client = client;
       this.type = type;
    }
    
@@ -22,7 +22,7 @@ public class MessageOutputStream extends OutputStream {
    }
    
    public void write(byte[] octets, int offset, int length) throws IOException {
-      publisher.publish(type, octets, offset, length);
+      client.getPublisher().publish(type, octets, offset, length);
    }
    
 }

@@ -10,5 +10,6 @@ public enum MessageType {
    SCRIPT,
    EXCEPTION,
    COMPILE_TIME,
-   EXECUTE_TIME;
+   EXECUTE_TIME,
+   EXIT;
 }

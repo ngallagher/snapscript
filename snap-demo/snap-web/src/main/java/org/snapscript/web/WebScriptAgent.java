@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.net.URI;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
@@ -18,13 +17,12 @@ import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.web.ScriptProfiler.ProfileResult;
 import org.snapscript.web.message.Message;
+import org.snapscript.web.message.MessageClient;
 import org.snapscript.web.message.MessageListener;
 import org.snapscript.web.message.MessageOutputStream;
-import org.snapscript.web.message.MessagePublisher;
-import org.snapscript.web.message.MessageReceiver;
 import org.snapscript.web.message.MessageType;
 
-public class ScriptAgent {
+public class WebScriptAgent {
 
    public final String SOURCE =
    "class InternalTypeForScriptAgent {\n"+
@@ -48,7 +46,7 @@ public class ScriptAgent {
    private final String process;
    private final int port;
 
-   public ScriptAgent(URI rootURI, String process, int port) {
+   public WebScriptAgent(URI rootURI, String process, int port) {
       this.context = new ScriptAgentContext(rootURI);
       this.compiler = new ResourceCompiler(context);
       this.profiler = new ScriptProfiler();
@@ -77,7 +75,10 @@ public class ScriptAgent {
       analyzer.register(profiler);
       try {
          Socket socket = new Socket("localhost", port);
-         ClientListener listener = new ClientListener(socket, process);
+         MessageClient client = new MessageClient(process, socket);
+         ClientListener listener = new ClientListener(client);
+         
+         client.register(listener);
          listener.start();
       } catch (Exception e) {
          e.printStackTrace();
@@ -85,29 +86,21 @@ public class ScriptAgent {
 
    }
 
-   private class ClientListener extends Thread implements MessageListener {
+   private class ClientListener implements MessageListener {
       
-      private final AtomicReference<String> reference;
-      private final MessagePublisher publisher;
-      private final MessageReceiver receiver;
-      private final Socket socket;
+      private final MessageClient client;
       
-      public ClientListener(Socket socket, String process) throws Exception {
-         this.reference = new AtomicReference<String>(process);
-         this.publisher = new MessagePublisher(reference, socket.getOutputStream());
-         this.receiver = new MessageReceiver(this, socket);
-         this.socket = socket;
+      public ClientListener(MessageClient client) throws Exception {
+         this.client = client;
       }
       
-      public void run() {
+      public void start() {
          try {
-            socket.setSoTimeout(0);
-            publisher.publish(MessageType.REGISTER, System.getProperty("os.name"));
-            receiver.start();
+            client.setTimeout(0);
+            client.getPublisher().publish(MessageType.REGISTER, System.getProperty("os.name"));
+            client.start();
          }catch(Exception e) {
             e.printStackTrace();
-         }finally{
-            System.exit(0);
          }
       }
 
@@ -128,7 +121,7 @@ public class ScriptAgent {
       
       private void onExit(Message message) {
          try {
-            socket.close(); // kills the agent
+            client.close(); // kills the agent
          } catch(Exception e) {
             e.printStackTrace();
          }
@@ -137,7 +130,7 @@ public class ScriptAgent {
       private void onProcessId(Message message) {
          try {
             String processId = message.getData("UTF-8");
-            reference.set(processId);
+            client.update(processId);
          } catch(Exception e){
             e.printStackTrace();
          }
@@ -145,7 +138,7 @@ public class ScriptAgent {
       
       private void onPing(Message message) {
          try {
-            publisher.publish(MessageType.PONG, new byte[]{});
+            client.getPublisher().publish(MessageType.PONG, new byte[]{});
          } catch(Exception e){
             e.printStackTrace();
          }
@@ -153,7 +146,7 @@ public class ScriptAgent {
       
       private void onScript(Message message) {
          String filePath = message.getData("UTF-8");
-         ExecuteTask task = new ExecuteTask(publisher, filePath);
+         ExecuteTask task = new ExecuteTask(client, filePath);
          task.start();
 
       }
@@ -171,11 +164,11 @@ public class ScriptAgent {
    
    private class ExecuteTask extends Thread {
       
-      private final MessagePublisher publisher;
+      private final MessageClient client;
       private final String filePath;
       
-      public ExecuteTask(MessagePublisher publisher, String filePath) {
-         this.publisher = publisher;
+      public ExecuteTask(MessageClient client, String filePath) {
+         this.client = client;
          this.filePath = filePath;
       }
       
@@ -202,6 +195,7 @@ public class ScriptAgent {
                Thread.sleep(2000);
                System.err.close();
                System.out.close();
+               client.getPublisher().publish(MessageType.EXIT);
             } catch(Exception e) {
                e.printStackTrace();
             } finally {
@@ -212,8 +206,8 @@ public class ScriptAgent {
 
       private void execute() {
          try {
-            MessageOutputStream error = new MessageOutputStream(MessageType.PRINT_ERROR, publisher);
-            MessageOutputStream output = new MessageOutputStream(MessageType.PRINT_OUTPUT, publisher);
+            MessageOutputStream error = new MessageOutputStream(MessageType.PRINT_ERROR, client);
+            MessageOutputStream output = new MessageOutputStream(MessageType.PRINT_OUTPUT, client);
             
             // redirect all output to the streams
             System.setOut(new PrintStream(output, false, "UTF-8"));
@@ -229,8 +223,8 @@ public class ScriptAgent {
             System.err.flush();
             System.err.println();
             
-            publisher.publish(MessageType.COMPILE_TIME, TimeUnit.NANOSECONDS.toMillis(middle-start));
-            publisher.publish(MessageType.EXECUTE_TIME, TimeUnit.NANOSECONDS.toMillis(stop-middle));
+            client.getPublisher().publish(MessageType.COMPILE_TIME, TimeUnit.NANOSECONDS.toMillis(middle-start));
+            client.getPublisher().publish(MessageType.EXECUTE_TIME, TimeUnit.NANOSECONDS.toMillis(stop-middle));
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }
@@ -238,6 +232,6 @@ public class ScriptAgent {
    }
 
    public static void main(String[] list) throws Exception {
-      new ScriptAgent(URI.create(list[0]), list[1], Integer.parseInt(list[2])).run();
+      new WebScriptAgent(URI.create(list[0]), list[1], Integer.parseInt(list[2])).run();
    }
 }

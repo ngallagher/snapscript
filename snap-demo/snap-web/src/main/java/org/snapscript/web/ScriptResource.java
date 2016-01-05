@@ -12,9 +12,9 @@ import org.snapscript.web.resource.Resource;
 // NEEDS TO BE A WEBSOCKET SERVICE!!!!
 public class ScriptResource implements Resource {
 
-   private final ScriptEngine engine;
+   private final WebScriptEngine engine;
    
-   public ScriptResource(ScriptEngine engine) {
+   public ScriptResource(WebScriptEngine engine) {
       this.engine = engine;
    }
 
