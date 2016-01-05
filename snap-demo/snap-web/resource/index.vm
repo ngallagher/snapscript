@@ -1,10 +1,46 @@
 <html>
-<body>
-<form action="/execute" method="POST">
-	<textarea style="width:600; height:400;" name="script"></textarea><br>
-	<input type="hidden" name="processId" value="web"/>
-  <input type="submit">
-</form>
+    <head>
+        <title>Script Engine</title>
+        <script>
+            function init() {
+            websocket = new WebSocket("ws://localhost:4457/run");
 
+            websocket.onopen = function() { 
+            	document.getElementById("output").innerHTML = ""; 
+           	};
+
+            websocket.onmessage = function(evt) { 
+            	var text = evt.data;
+            	var index = text.indexOf(':');
+            	var value = text.substring(index + 1);
+            	var type = text.substring(0, index);
+            	
+            	if(type == 'PRINT_ERROR') {
+            		document.getElementById("output").innerHTML += "<span style='color: red;'>" + value + "</span>"; 
+           		} else if(type == 'PRINT_OUTPUT'){
+           		    document.getElementById("output").innerHTML += "<span style='color: black;'>" + value + "</span>"; 
+           		} 
+          	};
+
+            websocket.onerror = function(evt) { 
+            	document.getElementById("output").innerHTML += "<span style='color: red;'>" + evt.data + "</span>"; };
+            }
+
+            function sendMessage(message) {
+                document.getElementById("output").innerHTML = ""; 
+            	websocket.send(message);
+            	return false;
+            }
+            window.addEventListener("load", init, false);
+        </script>
+    </head>
+<body>
+<form onsubmit="return sendMessage(document.getElementById('script').value);">
+  <input type="submit"><br>
+	<textarea id="script" style="width:600; height:400;" name="script"></textarea><br>
+	<input type="hidden" name="processId" value="web"/>
+</form>
+<br>
+<div style="overflow: scroll; height: 400px;" id="output"></div>
 </body>
 </html>
