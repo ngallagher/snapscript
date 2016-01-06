@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bond Central</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link href="/ide/css/external/w2ui.min.css" rel="stylesheet">
+<link href="/ide/css/external/font-awesome.min.css" rel="stylesheet">
+<link href="/ide/css/external/bootstrap.min.css" rel="stylesheet">
+<link href="/ide/css/splash.css" rel="stylesheet" />
+<script src="/ide/js/ace/ace.js"></script>
+<script src="/ide/js/external/jquery.min.js"></script>
+<script src="/ide/js/external/bootstrap.min.js"></script>
+<script src="/ide/js/external/spin.js"></script>
+<script src="/ide/js/external/w2ui.min.js"></script>
+<script src="/ide/js/module.js"></script>
+<script src="/ide/js/spinner.js"></script>
+<script src="/ide/js/editor.js"></script>
+<script src="/ide/js/socket.js"></script>
+<script src="/ide/js/grid.js"></script>
+<script src="/ide/js/rpc.js"></script>
+<script src="/ide/js/common.js"></script>
+</head>
+<style>
+#editor {
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 0.9em;   
+ 	border-style: solid;
+    border-width: 1px;
+    border-color: #c0c0c0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.titleTop {
+	padding: 5px;
+	height: 40px;
+    background-image: -webkit-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -moz-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -ms-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -o-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: linear-gradient(#f0f0f0, #dfdfdf);
+    filter: progid: dximagetransform.microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#ffdfdfdf', GradientType=0);  
+}
+
+button.panic {
+	background-image: -webkit-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -moz-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -ms-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -o-linear-gradient(#ffaaaa, #ff3333);
+	background-image: linear-gradient(#ffaaaa, #ff3333);
+	filter: progid: dximagetransform.microsoft.gradient(startColorstr='#ffffaaaa',endColorstr='#ffff3333', GradientType=0);
+	color: #ececec;
+}
+
+button.selected {
+	background-image: -webkit-linear-gradient(#88cc88, #33aa33);
+	background-image: -moz-linear-gradient(#88cc88, #33aa33);
+	background-image: -ms-linear-gradient(#88cc88, #33aa33);
+	background-image: -o-linear-gradient(#88cc88, #33aa33);
+	background-image: linear-gradient(#88cc88, #33aa33);
+	filter: progid: dximagetransform.microsoft.gradient(startColorstr='#ff88cc88',endColorstr='#ff33aa33', GradientType=0);
+	color: #fcfcfc;
+}
+
+.update {
+	background-color: #5cacee;
+}
+
+.highlight {
+	background-color: #00ff00;
+}
+
+
+</style>
+<body style="height: 100%; margin: 0; background-color: #ececec;">
+  <div id="mainLayout" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"></div>
+  <div id="overlay">
+    <div id="spin"></div>
+  </div>
+  <script type="text/javascript" src="ide.js"></script>
+</body>
+</html>
+

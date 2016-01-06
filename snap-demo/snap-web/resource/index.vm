@@ -1,6 +1,20 @@
 <html>
     <head>
         <title>Script Engine</title>
+            <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.4.2.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.4.2.min.js"></script>
+		<style type="text/css" media="screen">
+		    #editor {
+		        font-family: "Lucida Console", sans-serif; 
+		        font-size: 0.9em;   
+		        position: absolute;
+		        top: 40;
+		        right: 0;
+		        bottom: 200;
+		        left: 0;
+		    }
+		</style>        
         <script>
             function init() {
             websocket = new WebSocket("ws://localhost:4457/run");
@@ -26,18 +40,28 @@
             	document.getElementById("output").innerHTML += "<span style='color: red;'>" + evt.data + "</span>"; };
             }
 
-            function sendMessage(message) {
+            function sendMessage() {
+            	var editor = ace.edit("editor")
+                var value = editor.getValue();
+                
                 document.getElementById("output").innerHTML = ""; 
-            	websocket.send(message);
+            	websocket.send(value);
             	return false;
             }
             window.addEventListener("load", init, false);
         </script>
     </head>
+    
 <body>
-<form onsubmit="return sendMessage(document.getElementById('script').value);">
+<div id="editor"></div>
+<script src="./src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    //editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/snapscript");
+</script>
+<form onsubmit="return sendMessage();">
   <input type="submit"><br>
-	<textarea id="script" style="width:600; height:400;" name="script"></textarea><br>
 	<input type="hidden" name="processId" value="web"/>
 </form>
 <br>
