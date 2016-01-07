@@ -58,6 +58,8 @@
   <bean id="ClassPathResource" class="org.snapscript.web.ClassPathResource">
     <constructor-arg value="${script.tempPath}" />
   </bean>
+  
+  <bean id="TreeResource" class="org.snapscript.web.resource.tree.TreeResource"/>
 
   <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
@@ -75,6 +77,7 @@
     <constructor-arg>
       <map>
         <entry key="/temp.*" value-ref="ClassPathResource" />
+        <entry key="/tree.*" value-ref="TreeResource" />        
         <entry key="/execute" value-ref="ScriptResource" />
       </map>
     </constructor-arg>
