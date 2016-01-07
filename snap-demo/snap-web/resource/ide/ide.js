@@ -2,15 +2,9 @@ var spinnerHiding = false;
 
 function runScript(){
    //reconnect("best");
-   document.getElementById("mainMarket").className = ""; 
-   document.getElementById("mainMarket").className = "btn selected";
-   document.getElementById("mainMyPrices").className = "";  
-   document.getElementById("mainMyPrices").className = "btn";
-   document.getElementById("litMyPrices").className = "";   
-   document.getElementById("litMyPrices").className = "btn";
-   document.getElementById("switchMyPrices").className = "";   
-   document.getElementById("switchMyPrices").className = "btn";
-   //location.href = "http://localhost:6060/grid.html?user=tom&company=ANZ&type=best";
+	var text = loadEditor();
+	clearConsole();
+	socket.send(text);
 }
 
 function saveScript(){
@@ -95,9 +89,9 @@ function createLayout() {
                     ],
                     onClick: function (event) {
                         if(event.target == 'tab1') {
-                           w2ui['tabLayout'].content('main', "<div id='console'></div>");                           
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");                           
                         } else {
-                           w2ui['tabLayout'].content('main', "<div id='problems'></div>");                           
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='problems'></div>");                           
                         }
                         w2ui['tabLayout'].refresh();
                     }
@@ -110,7 +104,7 @@ function createLayout() {
     w2ui['mainLayout'].content('main', w2ui['blueLayout']);
     w2ui['blueLayout'].content('bottom', w2ui['tabLayout']);
     
-    w2ui['tabLayout'].content('main', "<div id='console'></div>");
+    w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");
     w2ui['tabLayout'].refresh();
     
 }

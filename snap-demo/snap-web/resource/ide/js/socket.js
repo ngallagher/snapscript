@@ -90,7 +90,7 @@ function openSocket() {
 
    socket.onmessage = function(message) {
       var data = message.data.substring(1);
-      var code = message.data.substring(0, 1);
+      var code = message.data.substring(0, 1); // single character determines route e.g H, T
       var route = routes[code];
       
       if(route != undefined) {

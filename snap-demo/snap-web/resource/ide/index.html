@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bond Central</title>
+<title>Snap IDE</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link href="/ide/css/external/w2ui.min.css" rel="stylesheet">
 <link href="/ide/css/external/font-awesome.min.css" rel="stylesheet">
@@ -20,12 +20,18 @@
 <script src="/ide/js/spinner.js"></script>
 <script src="/ide/js/editor.js"></script>
 <script src="/ide/js/socket.js"></script>
+<script src="/ide/js/console.js"></script>
 <script src="/ide/js/grid.js"></script>
 <script src="/ide/js/tree.js"></script>
 <script src="/ide/js/rpc.js"></script>
 <script src="/ide/js/common.js"></script>
 </head>
 <style>
+.errorMarker {
+  position:absolute;
+  background:rgba(250,10,10,0.3);
+  z-index:20
+}
 #editor {
     font-family: "Lucida Console", sans-serif; 
     font-size: 0.9em;   

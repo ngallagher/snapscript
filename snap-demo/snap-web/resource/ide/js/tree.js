@@ -10,6 +10,12 @@ function showTree() {
 
 }
 
+function openTreeFile(path) {
+    $.get(path, function(response) {
+    	updateEditor(response);
+    });
+}
+
 function createTree() {
 	$(document).ready(function(){
 	    $.get('/tree', function(response) {
@@ -17,7 +23,13 @@ function createTree() {
 	    })
 	    function showFancyTree() {
 	    	// using default options
-	    	$("#tree").fancytree();
+	    	$("#tree").fancytree({
+	    		  click: function(event, data) {
+	    			 if(!data.node.isFolder()){
+	    			    openTreeFile(data.node.tooltip);
+	    			 }
+				  }
+	    	});
         }
         window.setTimeout(showFancyTree, 1000);
       });

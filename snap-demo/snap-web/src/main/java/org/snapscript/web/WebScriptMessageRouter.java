@@ -41,7 +41,7 @@ public class WebScriptMessageRouter implements MessageListener {
                MessageType type = message.getType();
                String text = message.getData("UTF-8");
                text = text.replace("\n", "<br>");
-               operation.send(type+":"+text);
+               operation.send(type.prefix+""+type+":"+text);
             }
          } catch(Exception e){   
             sockets.remove(processId);

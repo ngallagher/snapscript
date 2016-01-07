@@ -59,8 +59,10 @@
     <constructor-arg value="${script.tempPath}" />
   </bean>
   
-  <bean id="TreeResource" class="org.snapscript.web.resource.tree.TreeResource"/>
-
+  <bean id="TreeResource" class="org.snapscript.web.resource.tree.TreeResource">
+    <constructor-arg value="${script.resourcePath}" />
+  </bean>
+  
   <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
