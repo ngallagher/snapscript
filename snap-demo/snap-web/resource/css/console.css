@@ -1,0 +1,8 @@
+.consoleError {
+   color: red;
+   white-space: pre;
+}
+.consoleNormal {
+   color: black;
+   white-space: pre;
+}

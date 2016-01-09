@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>${project}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link href="/css/external/w2ui.min.css" rel="stylesheet">
+<link href="/css/external/font-awesome.min.css" rel="stylesheet">
+<link href="/css/external/bootstrap.min.css" rel="stylesheet">
+<link href="/css/external/jquery-ui.min.css" rel="stylesheet" />
+<link href="/css/external/fancytree.css" rel="stylesheet" />
+<link href="/css/splash.css" rel="stylesheet" />
+<link href="/css/console.css" rel="stylesheet" />
+<script src="/js/ace/ace.js"></script>
+<script src="/js/external/jquery.min.js"></script>
+<script src="/js/external/jquery-ui.min.js"></script>
+<script src="/js/external/bootstrap.min.js"></script>
+<script src="/js/external/spin.js"></script>
+<script src="/js/external/fancytree.js"></script>
+<script src="/js/external/w2ui.min.js"></script>
+<script src="/js/module.js"></script>
+<script src="/js/spinner.js"></script>
+<script src="/js/editor.js"></script>
+<script src="/js/socket.js"></script>
+<script src="/js/console.js"></script>
+<script src="/js/grid.js"></script>
+<script src="/js/tree.js"></script>
+<script src="/js/rpc.js"></script>
+<script src="/js/common.js"></script>
+</head>
+<style>
+.errorMarker {
+  position:absolute;
+  background:rgba(250,10,10,0.3);
+  z-index:20
+}
+#editor {
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 0.9em;   
+ 	border-style: solid;
+    border-width: 1px;
+    border-color: #c0c0c0;
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+}
+#explorer {
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 0.9em;
+    background-color: #ffffff; 
+ 	border-style: solid;
+    border-width: 1px;
+    border-color: #c0c0c0;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+#console {
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 0.9em;
+    background-color: #ffffff; 
+    border-radius: 4px;      
+ 	border-style: solid;
+    border-width: 1px;
+    border-color: #c0c0c0;
+    padding: 5px;
+    position: absolute;
+    padding: 2px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+}
+#problems {
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 0.9em;   
+    background-color: #ffffff;
+    border-radius: 4px;    
+ 	border-style: solid;
+    border-width: 1px;
+    border-color: #c0c0c0;
+    position: absolute;
+    padding: 2px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+}
+.titleTop {
+	padding: 5px;
+	height: 40px;
+    background-image: -webkit-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -moz-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -ms-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: -o-linear-gradient(#f0f0f0, #dfdfdf);
+    background-image: linear-gradient(#f0f0f0, #dfdfdf);
+    filter: progid: dximagetransform.microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#ffdfdfdf', GradientType=0);  
+}
+
+button.panic {
+	background-image: -webkit-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -moz-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -ms-linear-gradient(#ffaaaa, #ff3333);
+	background-image: -o-linear-gradient(#ffaaaa, #ff3333);
+	background-image: linear-gradient(#ffaaaa, #ff3333);
+	filter: progid: dximagetransform.microsoft.gradient(startColorstr='#ffffaaaa',endColorstr='#ffff3333', GradientType=0);
+	color: #ececec;
+}
+
+button.selected {
+	background-image: -webkit-linear-gradient(#88cc88, #33aa33);
+	background-image: -moz-linear-gradient(#88cc88, #33aa33);
+	background-image: -ms-linear-gradient(#88cc88, #33aa33);
+	background-image: -o-linear-gradient(#88cc88, #33aa33);
+	background-image: linear-gradient(#88cc88, #33aa33);
+	filter: progid: dximagetransform.microsoft.gradient(startColorstr='#ff88cc88',endColorstr='#ff33aa33', GradientType=0);
+	color: #fcfcfc;
+}
+
+.update {
+	background-color: #5cacee;
+}
+
+.highlight {
+	background-color: #00ff00;
+}
+
+
+</style>
+<body style="height: 100%; margin: 0; background-color: #ececec;">
+  <div id="mainLayout" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"></div>
+  <div id="overlay">
+    <div id="spin"></div>
+  </div>
+  <script type="text/javascript" src="/project.js"></script>
+</body>
+</html>
+

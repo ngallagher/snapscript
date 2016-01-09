@@ -50,17 +50,24 @@
   </bean>
 
   <bean id="ScriptController" class="org.snapscript.web.ScriptController" />
-
-  <bean id="ScriptResource" class="org.snapscript.web.ScriptResource">
-    <constructor-arg ref="ScriptEngine" />
-  </bean>
-
-  <bean id="ClassPathResource" class="org.snapscript.web.ClassPathResource">
-    <constructor-arg value="${script.tempPath}" />
+  
+  <bean id="ProjectResource" class="org.snapscript.web.project.ProjectResource">
+    <constructor-arg ref="TemplateEngine" />         
+    <constructor-arg value="project.vm" />
   </bean>
   
-  <bean id="TreeResource" class="org.snapscript.web.resource.tree.TreeResource">
-    <constructor-arg value="${script.resourcePath}" />
+  <bean id="ProjectFileResource" class="org.snapscript.web.project.ProjectFileResource">
+    <constructor-arg ref="ContentTypeResolver" />         
+    <constructor-arg value="${project.path}" />
+  </bean>
+  
+  <bean id="ProjectTreeResource" class="org.snapscript.web.project.ProjectTreeResource"> 
+    <constructor-arg value="${project.path}" />
+  </bean>
+  
+  <bean id="ProjectScriptService" class="org.snapscript.web.project.ProjectScriptService">
+    <constructor-arg ref="ScriptEngine" />
+    <constructor-arg value="${project.path}" />
   </bean>
   
   <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
@@ -70,17 +77,12 @@
     <constructor-arg value="NOT_FOUND" />
   </bean>
 
-  <bean id="WebScriptService" class="org.snapscript.web.WebScriptService">
-    <constructor-arg ref="ScriptEngine" />
-    <constructor-arg value="${script.tempPath}" />
-  </bean>
-
   <bean id="ScriptMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/temp.*" value-ref="ClassPathResource" />
-        <entry key="/tree.*" value-ref="TreeResource" />        
-        <entry key="/execute" value-ref="ScriptResource" />
+        <entry key="/project/.*" value-ref="ProjectResource" />          
+        <entry key="/resource/.*" value-ref="ProjectFileResource" />
+        <entry key="/tree/.*" value-ref="ProjectTreeResource" />        
       </map>
     </constructor-arg>
   </bean>
@@ -111,7 +113,7 @@
   </bean>
   
   <bean id="WebSocketRouter" class="org.simpleframework.http.socket.service.DirectRouter">
-    <constructor-arg ref="WebScriptService" />
+    <constructor-arg ref="ProjectScriptService" />
   </bean>
 
   <bean id="WebSocketContainer" class="org.simpleframework.http.socket.service.RouterContainer">
