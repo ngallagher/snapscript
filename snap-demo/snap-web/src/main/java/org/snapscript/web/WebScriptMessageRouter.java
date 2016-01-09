@@ -40,7 +40,6 @@ public class WebScriptMessageRouter implements MessageListener {
             if(operation != null) {
                MessageType type = message.getType();
                String text = message.getData("UTF-8");
-               text = text.replace("\n", "<br>");
                operation.send(type.prefix+""+type+":"+text);
             }
          } catch(Exception e){   

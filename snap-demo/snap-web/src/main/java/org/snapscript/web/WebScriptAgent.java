@@ -15,6 +15,7 @@ import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
+import org.snapscript.core.resource.RemoteReader;
 import org.snapscript.web.ScriptProfiler.ProfileResult;
 import org.snapscript.web.message.Message;
 import org.snapscript.web.message.MessageClient;
@@ -40,14 +41,18 @@ public class WebScriptAgent {
    "System.err.println(privateVariableInScriptAgent.x);\n"+
    "System.err.println(InternalTypeForScriptAgent.ARR);";
 
-   private final Context context;
+   private final ScriptResourceReader reader;
+   private final ScriptAgentContext context;
    private final ResourceCompiler compiler;
    private final ScriptProfiler profiler;
+   private final RemoteReader remoteReader;
    private final String process;
    private final int port;
 
    public WebScriptAgent(URI rootURI, String process, int port) {
-      this.context = new ScriptAgentContext(rootURI);
+      this.remoteReader = new RemoteReader(rootURI);
+      this.reader = new ScriptResourceReader(remoteReader);
+      this.context = new ScriptAgentContext(reader);
       this.compiler = new ResourceCompiler(context);
       this.profiler = new ScriptProfiler();
       this.process = process;
@@ -114,6 +119,8 @@ public class WebScriptAgent {
             onScript(message);
          } else if(type == MessageType.PROCESS_ID) {
             onProcessId(message);
+         } else if(type == MessageType.PROJECT_NAME) {
+            onProjectName(message);            
          } else {
             onExit(message);
          }
@@ -123,6 +130,15 @@ public class WebScriptAgent {
          try {
             client.close(); // kills the agent
          } catch(Exception e) {
+            e.printStackTrace();
+         }
+      }
+      
+      private void onProjectName(Message message) {
+         try {
+            String projectName = message.getData("UTF-8");
+            reader.update(projectName);
+         } catch(Exception e){
             e.printStackTrace();
          }
       }

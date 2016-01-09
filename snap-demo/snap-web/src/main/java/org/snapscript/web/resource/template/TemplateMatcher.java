@@ -69,7 +69,7 @@ public class TemplateMatcher implements ResourceMatcher {
       public void handle(Request request, Response response) throws Throwable {
          Path path = request.getPath();
          String[] segments = path.getSegments();
-         Method method = cache.get(segments[0]);
+         Method method = cache.get(segments[1]);
          TemplateResult result = (TemplateResult)method.invoke(value, request, response);
          TemplateModel model = result.getModel();
          String template = result.getTemplate();

@@ -35,6 +35,8 @@ import org.snapscript.web.message.MessageType;
  * it takes to run a script.
  */
 public class WebScriptEngine {
+   
+   private static final String RESOURCE_URL = "http://localhost:%s/resource";
 
    private final Map<String, BlockingQueue<AgentConnection>> connections;
    private final AtomicReference<AgentConnection> current;
@@ -47,7 +49,7 @@ public class WebScriptEngine {
       this.connections = new ConcurrentHashMap<String, BlockingQueue<AgentConnection>>();
       this.current = new AtomicReference<AgentConnection>();
       this.listener = new AtomicReference<MessageListener>();
-      this.launcher = new AgentPoolLauncher("http://localhost:"+listenPort+"/", commandPort, agentPool);
+      this.launcher = new AgentPoolLauncher(String.format(RESOURCE_URL, listenPort), commandPort, agentPool);
       this.server = new AgentServer(commandPort);
       this.active = new AtomicBoolean();
       
@@ -66,17 +68,17 @@ public class WebScriptEngine {
    }
 
    // launch a task and wait for it to finish
-   public ScriptTask executeScript(File file, String processId, String os) {
+   public ScriptTask executeScript(File file, String project, String path, String processId, String os) {
       try {
          killCurrentProcess(); // stop anything currently running
-         return launchNewProcess(file, processId, os); // launch a new script
+         return launchNewProcess(file, project, path, processId, os); // launch a new script
       }catch(Exception e) {
          e.printStackTrace();
       }
       return null;
    }
    
-   private ScriptTask launchNewProcess(File file, String processId, String os) {
+   private ScriptTask launchNewProcess(File file, String project, String path, String processId, String os) {
       try {
          AgentConnection conn = connections.get(os).poll(5, TimeUnit.SECONDS); // take a process from the pool
          
@@ -85,7 +87,7 @@ public class WebScriptEngine {
          }
          try {
             current.set(conn); // ensure we can stop the agent if needed
-            return conn.execute(file, processId);
+            return conn.execute(file, project, path, processId);
          }catch(Exception e) {
             e.printStackTrace();
          }
@@ -222,16 +224,14 @@ public class WebScriptEngine {
          this.client = client;
       }
       
-      public synchronized ScriptTask execute(File script, String processId) {
+      public synchronized ScriptTask execute(File script, String project, String path, String processId) {
          try {
             client.setTimeout(10000);
-            File currentPath = new File(".");
-            String relativePath = script.getCanonicalPath().substring(currentPath.getCanonicalPath().length());
-            relativePath=relativePath.replace(File.separatorChar, '/');
-            System.err.println("sending file '"+script.getCanonicalPath()+"' as '"+relativePath+"'");
+            System.err.println("sending file '"+script.getCanonicalPath()+"' as '"+path+"'");
             client.getPublisher().publish(MessageType.PROCESS_ID, processId); // register a process id
-            client.getPublisher().publish(MessageType.SCRIPT, relativePath.replace(File.separatorChar, '/')); // send the script
-            AgentTask task = new AgentTask(client, processId, script, relativePath);
+            client.getPublisher().publish(MessageType.PROJECT_NAME, project); // send the script
+            client.getPublisher().publish(MessageType.SCRIPT, path); // send the script
+            AgentTask task = new AgentTask(client, processId, script, path);
             task.start();
             return task;
          }catch(Exception e) {
