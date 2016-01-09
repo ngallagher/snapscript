@@ -12,16 +12,16 @@ public class TraceAnalyzer implements TraceInterceptor {
    }
    
    @Override
-   public void before(Scope scope, Object instruction, int line, int key) {
+   public void before(Scope scope, Object instruction, String resource, int line, int key) {
       for(TraceInterceptor interceptor : interceptors) {
-         interceptor.before(scope, instruction, line, key);
+         interceptor.before(scope, instruction, resource, line, key);
       }
    }
    
    @Override
-   public void after(Scope scope, Object instruction, int line, int key) {
+   public void after(Scope scope, Object instruction, String resource, int line, int key) {
       for(TraceInterceptor interceptor : interceptors) {
-         interceptor.after(scope, instruction, line, key);
+         interceptor.after(scope, instruction, resource, line, key);
       }
    }
 

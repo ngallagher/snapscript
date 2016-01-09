@@ -3,11 +3,53 @@ var consoleCapacity = 1000;
 
 function registerConsole() {
 	createRoute('C', updateConsole);
+	setInterval(showConsole, 200); // prevents reflow overload when console is busy
 }
 
 function clearConsole() {
-    document.getElementById("console").innerHTML = ""; 
+	var consoleElement = document.getElementById("console");
+	
+	if(consoleElement != null) {
+       document.getElementById("console").innerHTML = "";
+	}
     consoleWindow = [];
+}
+
+function showConsole() {
+	var consoleElement = document.getElementById("console");
+	var consoleText = null;
+	var previous = null;
+	
+	if(consoleElement != null) {
+		for(var i = 0; i < consoleWindow.length; i++) {
+			var next = consoleWindow[i];
+			
+			if(previous == null) {
+				if(next.error) {
+					consoleText = "<span class='consoleError'>" + next.text;
+				} else {
+					consoleText = "<span class='consoleNormal'>" + next.text;
+				}
+				previous = next.error;
+			} else if(next.error != previous) {
+				consoleText += "</span>";
+				
+				if(next.error) {
+					consoleText += "<span class='consoleError'>" + next.text;
+				} else {
+					consoleText += "<span class='consoleNormal'>" + next.text;
+				}
+				previous = next.error;
+			} else {
+				consoleText += next.text;
+			}
+		}
+		if(consoleText != null) {
+			consoleText += "</span>";
+			consoleElement.innerHTML = consoleText;
+			consoleElement.scrollTop = consoleElement.scrollHeight;
+		}
+	}
 }
 
 function updateConsole(socket, text) {
@@ -23,38 +65,6 @@ function updateConsole(socket, text) {
 	if(consoleWindow.length > consoleCapacity) {	
 		consoleWindow.shift(); // remove from the start, i.e index 0
 	}
-	var consoleText = null;
-	var previous = null;
-	
-	for(var i = 0; i < consoleWindow.length; i++) {
-		var next = consoleWindow[i];
-		
-		if(previous == null) {
-			if(next.error) {
-				consoleText = "<span class='consoleError'>" + next.text;
-			} else {
-				consoleText = "<span class='consoleNormal'>" + next.text;
-			}
-			previous = next.error;
-		} else if(next.error != previous) {
-			consoleText += "</span>";
-			
-			if(next.error) {
-				consoleText += "<span class='consoleError'>" + next.text;
-			} else {
-				consoleText += "<span class='consoleNormal'>" + next.text;
-			}
-			previous = next.error;
-		} else {
-			consoleText += next.text;
-		}
-	}
-	var consoleElement = document.getElementById("console");
-	
-	consoleText += "</span>";
-	consoleElement.innerHTML = consoleText;
-	consoleElement.scrollTop = consoleElement.scrollHeight;
-	
 }
 
 registerModule("console", "Console module: console.js", registerConsole, ["common", "socket"]);

@@ -4,6 +4,7 @@ function runScript(){
    //reconnect("best");
 	var text = loadEditor();
 	clearConsole();
+	clearProblems();
 	socket.send(text);
 }
 
@@ -89,11 +90,14 @@ function createLayout() {
                     ],
                     onClick: function (event) {
                         if(event.target == 'tab1') {
-                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");                           
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");
+                           w2ui['tabLayout'].refresh();
+                           showConsole();
                         } else {
-                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='problems'></div>");                           
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='problems'></div>");   
+                           w2ui['tabLayout'].refresh();
+                           showProblems();
                         }
-                        w2ui['tabLayout'].refresh();
                     }
                 }
             }
@@ -109,4 +113,4 @@ function createLayout() {
     
 }
 
-registerModule("project", "Project module: project.js", createLayout, ["common", "socket", "console", "spinner", "tree"]);
+registerModule("project", "Project module: project.js", createLayout, ["common", "socket", "console", "problem", "editor", "spinner", "tree"]);

@@ -21,13 +21,14 @@ public class TraceEvaluation implements Evaluation {
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
+      String resource = line.getResource();
       int number = line.getNumber();
       
       try {
-         analyzer.before(scope, evaluation, number, key);
+         analyzer.before(scope, evaluation, resource, number, key);
          return evaluation.evaluate(scope, left); 
       } finally {
-         analyzer.after(scope, evaluation, number, key);
+         analyzer.after(scope, evaluation, resource, number, key);
       }
    }
 

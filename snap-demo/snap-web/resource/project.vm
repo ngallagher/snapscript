@@ -26,6 +26,7 @@
 <script src="/js/tree.js"></script>
 <script src="/js/rpc.js"></script>
 <script src="/js/common.js"></script>
+<script src="/js/problem.js"></script>
 </head>
 <style>
 .errorMarker {

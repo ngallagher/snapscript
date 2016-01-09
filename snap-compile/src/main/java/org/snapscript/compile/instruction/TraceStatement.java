@@ -27,13 +27,14 @@ public class TraceStatement extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
+      String resource = line.getResource();
       int number = line.getNumber();
       
       try {
-         analyzer.before(scope, statement, number, key);
+         analyzer.before(scope, statement, resource, number, key);
          return statement.execute(scope); 
       } finally {
-         analyzer.after(scope, statement, number, key);
+         analyzer.after(scope, statement, resource, number, key);
       }
    }
 }

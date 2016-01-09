@@ -10,6 +10,7 @@ public enum MessageType {
    REGISTER('R'),
    SCRIPT('S'),
    EXCEPTION('E'),
+   SYNTAX_ERROR('Y'),
    COMPILE_TIME('T'),
    EXECUTE_TIME('T'),
    EXIT('X');

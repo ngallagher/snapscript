@@ -1,7 +1,6 @@
 package org.snapscript.web.project;
 
 import java.io.File;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.simpleframework.http.Path;
