@@ -1,4 +1,5 @@
 var consoleWindow = [];
+var consoleUpdate = false;
 var consoleCapacity = 1000;
 
 function registerConsole() {
@@ -20,7 +21,8 @@ function showConsole() {
 	var consoleText = null;
 	var previous = null;
 	
-	if(consoleElement != null) {
+	if(consoleElement != null && consoleUpdate) {
+		consoleUpdate = false;
 		for(var i = 0; i < consoleWindow.length; i++) {
 			var next = consoleWindow[i];
 			
@@ -65,6 +67,7 @@ function updateConsole(socket, text) {
 	if(consoleWindow.length > consoleCapacity) {	
 		consoleWindow.shift(); // remove from the start, i.e index 0
 	}
+	consoleUpdate = true;
 }
 
 registerModule("console", "Console module: console.js", registerConsole, ["common", "socket"]);

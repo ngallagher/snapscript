@@ -113,12 +113,16 @@ public class WebScriptAgent {
       public void onMessage(Message message) {
          MessageType type = message.getType();
          
+         //System.err.println("onMessage("+type+")");
+         
          if(type == MessageType.PING) {
             onPing(message);
          } else if(type == MessageType.SCRIPT) {
             onScript(message);
          } else if(type == MessageType.PROCESS_ID) {
             onProcessId(message);
+         } else if(type == MessageType.SUSPEND) {
+            onSuspend(message);            
          } else if(type == MessageType.PROJECT_NAME) {
             onProjectName(message);            
          } else {
@@ -147,6 +151,14 @@ public class WebScriptAgent {
          try {
             String processId = message.getData("UTF-8");
             client.update(processId);
+         } catch(Exception e){
+            e.printStackTrace();
+         }
+      }
+      
+      private void onSuspend(Message message) {
+         try {
+            client.getPublisher().publish(MessageType.SUSPEND, new byte[]{});
          } catch(Exception e){
             e.printStackTrace();
          }
@@ -219,8 +231,8 @@ public class WebScriptAgent {
             }
          }
       }
-
-      private void execute() {
+      
+      private void connectSystemStreams() {
          try {
             MessageOutputStream error = new MessageOutputStream(MessageType.PRINT_ERROR, client);
             MessageOutputStream output = new MessageOutputStream(MessageType.PRINT_OUTPUT, client);
@@ -228,6 +240,14 @@ public class WebScriptAgent {
             // redirect all output to the streams
             System.setOut(new PrintStream(output, false, "UTF-8"));
             System.setErr(new PrintStream(error, false, "UTF-8"));
+         }catch(Exception e) {
+            System.err.println(ExceptionBuilder.build(e));
+         }
+      }
+
+      private void execute() {
+         try {
+            connectSystemStreams();
             
             // start and listen for the socket close
             long start = System.nanoTime();

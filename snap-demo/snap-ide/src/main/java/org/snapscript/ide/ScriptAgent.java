@@ -136,7 +136,7 @@ public class ScriptAgent {
       }
       
       @Override
-      public void before(Scope scope, Object instruction, int line, int key) {
+      public void before(Scope scope, Object instruction, String resource, int line, int key) {
          // thread local required, also recursion counter
          if(times.length < line) {
             counts = copyOf(counts, line + 50);
@@ -163,7 +163,7 @@ public class ScriptAgent {
       }
 
       @Override
-      public void after(Scope scope, Object instruction, int line, int key) {
+      public void after(Scope scope, Object instruction, String resource, int line, int key) {
          int currentCount = --counts[line]; // exit instruction
          
          if(currentCount == 0) {

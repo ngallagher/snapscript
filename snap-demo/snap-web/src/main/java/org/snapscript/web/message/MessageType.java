@@ -5,6 +5,7 @@ public enum MessageType {
    PRINT_OUTPUT('C'),
    PING('P'),
    PONG('P'),
+   SUSPEND('U'),
    PROJECT_NAME('N'),
    PROCESS_ID('I'),
    REGISTER('R'),

@@ -1,24 +1,47 @@
 var spinnerHiding = false;
+var projectBreakpoints = {};
 
 function runScript(){
    //reconnect("best");
 	var text = loadEditor();
 	clearConsole();
 	clearProblems();
-	socket.send(text);
+	socket.send("execute:"+text);
 }
 
 function saveScript(){
    //reconnect("company");
-   document.getElementById("mainMarket").className = ""; 
-   document.getElementById("mainMarket").className = "btn"; 
-   document.getElementById("mainMyPrices").className = "";  
-   document.getElementById("mainMyPrices").className = "btn selected";
-   document.getElementById("litMyPrices").className = "";   
-   document.getElementById("litMyPrices").className = "btn selected";
-   document.getElementById("switchMyPrices").className = "";   
-   document.getElementById("switchMyPrices").className = "btn selected";                  
-   //location.href = "http://localhost:6060/grid.html?user=tom&company=ANZ&type=company";
+	var text = loadEditor();
+	clearConsole();
+	clearProblems();
+	socket.send("save:"+text);
+}
+
+function deleteScript(){
+   //reconnect("company");
+	var text = loadEditor();
+	clearConsole();
+	clearProblems();
+	socket.send("delete:"+text);
+}
+
+function suspendScript(resource, line){
+   //reconnect("company");
+	var resourceBreakpoints = projectBreakpoints[resource];
+	if(resourceBreakpoints == null){
+		resourceBreakpoints =  {
+			lines: {}	
+		};
+		resourceBreakpoints.lines[line] = true;
+		projectBreakpoints[resource] = resourceBreakpoints;
+	}else {
+		if(resourceBreakpoints.lines[line] == true) {
+			resourceBreakpoints.lines[line] = false;
+		} else {
+			resourceBreakpoints.lines[line] = true;
+		}
+	}
+	socket.send("suspend:"+resource+":"+line);
 }
 
 function stopScript() {
@@ -86,17 +109,27 @@ function createLayout() {
                     active: 'tab1',
                     tabs: [
                         { id: 'tab1', caption: 'Console' },
-                        { id: 'tab2', caption: 'Problems' }
+                        { id: 'tab2', caption: 'Problems' },
+                        { id: 'tab3', caption: 'Breakpoints' },
+                        { id: 'tab4', caption: 'Variables' }
                     ],
                     onClick: function (event) {
                         if(event.target == 'tab1') {
                            w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");
                            w2ui['tabLayout'].refresh();
                            showConsole();
-                        } else {
+                        } else if(event.target == 'tab2') {
                            w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='problems'></div>");   
                            w2ui['tabLayout'].refresh();
                            showProblems();
+                        }else if(event.target == 'tab3') {
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='breakpoints'></div>");   
+                           w2ui['tabLayout'].refresh();
+                           showBreakpoints();
+                        }else {
+                           w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='variables'></div>");   
+                           w2ui['tabLayout'].refresh();
+                           showVariables();
                         }
                     }
                 }

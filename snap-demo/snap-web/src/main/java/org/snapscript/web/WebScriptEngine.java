@@ -39,7 +39,7 @@ public class WebScriptEngine {
    private static final String RESOURCE_URL = "http://localhost:%s/resource";
 
    private final Map<String, BlockingQueue<AgentConnection>> connections;
-   private final AtomicReference<AgentConnection> current;
+   private final Map<String, AgentConnection> running;
    private final AtomicReference<MessageListener> listener;
    private final AgentPoolLauncher launcher;
    private final AgentServer server;
@@ -47,7 +47,7 @@ public class WebScriptEngine {
 
    public WebScriptEngine(int listenPort, int commandPort, int agentPool) throws Exception {
       this.connections = new ConcurrentHashMap<String, BlockingQueue<AgentConnection>>();
-      this.current = new AtomicReference<AgentConnection>();
+      this.running = new ConcurrentHashMap<String, AgentConnection>();
       this.listener = new AtomicReference<MessageListener>();
       this.launcher = new AgentPoolLauncher(String.format(RESOURCE_URL, listenPort), commandPort, agentPool);
       this.server = new AgentServer(commandPort);
@@ -86,7 +86,7 @@ public class WebScriptEngine {
             throw new IllegalStateException("Unable to execute " + file + " as agent pool is empty");
          }
          try {
-            current.set(conn); // ensure we can stop the agent if needed
+            running.put(processId, conn); // ensure we can stop the agent if needed
             return conn.execute(file, project, path, processId);
          }catch(Exception e) {
             e.printStackTrace();
@@ -98,13 +98,15 @@ public class WebScriptEngine {
    }
    
    public void killCurrentProcess() {
-      AgentConnection curr = current.get(); // stop any current process
-      if(curr != null) {
-         try {
-            curr.stop();
-            current.set(null);
-         }catch(Exception e){
-            e.printStackTrace();
+      Set<String> processIds = running.keySet();
+      for(String processId : processIds) {
+         AgentConnection next = running.remove(processId); // stop any current process
+         if(next != null) {
+            try {
+               next.stop();
+            }catch(Exception e){
+               e.printStackTrace();
+            }
          }
       }
    }
@@ -368,6 +370,15 @@ public class WebScriptEngine {
                   launch();
                }
                connections.addAll(ready);
+            }
+            ready.clear();
+            Set<String> processIds = new HashSet<String>(running.keySet());
+            for(String processId : processIds) {
+               AgentConnection next = running.get(processId); // stop any current process
+               
+               if(next.ping()) {
+                  ready.remove(processId);
+               }
             }
          }catch(Exception e){
             e.printStackTrace();

@@ -53,6 +53,36 @@ function showEditor() {
         },
         readOnly: true // false if this command should not apply in readOnly mode
     });
+    editor.on("guttermousedown", function(e){ 
+        var target = e.domEvent.target; 
+        if (target.className.indexOf("ace_gutter-cell") == -1)  {
+            return; 
+        }
+        if (!editor.isFocused()) {
+            return; 
+        }
+        if (e.clientX > 25 + target.getBoundingClientRect().left) {
+            return; 
+        }
+        var row = e.getDocumentPosition().row;
+        // should be a getBreakpoints but does not seem to be there!!
+        var breakpoints = e.editor.session.getBreakpoints();
+        var remove = false;
+        
+        for(var breakpoint in breakpoints) {
+        	if(breakpoint == row) {
+        		remove = true;
+        		break;
+        	}
+        }
+        suspendScript("resource.js", row);
+        if(remove) {
+        	e.editor.session.clearBreakpoint(row);
+        } else {
+        	e.editor.session.setBreakpoint(row) 
+    	}
+        e.stop() 
+    });
     scrollEditorToTop();
     finishedLoading();
 }

@@ -10,6 +10,7 @@
 <link href="/css/external/fancytree.css" rel="stylesheet" />
 <link href="/css/splash.css" rel="stylesheet" />
 <link href="/css/console.css" rel="stylesheet" />
+<link href="/css/editor.css" rel="stylesheet" />
 <script src="/js/ace/ace.js"></script>
 <script src="/js/external/jquery.min.js"></script>
 <script src="/js/external/jquery-ui.min.js"></script>
@@ -48,6 +49,7 @@
 }
 #explorer {
     font-family: "Lucida Console", sans-serif; 
+    overflow: scroll;
     font-size: 0.9em;
     background-color: #ffffff; 
  	border-style: solid;

@@ -36,17 +36,17 @@ public class ProjectScriptService implements Service {
          Channel channel = request.getChannel();
          Socket socket = channel.getSocket().socket();
          int port = socket.getPort();
-         String agentName = String.format("agent-%s-%s", projectName, port);
+         String clientName = String.format("agent-%s-%s", projectName, port);
          
          try {
             File projectPath = new File(rootPath, projectName);
-            ProjectScriptController controller = new ProjectScriptController(engine, projectPath, projectName, agentName);
+            ProjectCommandController controller = new ProjectCommandController(engine, projectPath, projectName, clientName);
             
             frameChannel.register(controller);
-            router.join(agentName, frameChannel);
+            router.join(clientName, frameChannel);
          } catch(Exception e) {
             e.printStackTrace();
-            router.leave(agentName);
+            router.leave(clientName);
          }
       }catch(Exception e){
          e.printStackTrace();
