@@ -1,0 +1,6 @@
+import io.Blah;
+import math.stuff.Max;
+
+var b = new Blah();
+
+b.test(Max.max(23,44,1));

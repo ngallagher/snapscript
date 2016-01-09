@@ -1,0 +1,7 @@
+for(var i in 0..9000){
+   if(i%2==0){
+      System.err.println(i);
+   }else{
+      System.out.println(i);
+   }
+}
