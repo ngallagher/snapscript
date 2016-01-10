@@ -12,7 +12,7 @@ function showTree() {
 
 function openTreeFile(path) {
     $.get(path, function(response) {
-    	updateEditor(response);
+    	updateEditor(response, path);
     });
 }
 

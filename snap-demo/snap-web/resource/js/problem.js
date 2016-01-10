@@ -33,7 +33,7 @@ function updateProblems(socket, text) {
    
    problemLine = line;
    problemMessage = message;
-   highlightEditorLine(line, "errorMarker");
+   createEditorHighlight(line, "errorMarker");
 }
 
 registerModule("problem", "Problem module: problem.js", registerProblems, ["common", "socket"]);
