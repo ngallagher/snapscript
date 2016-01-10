@@ -1,5 +1,6 @@
 var problemLine = -1;
 var problemMessage = null;
+var problemProject = null;
 var problemLocation = null;
 
 function registerProblems() {
@@ -10,7 +11,14 @@ function showProblems() {
 	var problems = w2ui['problems'];
 	
 	if(problemMessage != null && problems != null) {
-		problems.records = [{location: "Line " + problemLine, problemLocation: location, description: problemMessage}];
+		problems.records = [{ 
+		   recid: 1,
+		   location: "Line " + problemLine, 
+         resource: problemLocation, 
+         description: problemMessage, 
+         project: problemProject, 
+         script: "/resource/" + problemProject + problemLocation
+      }];
 		problems.refresh();
 	}
 }
@@ -30,19 +38,24 @@ function clearProblems() {
 
 function updateProblems(socket, text) {
 	var problems = w2ui['problems'];
-	var index = text.indexOf(':');
-   var message = text.substring(index + 1);
-   var location = text.substring(0, index);
-   var line = parseInt(location);
+	var message = JSON.parse(text);
    
-   problemLine = line;
-   problemMessage = message;
-   problemLocation = location;
-   createEditorHighlight(line, "errorMarker");
+   problemLine = message.line;
+   problemMessage = message.description;
+   problemLocation = message.resource;
+   problemProject = message.project;
+   createEditorHighlight(problemLine, "errorMarker");
 	
 	if(problems != null) {
-        problems.records = [{location: "Line " + line, resource: location, description: message}];
-   		problems.refresh();
+      problems.records = [{
+            recid: 1,
+            location: "Line " + problemLine, 
+            resource: problemLocation, 
+            description: problemMessage, 
+            project: problemProject, 
+            script: "/resource/" + problemProject + problemLocation
+      }];
+   	problems.refresh();
 	}
 }
 

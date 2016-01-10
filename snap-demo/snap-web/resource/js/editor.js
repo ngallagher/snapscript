@@ -1,5 +1,6 @@
 var editorBreakpoints = {};
 var editorResource = null;
+var editorText = null;
 
 function createEditor() {
     window.setTimeout(showEditor, 1000);
@@ -148,10 +149,11 @@ function updateEditor(text, resource) {
 	
 	clearEditor();
 	clearProblems();
-    scrollEditorToTop();
-    editorResource = resource;
+   scrollEditorToTop();
+   editorResource = resource;
+   editorText = text;
     
-    if(resource != null) {
+   if(resource != null) {
 		var breakpoints = editorBreakpoints[resource];
 		if(breakpoints != null) {
 			for(var lineNumber in breakpoints) {
@@ -163,6 +165,13 @@ function updateEditor(text, resource) {
 			}
 		}
     }
+}
+
+function isEditorChanged() {
+   var editor = ace.edit("editor");
+   var text = editor.getValue();
+   
+   return text != editorText;
 }
 
 function scrollEditorToTop(){

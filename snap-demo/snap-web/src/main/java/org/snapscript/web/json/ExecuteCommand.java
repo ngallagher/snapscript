@@ -7,6 +7,7 @@ public class ExecuteCommand {
 
    private Map<String, Map<Integer, Boolean>> breakpoints;
    private String project;
+   private String resource;
    private String source;
    
    public ExecuteCommand() {
@@ -15,6 +16,10 @@ public class ExecuteCommand {
    
    public Map<String, Map<Integer, Boolean>> getBreakpoints() {
       return breakpoints;
+   }
+   
+   public String getResource() {
+      return resource;
    }
    
    public String getSource() {

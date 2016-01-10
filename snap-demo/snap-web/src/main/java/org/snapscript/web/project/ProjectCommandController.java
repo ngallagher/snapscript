@@ -3,6 +3,8 @@ package org.snapscript.web.project;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.simpleframework.http.socket.Frame;
 import org.simpleframework.http.socket.FrameChannel;
@@ -124,8 +126,15 @@ public class ProjectCommandController implements FrameListener {
             encoder.close();
             engine.executeScript(file, project, remotePath, agent, System.getProperty("os.name"));
          } else {
+            String resource = command.getResource();
             FrameChannel channel = socket.getChannel();
-            channel.send(MessageType.SYNTAX_ERROR.prefix+""+line+":Syntax error at line " + line);
+            Map<String, Object> properties = new HashMap<String, Object>();
+            properties.put("line", line);
+            properties.put("resource", resource);
+            properties.put("description", "Syntax error at line " + line);
+            properties.put("project", project);
+            String json = gson.toJson(properties);
+            channel.send(MessageType.SYNTAX_ERROR.prefix+json);
          }
       } catch(Exception e) {
          e.printStackTrace();

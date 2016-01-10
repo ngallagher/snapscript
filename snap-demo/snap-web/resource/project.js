@@ -4,28 +4,58 @@ var projectBreakpoints = {};
 function runScript(){
    //reconnect("best");
 	var editorData = loadEditor();
-	var message = JSON.stringify({
-		breakpoints: editorData.breakpoints,
-		project: document.title,
-		resource: editorData.resource,
-		source: editorData.source,
-	});
-	clearConsole();
-	clearProblems();
-	socket.send("execute:"+ message);
+   var result = true;
+   
+   if(isEditorChanged()) {
+      result = confirm("Save script " + editorData.resource);
+   }
+   if (result == true) {
+   	var message = JSON.stringify({
+   		breakpoints: editorData.breakpoints,
+   		project: document.title,
+   		resource: editorData.resource,
+   		source: editorData.source,
+   	});
+   	clearConsole();
+   	clearProblems();
+   	socket.send("execute:"+ message);
+   }
 }
 
 function saveScript(){
    //reconnect("company");
-	var editorData = loadEditor();
-	var message = JSON.stringify({
-		project: document.title,
-		resource: editorData.resource,
-		source: editorData.source,
-	});
-	clearConsole();
-	clearProblems();
-	socket.send("save:"+message);
+   var editorData = loadEditor();
+   var result = true;
+   
+   if(isEditorChanged()) {
+      result = confirm("Save script " + editorData.resource);
+   }
+   if (result == true) {
+   	var message = JSON.stringify({
+   		project: document.title,
+   		resource: editorData.resource,
+   		source: editorData.source,
+   	});
+   	clearConsole();
+   	clearProblems();
+   	socket.send("save:"+message);
+   }
+}
+
+function saveScriptAs(){
+   //reconnect("company");
+   var editorData = loadEditor();
+   var resourcePath = prompt("Save script as", "");
+   if (resource != null) {
+      var message = JSON.stringify({
+         project: document.title,
+         resource: resourcePath,
+         source: editorData.source,
+      });
+      clearConsole();
+      clearProblems();
+      socket.send("save:"+message);
+   }
 }
 
 function deleteScript(){
@@ -157,7 +187,7 @@ function createLayout() {
                var sel = grid.getSelection();
                if (sel.length == 1) {
                   var record = grid.get(sel[0]);
-                  console.log(record.resource);
+                  openTreeFile(record.script); // open resource
               }
            }
         }
