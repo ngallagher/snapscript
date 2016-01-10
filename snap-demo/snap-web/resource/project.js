@@ -144,18 +144,6 @@ function createLayout() {
         ]
     });
     
-    var problemRecords = [
-    	{ recid: 1, location: 'Line 1', resource: '/io.snap', description: 'Syntax error' },
-    	{ recid: 2, location: 'Line 237', resource: '/math/Math.snap', description: 'Syntax error' },
-    	{ recid: 3, location: 'Line 44', resource: '/loops.snap', description: 'Syntax error' }
-	];
-  
-    var breakpointRecords = [
-      	{ recid: 1, location: 'Line 1', resource: '/io.snap' },
-      	{ recid: 2, location: 'Line 237', resource: '/math/Math.snap' },
-      	{ recid: 3, location: 'Line 44', resource: '/loops.snap' }
-  	];
-    
     $().w2grid({ 
         name: 'problems',
         columns: [
@@ -164,23 +152,16 @@ function createLayout() {
             { field: 'description', caption: 'Description', size: '43%', sortable: true, resizable: true },
         ],
         onClick: function(event) {
-            var grid = this;
-            var form = w2ui.form;
-            console.log(event);
-            event.onComplete = function () {
-                var sel = grid.getSelection();
-                console.log(sel);
-                if (sel.length == 1) {
-                    form.recid  = sel[0];
-                    form.record = $.extend(true, {}, grid.get(sel[0]));
-                    form.refresh();
-                } else {
-                    form.clear();
-                }
-            }
+           var grid = this;
+           event.onComplete = function () {
+               var sel = grid.getSelection();
+               if (sel.length == 1) {
+                  var record = grid.get(sel[0]);
+                  console.log(record.resource);
+              }
+           }
         }
     });
-    w2ui['problems'].records = problemRecords;
     
     $().w2grid({ 
         name: 'variables',
@@ -191,20 +172,14 @@ function createLayout() {
             { field: 'sdate', caption: 'Start Date', size: '120px', render: 'date' },
         ],
         onClick: function(event) {
-            var grid = this;
-            var form = w2ui.form;
-            console.log(event);
-            event.onComplete = function () {
-                var sel = grid.getSelection();
-                console.log(sel);
-                if (sel.length == 1) {
-                    form.recid  = sel[0];
-                    form.record = $.extend(true, {}, grid.get(sel[0]));
-                    form.refresh();
-                } else {
-                    form.clear();
-                }
-            }
+           var grid = this;
+           event.onComplete = function () {
+               var sel = grid.getSelection();
+               if (sel.length == 1) {
+                  var record = grid.get(sel[0]);
+                  console.log(record.fname);
+              }
+           }
         }
     });
     
@@ -216,22 +191,15 @@ function createLayout() {
         ],
         onClick: function(event) {
             var grid = this;
-            var form = w2ui.form;
-            console.log(event);
             event.onComplete = function () {
                 var sel = grid.getSelection();
-                console.log(sel);
                 if (sel.length == 1) {
-                    form.recid  = sel[0];
-                    form.record = $.extend(true, {}, grid.get(sel[0]));
-                    form.refresh();
-                } else {
-                    form.clear();
-                }
+                   var record = grid.get(sel[0]);
+                   openTreeFile(record.resource); // open resource
+               }
             }
         }
     });
-    w2ui['breakpoints'].records = breakpointRecords;
     
     w2ui['mainLayout'].content('top', w2ui['topLayout']);
     w2ui['mainLayout'].content('main', w2ui['blueLayout']);

@@ -35,6 +35,7 @@ function clearEditorBreakpoints(row) {
 
 function showEditorBreakpoints(){
 	var breakpointRecords = [];
+	var breakpointIndex = 1;
 	for(var resourceName in editorBreakpoints) {
 		if(editorBreakpoints.hasOwnProperty(resourceName)) {
 			var breakpoints = editorBreakpoints[resourceName];
@@ -42,7 +43,7 @@ function showEditorBreakpoints(){
 			for(var lineNumber in breakpoints) {
 				if(breakpoints.hasOwnProperty(lineNumber)) {
 				   if(breakpoints[lineNumber] == true) {
-					   breakpointRecords.push({location: "Line " + lineNumber, resource: resourceName});
+					   breakpointRecords.push({recid: breakpointIndex++, location: "Line " + lineNumber, resource: resourceName});
 				   }
 				}
 			}

@@ -21,36 +21,40 @@ function showConsole() {
 	var consoleText = null;
 	var previous = null;
 	
-	if(consoleElement != null && consoleUpdate) {
-		consoleUpdate = false;
-		for(var i = 0; i < consoleWindow.length; i++) {
-			var next = consoleWindow[i];
-			
-			if(previous == null) {
-				if(next.error) {
-					consoleText = "<span class='consoleError'>" + next.text;
-				} else {
-					consoleText = "<span class='consoleNormal'>" + next.text;
-				}
-				previous = next.error;
-			} else if(next.error != previous) {
-				consoleText += "</span>";
-				
-				if(next.error) {
-					consoleText += "<span class='consoleError'>" + next.text;
-				} else {
-					consoleText += "<span class='consoleNormal'>" + next.text;
-				}
-				previous = next.error;
-			} else {
-				consoleText += next.text;
-			}
-		}
-		if(consoleText != null) {
-			consoleText += "</span>";
-			consoleElement.innerHTML = consoleText;
-			consoleElement.scrollTop = consoleElement.scrollHeight;
-		}
+	if(consoleElement != null) {
+	   var currentText = consoleElement.innerHTML;
+
+	   if(currentText == "" || consoleUpdate) {
+   		consoleUpdate = false;
+   		for(var i = 0; i < consoleWindow.length; i++) {
+   			var next = consoleWindow[i];
+   			
+   			if(previous == null) {
+   				if(next.error) {
+   					consoleText = "<span class='consoleError'>" + next.text;
+   				} else {
+   					consoleText = "<span class='consoleNormal'>" + next.text;
+   				}
+   				previous = next.error;
+   			} else if(next.error != previous) {
+   				consoleText += "</span>";
+   				
+   				if(next.error) {
+   					consoleText += "<span class='consoleError'>" + next.text;
+   				} else {
+   					consoleText += "<span class='consoleNormal'>" + next.text;
+   				}
+   				previous = next.error;
+   			} else {
+   				consoleText += next.text;
+   			}
+   		}
+   		if(consoleText != null) {
+   			consoleText += "</span>";
+   			consoleElement.innerHTML = consoleText;
+   			consoleElement.scrollTop = consoleElement.scrollHeight;
+   		}
+	   }
 	}
 }
 
