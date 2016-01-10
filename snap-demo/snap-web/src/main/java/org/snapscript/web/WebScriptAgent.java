@@ -253,14 +253,16 @@ public class WebScriptAgent {
             long start = System.nanoTime();
             Executable executable = compiler.compile(filePath);
             long middle = System.nanoTime();
+            System.err.println("Compile time " + TimeUnit.NANOSECONDS.toMillis(middle-start));
             executable.execute();
             long stop = System.nanoTime();
             System.out.flush();
             System.err.flush();
             System.err.println();
             
-            client.getPublisher().publish(MessageType.COMPILE_TIME, TimeUnit.NANOSECONDS.toMillis(middle-start));
-            client.getPublisher().publish(MessageType.EXECUTE_TIME, TimeUnit.NANOSECONDS.toMillis(stop-middle));
+            //client.getPublisher().publish(MessageType.COMPILE_TIME, TimeUnit.NANOSECONDS.toMillis(middle-start));
+            //client.getPublisher().publish(MessageType.EXECUTE_TIME, TimeUnit.NANOSECONDS.toMillis(stop-middle));
+            System.err.println("Execute time " + TimeUnit.NANOSECONDS.toMillis(stop-middle));
          } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }

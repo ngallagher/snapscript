@@ -108,6 +108,15 @@ function toggleEditorBreakpoint(row) {
 	showEditorBreakpoints();
 }
 
+function resetEditor() {
+   var editor = ace.edit("editor");
+   var session = editor.getSession();
+   
+   editorResource = null;
+   editorText = "// TODO write code";
+   session.setValue(editorText, 1);
+}
+
 function clearEditor() {
 	var editor = ace.edit("editor");
 	var session = editor.getSession();

@@ -1,60 +1,57 @@
 var spinnerHiding = false;
 var projectBreakpoints = {};
 
+function newScript(){
+   resetEditor();
+   clearConsole();
+   clearProblems();
+}
+
 function runScript(){
-   //reconnect("best");
 	var editorData = loadEditor();
-   var result = true;
-   
-   if(isEditorChanged()) {
-      result = confirm("Save script " + editorData.resource);
-   }
-   if (result == true) {
-   	var message = JSON.stringify({
-   		breakpoints: editorData.breakpoints,
-   		project: document.title,
-   		resource: editorData.resource,
-   		source: editorData.source,
-   	});
-   	clearConsole();
-   	clearProblems();
-   	socket.send("execute:"+ message);
-   }
+	var message = JSON.stringify({
+		breakpoints: editorData.breakpoints,
+		project: document.title,
+		resource: editorData.resource,
+		source: editorData.source,
+	});
+	saveScript();
+	clearConsole();
+	clearProblems();
+	socket.send("execute:"+ message);
 }
 
 function saveScript(){
-   //reconnect("company");
    var editorData = loadEditor();
-   var result = true;
-   
-   if(isEditorChanged()) {
-      result = confirm("Save script " + editorData.resource);
-   }
-   if (result == true) {
-   	var message = JSON.stringify({
-   		project: document.title,
-   		resource: editorData.resource,
-   		source: editorData.source,
-   	});
-   	clearConsole();
-   	clearProblems();
-   	socket.send("save:"+message);
-   }
-}
-
-function saveScriptAs(){
-   //reconnect("company");
-   var editorData = loadEditor();
-   var resourcePath = prompt("Save script as", "");
-   if (resource != null) {
-      var message = JSON.stringify({
-         project: document.title,
-         resource: resourcePath,
-         source: editorData.source,
+   if(editorData.resource == null) {
+      openTreeDialog(function(resourcePath) {
+         var message = JSON.stringify({
+            project: document.title,
+            resource: resourcePath,
+            source: editorData.source,
+         });
+         clearConsole();
+         clearProblems();
+         socket.send("save:"+message);
       });
-      clearConsole();
-      clearProblems();
-      socket.send("save:"+message);
+   } else {
+      if(isEditorChanged()) {
+         w2confirm('Save ' + editorData.resource)
+         .yes(function () { 
+             var message = JSON.stringify({
+                project: document.title,
+                resource: editorData.resource,
+                source: editorData.source,
+             });
+             clearConsole();
+             clearProblems();
+             socket.send("save:"+message);
+          })
+         .no(function () { 
+             // don't save
+         });
+
+      }
    }
 }
 
@@ -115,6 +112,9 @@ function createLayout() {
 					"<td>" +
 					"<button id='saveScript' class='btn' onclick='saveScript()'>Save</button>" +
 					"</td>" +
+	            "<td>" +
+	            "<button id='newScript' class='btn' onclick='newScript()'>New</button>" +
+	            "</td>" +
 					"</tr>" +
 					"</table>" +
 					"</div>" },        

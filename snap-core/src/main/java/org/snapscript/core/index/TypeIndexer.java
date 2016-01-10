@@ -109,7 +109,7 @@ public class TypeIndexer {
       Type done=resolveType(cls);
       if(done == null) {
          String name = cls.getName();
-         Type type = new ClassReference(indexer, cls);
+         Type type = new ClassReference(indexer, cls, cls.getSimpleName());
          registerType(cls, type);
          registerType(name, type);
          return type;

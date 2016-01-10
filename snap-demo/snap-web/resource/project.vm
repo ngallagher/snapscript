@@ -11,6 +11,7 @@
 <link href="/css/splash.css" rel="stylesheet" />
 <link href="/css/console.css" rel="stylesheet" />
 <link href="/css/editor.css" rel="stylesheet" />
+<link href="/css/dialog.css" rel="stylesheet" />
 <script src="/js/ace/ace.js"></script>
 <script src="/js/external/jquery.min.js"></script>
 <script src="/js/external/jquery-ui.min.js"></script>
@@ -25,6 +26,7 @@
 <script src="/js/console.js"></script>
 <script src="/js/grid.js"></script>
 <script src="/js/tree.js"></script>
+<script src="/js/dialog.js"></script>
 <script src="/js/rpc.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/problem.js"></script>

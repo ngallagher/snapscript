@@ -18,12 +18,13 @@ public class ProjectTreeResource implements Resource {
 
    @Override
    public void handle(Request request, Response response) throws Throwable {
+      String name = request.getParameter("id");
       Path path = request.getPath(); // /tree/<project-name>
       String treePrefix = path.getPath(1, 2); // /<project-name>
       String projectName = treePrefix.substring(1); // <project-name>
       File project = new File(rootPath, projectName);
       StringBuilder builder = new StringBuilder();
-      builder.append("<div id=\"tree\">\n");
+      builder.append("<div id=\""+name+"\">\n");
       builder.append("<ul id=\"treeData\" style=\"display: none;\">\n");
       buildTree(builder, project, "/resource/" + projectName, "  ", "id", 1);
       builder.append("</ul>\n");
@@ -43,6 +44,8 @@ public class ProjectTreeResource implements Resource {
          builder.append("<li id=\"");
          builder.append(prefix);
          builder.append(id);
+         builder.append("\" title=\"");
+         builder.append(path);
          builder.append("\" class=\"folder\">");
          builder.append(name);
          builder.append("\n");

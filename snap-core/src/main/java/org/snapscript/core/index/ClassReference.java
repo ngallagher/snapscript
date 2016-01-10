@@ -9,9 +9,13 @@ import org.snapscript.core.Type;
 public class ClassReference implements Type {
 
    private final ClassIndex index;
+   private final Class type;
+   private final String name;
    
-   public ClassReference(ClassIndexer indexer, Class actual) {
-      this.index = new ClassIndex(indexer, actual);
+   public ClassReference(ClassIndexer indexer, Class type, String name) {
+      this.index = new ClassIndex(indexer, type);
+      this.name = name;
+      this.type = type;
    }
    
    @Override
@@ -30,11 +34,6 @@ public class ClassReference implements Type {
    }
 
    @Override
-   public Class getType() {
-      return index.getType().getType();
-   }
-
-   @Override
    public Type getEntry() {
       return index.getType().getEntry();
    }
@@ -46,12 +45,17 @@ public class ClassReference implements Type {
 
    @Override
    public String getName() {
-      return index.getType().getName();
+      return name;
    }
 
    @Override
+   public Class getType() {
+      return type;
+   }
+   
+   @Override
    public String toString() {
-      return index.getType().toString();
+      return name;
    }
 
 }
