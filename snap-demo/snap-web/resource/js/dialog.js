@@ -35,7 +35,7 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    var project = document.title;
    var folder = "/";
    var dialogTitle = "Save As";
-   if(expandPath != null) {
+   if (expandPath != null) {
       dialogTitle = "Save Changes";
    }
    w2popup.open({
@@ -67,21 +67,21 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
          console.log('keydown');
       }
    });
-   $("#dialogSave").click(function(){
-         w2popup.lock('Saving', true);
-         var resource = $('#dialogFile').html();
-         var path = folder + "/" + resource;
-         saveCallback(path);
-         setTimeout(function () { 
-            w2popup.unlock();
-            w2popup.close();
-         }, 2000);
-   });
-   $("#dialogCancel").click(function(){
+   $("#dialogSave").click(function() {
+      w2popup.lock('Saving', true);
+      var resource = $('#dialogFile').html();
+      var path = folder + "/" + resource;
+      saveCallback(path);
+      setTimeout(function() {
+         w2popup.unlock();
          w2popup.close();
+      }, 2000);
+   });
+   $("#dialogCancel").click(function() {
+      w2popup.close();
    });
    var file = extractTreeFile(expandPath);
-   if(file != null) {
+   if (file != null) {
       $('#dialogFile').html(file);
    }
    expandPath = extractTreePath(expandPath);
@@ -97,4 +97,5 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    });
 }
 
-//registerModule("dialog", "Dialog module: dialog.js", startDialog, [ "common", "socket" ]);
+// registerModule("dialog", "Dialog module: dialog.js", startDialog, [ "common",
+// "socket" ]);
