@@ -34,8 +34,12 @@ function openConfirmDialog() {
 function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    var project = document.title;
    var folder = "/";
+   var dialogTitle = "Save As";
+   if(expandPath != null) {
+      dialogTitle = "Save Changes";
+   }
    w2popup.open({
-      title : 'Save As',
+      title : dialogTitle,
       body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
       buttons : '<button id="dialogSave" class="btn">Save</button><button id="dialogCancel" class="btn">Cancel</button>',
       width : 500,
