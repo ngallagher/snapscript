@@ -8,23 +8,26 @@ function newScript(){
 }
 
 function runScript(){
-	var editorData = loadEditor();
-	var message = JSON.stringify({
-		breakpoints: editorData.breakpoints,
-		project: document.title,
-		resource: editorData.resource,
-		source: editorData.source,
+	saveScriptWithAction(function() {
+	   var editorData = loadEditor();
+	   var message = JSON.stringify({
+	      breakpoints: editorData.breakpoints,
+	      project: document.title,
+	      resource: editorData.resource,
+	      source: editorData.source,
+	   });
+	   socket.send("execute:"+ message);
 	});
-	saveScript();
-	clearConsole();
-	clearProblems();
-	socket.send("execute:"+ message);
 }
 
 function saveScript(){
+   saveScriptWithAction(function(){});
+}
+
+function saveScriptWithAction(saveCallback) {
    var editorData = loadEditor();
    if(editorData.resource == null) {
-      openTreeDialog(function(resourcePath) {
+      openTreeDialog(null, false, function(resourcePath) {
          var message = JSON.stringify({
             project: document.title,
             resource: resourcePath,
@@ -32,25 +35,28 @@ function saveScript(){
          });
          clearConsole();
          clearProblems();
-         socket.send("save:"+message);
+         socket.send("save:"+message); // reload tree on a file save
+         updateEditor(editorData.source, buildTreeFile(resourcePath));
+         saveCallback();
       });
    } else {
       if(isEditorChanged()) {
-         w2confirm('Save ' + editorData.resource)
-         .yes(function () { 
-             var message = JSON.stringify({
-                project: document.title,
-                resource: editorData.resource,
-                source: editorData.source,
-             });
-             clearConsole();
-             clearProblems();
-             socket.send("save:"+message);
-          })
-         .no(function () { 
-             // don't save
+         openTreeDialog(editorData.resource, true, function(resourcePath) {
+            var message = JSON.stringify({
+               project: document.title,
+               resource: editorData.resource,
+               source: editorData.source,
+            });
+            clearConsole();
+            clearProblems();
+            socket.send("save:"+message); // reload tree on a file save
+            updateEditor(editorData.source, buildTreeFile(editorData.resource));
+            saveCallback();
          });
-
+      } else {
+         clearConsole();
+         clearProblems();
+         saveCallback();
       }
    }
 }
@@ -225,7 +231,7 @@ function createLayout() {
                 var sel = grid.getSelection();
                 if (sel.length == 1) {
                    var record = grid.get(sel[0]);
-                   openTreeFile(record.resource); // open resource
+                   openTreeFile(record.script); // open resource
                }
             }
         }

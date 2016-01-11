@@ -108,25 +108,18 @@ public class ProjectCommandController implements FrameListener {
    }
    private void executeCommand(Session socket, ExecuteCommand command) {
       try {
-         File scriptDir = new File(projectPath, "temp"); // only one command, send the script to run
-         
-         if(!scriptDir.exists()) {
-            scriptDir.mkdirs();
-         }
-         String scriptFile = "temp"+System.currentTimeMillis()+".snap";
-         String remotePath = "/temp/"+ scriptFile;
+         String resource = command.getResource();
          String source = command.getSource();
-         int line = validator.parse(remotePath, source);
+         int line = validator.parse(resource, source);
          
          if(line == -1) {
-            File file = new File(scriptDir, scriptFile);
+            File file = new File(projectPath, resource);
             FileOutputStream out = new FileOutputStream(file);
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
             encoder.write(source);
             encoder.close();
-            engine.executeScript(file, project, remotePath, agent, System.getProperty("os.name"));
+            engine.executeScript(file, project, resource, agent, System.getProperty("os.name"));
          } else {
-            String resource = command.getResource();
             FrameChannel channel = socket.getChannel();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("line", line);

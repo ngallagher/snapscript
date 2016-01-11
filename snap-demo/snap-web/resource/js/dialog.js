@@ -31,7 +31,7 @@ function openConfirmDialog() {
    });
 }
 
-function openTreeDialog(save) {
+function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    var project = document.title;
    var folder = "/";
    w2popup.open({
@@ -67,7 +67,7 @@ function openTreeDialog(save) {
          w2popup.lock('Saving', true);
          var resource = $('#dialogFile').html();
          var path = folder + "/" + resource;
-         save(path);
+         saveCallback(path);
          setTimeout(function () { 
             w2popup.unlock();
             w2popup.close();
@@ -75,29 +75,22 @@ function openTreeDialog(save) {
    });
    $("#dialogCancel").click(function(){
          w2popup.close();
-   });   
-   createTree("dialog", "dialogTree", function(event, data) {
-      var path = data.node.tooltip;
-      if(path.startsWith("/resource")) {
-         var segments = path.split("/");
-         if(segments.length > 3) {
-            path = "";
-            for(var i = 3; i < segments.length; i++) {
-               path += "/" + segments[i];
-            }
-         } else {
-            path = "/";
-         }
-      }
+   });
+   var file = extractTreeFile(expandPath);
+   if(file != null) {
+      $('#dialogFile').html(file);
+   }
+   expandPath = extractTreePath(expandPath);
+   createTree("dialog", "dialogTree", expandPath, foldersOnly, function(event, data) {
+      var path = extractTreePath(data.node.tooltip);
       if (data.node.isFolder()) {
          folder = path;
          $('#dialogFile').html("");
       } else {
-         var index = path.lastIndexOf("/");
-         folder = path.substring(0, index);
-         path = path.substring(index + 1);
-         $('#dialogFile').html(path);
+         var file = extractTreeFile(data.node.tooltip);
+         $('#dialogFile').html(file);
       }
    });
 }
-registerModule("dialog", "Dialog module: dialog.js", startDialog, [ "common", "socket" ]);
+
+//registerModule("dialog", "Dialog module: dialog.js", startDialog, [ "common", "socket" ]);

@@ -44,7 +44,12 @@ function showEditorBreakpoints(){
 			for(var lineNumber in breakpoints) {
 				if(breakpoints.hasOwnProperty(lineNumber)) {
 				   if(breakpoints[lineNumber] == true) {
-					   breakpointRecords.push({recid: breakpointIndex++, location: "Line " + lineNumber, resource: resourceName});
+					   breakpointRecords.push({
+					      recid: breakpointIndex++, 
+					      location: "Line " + lineNumber, 
+					      resource: resourceName,
+					      script: buildTreeFile(resourceName)
+					   });
 				   }
 				}
 			}
@@ -137,13 +142,7 @@ function loadEditor(){
 	var text = editor.getValue();
 	var path = editorResource;
 	if(path != null) {
-		if(path.startsWith("/resource")) {
-			var segments = path.split("/");
-			path = "";
-			for(var i = 3; i < segments.length; i++) {
-				path += "/" + segments[i];
-			}
-		}
+	   path = extractTreePath(path);
 	}
 	return {
 		breakpoints: editorBreakpoints,
@@ -159,11 +158,11 @@ function updateEditor(text, resource) {
 	clearEditor();
 	clearProblems();
    scrollEditorToTop();
-   editorResource = resource;
+   editorResource = extractTreePath(resource);
    editorText = text;
     
    if(resource != null) {
-		var breakpoints = editorBreakpoints[resource];
+		var breakpoints = editorBreakpoints[editorResource];
 		if(breakpoints != null) {
 			for(var lineNumber in breakpoints) {
 				if(breakpoints.hasOwnProperty(lineNumber)) {
