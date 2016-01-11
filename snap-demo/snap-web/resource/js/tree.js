@@ -1,15 +1,17 @@
 var treeVisible = false;
 
+function reloadTree() {
+   createTree("explorer", "explorerTree", null, false, function(event, data) {
+      if (!data.node.isFolder()) {
+         openTreeFile(data.node.tooltip);
+      }
+   });
+}
+
 function showTree() {
    if (treeVisible == false) {
-      var func = function() {
-         createTree("explorer", "explorerTree", null, false, function(event, data) {
-            if (!data.node.isFolder()) {
-               openTreeFile(data.node.tooltip);
-            }
-         });
-      }
-      window.setTimeout(func, 500);
+      window.setTimeout(reloadTree, 500);
+      treeVisible = true;
    }
 
 }

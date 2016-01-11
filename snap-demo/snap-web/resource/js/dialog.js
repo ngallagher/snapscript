@@ -33,8 +33,8 @@ function openConfirmDialog() {
 
 function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    var project = document.title;
-   var folder = "/";
    var dialogTitle = "Save As";
+   var folder = "/";
    if (expandPath != null) {
       dialogTitle = "Save Changes";
    }
@@ -75,7 +75,7 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
       setTimeout(function() {
          w2popup.unlock();
          w2popup.close();
-      }, 2000);
+      }, 1000);
    });
    $("#dialogCancel").click(function() {
       w2popup.close();

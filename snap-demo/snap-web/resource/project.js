@@ -36,7 +36,8 @@ function saveScriptWithAction(saveCallback) {
          });
          clearConsole();
          clearProblems();
-         socket.send("save:" + message); // reload tree on a file save
+         socket.send("save:" + message);
+         reloadTree(); 
          updateEditor(editorData.source, buildTreeFile(resourcePath));
          saveCallback();
       });
@@ -50,7 +51,8 @@ function saveScriptWithAction(saveCallback) {
             });
             clearConsole();
             clearProblems();
-            socket.send("save:" + message); // reload tree on a file save
+            socket.send("save:" + message); 
+            reloadTree(); 
             updateEditor(editorData.source, buildTreeFile(editorData.resource));
             saveCallback();
          });
