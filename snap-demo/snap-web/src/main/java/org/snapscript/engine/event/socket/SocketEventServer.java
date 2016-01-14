@@ -162,6 +162,7 @@ public class SocketEventServer implements ProcessEventChannel {
             }
          }catch(Exception e) {
             e.printStackTrace();
+         }finally {
             close();
          }
       }

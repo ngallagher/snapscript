@@ -91,6 +91,7 @@ public class SocketEventClient {
             }
          }catch(Exception e) {
             e.printStackTrace();
+         } finally {
             close();
          }
       }

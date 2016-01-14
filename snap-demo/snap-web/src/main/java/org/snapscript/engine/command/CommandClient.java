@@ -41,7 +41,7 @@ public class CommandClient {
    }
    
    public void sendWriteOutput(String text) throws Exception {
-      channel.send(PRINT_ERROR + ":"+text);
+      channel.send(PRINT_OUTPUT + ":"+text);
    }
    
    public void sendProcessTerminate() throws Exception {
