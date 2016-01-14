@@ -14,6 +14,7 @@ import org.simpleframework.http.socket.Reason;
 import org.simpleframework.http.socket.Session;
 import org.snapscript.web.ExceptionBuilder;
 import org.snapscript.web.WebScriptEngine;
+import org.snapscript.web.agent.ProcessEventRouter;
 import org.snapscript.web.json.ExecuteCommand;
 import org.snapscript.web.json.SaveCommand;
 import org.snapscript.web.json.SuspendCommand;
@@ -30,20 +31,25 @@ public class ProjectCommandController implements FrameListener {
    
    private final ProjectScriptValidator validator;
    private final WebScriptEngine engine;
+   private final ProcessEventRouter router;
+   private final FrameChannel channel;
    private final File projectPath;
    private final String project;
    private final String agent;
    private final Gson gson;
    
-   public ProjectCommandController(WebScriptEngine engine, File projectPath, String project, String agent) {
+   public ProjectCommandController(WebScriptEngine engine, FrameChannel channel, File projectPath, String project, String agent) {
       this.validator = new ProjectScriptValidator();
+      this.router = new ProcessEventRouter(channel);
       this.gson = new Gson();
       this.engine = engine;
+      this.channel = channel;
       this.projectPath = projectPath;
       this.project = project;
       this.agent = agent;
    }
 
+   @Override
    public void onFrame(Session socket, Frame frame) {
       FrameType type = frame.getType();
 
@@ -74,10 +80,12 @@ public class ProjectCommandController implements FrameListener {
       System.err.println("onFrame(" + type + ")");
    }
 
+   @Override
    public void onError(Session socket, Exception cause) {
       System.err.println("onError(" + ExceptionBuilder.build(cause) + ")");
    }
 
+   @Override
    public void onClose(Session session, Reason reason) {
       System.err.println("onClose(" + reason + ")");
    }

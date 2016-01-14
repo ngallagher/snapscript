@@ -40,7 +40,7 @@ public class ProjectScriptService implements Service {
          
          try {
             File projectPath = new File(rootPath, projectName);
-            ProjectCommandController controller = new ProjectCommandController(engine, projectPath, projectName, clientName);
+            ProjectCommandController controller = new ProjectCommandController(engine, frameChannel, projectPath, projectName, clientName);
             
             frameChannel.register(controller);
             router.join(clientName, frameChannel);
