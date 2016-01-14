@@ -37,14 +37,14 @@ public class SocketEventServer implements ProcessEventChannel {
    }
    
    @Override
-   public void send(ProcessEvent event) throws Exception {
+   public boolean send(ProcessEvent event) throws Exception {
       String process = event.getProcess();
       ProcessEventChannel channel = receivers.get(process);
       
       if(channel == null) {
          throw new IllegalArgumentException("No channel for " + process);
       }
-      channel.send(event);
+      return channel.send(event);
    }
    
    public void start() throws Exception {
@@ -118,17 +118,19 @@ public class SocketEventServer implements ProcessEventChannel {
       }
       
       @Override
-      public void send(ProcessEvent event) throws Exception {
+      public boolean send(ProcessEvent event) throws Exception {
          String process = event.getProcess();
          ProcessEventProducer producer = connection.getProducer();
          
          try {
             producer.produce(event);
+            return true;
          } catch(Exception e) {
             e.printStackTrace();
             receivers.remove(process);
             close();
          }
+         return false;
       }
       
       @Override

@@ -52,15 +52,18 @@ public class SocketEventClient {
          this.socket = socket;
       }
       
-      public void send(ProcessEvent event) throws Exception {
+      @Override
+      public boolean send(ProcessEvent event) throws Exception {
          ProcessEventProducer producer = connection.getProducer();
          
          try {
             producer.produce(event);
+            return true;
          } catch(Exception e) {
             e.printStackTrace();
             close();
          }
+         return false;
       }
       
       @Override

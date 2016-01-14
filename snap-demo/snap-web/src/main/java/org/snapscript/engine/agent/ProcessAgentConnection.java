@@ -16,10 +16,10 @@ public class ProcessAgentConnection {
       this.process = process;
    }
 
-   public void execute(String project, String path) {
+   public boolean execute(String project, String path) {
       try {
          ExecuteEvent event = new ExecuteEvent(process, project, path, Collections.EMPTY_MAP);
-         channel.send(event);
+         return channel.send(event);
       } catch (Exception e) {
          e.printStackTrace();
          try {
@@ -34,8 +34,7 @@ public class ProcessAgentConnection {
    public boolean ping() {
       try {
          PingEvent event = new PingEvent(process);
-         channel.send(event);
-         return true;
+         return channel.send(event);
       } catch (Exception e) {
          e.printStackTrace();
          try {
