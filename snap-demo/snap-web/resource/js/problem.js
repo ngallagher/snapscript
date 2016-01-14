@@ -4,7 +4,7 @@ var problemProject = null;
 var problemLocation = null;
 
 function registerProblems() {
-	createRoute('Y', updateProblems);
+	createRoute('SYNTAX_ERROR', updateProblems);
 }
 
 function showProblems() {
@@ -36,7 +36,7 @@ function clearProblems() {
 	}
 }
 
-function updateProblems(socket, text) {
+function updateProblems(socket, type, text) {
 	var problems = w2ui['problems'];
 	var message = JSON.parse(text);
    

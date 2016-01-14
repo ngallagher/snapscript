@@ -1,6 +1,6 @@
 var treeVisible = false;
 
-function reloadTree() {
+function reloadTree(socket, type, text) {
    createTree("explorer", "explorerTree", null, false, function(event, data) {
       if (!data.node.isFolder()) {
          openTreeFile(data.node.tooltip);
@@ -13,6 +13,7 @@ function showTree() {
       window.setTimeout(reloadTree, 500);
       treeVisible = true;
    }
+   createRoute("RELOAD_TREE", reloadTree);
 
 }
 

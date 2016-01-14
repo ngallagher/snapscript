@@ -3,7 +3,8 @@ var consoleUpdate = false;
 var consoleCapacity = 1000;
 
 function registerConsole() {
-	createRoute('C', updateConsole);
+	createRoute('PRINT_ERROR', updateConsole);
+	createRoute('PRINT_OUTPUT', updateConsole);
 	setInterval(showConsole, 200); // prevents reflow overload when console is busy
 }
 
@@ -58,10 +59,7 @@ function showConsole() {
 	}
 }
 
-function updateConsole(socket, text) {
-	var index = text.indexOf(':');
-	var value = text.substring(index + 1);
-	var type = text.substring(0, index);
+function updateConsole(socket, type, value) {
 	var node = {
 		error: type == 'PRINT_ERROR',
 		text: value,

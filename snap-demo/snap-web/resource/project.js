@@ -16,7 +16,7 @@ function runScript() {
          resource : editorData.resource,
          source : editorData.source,
       });
-      socket.send("execute:" + message);
+      socket.send("EXECUTE:" + message);
    });
 }
 
@@ -36,8 +36,7 @@ function saveScriptWithAction(saveCallback) {
          });
          clearConsole();
          clearProblems();
-         socket.send("save:" + message);
-         reloadTree(); 
+         socket.send("SAVE:" + message);
          updateEditor(editorData.source, buildTreeFile(resourcePath));
          saveCallback();
       });
@@ -51,8 +50,7 @@ function saveScriptWithAction(saveCallback) {
             });
             clearConsole();
             clearProblems();
-            socket.send("save:" + message); 
-            reloadTree(); 
+            socket.send("SAVE:" + message); 
             updateEditor(editorData.source, buildTreeFile(editorData.resource));
             saveCallback();
          });
@@ -69,7 +67,7 @@ function deleteScript() {
    var text = loadEditor();
    clearConsole();
    clearProblems();
-   socket.send("delete:" + text);
+   socket.send("DELETE:" + text);
 }
 
 function suspendScript(resource, line) {
@@ -81,7 +79,7 @@ function suspendScript(resource, line) {
       project : document.title,
       resource : editorData.resource
    });
-   socket.send("suspend:" + message);
+   socket.send("SUSPEND:" + message);
 }
 
 function stopScript() {

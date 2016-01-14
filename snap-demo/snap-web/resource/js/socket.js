@@ -89,13 +89,22 @@ function openSocket() {
    };
 
    socket.onmessage = function(message) {
-      var data = message.data.substring(1);
-      var code = message.data.substring(0, 1); // single character determines route e.g H, T
-      var route = routes[code];
+      var data = message.data;
+      var index = data.indexOf(':');
+      var value = null;
+      var type = null;
+      
+      if(index != -1) {
+         value = data.substring(index + 1);
+         type = data.substring(0, index);
+      } else {
+         type = data;
+      }
+      var route = routes[type];
       
       if(route != undefined) {
          if(!subscription.panic) { // this might cause problems with missing messages
-            route(this, data);
+            route(this, type, value);
          }
       } else {
          console.log("No route defined for '" + code+ "'");
@@ -104,6 +113,11 @@ function openSocket() {
 }
 
 function createRoute(code, method) {
+   var name = code.toUpperCase();
+   
+   if(name != code) {
+      alert("Illegal route '" + name + "' is not in upper case");
+   }
    var route = routes[code];
    
    if(route == null) {

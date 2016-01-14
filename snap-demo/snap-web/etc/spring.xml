@@ -2,13 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ScriptEngine" class="org.snapscript.web.WebScriptEngine" init-method="start">
-    <constructor-arg value="${script.listenPort}" />
+  <bean id="ProcessEngine" class="org.snapscript.engine.agent.ProcessEngine" init-method="start">
+    <constructor-arg value="http://localhost:${script.listenPort}/resource" />
     <constructor-arg value="${script.commandPort}" />
     <constructor-arg value="${script.agentPool}" />
   </bean>
 
-  <bean id="ContentTypeResolver" class="org.snapscript.web.resource.ContentTypeResolver">
+  <bean id="ContentTypeResolver" class="org.snapscript.engine.resource.ContentTypeResolver">
     <constructor-arg>
       <map>
         <entry key=".*.vm" value="text/html" />
@@ -23,11 +23,11 @@
     </constructor-arg>
   </bean>
 
-  <bean id="FileManager" class="org.snapscript.web.resource.FileManager">
+  <bean id="FileManager" class="org.snapscript.engine.resource.FileManager">
     <constructor-arg value="${script.resourcePath}" />
   </bean>
 
-  <bean id="FileResolver" class="org.snapscript.web.resource.FileResolver">
+  <bean id="FileResolver" class="org.snapscript.engine.resource.FileResolver">
     <constructor-arg ref="FileManager" />
     <constructor-arg value="index.html" />
   </bean>
@@ -42,42 +42,40 @@
     </constructor-arg>
   </bean>
 
-  <bean id="TemplateEngine" class="org.snapscript.web.resource.template.VelocityTemplateEngine">
+  <bean id="TemplateEngine" class="org.snapscript.engine.resource.template.VelocityTemplateEngine">
     <constructor-arg ref="VelocityEngine" />
     <constructor-arg ref="FileResolver" />
     <constructor-arg value="/" />
     <constructor-arg value=".vm" />
   </bean>
 
-  <bean id="ScriptController" class="org.snapscript.web.ScriptController" />
-  
-  <bean id="ProjectResource" class="org.snapscript.web.project.ProjectResource">
+  <bean id="ProjectResource" class="org.snapscript.engine.project.ProjectResource">
     <constructor-arg ref="TemplateEngine" />         
     <constructor-arg value="project.vm" />
   </bean>
   
-  <bean id="ProjectFileResource" class="org.snapscript.web.project.ProjectFileResource">
+  <bean id="ProjectFileResource" class="org.snapscript.engine.project.ProjectFileResource">
     <constructor-arg ref="ContentTypeResolver" />         
     <constructor-arg value="${project.path}" />
   </bean>
   
-  <bean id="ProjectTreeResource" class="org.snapscript.web.project.ProjectTreeResource"> 
+  <bean id="ProjectTreeResource" class="org.snapscript.engine.project.ProjectTreeResource"> 
     <constructor-arg value="${project.path}" />
   </bean>
   
-  <bean id="ProjectScriptService" class="org.snapscript.web.project.ProjectScriptService">
-    <constructor-arg ref="ScriptEngine" />
+  <bean id="ProjectScriptService" class="org.snapscript.engine.project.ProjectScriptService">
+    <constructor-arg ref="ProcessEngine" />
     <constructor-arg value="${project.path}" />
   </bean>
   
-  <bean id="NotFoundResource" class="org.snapscript.web.resource.StringResource">
+  <bean id="NotFoundResource" class="org.snapscript.engine.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
     <constructor-arg value="UTF-8" />
     <constructor-arg value="NOT_FOUND" />
   </bean>
 
-  <bean id="ScriptMatcher" class="org.snapscript.web.resource.RegularExpressionMatcher">
+  <bean id="ResourceMatcher" class="org.snapscript.engine.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
         <entry key="/project/.*" value-ref="ProjectResource" />          
@@ -87,28 +85,22 @@
     </constructor-arg>
   </bean>
 
-  <bean id="TemplateMatcher" class="org.snapscript.web.resource.template.TemplateMatcher">
-    <constructor-arg ref="TemplateEngine" />
-    <constructor-arg ref="ScriptController" />
-  </bean>
-
-  <bean id="FileMatcher" class="org.snapscript.web.resource.FileMatcher">
+  <bean id="FileMatcher" class="org.snapscript.engine.resource.FileMatcher">
     <constructor-arg ref="FileResolver" />
     <constructor-arg ref="ContentTypeResolver" />
   </bean>
 
-  <bean id="CombinationMatcher" class="org.snapscript.web.resource.CombinationMatcher">
+  <bean id="CombinationMatcher" class="org.snapscript.engine.resource.CombinationMatcher">
     <constructor-arg>
       <list>
-        <ref bean="ScriptMatcher" />
-        <ref bean="TemplateMatcher" />
+        <ref bean="ResourceMatcher" />
         <ref bean="FileMatcher" />
       </list>
     </constructor-arg>
     <constructor-arg ref="NotFoundResource" />
   </bean>
 
-  <bean id="ResourceContainer" class="org.snapscript.web.resource.ResourceContainer">
+  <bean id="ResourceContainer" class="org.snapscript.engine.resource.ResourceContainer">
     <constructor-arg ref="CombinationMatcher" />
   </bean>
   
@@ -122,12 +114,12 @@
     <constructor-arg value="2" />
   </bean>
 
-  <bean id="WebContainer" class="org.snapscript.web.WebContainer">
+  <bean id="WebContainer" class="org.snapscript.engine.WebContainer">
     <constructor-arg ref="WebSocketContainer" />
     <constructor-arg value="Snap/1.0" />
   </bean>
 
-  <bean id="WebServer" class="org.snapscript.web.WebServer" init-method="start">
+  <bean id="WebServer" class="org.snapscript.engine.WebServer" init-method="start">
     <constructor-arg ref="WebContainer" />
     <constructor-arg value="${script.listenPort}" />
   </bean>
