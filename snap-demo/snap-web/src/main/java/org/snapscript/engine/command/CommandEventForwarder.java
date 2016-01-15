@@ -22,7 +22,7 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          int length = event.getLength();
          int offset = event.getOffset();
          String text = new String(array, offset, length, "UTF-8");
-         client.sendWriteError(text);
+         client.sendPrintError(text);
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -35,7 +35,7 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          int length = event.getLength();
          int offset = event.getOffset();
          String text = new String(array, offset, length, "UTF-8");
-         client.sendWriteOutput(text);
+         client.sendPrintOutput(text);
       } catch(Exception e) {
          e.printStackTrace();
       }

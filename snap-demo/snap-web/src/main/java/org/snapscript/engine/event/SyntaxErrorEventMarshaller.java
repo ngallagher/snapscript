@@ -8,12 +8,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.snapscript.engine.message.BinaryMessage;
-
 public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<SyntaxErrorEvent> {
 
    @Override
-   public SyntaxErrorEvent fromMessage(BinaryMessage message) throws IOException {
+   public SyntaxErrorEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -27,7 +25,7 @@ public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<Syntax
    }
 
    @Override
-   public BinaryMessage toMessage(SyntaxErrorEvent value) throws IOException {
+   public MessageEnvelope toMessage(SyntaxErrorEvent value) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = value.getProcess();
@@ -40,7 +38,7 @@ public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<Syntax
       output.flush();
       
       byte[] array = buffer.toByteArray();
-      return new BinaryMessage(process, SYNTAX_ERROR.code, array, 0, array.length);
+      return new MessageEnvelope(process, SYNTAX_ERROR.code, array, 0, array.length);
    }
 }
 

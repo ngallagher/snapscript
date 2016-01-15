@@ -8,12 +8,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.snapscript.engine.message.BinaryMessage;
-
 public class WriteOutputEventMarshaller implements ProcessEventMarshaller<WriteOutputEvent> {
 
    @Override
-   public WriteOutputEvent fromMessage(BinaryMessage message) throws IOException {
+   public WriteOutputEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -29,7 +27,7 @@ public class WriteOutputEventMarshaller implements ProcessEventMarshaller<WriteO
    }
 
    @Override
-   public BinaryMessage toMessage(WriteOutputEvent value) throws IOException {
+   public MessageEnvelope toMessage(WriteOutputEvent value) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = value.getProcess();
@@ -43,6 +41,6 @@ public class WriteOutputEventMarshaller implements ProcessEventMarshaller<WriteO
       output.flush();
       
       byte[] array = buffer.toByteArray();
-      return new BinaryMessage(process, WRITE_OUTPUT.code, array, 0, array.length);
+      return new MessageEnvelope(process, WRITE_OUTPUT.code, array, 0, array.length);
    }
 }

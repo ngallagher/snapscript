@@ -1,5 +1,5 @@
 package org.snapscript.engine.command;
 
-public class DeleteCommand {
+public class DeleteCommand implements Command {
 
 }

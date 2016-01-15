@@ -3,7 +3,7 @@ package org.snapscript.engine.command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExecuteCommand {
+public class ExecuteCommand implements Command {
 
    private Map<String, Map<Integer, Boolean>> breakpoints;
    private String project;

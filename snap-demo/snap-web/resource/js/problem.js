@@ -4,7 +4,7 @@ var problemProject = null;
 var problemLocation = null;
 
 function registerProblems() {
-	createRoute('SYNTAX_ERROR', updateProblems);
+	createRoute('PROBLEM', updateProblems);
 }
 
 function showProblems() {

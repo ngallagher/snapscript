@@ -11,12 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.snapscript.engine.message.BinaryMessage;
-
 public class ExecuteEventMarshaller implements ProcessEventMarshaller<ExecuteEvent> {
 
    @Override
-   public ExecuteEvent fromMessage(BinaryMessage message) throws IOException {
+   public ExecuteEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -45,7 +43,7 @@ public class ExecuteEventMarshaller implements ProcessEventMarshaller<ExecuteEve
    }
 
    @Override
-   public BinaryMessage toMessage(ExecuteEvent value) throws IOException {
+   public MessageEnvelope toMessage(ExecuteEvent value) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       Map<String, Map<Integer, Boolean>> breakpoints = value.getBreakpoints();
@@ -77,7 +75,7 @@ public class ExecuteEventMarshaller implements ProcessEventMarshaller<ExecuteEve
       }
       output.flush();
       byte[] array = buffer.toByteArray();
-      return new BinaryMessage(process, EXECUTE.code, array, 0, array.length);
+      return new MessageEnvelope(process, EXECUTE.code, array, 0, array.length);
    }
 
 }

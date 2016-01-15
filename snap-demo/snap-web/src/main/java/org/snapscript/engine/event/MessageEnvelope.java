@@ -1,6 +1,6 @@
-package org.snapscript.engine.message;
+package org.snapscript.engine.event;
 
-public class BinaryMessage {
+public class MessageEnvelope {
    
    private final String process;
    private final byte[] data;
@@ -8,7 +8,7 @@ public class BinaryMessage {
    private final int length;
    private final int code;
    
-   public BinaryMessage(String process, int code, byte[] data, int offset, int length) {
+   public MessageEnvelope(String process, int code, byte[] data, int offset, int length) {
       this.offset = offset;
       this.length = length;
       this.process = process;

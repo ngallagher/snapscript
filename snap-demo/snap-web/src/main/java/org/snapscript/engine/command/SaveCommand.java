@@ -1,6 +1,6 @@
 package org.snapscript.engine.command;
 
-public class SaveCommand {
+public class SaveCommand implements Command {
 
    private String resource;
    private String project;

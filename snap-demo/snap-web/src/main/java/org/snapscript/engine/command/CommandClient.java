@@ -1,58 +1,52 @@
 package org.snapscript.engine.command;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.simpleframework.http.socket.FrameChannel;
-
-import com.google.gson.Gson;
 
 public class CommandClient {
    
-   public static final String PRINT_ERROR = "PRINT_ERROR";
-   public static final String PRINT_OUTPUT = "PRINT_OUTPUT";
-   public static final String SYNTAX_ERROR = "SYNTAX_ERROR";
-   public static final String RELOAD_TREE = "RELOAD_TREE";
-   public static final String PROCESS_TERMINATE = "TERMINATE";
-   public static final String PROCESS_EXIT = "EXIT";
-   
+   private final CommandWriter writer;
    private final FrameChannel channel;
    private final String project;
-   private final Gson gson;
    
    public CommandClient(FrameChannel channel, String project) {
-      this.gson = new Gson();
+      this.writer = new CommandWriter();
       this.channel = channel;
       this.project = project;
    } 
    
    public void sendSyntaxError(String resource, int line) throws Exception {
-      Map<String, Object> properties = new HashMap<String, Object>();
-      properties.put("line", line);
-      properties.put("resource", resource);
-      properties.put("description", "Syntax error at line " + line);
-      properties.put("project", project);
-      String json = gson.toJson(properties);
-      channel.send(SYNTAX_ERROR + ":"+json);
+      ProblemCommand command = new ProblemCommand(project, "Syntax error at line " + line, resource, line);
+      String message = writer.write(command);
+      channel.send(message);
    }
    
-   public void sendWriteError(String text) throws Exception {
-      channel.send(PRINT_ERROR + ":"+text);
+   public void sendPrintError(String text) throws Exception {
+      PrintErrorCommand command = new PrintErrorCommand(text);
+      String message = writer.write(command);
+      channel.send(message);
    }
    
-   public void sendWriteOutput(String text) throws Exception {
-      channel.send(PRINT_OUTPUT + ":"+text);
-   }
-   
-   public void sendProcessTerminate() throws Exception {
-      channel.send(PROCESS_TERMINATE);
+   public void sendPrintOutput(String text) throws Exception {
+      PrintOutputCommand command = new PrintOutputCommand(text);
+      String message = writer.write(command);
+      channel.send(message);
    }
    
    public void sendProcessExit() throws Exception {
-      channel.send(PROCESS_EXIT);
+      ExitCommand command = new ExitCommand();
+      String message = writer.write(command);
+      channel.send(message);
+   }
+   
+   public void sendProcessTerminate() throws Exception {
+      TerminateCommand command = new TerminateCommand();
+      String message = writer.write(command);
+      channel.send(message);
    }
    
    public void sendReloadTree() throws Exception {
-      channel.send(RELOAD_TREE);
+      ReloadTreeCommand command = new ReloadTreeCommand();
+      String message = writer.write(command);
+      channel.send(message);
    }
 }

@@ -3,17 +3,14 @@ package org.snapscript.engine.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.snapscript.engine.message.BinaryMessage;
-import org.snapscript.engine.message.BinaryMessageConsumer;
-
 public class ProcessEventConsumer {
    
    private final Map<Integer, ProcessEventMarshaller> marshallers;
-   private final BinaryMessageConsumer consumer;
+   private final MessageEnvelopReader reader;
 
-   public ProcessEventConsumer(BinaryMessageConsumer consumer) {
+   public ProcessEventConsumer(MessageEnvelopReader reader) {
       this.marshallers = new HashMap<Integer, ProcessEventMarshaller>();
-      this.consumer = consumer;
+      this.reader = reader;
    }
    
    public ProcessEvent consume() throws Exception {
@@ -25,7 +22,7 @@ public class ProcessEventConsumer {
             marshallers.put(event.code, marshaller);
          }
       }
-      BinaryMessage message = consumer.consume();
+      MessageEnvelope message = reader.read();
       int code = message.getCode();
       ProcessEventMarshaller marshaller = marshallers.get(code);
       

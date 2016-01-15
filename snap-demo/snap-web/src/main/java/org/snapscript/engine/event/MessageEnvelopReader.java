@@ -1,17 +1,17 @@
-package org.snapscript.engine.message;
+package org.snapscript.engine.event;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
 
-public class BinaryMessageConsumer {
+public class MessageEnvelopReader {
 
    public final DataInputStream stream;
    
-   public BinaryMessageConsumer(InputStream stream) {
+   public MessageEnvelopReader(InputStream stream) {
       this.stream = new DataInputStream(stream);
    }
    
-   public synchronized BinaryMessage consume() throws Exception {
+   public synchronized MessageEnvelope read() throws Exception {
       String agent = stream.readUTF();
       int type = stream.readInt();
       int length = stream.readInt();
@@ -19,6 +19,6 @@ public class BinaryMessageConsumer {
       
       stream.readFully(array);
       
-      return new BinaryMessage(agent, type, array, 0, length);
+      return new MessageEnvelope(agent, type, array, 0, length);
    }
 }

@@ -1,17 +1,17 @@
-package org.snapscript.engine.message;
+package org.snapscript.engine.event;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
 
-public class BinaryMessageProducer {
+public class MessageEnvelopeWriter {
 
    private final DataOutputStream stream;
    
-   public BinaryMessageProducer(OutputStream stream) {
+   public MessageEnvelopeWriter(OutputStream stream) {
       this.stream = new DataOutputStream(stream);
    }
    
-   public synchronized void produce(BinaryMessage message) throws Exception {
+   public synchronized void write(MessageEnvelope message) throws Exception {
       String agent = message.getProcess();
       byte[] array = message.getData();
       int length = message.getLength();

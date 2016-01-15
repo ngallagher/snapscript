@@ -4,17 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.snapscript.engine.message.BinaryMessageConsumer;
-import org.snapscript.engine.message.BinaryMessageProducer;
-
 public class ProcessEventConnection {
 
-   private final BinaryMessageConsumer consumer;
-   private final BinaryMessageProducer producer;
+   private final MessageEnvelopReader consumer;
+   private final MessageEnvelopeWriter producer;
    
    public ProcessEventConnection(InputStream input, OutputStream output) {
-      this.consumer = new BinaryMessageConsumer(input);
-      this.producer = new BinaryMessageProducer(output);
+      this.consumer = new MessageEnvelopReader(input);
+      this.producer = new MessageEnvelopeWriter(output);
    }
    
    public ProcessEventConsumer getConsumer() throws IOException {

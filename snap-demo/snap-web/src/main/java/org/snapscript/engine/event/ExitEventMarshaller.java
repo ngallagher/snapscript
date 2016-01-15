@@ -8,12 +8,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.snapscript.engine.message.BinaryMessage;
-
 public class ExitEventMarshaller implements ProcessEventMarshaller<ExitEvent> {
 
    @Override
-   public ExitEvent fromMessage(BinaryMessage message) throws IOException {
+   public ExitEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -26,7 +24,7 @@ public class ExitEventMarshaller implements ProcessEventMarshaller<ExitEvent> {
    }
 
    @Override
-   public BinaryMessage toMessage(ExitEvent value) throws IOException {
+   public MessageEnvelope toMessage(ExitEvent value) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = value.getProcess();
@@ -35,6 +33,6 @@ public class ExitEventMarshaller implements ProcessEventMarshaller<ExitEvent> {
       output.flush();
       
       byte[] array = buffer.toByteArray();
-      return new BinaryMessage(process, EXIT.code, array, 0, array.length);
+      return new MessageEnvelope(process, EXIT.code, array, 0, array.length);
    }
 }
