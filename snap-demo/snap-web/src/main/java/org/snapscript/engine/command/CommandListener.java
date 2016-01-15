@@ -71,7 +71,16 @@ public class CommandListener {
    }
    
    public void onDelete(DeleteCommand command) {
-      
+      try {
+         String resource = command.getResource();
+         File file = new File(root, resource);
+         
+         if(file.exists()) {
+            file.delete();
+         }
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
    }
    
    public void onSuspend(SuspendCommand command) {

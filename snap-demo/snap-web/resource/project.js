@@ -179,10 +179,10 @@ function createLayout() {
                caption : 'Breakpoints'
             }, {
                id : 'tab4',
-               caption : 'Variables'
+               caption : 'Threads'
             }, {
                id : 'tab5',
-               caption : 'Threads'
+               caption : 'Variables'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
@@ -200,14 +200,14 @@ function createLayout() {
                   $('#breakpoints').w2render('breakpoints');
                   showEditorBreakpoints();
                } else if(event.target == 'tab4'){
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='threads'><div id='threadTree'></div></div>");
+                  w2ui['tabLayout'].refresh();
+                  showThreads();
+               } else {
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='variables'></div>");
                   w2ui['tabLayout'].refresh();
                   $('#variables').w2render('variables');
                   // showVariables();
-               } else {
-                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='threads'><div id='threadTree'></div></div>");
-                  w2ui['tabLayout'].refresh();
-                  showThreads();
                }
             }
          }
