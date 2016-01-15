@@ -60,7 +60,7 @@ public class CommandListener {
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
             encoder.write(source);
             encoder.close();
-            client.sendReloadTree();
+            //client.sendReloadTree();
             engine.execute(forwarder, project, resource, system);
          } else {
             client.sendSyntaxError(resource, line);
