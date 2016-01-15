@@ -18,6 +18,7 @@
         <entry key=".*.gif" value="image/gif" />
         <entry key=".*.css" value="text/css" />
         <entry key=".*.js" value="text/javascript" />
+        <entry key=".*.json" value="application/json" />
         <entry key=".*.snap" value="text/plain" />
       </map>
     </constructor-arg>

@@ -180,6 +180,9 @@ function createLayout() {
             }, {
                id : 'tab4',
                caption : 'Variables'
+            }, {
+               id : 'tab5',
+               caption : 'Threads'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
@@ -196,11 +199,15 @@ function createLayout() {
                   w2ui['tabLayout'].refresh();
                   $('#breakpoints').w2render('breakpoints');
                   showEditorBreakpoints();
-               } else {
+               } else if(event.target == 'tab4'){
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='variables'></div>");
                   w2ui['tabLayout'].refresh();
                   $('#variables').w2render('variables');
                   // showVariables();
+               } else {
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='threads'><div id='threadTree'></div></div>");
+                  w2ui['tabLayout'].refresh();
+                  showThreads();
                }
             }
          }

@@ -1,12 +1,4 @@
-.consoleError {
-   color: red;
-   white-space: pre;
-}
-.consoleNormal {
-   color: black;
-   white-space: pre;
-}
-#console {
+#threads {
     font-family: "Lucida Console", sans-serif; 
     font-size: 0.9em;
     background-color: #ffffff; 

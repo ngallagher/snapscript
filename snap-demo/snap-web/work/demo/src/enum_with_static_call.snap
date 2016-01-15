@@ -8,4 +8,4 @@ enum X{
       return "${a} ${b}";
    }
 }
-System.err.println(X.I);
+System.out.println(X.I);
