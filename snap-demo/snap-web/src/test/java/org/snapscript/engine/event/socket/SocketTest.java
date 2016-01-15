@@ -1,4 +1,4 @@
-package com.snapscript.web.binary.socket;
+package org.snapscript.engine.event.socket;
 
 import java.io.PrintStream;
 
