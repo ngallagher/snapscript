@@ -2,6 +2,7 @@ package org.snapscript.engine.agent;
 
 import java.io.PrintStream;
 import java.net.URI;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +18,10 @@ import org.snapscript.core.resource.RemoteReader;
 import org.snapscript.engine.ExceptionBuilder;
 import org.snapscript.engine.ScriptAgentContext;
 import org.snapscript.engine.ScriptProfiler;
-import org.snapscript.engine.ScriptResourceReader;
 import org.snapscript.engine.ScriptProfiler.ProfileResult;
+import org.snapscript.engine.ScriptResourceReader;
+import org.snapscript.engine.agent.debug.SuspendInterceptor;
+import org.snapscript.engine.agent.debug.SuspendMatcher;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -51,6 +54,8 @@ public class ProcessAgent {
    private final ScriptAgentContext context;
    private final ResourceCompiler compiler;
    private final ScriptProfiler profiler;
+   private final SuspendInterceptor interceptor;
+   private final SuspendMatcher matcher;
    private final RemoteReader remoteReader;
    private final String process;
    private final int port;
@@ -60,6 +65,8 @@ public class ProcessAgent {
       this.reader = new ScriptResourceReader(remoteReader);
       this.context = new ScriptAgentContext(reader);
       this.compiler = new ResourceCompiler(context);
+      this.matcher = new SuspendMatcher();
+      this.interceptor = new SuspendInterceptor(matcher);
       this.profiler = new ScriptProfiler();
       this.process = process;
       this.port = port;
@@ -84,6 +91,7 @@ public class ProcessAgent {
       }
       TraceAnalyzer analyzer = context.getAnalyzer();
       analyzer.register(profiler);
+      analyzer.register(interceptor);
       try {
          String system = System.getProperty("os.name");
          RegisterEvent register = new RegisterEvent(process, system);
@@ -108,9 +116,11 @@ public class ProcessAgent {
 
       @Override
       public void onExecute(ProcessEventChannel channel, ExecuteEvent event) throws Exception {
+         Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
          String resource = event.getResource();
          String process = event.getProcess();
          String project = event.getProject();
+         matcher.update(breakpoints);
          reader.update(project); // XXX rubbish
          ExecuteTask task = new ExecuteTask(channel, process, resource);
          task.start();

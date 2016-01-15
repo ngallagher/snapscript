@@ -49,7 +49,6 @@ public class CommandListener {
    
    public void onExecute(ExecuteCommand command) {
       try {
-         String system = System.getProperty("os.name");
          String resource = command.getResource();
          String source = command.getSource();
          int line = validator.parse(resource, source);
@@ -61,7 +60,7 @@ public class CommandListener {
             encoder.write(source);
             encoder.close();
             //client.sendReloadTree();
-            engine.execute(forwarder, project, resource, system);
+            engine.execute(forwarder, command);
          } else {
             client.sendSyntaxError(resource, line);
          }

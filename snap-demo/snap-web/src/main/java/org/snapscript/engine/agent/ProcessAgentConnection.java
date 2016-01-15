@@ -1,6 +1,7 @@
 package org.snapscript.engine.agent;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -16,9 +17,9 @@ public class ProcessAgentConnection {
       this.process = process;
    }
 
-   public boolean execute(String project, String path) {
+   public boolean execute(String project, String path, Map<String, Map<Integer, Boolean>> breakpoints) {
       try {
-         ExecuteEvent event = new ExecuteEvent(process, project, path, Collections.EMPTY_MAP);
+         ExecuteEvent event = new ExecuteEvent(process, project, path, breakpoints);
          return channel.send(event);
       } catch (Exception e) {
          e.printStackTrace();
