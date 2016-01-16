@@ -80,9 +80,10 @@ function showEditorBreakpoints() {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
                   breakpointRecords.push({
-                     recid : breakpointIndex++,
+                     recid: breakpointIndex++,
                      location : "Line " + lineNumber,
                      resource : resourceName,
+                     line: parseInt(lineNumber),
                      script : buildTreeFile(resourceName)
                   });
                }

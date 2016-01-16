@@ -308,7 +308,7 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               openTreeFile(record.script); // open resource
+               openTreeFile(record.script, function(){}); // open resource
             }
          }
       }
@@ -366,7 +366,9 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               openTreeFile(record.script); // open resource
+               openTreeFile(record.script, function() {
+                  showEditorLine(record.line);  
+               }); 
             }
          }
       }
@@ -417,8 +419,10 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               openTreeFile(record.script); // open resource
-               updateThreadFocus(record.thread);
+               openTreeFile(record.script, function(){
+                  updateThreadFocus(record.thread, record.line);
+                  showEditorLine(record.line);  
+               });
             }
          }
       }

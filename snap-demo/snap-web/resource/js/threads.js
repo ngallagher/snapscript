@@ -1,6 +1,7 @@
 var suspendedThreads = {};
 var suspendedThreadStatus = {};
 var currentFocusThread = null;
+var currentFocusLine = -1;
 
 function createThreads() {
    createRoute("START", startThreads)
@@ -31,15 +32,22 @@ function updateThreads(socket, type, text) {
    var scope = JSON.parse(text);
    var editorData = loadEditor();
    
-   if(editorData.resource != scope.resource) {
-      var treeFile = buildTreeFile(scope.resource);
-      openTreeFile(treeFile);
+   if(currentFocusThread != scope.thread || currentFocusLine != scope.line) { // this will keep switching!!
+      if(editorData.resource != scope.resource) {
+         var treeFile = buildTreeFile(scope.resource);
+         openTreeFile(treeFile, function(){
+            updateThreadFocus(scope.thread, scope.line);
+            showEditorLine(scope.line);
+         });
+      } else {
+         updateThreadFocus(scope.thread, scope.line);
+         showEditorLine(scope.line);
+      }
    }
-   updateThreadFocus(scope.thread);
-   showEditorLine(scope.line);
    suspendedThreadStatus[scope.thread] = 'SUSPENDED';
    suspendedThreads[scope.thread] = scope;
    showThreads();
+   showVariables();
 }
 
 function focusedThreadResume() {
@@ -57,10 +65,12 @@ function focusedThread() {
 
 function clearFocusThread() {
    currentFocusThread = null;
+   currentFocusLine = -1;
 }
 
-function updateThreadFocus(thread) {
+function updateThreadFocus(thread, line) {
    currentFocusThread = thread;
+   currentFocusLine = line;
 } 
 
 function focusedThreadVariables() {
@@ -88,7 +98,7 @@ function showThreads() {
          if(threadStatus == null) {
             threadStatus = 'SUSPENDED';
          }
-         if(editorData.resource == threadScope.resource) {
+         if(editorData.resource == threadScope.resource && threadStatus == 'SUSPENDED') {
             createEditorHighlight(threadScope.line, "threadHighlight");
          }
          threadRecords.push({

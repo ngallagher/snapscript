@@ -3,7 +3,7 @@ var treeVisible = false;
 function reloadTree(socket, type, text) {
    createTree("explorer", "explorerTree", null, false, function(event, data) {
       if (!data.node.isFolder()) {
-         openTreeFile(data.node.tooltip);
+         openTreeFile(data.node.tooltip, function(){});
       }
    });
 }
@@ -17,9 +17,10 @@ function showTree() {
 
 }
 
-function openTreeFile(path) {
+function openTreeFile(path, afterLoad) {
    $.get(path, function(response) {
       updateEditor(response, path);
+      afterLoad();
    });
 }
 
