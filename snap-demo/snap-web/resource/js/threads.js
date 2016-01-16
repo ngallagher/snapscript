@@ -54,6 +54,7 @@ function focusedThreadResume() {
    if(currentFocusThread != null) {
       suspendedThreadStatus[currentFocusThread] = 'RUNNING';
    }
+   showThreads();
 } 
 
 function focusedThread() {
