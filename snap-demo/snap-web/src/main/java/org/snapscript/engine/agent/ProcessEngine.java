@@ -18,14 +18,13 @@ public class ProcessEngine {
    }
    
    public void execute(ProcessEventListener listener, ExecuteCommand command, String client) {
-      String system = System.getProperty("os.name"); // XXX change this
+      String system = System.getProperty("os.name");
+      ProcessAgentConnection connection = pool.acquire(listener, system);
       ProcessAgentConnection current = connections.remove(client);
       
       if(current != null) {
          current.close();
       }
-      ProcessAgentConnection connection = pool.acquire(listener, system);
-      
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
          String project = command.getProject();
@@ -42,6 +41,14 @@ public class ProcessEngine {
       if(connection != null) {
          String thread = command.getThread();
          connection.resume(thread);
+      }
+   }
+   
+   public void stop(String client) {
+      ProcessAgentConnection connection = connections.get(client);
+      
+      if(connection != null) {
+         connection.close();
       }
    }
    
