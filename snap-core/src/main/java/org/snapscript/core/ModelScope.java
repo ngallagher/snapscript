@@ -1,5 +1,7 @@
 package org.snapscript.core;
 
+import java.util.Set;
+
 public class ModelScope implements Scope {
    
    private final Module module;
@@ -48,6 +50,11 @@ public class ModelScope implements Scope {
       public ModelState(Model model) {
          this.state = new MapState();
          this.model = model;
+      }
+      
+      @Override
+      public Set<String> getNames() {
+         return state.getNames();
       }
       
       @Override

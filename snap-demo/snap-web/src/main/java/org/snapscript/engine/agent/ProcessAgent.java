@@ -21,6 +21,7 @@ import org.snapscript.engine.ScriptProfiler;
 import org.snapscript.engine.ScriptProfiler.ProfileResult;
 import org.snapscript.engine.ScriptResourceReader;
 import org.snapscript.engine.agent.debug.SuspendInterceptor;
+import org.snapscript.engine.agent.debug.SuspendLatch;
 import org.snapscript.engine.agent.debug.SuspendMatcher;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
@@ -30,6 +31,7 @@ import org.snapscript.engine.event.ProcessEventAdapter;
 import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ProcessEventType;
 import org.snapscript.engine.event.RegisterEvent;
+import org.snapscript.engine.event.ResumeEvent;
 import org.snapscript.engine.event.socket.SocketEventClient;
 
 public class ProcessAgent {
@@ -54,9 +56,9 @@ public class ProcessAgent {
    private final ScriptAgentContext context;
    private final ResourceCompiler compiler;
    private final ScriptProfiler profiler;
-   private final SuspendInterceptor interceptor;
    private final SuspendMatcher matcher;
    private final RemoteReader remoteReader;
+   private final SuspendLatch latch;
    private final String process;
    private final int port;
 
@@ -66,8 +68,8 @@ public class ProcessAgent {
       this.context = new ScriptAgentContext(reader);
       this.compiler = new ResourceCompiler(context);
       this.matcher = new SuspendMatcher();
-      this.interceptor = new SuspendInterceptor(matcher);
       this.profiler = new ScriptProfiler();
+      this.latch = new SuspendLatch();
       this.process = process;
       this.port = port;
    }
@@ -90,15 +92,16 @@ public class ProcessAgent {
          e.printStackTrace();
       }
       TraceAnalyzer analyzer = context.getAnalyzer();
-      analyzer.register(profiler);
-      analyzer.register(interceptor);
       try {
          String system = System.getProperty("os.name");
          RegisterEvent register = new RegisterEvent(process, system);
          ClientListener listener = new ClientListener(process);
          SocketEventClient client = new SocketEventClient(listener);
          ProcessEventChannel channel = client.connect(port);
+         SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, latch, process);
          
+         analyzer.register(profiler);
+         analyzer.register(interceptor);
          channel.send(register); // send the initial register event
       } catch (Exception e) {
          e.printStackTrace();
@@ -124,6 +127,12 @@ public class ProcessAgent {
          reader.update(project); // XXX rubbish
          ExecuteTask task = new ExecuteTask(channel, process, resource);
          task.start();
+      }
+      
+      @Override
+      public void onResume(ProcessEventChannel channel, ResumeEvent event) throws Exception {
+         String thread = event.getThread();
+         latch.resume(thread);
       }
 
       @Override

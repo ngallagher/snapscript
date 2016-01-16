@@ -1,8 +1,11 @@
 package org.snapscript.engine.command;
 
+import java.util.Map;
+
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.ProcessEventAdapter;
 import org.snapscript.engine.event.ProcessEventChannel;
+import org.snapscript.engine.event.ScopeEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -14,6 +17,19 @@ public class CommandEventForwarder extends ProcessEventAdapter {
    public CommandEventForwarder(CommandClient client) {
       this.client = client;
    } 
+   
+   @Override
+   public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
+      try {
+         Map<String, String> variables = event.getVariables();
+         String thread = event.getThread();
+         String resource = event.getResource();
+         int line = event.getLine();
+         client.sendScope(thread, resource, line, variables);
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
    
    @Override
    public void onWriteError(ProcessEventChannel channel, WriteErrorEvent event) throws Exception {

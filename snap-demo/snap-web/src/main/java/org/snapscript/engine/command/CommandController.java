@@ -16,8 +16,8 @@ public class CommandController implements FrameListener {
    private final CommandListener listener;
    private final CommandReader reader;
    
-   public CommandController(ProcessEngine engine, FrameChannel channel, File root, String project) {
-      this.listener = new CommandListener(engine, channel, root, project);
+   public CommandController(ProcessEngine engine, FrameChannel channel, File root, String project, String name) {
+      this.listener = new CommandListener(engine, channel, root, project, name);
       this.reader = new CommandReader();
    }
 
@@ -39,6 +39,8 @@ public class CommandController implements FrameListener {
                listener.onDelete((DeleteCommand)command);
             }else if(command instanceof SaveCommand) {
                listener.onSave((SaveCommand)command);
+            }else if(command instanceof ResumeCommand) {
+               listener.onResume((ResumeCommand)command);
             }
          } catch(Throwable e){
             e.printStackTrace();

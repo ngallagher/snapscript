@@ -1,5 +1,7 @@
 package org.snapscript.engine.command;
 
+import java.util.Map;
+
 import org.simpleframework.http.socket.FrameChannel;
 
 public class CommandClient {
@@ -13,6 +15,12 @@ public class CommandClient {
       this.channel = channel;
       this.project = project;
    } 
+   
+   public void sendScope(String thread, String resource, int line, Map<String, String> variables) throws Exception {
+      ScopeCommand command = new ScopeCommand(thread, resource, line, variables);
+      String message = writer.write(command);
+      channel.send(message);
+   }
    
    public void sendSyntaxError(String resource, int line) throws Exception {
       ProblemCommand command = new ProblemCommand(project, "Syntax error at line " + line, resource, line);

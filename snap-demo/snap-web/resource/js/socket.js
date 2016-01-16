@@ -107,7 +107,7 @@ function openSocket() {
             route(this, type, value);
          }
       } else {
-         console.log("No route defined for '" + type+ "'");
+         console.log("No route defined for '" + type+ "' with '" + value + "'");
       }
    };
 }

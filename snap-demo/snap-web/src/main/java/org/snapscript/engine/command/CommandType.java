@@ -10,7 +10,9 @@ public enum CommandType {
    SUSPEND(SuspendCommandMarshaller.class, SuspendCommand.class),
    TERMINATE(TerminateCommandMarshaller.class, TerminateCommand.class),
    EXIT(ExitCommandMarshaller.class, ExitCommand.class),
-   PROBLEM(ProblemCommandMarshaller.class, ProblemCommand.class);
+   PROBLEM(ProblemCommandMarshaller.class, ProblemCommand.class),
+   SCOPE(ScopeCommandMarshaller.class, ScopeCommand.class),
+   RESUME(ResumeCommandMarshaller.class, ResumeCommand.class);
    
    public final Class<? extends CommandMarshaller> marshaller;
    public final Class<? extends Command> command;

@@ -23,10 +23,10 @@ public class PongEventMarshaller implements ProcessEventMarshaller<PongEvent> {
    }
 
    @Override
-   public MessageEnvelope toMessage(PongEvent value) throws IOException {
+   public MessageEnvelope toMessage(PongEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      String process = value.getProcess();
+      String process = event.getProcess();
       
       output.writeUTF(process);
       output.flush();

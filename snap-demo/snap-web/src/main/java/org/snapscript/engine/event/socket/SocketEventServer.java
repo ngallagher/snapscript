@@ -20,6 +20,8 @@ import org.snapscript.engine.event.ProcessEventConsumer;
 import org.snapscript.engine.event.ProcessEventListener;
 import org.snapscript.engine.event.ProcessEventProducer;
 import org.snapscript.engine.event.RegisterEvent;
+import org.snapscript.engine.event.ResumeEvent;
+import org.snapscript.engine.event.ScopeEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -139,27 +141,31 @@ public class SocketEventServer implements ProcessEventChannel {
             ProcessEventConsumer consumer = connection.getConsumer();
             
             while(true) {
-               ProcessEvent value = consumer.consume();
-               String process = value.getProcess();
+               ProcessEvent event = consumer.consume();
+               String process = event.getProcess();
                
                receivers.put(process, this);
                
-               if(value instanceof ExitEvent) {
-                  listener.onExit(this, (ExitEvent)value);
-               } else if(value instanceof ExecuteEvent) {
-                  listener.onExecute(this, (ExecuteEvent)value);                  
-               } else if(value instanceof RegisterEvent) {
-                  listener.onRegister(this, (RegisterEvent)value);
-               } else if(value instanceof SyntaxErrorEvent) {
-                  listener.onSyntaxError(this, (SyntaxErrorEvent)value);
-               } else if(value instanceof WriteErrorEvent) {
-                  listener.onWriteError(this, (WriteErrorEvent)value);
-               } else if(value instanceof WriteOutputEvent) {
-                  listener.onWriteOutput(this, (WriteOutputEvent)value);
-               } else if(value instanceof PingEvent) {
-                  listener.onPing(this, (PingEvent)value);
-               } else if(value instanceof PongEvent) {
-                  listener.onPong(this, (PongEvent)value);
+               if(event instanceof ExitEvent) {
+                  listener.onExit(this, (ExitEvent)event);
+               } else if(event instanceof ExecuteEvent) {
+                  listener.onExecute(this, (ExecuteEvent)event);                  
+               } else if(event instanceof RegisterEvent) {
+                  listener.onRegister(this, (RegisterEvent)event);
+               } else if(event instanceof SyntaxErrorEvent) {
+                  listener.onSyntaxError(this, (SyntaxErrorEvent)event);
+               } else if(event instanceof WriteErrorEvent) {
+                  listener.onWriteError(this, (WriteErrorEvent)event);
+               } else if(event instanceof WriteOutputEvent) {
+                  listener.onWriteOutput(this, (WriteOutputEvent)event);
+               } else if(event instanceof PingEvent) {
+                  listener.onPing(this, (PingEvent)event);
+               } else if(event instanceof PongEvent) {
+                  listener.onPong(this, (PongEvent)event);
+               } else if(event instanceof ScopeEvent) {
+                  listener.onScope(this, (ScopeEvent)event);
+               } else if(event instanceof ResumeEvent) {
+                  listener.onResume(this, (ResumeEvent)event);
                }
             }
          }catch(Exception e) {

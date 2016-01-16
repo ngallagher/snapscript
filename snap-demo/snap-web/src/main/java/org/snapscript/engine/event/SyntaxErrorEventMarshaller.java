@@ -25,12 +25,12 @@ public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<Syntax
    }
 
    @Override
-   public MessageEnvelope toMessage(SyntaxErrorEvent value) throws IOException {
+   public MessageEnvelope toMessage(SyntaxErrorEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      String process = value.getProcess();
-      String resource = value.getResource();
-      int line = value.getLine();
+      String process = event.getProcess();
+      String resource = event.getResource();
+      int line = event.getLine();
       
       output.writeUTF(process);
       output.writeUTF(resource);

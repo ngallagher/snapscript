@@ -37,11 +37,12 @@ function clearEditorBreakpoints(row) {
 function showEditorBreakpoints() {
    var breakpointRecords = [];
    var breakpointIndex = 1;
-   for ( var resourceName in editorBreakpoints) {
+   
+   for (var resourceName in editorBreakpoints) {
       if (editorBreakpoints.hasOwnProperty(resourceName)) {
          var breakpoints = editorBreakpoints[resourceName];
 
-         for ( var lineNumber in breakpoints) {
+         for (var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
                   breakpointRecords.push({
@@ -64,17 +65,18 @@ function setEditorBreakpoint(row, value) {
       var editor = ace.edit("editor");
       var session = editor.getSession();
       var resourceBreakpoints = editorBreakpoints[editorResource];
-
+      var line = parseInt(row);
+      
       if (value) {
-         session.setBreakpoint(row);
+         session.setBreakpoint(line);
       } else {
-         session.clearBreakpoint(row);
+         session.clearBreakpoint(line);
       }
       if (resourceBreakpoints == null) {
          resourceBreakpoints = {};
          editorBreakpoints[editorResource] = resourceBreakpoints;
       }
-      resourceBreakpoints[row + 1] = value;
+      resourceBreakpoints[line + 1] = value;
    }
    showEditorBreakpoints();
 }
@@ -98,15 +100,17 @@ function toggleEditorBreakpoint(row) {
       } else {
          session.setBreakpoint(row);
       }
+      var line = parseInt(row);
+      
       if (resourceBreakpoints == null) {
          resourceBreakpoints = {};
-         resourceBreakpoints[row + 1] = true;
+         resourceBreakpoints[line + 1] = true;
          editorBreakpoints[editorResource] = resourceBreakpoints;
       } else {
-         if (resourceBreakpoints[row + 1] == true) {
-            resourceBreakpoints[row + 1] = false;
+         if (resourceBreakpoints[line + 1] == true) {
+            resourceBreakpoints[line + 1] = false;
          } else {
-            resourceBreakpoints[row + 1] = true;
+            resourceBreakpoints[line + 1] = true;
          }
       }
    }
@@ -163,11 +167,12 @@ function updateEditor(text, resource) {
 
    if (resource != null) {
       var breakpoints = editorBreakpoints[editorResource];
+      
       if (breakpoints != null) {
-         for ( var lineNumber in breakpoints) {
+         for (var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
-                  setEditorBreakpoint(lineNumber, true);
+                  setEditorBreakpoint(lineNumber - 1, true);
                }
             }
          }

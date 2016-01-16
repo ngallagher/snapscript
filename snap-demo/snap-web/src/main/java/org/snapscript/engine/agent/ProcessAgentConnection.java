@@ -1,11 +1,11 @@
 package org.snapscript.engine.agent;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.PingEvent;
 import org.snapscript.engine.event.ProcessEventChannel;
+import org.snapscript.engine.event.ResumeEvent;
 
 public class ProcessAgentConnection {
 
@@ -29,6 +29,21 @@ public class ProcessAgentConnection {
             ex.printStackTrace();
          }
          throw new IllegalStateException("Could not execute script '" + path + "' for '" + process + "'", e);
+      }
+   }
+   
+   public boolean resume(String thread) {
+      try {
+         ResumeEvent event = new ResumeEvent(process, thread);
+         return channel.send(event);
+      } catch (Exception e) {
+         e.printStackTrace();
+         try {
+            channel.close();
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+         throw new IllegalStateException("Could not resume script thread '" + thread + "' for '" + process + "'", e);
       }
    }
 

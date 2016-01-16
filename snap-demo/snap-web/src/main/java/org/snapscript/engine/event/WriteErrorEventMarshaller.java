@@ -27,13 +27,13 @@ public class WriteErrorEventMarshaller implements ProcessEventMarshaller<WriteEr
    }
 
    @Override
-   public MessageEnvelope toMessage(WriteErrorEvent value) throws IOException {
+   public MessageEnvelope toMessage(WriteErrorEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      String process = value.getProcess();
-      byte[] chunk = value.getData();
-      int length = value.getLength();
-      int offset = value.getOffset();
+      String process = event.getProcess();
+      byte[] chunk = event.getData();
+      int length = event.getLength();
+      int offset = event.getOffset();
       
       output.writeUTF(process);
       output.writeInt(length);

@@ -24,11 +24,11 @@ public class RegisterEventMarshaller implements ProcessEventMarshaller<RegisterE
    }
 
    @Override
-   public MessageEnvelope toMessage(RegisterEvent value) throws IOException {
+   public MessageEnvelope toMessage(RegisterEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      String process = value.getProcess();
-      String system = value.getSystem();
+      String process = event.getProcess();
+      String system = event.getSystem();
       
       output.writeUTF(process);
       output.writeUTF(system);

@@ -7,6 +7,8 @@ public interface ProcessEventListener {
    void onWriteOutput(ProcessEventChannel channel, WriteOutputEvent event) throws Exception;
    void onRegister(ProcessEventChannel channel, RegisterEvent event) throws Exception;
    void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception;
+   void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception;
+   void onResume(ProcessEventChannel channel, ResumeEvent event) throws Exception;
    void onPing(ProcessEventChannel channel, PingEvent event) throws Exception;
    void onPong(ProcessEventChannel channel, PongEvent event) throws Exception;
    void onClose(ProcessEventChannel channel) throws Exception;

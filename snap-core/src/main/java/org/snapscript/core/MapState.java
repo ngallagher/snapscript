@@ -1,7 +1,9 @@
 package org.snapscript.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class MapState implements State {
 
@@ -15,6 +17,26 @@ public class MapState implements State {
    public MapState(Scope scope) {
       this.values = new HashMap<String, Value>();      
       this.scope = scope;
+   }
+   
+   @Bug("clean up")
+   @Override
+   public Set<String> getNames() {
+      Set<String> names = new HashSet<String>();   
+      
+      if(!values.isEmpty()) {
+         Set<String> outer = values.keySet();
+         names.addAll(outer);
+      }
+      if(scope != null) {
+         State state = scope.getState();
+         
+         if(state != null) {
+            Set<String> inner = state.getNames();
+            names.addAll(inner);
+         }
+      }
+      return names;
    }
 
    @Override

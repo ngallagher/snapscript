@@ -82,6 +82,15 @@ function suspendScript(resource, line) {
    socket.send("SUSPEND:" + message);
 }
 
+function resumeScript() {
+   // reconnect("company");
+   var currentThread = focusedThread();
+   if(currentThread != null) {
+      clearFocusThread();
+      socket.send("RESUME:" + currentThread);
+   }
+}
+
 function stopScript() {
    // disableRoutes();
 }
@@ -123,9 +132,13 @@ function createLayout() {
                      type : 'left',
                      size : '40%',
                      style : pstyle,
-                     content : "<div class='titleTop'><table><tr><td><button id='runScript' class='btn' onclick='runScript()'>Run</button></td><td>"
-                           + "<button id='stopScript' class='btn' onclick='stopScript()'>Stop</button></td><td><button id='saveScript' class='btn' onclick='saveScript()'>Save</button>"
-                           + "</td><td><button id='newScript' class='btn' onclick='newScript()'>New</button></td></tr></table></div>"
+                     content : "<div class='titleTop'><table><tr>"
+                           + "<td><button id='runScript' class='btn' onclick='runScript()'>Run</button></td>"
+                           + "<td><button id='stopScript' class='btn' onclick='stopScript()'>Stop</button></td>"
+                           + "<td><button id='saveScript' class='btn' onclick='saveScript()'>Save</button></td>"
+                           + "<td><button id='newScript' class='btn' onclick='newScript()'>New</button></td>"
+                           + "<td><button id='resumeScript' class='btn' onclick='resumeScript()'>Resume</button></td>"
+                           + "</tr></table></div>"
                   }, {
                      type : 'main',
                      size : '30%',
@@ -200,14 +213,15 @@ function createLayout() {
                   $('#breakpoints').w2render('breakpoints');
                   showEditorBreakpoints();
                } else if(event.target == 'tab4'){
-                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='threads'><div id='threadTree'></div></div>");
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='threads'></div>");
                   w2ui['tabLayout'].refresh();
+                  $('#threads').w2render('threads');
                   showThreads();
                } else {
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='variables'></div>");
                   w2ui['tabLayout'].refresh();
                   $('#variables').w2render('variables');
-                  // showVariables();
+                  showVariables();
                }
             }
          }
@@ -250,27 +264,22 @@ function createLayout() {
    $().w2grid({
       name : 'variables',
       columns : [ {
-         field : 'fname',
-         caption : 'First Name',
-         size : '33%',
+         field : 'name',
+         caption : 'Name',
+         size : '30%',
          sortable : true,
          searchable : true
       }, {
-         field : 'lname',
-         caption : 'Last Name',
-         size : '33%',
+         field : 'value',
+         caption : 'Value',
+         size : '40%',
          sortable : true,
          searchable : true
       }, {
-         field : 'email',
-         caption : 'Email',
-         size : '33%'
-      }, {
-         field : 'sdate',
-         caption : 'Start Date',
-         size : '120px',
-         render : 'date'
-      }, ],
+         field : 'type',
+         caption : 'Type',
+         size : '30%'
+      } ],
       onClick : function(event) {
          var grid = this;
          event.onComplete = function() {
@@ -310,6 +319,46 @@ function createLayout() {
       }
    });
 
+   $().w2grid({
+      name : 'threads',
+      columns : [ {
+         field : 'thread',
+         caption : 'Thread',
+         size : '20%',
+         sortable : true,
+         resizable : true
+      }, {
+         field : 'status',
+         caption : 'Status',
+         size : '20%',
+         sortable : true,
+         resizable : true
+      }, {
+         field : 'resource',
+         caption : 'Resource',
+         size : '40%',
+         sortable : true,
+         resizable : true
+      },{
+         field : 'line',
+         caption : 'Line',
+         size : '10%',
+         sortable : true,
+         resizable : true
+      },],
+      onClick : function(event) {
+         var grid = this;
+         event.onComplete = function() {
+            var sel = grid.getSelection();
+            if (sel.length == 1) {
+               var record = grid.get(sel[0]);
+               openTreeFile(record.script); // open resource
+               updateThreadFocus(record.thread);
+            }
+         }
+      }
+   });
+   
    w2ui['mainLayout'].content('top', w2ui['topLayout']);
    w2ui['mainLayout'].content('main', w2ui['blueLayout']);
    w2ui['blueLayout'].content('bottom', w2ui['tabLayout']);
@@ -319,4 +368,4 @@ function createLayout() {
 
 }
 
-registerModule("project", "Project module: project.js", createLayout, [ "common", "socket", "console", "problem", "editor", "spinner", "tree" ]);
+registerModule("project", "Project module: project.js", createLayout, [ "common", "socket", "console", "problem", "editor", "spinner", "tree", "threads" ]);

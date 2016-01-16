@@ -15,14 +15,16 @@ public class CommandListener {
    private final CommandClient client;
    private final ProcessEngine engine;
    private final String project;
+   private final String name;
    private final File root;
    
-   public CommandListener(ProcessEngine engine, FrameChannel channel, File root, String project) {
+   public CommandListener(ProcessEngine engine, FrameChannel channel, File root, String project, String name) {
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client);
       this.validator = new ProjectScriptValidator();
       this.project = project;
       this.engine = engine;
+      this.name = name;
       this.root = root;
    }
 
@@ -60,10 +62,18 @@ public class CommandListener {
             encoder.write(source);
             encoder.close();
             //client.sendReloadTree();
-            engine.execute(forwarder, command);
+            engine.execute(forwarder, command, name);
          } else {
             client.sendSyntaxError(resource, line);
          }
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
+   
+   public void onResume(ResumeCommand command) {
+      try {
+         engine.resume(command, name);
       } catch(Exception e) {
          e.printStackTrace();
       }

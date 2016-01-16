@@ -31,6 +31,7 @@
 <script src="/js/console.js"></script>
 <script src="/js/tree.js"></script>
 <script src="/js/threads.js"></script>
+<script src="/js/variables.js"></script>
 <script src="/js/dialog.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/problem.js"></script>

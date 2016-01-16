@@ -3,7 +3,6 @@ package org.snapscript.engine.agent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,6 +16,7 @@ import org.snapscript.engine.event.ProcessEventAdapter;
 import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ProcessEventListener;
 import org.snapscript.engine.event.RegisterEvent;
+import org.snapscript.engine.event.ScopeEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -174,6 +174,22 @@ public class ProcessAgentPool {
          if(listener != null) {
             try {
                listener.onPong(channel, event);
+            } catch(Exception e) {
+               e.printStackTrace();
+               listeners.take(process);
+               channel.close();
+            }
+         }
+      }
+      
+      @Override
+      public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
+         String process = event.getProcess();
+         ProcessEventListener listener = listeners.fetch(process);
+         
+         if(listener != null) {
+            try {
+               listener.onScope(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
                listeners.take(process);

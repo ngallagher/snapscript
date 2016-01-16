@@ -8,7 +8,9 @@ public enum ProcessEventType {
    EXECUTE(ExecuteEventMarshaller.class, ExecuteEvent.class, 5),
    REGISTER(RegisterEventMarshaller.class, RegisterEvent.class, 6),
    SYNTAX_ERROR(SyntaxErrorEventMarshaller.class, SyntaxErrorEvent.class, 7),
-   EXIT(ExitEventMarshaller.class, ExitEvent.class, 8);
+   EXIT(ExitEventMarshaller.class, ExitEvent.class, 8),
+   SCOPE(ScopeEventMarshaller.class, ScopeEvent.class, 9),
+   RESUME(ResumeEventMarshaller.class, ResumeEvent.class, 10);
    
    public final Class<? extends ProcessEventMarshaller> marshaller;
    public final Class<? extends ProcessEvent> event;

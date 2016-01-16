@@ -43,14 +43,14 @@ public class ExecuteEventMarshaller implements ProcessEventMarshaller<ExecuteEve
    }
 
    @Override
-   public MessageEnvelope toMessage(ExecuteEvent value) throws IOException {
+   public MessageEnvelope toMessage(ExecuteEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      Map<String, Map<Integer, Boolean>> breakpoints = value.getBreakpoints();
+      Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
       Set<String> scripts = breakpoints.keySet();
-      String process = value.getProcess();
-      String resource = value.getResource();
-      String project = value.getProject();
+      String process = event.getProcess();
+      String resource = event.getResource();
+      String project = event.getProject();
       int breakpointSize = breakpoints.size();
       
       output.writeUTF(process);
