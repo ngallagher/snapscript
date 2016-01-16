@@ -93,11 +93,24 @@ public class CommandListener {
    }
    
    public void onSuspend(SuspendCommand command) {
-      
+      try {
+         engine.suspend(command, name);
+      } catch(Exception e){
+         e.printStackTrace();
+      }
+   }
+   
+   public void onStop(StopCommand command) {
+      try {
+         engine.stop(name);
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
    }
    
    public void onClose() {
       try {
+         client.sendProcessTerminate();
          engine.stop(name);
       } catch(Exception e) {
          e.printStackTrace();

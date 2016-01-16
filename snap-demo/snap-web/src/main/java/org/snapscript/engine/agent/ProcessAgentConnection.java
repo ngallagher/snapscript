@@ -6,6 +6,7 @@ import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.PingEvent;
 import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ResumeEvent;
+import org.snapscript.engine.event.SuspendEvent;
 
 public class ProcessAgentConnection {
 
@@ -29,6 +30,21 @@ public class ProcessAgentConnection {
             ex.printStackTrace();
          }
          throw new IllegalStateException("Could not execute script '" + path + "' for '" + process + "'", e);
+      }
+   }
+   
+   public boolean suspend(Map<String, Map<Integer, Boolean>> breakpoints) {
+      try {
+         SuspendEvent event = new SuspendEvent(process, breakpoints);
+         return channel.send(event);
+      } catch (Exception e) {
+         e.printStackTrace();
+         try {
+            channel.close();
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+         throw new IllegalStateException("Could not set breakpoints '" + breakpoints + "' for '" + process + "'", e);
       }
    }
    

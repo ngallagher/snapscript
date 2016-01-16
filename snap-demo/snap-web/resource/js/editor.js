@@ -1,4 +1,4 @@
-var editorBreakpoints = {};
+var editorBreakpoints = {}; // spans multiple resources
 var editorMarkers = {};
 var editorResource = null;
 var editorText = null;
@@ -14,8 +14,10 @@ function clearEditorHighlights() {
    for ( var editorLine in editorMarkers) {
       if (editorMarkers.hasOwnProperty(editorLine)) {
          var marker = editorMarkers[editorLine];
-         console.log("clearEditorHighlights(): line="+editorLine+" marker="+marker+" resource="+editorResource);
-         session.removeMarker(marker);
+         
+         if(marker != null) {
+            session.removeMarker(marker);
+         }
       }
    }
    editorMarkers = {};
@@ -25,8 +27,6 @@ function clearEditorHighlight(line) {
    var editor = ace.edit("editor");
    var session = editor.getSession();
    var marker = editorMarkers[line];
-   
-   console.log("clearEditorHighlight("+line+"): line="+line+ " marker="+marker+" resource="+editorResource);
    
    if(marker != null) {
       session.removeMarker(marker);
@@ -41,11 +41,10 @@ function createEditorHighlight(line, css) {
    clearEditorHighlight(line);
    // session.addMarker(new Range(from, 0, to, 1), "errorMarker", "fullLine");
    var marker = session.addMarker(new Range(line - 1, 0, line - 1, 1), css, "fullLine");
-   console.log("createEditorHighlight("+line+","+css+"): line="+line+ " marker="+marker+" resource="+editorResource);
    editorMarkers[line] = marker;
 }
 
-function clearEditorBreakpoints(row) {
+function clearEditorBreakpoint(row) {
    var editor = ace.edit("editor");
    var session = editor.getSession();
    var breakpoints = session.getBreakpoints();
@@ -54,6 +53,7 @@ function clearEditorBreakpoints(row) {
    for ( var breakpoint in breakpoints) {
       session.clearBreakpoint(row);
    }
+   showEditorBreakpoints();
 }
 
 function showEditorBreakpoints() {
@@ -80,6 +80,7 @@ function showEditorBreakpoints() {
    }
    w2ui['breakpoints'].records = breakpointRecords;
    w2ui['breakpoints'].refresh();
+   suspendScript(); // update the breakpoints
 }
 
 function setEditorBreakpoint(row, value) {
@@ -168,6 +169,7 @@ function loadEditor() {
    var editor = ace.edit("editor");
    var text = editor.getValue();
    var path = editorResource;
+   
    if (path != null) {
       path = extractTreePath(path);
    }

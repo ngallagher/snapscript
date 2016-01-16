@@ -3,9 +3,20 @@ var suspendedThreadStatus = {};
 var currentFocusThread = null;
 
 function createThreads() {
+   createRoute("START", startThreads)
    createRoute("SCOPE", updateThreads);
    createRoute("TERMINATE", clearThreads);
    createRoute("EXIT", clearThreads);
+}
+
+function startThreads(socket, type, text) {
+   var message = JSON.parse(text);
+   
+   suspendedThreads = {};
+   currentFocusThread = null;
+   w2ui['threads'].records = [];
+   w2ui['threads'].refresh();
+   $("#status").html("<i>RUNNING: " + message.resource + " ("+message.process+")</i>");
 }
 
 function clearThreads(socket, type, text) {
@@ -13,6 +24,7 @@ function clearThreads(socket, type, text) {
    currentFocusThread = null;
    w2ui['threads'].records = [];
    w2ui['threads'].refresh();
+   $("#status").html("");
 }
 
 function updateThreads(socket, type, text) {

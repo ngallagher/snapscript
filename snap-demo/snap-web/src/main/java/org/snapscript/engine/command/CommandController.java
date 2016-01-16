@@ -40,6 +40,8 @@ public class CommandController implements FrameListener {
                listener.onSave((SaveCommand)command);
             }else if(command instanceof ResumeCommand) {
                listener.onResume((ResumeCommand)command);
+            }else if(command instanceof StopCommand) {
+               listener.onStop((StopCommand)command);
             }
          } catch(Throwable e){
             e.printStackTrace();

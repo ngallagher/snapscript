@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.command.ResumeCommand;
+import org.snapscript.engine.command.SuspendCommand;
 import org.snapscript.engine.event.ProcessEventListener;
 
 public class ProcessEngine {
@@ -35,6 +36,15 @@ public class ProcessEngine {
       }
    }
    
+   public void suspend(SuspendCommand command, String client) {
+      ProcessAgentConnection connection = connections.get(client);
+      
+      if(connection != null) {
+         Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
+         connection.suspend(breakpoints);
+      }
+   }
+   
    public void resume(ResumeCommand command, String client) {
       ProcessAgentConnection connection = connections.get(client);
       
@@ -45,7 +55,7 @@ public class ProcessEngine {
    }
    
    public void stop(String client) {
-      ProcessAgentConnection connection = connections.get(client);
+      ProcessAgentConnection connection = connections.remove(client);
       
       if(connection != null) {
          connection.close();

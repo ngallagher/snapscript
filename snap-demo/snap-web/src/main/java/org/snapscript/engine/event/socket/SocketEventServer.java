@@ -22,6 +22,8 @@ import org.snapscript.engine.event.ProcessEventProducer;
 import org.snapscript.engine.event.RegisterEvent;
 import org.snapscript.engine.event.ResumeEvent;
 import org.snapscript.engine.event.ScopeEvent;
+import org.snapscript.engine.event.StartEvent;
+import org.snapscript.engine.event.SuspendEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -166,6 +168,10 @@ public class SocketEventServer implements ProcessEventChannel {
                   listener.onScope(this, (ScopeEvent)event);
                } else if(event instanceof ResumeEvent) {
                   listener.onResume(this, (ResumeEvent)event);
+               } else if(event instanceof SuspendEvent) {
+                  listener.onSuspend(this, (SuspendEvent)event);
+               } else if(event instanceof StartEvent) {
+                  listener.onStart(this, (StartEvent)event);
                }
             }
          }catch(Exception e) {

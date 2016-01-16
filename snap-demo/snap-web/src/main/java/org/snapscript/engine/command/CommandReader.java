@@ -22,7 +22,11 @@ public class CommandReader {
          }
       }
       int offset = text.indexOf(':');
-      String key = text.substring(0, offset);
+      String key = text;
+      
+      if(offset != -1) {
+         key = text.substring(0, offset);
+      }
       CommandMarshaller marshaller = marshallers.get(key);
       
       return marshaller.toCommand(text);

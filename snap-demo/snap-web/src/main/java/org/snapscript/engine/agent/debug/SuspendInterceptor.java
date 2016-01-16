@@ -39,23 +39,21 @@ public class SuspendInterceptor implements TraceInterceptor {
             State state = scope.getState();
             Set<String> names = state.getNames();
             int count = counter.getAndIncrement();
+            String path = ResourceExtractor.extractResource(resource);
+            Map<String, String> variables = new HashMap<String, String>();
+            ScopeEvent event = new ScopeEvent(process, thread, origin, path, line, count, variables);
+            ScopeNotifier notifier = new ScopeNotifier(event);
             
-            if(!names.isEmpty()) {
-               Map<String, String> variables = new HashMap<String, String>();
-               ScopeEvent event = new ScopeEvent(process, thread, origin, resource, line, count, variables);
-               ScopeNotifier notifier = new ScopeNotifier(event);
+            for(String name : names) {
+               Value value = state.getValue(name);
+               Object object = value.getValue();
+               String text = String.valueOf(object);
                
-               for(String name : names) {
-                  Value value = state.getValue(name);
-                  Object object = value.getValue();
-                  String text = String.valueOf(object);
-                  
-                  variables.put(name, text);
-               }
-               channel.send(event);
-               notifier.start();
-               latch.suspend(notifier);
+               variables.put(name, text);
             }
+            channel.send(event);
+            notifier.start();
+            latch.suspend(notifier);
          } catch(Exception e) {
             e.printStackTrace();
          }

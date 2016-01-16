@@ -22,6 +22,12 @@ public class CommandClient {
       channel.send(message);
    }
    
+   public void sendStart(String process, String resource) throws Exception {
+      StartCommand command = new StartCommand(process, resource);
+      String message = writer.write(command);
+      channel.send(message);
+   }
+   
    public void sendSyntaxError(String resource, int line) throws Exception {
       ProblemCommand command = new ProblemCommand(project, "Syntax error at line " + line, resource, line);
       String message = writer.write(command);

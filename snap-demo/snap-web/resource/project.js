@@ -77,7 +77,6 @@ function suspendScript(resource, line) {
    var message = JSON.stringify({
       breakpoints : editorData.breakpoints,
       project : document.title,
-      resource : editorData.resource
    });
    socket.send("SUSPEND:" + message);
 }
@@ -93,7 +92,7 @@ function resumeScript() {
 }
 
 function stopScript() {
-   // disableRoutes();
+   socket.send("STOP");
 }
 
 function createLayout() {
@@ -108,6 +107,7 @@ function createLayout() {
       panels : [ {
          type : 'top',
          size : '40px',
+         resizable : false,
          style : pstyle
       }, {
          type : 'left',
@@ -120,6 +120,12 @@ function createLayout() {
          size : '80%',
          resizable : true,
          style : pstyle
+      } , {
+         type : 'bottom',
+         size : '20px',
+         resizable : false,
+         style : pstyle,
+         content : "<div id='status'></div>"
       } ]
    });
 
@@ -154,8 +160,8 @@ function createLayout() {
          });
 
    var pstyle = 'background-color: #F5F6F7; overflow: hidden;';
-   $('#blueLayout').w2layout({
-      name : 'blueLayout',
+   $('#editorLayout').w2layout({
+      name : 'editorLayout',
       padding : 0,
       panels : [ {
          type : 'top',
@@ -234,19 +240,19 @@ function createLayout() {
       columns : [ {
          field : 'location',
          caption : 'Location',
-         size : '13%',
+         size : '10%',
          sortable : true,
          resizable : true
       }, {
          field : 'resource',
          caption : 'Resource',
-         size : '43%',
+         size : '45%',
          sortable : true,
          resizable : true
       }, {
          field : 'description',
          caption : 'Description',
-         size : '43%',
+         size : '45%',
          sortable : true,
          resizable : true
       }, ],
@@ -367,8 +373,8 @@ function createLayout() {
    });
    
    w2ui['mainLayout'].content('top', w2ui['topLayout']);
-   w2ui['mainLayout'].content('main', w2ui['blueLayout']);
-   w2ui['blueLayout'].content('bottom', w2ui['tabLayout']);
+   w2ui['mainLayout'].content('main', w2ui['editorLayout']);
+   w2ui['editorLayout'].content('bottom', w2ui['tabLayout']);
 
    w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");
    w2ui['tabLayout'].refresh();

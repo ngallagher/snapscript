@@ -38,7 +38,10 @@ public class SuspendMatcher {
                   set = new HashSet();
                   copy[line] = set;
                }
-               set.add(resource);
+               String module = ResourceExtractor.extractModule(resource);
+               
+               set.add(module); // add module 
+               set.add(resource); // add module resource file
             }
          }
       }

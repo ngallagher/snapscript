@@ -17,7 +17,8 @@ public enum CommandType {
    STOP(StopCommandMarshaller.class, StopCommand.class, CLIENT),
    PROBLEM(ProblemCommandMarshaller.class, ProblemCommand.class, ENGINE),
    SCOPE(ScopeCommandMarshaller.class, ScopeCommand.class, PROCESS),
-   RESUME(ResumeCommandMarshaller.class, ResumeCommand.class, CLIENT);
+   RESUME(ResumeCommandMarshaller.class, ResumeCommand.class, CLIENT),
+   START(StartCommandMarshaller.class, StartCommand.class, PROCESS);
    
    public final Class<? extends CommandMarshaller> marshaller;
    public final Class<? extends Command> command;

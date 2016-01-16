@@ -32,6 +32,8 @@ import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ProcessEventType;
 import org.snapscript.engine.event.RegisterEvent;
 import org.snapscript.engine.event.ResumeEvent;
+import org.snapscript.engine.event.StartEvent;
+import org.snapscript.engine.event.SuspendEvent;
 import org.snapscript.engine.event.socket.SocketEventClient;
 
 public class ProcessAgent {
@@ -125,8 +127,14 @@ public class ProcessAgent {
          String project = event.getProject();
          matcher.update(breakpoints);
          reader.update(project); // XXX rubbish
-         ExecuteTask task = new ExecuteTask(channel, process, resource);
+         ExecuteTask task = new ExecuteTask(channel, process, project, resource);
          task.start();
+      }
+      
+      @Override
+      public void onSuspend(ProcessEventChannel channel, SuspendEvent event) throws Exception {
+         Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
+         matcher.update(breakpoints);
       }
       
       @Override
@@ -150,18 +158,22 @@ public class ProcessAgent {
    private class ExecuteTask extends Thread {
       
       private final ProcessEventChannel client;
-      private final String filePath;
+      private final String resource;
       private final String process;
+      private final String project;
       
-      public ExecuteTask(ProcessEventChannel client, String process, String filePath) {
+      public ExecuteTask(ProcessEventChannel client, String process, String project, String resource) {
          this.client = client;
-         this.filePath = filePath;
+         this.resource = resource;
          this.process = process;
+         this.project = project;
       }
       
       @Override
       public void run() {
          try {
+            StartEvent event = new StartEvent(process, project, resource);
+            client.send(event);
             execute(); // execute the script
          } catch(Exception e) {
             e.printStackTrace();
@@ -211,7 +223,7 @@ public class ProcessAgent {
             
             // start and listen for the socket close
             long start = System.nanoTime();
-            Executable executable = compiler.compile(filePath);
+            Executable executable = compiler.compile(resource);
             long middle = System.nanoTime();
             System.err.println("Compile time " + TimeUnit.NANOSECONDS.toMillis(middle-start));
             executable.execute();

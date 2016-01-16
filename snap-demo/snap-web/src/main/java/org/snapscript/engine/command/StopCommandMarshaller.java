@@ -9,6 +9,6 @@ public class StopCommandMarshaller implements CommandMarshaller<StopCommand> {
 
    @Override
    public String fromCommand(StopCommand command) {
-      return CommandType.EXIT.name();
+      return CommandType.STOP.name();
    }
 }

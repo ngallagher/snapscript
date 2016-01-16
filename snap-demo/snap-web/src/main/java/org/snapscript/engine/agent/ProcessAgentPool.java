@@ -17,6 +17,7 @@ import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ProcessEventListener;
 import org.snapscript.engine.event.RegisterEvent;
 import org.snapscript.engine.event.ScopeEvent;
+import org.snapscript.engine.event.StartEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -158,6 +159,22 @@ public class ProcessAgentPool {
          if(listener != null) {
             try {
                listener.onSyntaxError(channel, event);
+            } catch(Exception e) {
+               e.printStackTrace();
+               listeners.take(process);
+               channel.close();
+            }
+         }
+      }
+      
+      @Override
+      public void onStart(ProcessEventChannel channel, StartEvent event) throws Exception {
+         String process = event.getProcess();
+         ProcessEventListener listener = listeners.fetch(process);
+         
+         if(listener != null) {
+            try {
+               listener.onStart(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
                listeners.take(process);
