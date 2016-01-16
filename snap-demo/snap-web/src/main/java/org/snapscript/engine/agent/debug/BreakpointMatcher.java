@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SuspendMatcher {
+public class BreakpointMatcher {
 
    private volatile Set[] matches;
    
-   public SuspendMatcher() {
+   public BreakpointMatcher() {
       this.matches = new Set[0];
    }
    

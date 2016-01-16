@@ -19,7 +19,7 @@ public class SuspendMatcherTest extends TestCase {
       large.put(7, true);
       breakpoints.put("/test.snap", test);
       breakpoints.put("/path/large.snap", large);
-      SuspendMatcher matcher = new SuspendMatcher();
+      BreakpointMatcher matcher = new BreakpointMatcher();
       matcher.update(breakpoints);
       assertTrue(matcher.match("/test.snap", 7));
       assertFalse(matcher.match("/test.snap", 77));

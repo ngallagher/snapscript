@@ -11,13 +11,13 @@ public enum CommandType {
    SAVE(SaveCommandMarshaller.class, SaveCommand.class, CommandOrigin.CLIENT),
    DELETE(DeleteCommandMarshaller.class, DeleteCommand.class, CommandOrigin.CLIENT),
    RELOAD_TREE(ReloadTreeCommandMarshaller.class, ReloadTreeCommand.class, ENGINE),
-   SUSPEND(SuspendCommandMarshaller.class, SuspendCommand.class, CommandOrigin.CLIENT),
+   BREAKPOINTS(BreakpointsCommandMarshaller.class, BreakpointsCommand.class, CommandOrigin.CLIENT),
    TERMINATE(TerminateCommandMarshaller.class, TerminateCommand.class, ENGINE),
    EXIT(ExitCommandMarshaller.class, ExitCommand.class, PROCESS),
    STOP(StopCommandMarshaller.class, StopCommand.class, CLIENT),
    PROBLEM(ProblemCommandMarshaller.class, ProblemCommand.class, ENGINE),
    SCOPE(ScopeCommandMarshaller.class, ScopeCommand.class, PROCESS),
-   RESUME(ResumeCommandMarshaller.class, ResumeCommand.class, CLIENT),
+   STEP(StepCommandMarshaller.class, StepCommand.class, CLIENT),
    START(StartCommandMarshaller.class, StartCommand.class, PROCESS);
    
    public final Class<? extends CommandMarshaller> marshaller;

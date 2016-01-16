@@ -1,6 +1,6 @@
 package org.snapscript.engine.event;
 
-import static org.snapscript.engine.event.ProcessEventType.SUSPEND;
+import static org.snapscript.engine.event.ProcessEventType.BREAKPOINTS;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class SuspendEventMarshaller implements ProcessEventMarshaller<SuspendEvent> {
+public class BreakpointsEventMarshaller implements ProcessEventMarshaller<BreakpointsEvent> {
 
    @Override
-   public SuspendEvent fromMessage(MessageEnvelope message) throws IOException {
+   public BreakpointsEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -37,11 +37,11 @@ public class SuspendEventMarshaller implements ProcessEventMarshaller<SuspendEve
          }
          breakpoints.put(script, locations);
       }
-      return new SuspendEvent(process, breakpoints);
+      return new BreakpointsEvent(process, breakpoints);
    }
 
    @Override
-   public MessageEnvelope toMessage(SuspendEvent event) throws IOException {
+   public MessageEnvelope toMessage(BreakpointsEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
@@ -69,6 +69,6 @@ public class SuspendEventMarshaller implements ProcessEventMarshaller<SuspendEve
       }
       output.flush();
       byte[] array = buffer.toByteArray();
-      return new MessageEnvelope(process, SUSPEND.code, array, 0, array.length);
+      return new MessageEnvelope(process, BREAKPOINTS.code, array, 0, array.length);
    }
 }

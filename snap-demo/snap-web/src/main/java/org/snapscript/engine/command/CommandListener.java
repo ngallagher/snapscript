@@ -71,9 +71,9 @@ public class CommandListener {
       }
    }
    
-   public void onResume(ResumeCommand command) {
+   public void onStep(StepCommand command) {
       try {
-         engine.resume(command, name);
+         engine.step(command, name);
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -92,9 +92,9 @@ public class CommandListener {
       }
    }
    
-   public void onSuspend(SuspendCommand command) {
+   public void onBreakpoints(BreakpointsCommand command) {
       try {
-         engine.suspend(command, name);
+         engine.breakpoints(command, name);
       } catch(Exception e){
          e.printStackTrace();
       }

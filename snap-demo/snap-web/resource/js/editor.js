@@ -80,7 +80,7 @@ function showEditorBreakpoints() {
    }
    w2ui['breakpoints'].records = breakpointRecords;
    w2ui['breakpoints'].refresh();
-   suspendScript(); // update the breakpoints
+   updateScriptBreakpoints(); // update the breakpoints
 }
 
 function setEditorBreakpoint(row, value) {

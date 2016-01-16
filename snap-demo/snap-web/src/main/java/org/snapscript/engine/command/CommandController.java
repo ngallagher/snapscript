@@ -32,14 +32,14 @@ public class CommandController implements FrameListener {
             
             if(command instanceof ExecuteCommand) {
                listener.onExecute((ExecuteCommand)command);
-            } else if(command instanceof SuspendCommand) {
-               listener.onSuspend((SuspendCommand)command);
+            } else if(command instanceof BreakpointsCommand) {
+               listener.onBreakpoints((BreakpointsCommand)command);
             }else if(command instanceof DeleteCommand) {
                listener.onDelete((DeleteCommand)command);
             }else if(command instanceof SaveCommand) {
                listener.onSave((SaveCommand)command);
-            }else if(command instanceof ResumeCommand) {
-               listener.onResume((ResumeCommand)command);
+            }else if(command instanceof StepCommand) {
+               listener.onStep((StepCommand)command);
             }else if(command instanceof StopCommand) {
                listener.onStop((StopCommand)command);
             }

@@ -3,12 +3,12 @@ package org.snapscript.engine.command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SuspendCommand implements Command {
+public class BreakpointsCommand implements Command {
 
    private Map<String, Map<Integer, Boolean>> breakpoints;
    private String project;
    
-   public SuspendCommand() {
+   public BreakpointsCommand() {
       this.breakpoints = new HashMap<String, Map<Integer, Boolean>>();
    }
    

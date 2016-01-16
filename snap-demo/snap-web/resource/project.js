@@ -70,7 +70,7 @@ function deleteScript() {
    socket.send("DELETE:" + text);
 }
 
-function suspendScript(resource, line) {
+function updateScriptBreakpoints() {
    // reconnect("company");
 
    var editorData = loadEditor();
@@ -78,16 +78,59 @@ function suspendScript(resource, line) {
       breakpoints : editorData.breakpoints,
       project : document.title,
    });
-   socket.send("SUSPEND:" + message);
+   socket.send("BREAKPOINTS:" + message);
+}
+
+function stepOverScript() {
+   var threadScope = focusedThread();
+   if(threadScope != null) {
+      var message = JSON.stringify({
+         thread: threadScope.thread,
+         type: "STEP_OVER"
+      });
+      focusedThreadResume();
+      clearEditorHighlights() // XXX what about other highlights?
+      socket.send("STEP:" + message);
+   }
+}
+
+function stepInScript() {
+   var threadScope = focusedThread();
+   if(threadScope != null) {
+      var message = JSON.stringify({
+         thread: threadScope.thread,
+         type: "STEP_IN"
+      });
+      focusedThreadResume();
+      clearEditorHighlights() // XXX what about other highlights?
+      socket.send("STEP:" + message);
+   }
+}
+
+function stepOutScript() {
+   var threadScope = focusedThread();
+   if(threadScope != null) {
+      var message = JSON.stringify({
+         thread: threadScope.thread,
+         type: "STEP_OUT"
+      });
+      focusedThreadResume();
+      clearEditorHighlights() // XXX what about other highlights?
+      socket.send("STEP:" + message);
+   }
 }
 
 function resumeScript() {
    // reconnect("company");
    var threadScope = focusedThread();
    if(threadScope != null) {
+      var message = JSON.stringify({
+         thread: threadScope.thread,
+         type: "RUN"
+      });
       focusedThreadResume();
       clearEditorHighlights() // XXX what about other highlights?
-      socket.send("RESUME:" + threadScope.thread);
+      socket.send("STEP:" + message);
    }
 }
 
@@ -137,7 +180,7 @@ function createLayout() {
             panels : [
                   {
                      type : 'left',
-                     size : '40%',
+                     size : '60%',
                      style : pstyle,
                      content : "<div class='titleTop'><table><tr>"
                            + "<td><button id='runScript' class='btn' onclick='runScript()'>Run</button></td>"
@@ -145,15 +188,18 @@ function createLayout() {
                            + "<td><button id='saveScript' class='btn' onclick='saveScript()'>Save</button></td>"
                            + "<td><button id='newScript' class='btn' onclick='newScript()'>New</button></td>"
                            + "<td><button id='resumeScript' class='btn' onclick='resumeScript()'>Resume</button></td>"
+                           + "<td><button id='stepInScript' class='btn' onclick='stepInScript()'>Step In</button></td>"
+                           + "<td><button id='stepOutScript' class='btn' onclick='stepOutScript()'>Step Out</button></td>"
+                           + "<td><button id='stepOverScript' class='btn' onclick='stepOverScript()'>Step Over</button></td>"
                            + "</tr></table></div>"
                   }, {
                      type : 'main',
-                     size : '30%',
+                     size : '20%',
                      style : pstyle,
                      content : "<div class='titleTop'></div>"
                   }, {
                      type : 'right',
-                     size : '30%',
+                     size : '20%',
                      style : pstyle,
                      content : "<div class='titleTop'></div>"
                   } ]

@@ -3,10 +3,11 @@ package org.snapscript.engine.agent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.engine.command.BreakpointsCommand;
 import org.snapscript.engine.command.ExecuteCommand;
-import org.snapscript.engine.command.ResumeCommand;
-import org.snapscript.engine.command.SuspendCommand;
+import org.snapscript.engine.command.StepCommand;
 import org.snapscript.engine.event.ProcessEventListener;
+import org.snapscript.engine.event.StepEvent;
 
 public class ProcessEngine {
    
@@ -36,7 +37,7 @@ public class ProcessEngine {
       }
    }
    
-   public void suspend(SuspendCommand command, String client) {
+   public void breakpoints(BreakpointsCommand command, String client) {
       ProcessAgentConnection connection = connections.get(client);
       
       if(connection != null) {
@@ -45,12 +46,21 @@ public class ProcessEngine {
       }
    }
    
-   public void resume(ResumeCommand command, String client) {
+   public void step(StepCommand command, String client) {
       ProcessAgentConnection connection = connections.get(client);
       
       if(connection != null) {
          String thread = command.getThread();
-         connection.resume(thread);
+         
+         if(command.isRun()) {
+            connection.step(thread, StepEvent.RUN);
+         } else if(command.isStepIn()) {
+            connection.step(thread, StepEvent.STEP_IN);
+         } else if(command.isStepOut()) {
+            connection.step(thread, StepEvent.STEP_OUT);
+         } else if(command.isStepOver()) {
+            connection.step(thread, StepEvent.STEP_OVER);
+         }
       }
    }
    

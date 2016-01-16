@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.engine.event.BreakpointsEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -17,10 +18,9 @@ import org.snapscript.engine.event.ProcessEventConsumer;
 import org.snapscript.engine.event.ProcessEventListener;
 import org.snapscript.engine.event.ProcessEventProducer;
 import org.snapscript.engine.event.RegisterEvent;
-import org.snapscript.engine.event.ResumeEvent;
 import org.snapscript.engine.event.ScopeEvent;
 import org.snapscript.engine.event.StartEvent;
-import org.snapscript.engine.event.SuspendEvent;
+import org.snapscript.engine.event.StepEvent;
 import org.snapscript.engine.event.SyntaxErrorEvent;
 import org.snapscript.engine.event.WriteErrorEvent;
 import org.snapscript.engine.event.WriteOutputEvent;
@@ -96,12 +96,12 @@ public class SocketEventClient {
                   listener.onPong(this, (PongEvent)event);
                } else if(event instanceof ScopeEvent) {
                   listener.onScope(this, (ScopeEvent)event);
-               } else if(event instanceof ResumeEvent) {
-                  listener.onResume(this, (ResumeEvent)event);
-               } else if(event instanceof SuspendEvent) {
-                  listener.onSuspend(this, (SuspendEvent)event);
+               } else if(event instanceof BreakpointsEvent) {
+                  listener.onBreakpoints(this, (BreakpointsEvent)event);
                } else if(event instanceof StartEvent) {
                   listener.onStart(this, (StartEvent)event);
+               } else if(event instanceof StepEvent) {
+                  listener.onStep(this, (StepEvent)event);
                }
             }
          }catch(Exception e) {

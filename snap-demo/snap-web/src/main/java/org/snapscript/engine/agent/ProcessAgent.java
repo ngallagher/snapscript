@@ -20,9 +20,11 @@ import org.snapscript.engine.ScriptAgentContext;
 import org.snapscript.engine.ScriptProfiler;
 import org.snapscript.engine.ScriptProfiler.ProfileResult;
 import org.snapscript.engine.ScriptResourceReader;
+import org.snapscript.engine.agent.debug.BreakpointMatcher;
+import org.snapscript.engine.agent.debug.ResumeType;
 import org.snapscript.engine.agent.debug.SuspendInterceptor;
 import org.snapscript.engine.agent.debug.SuspendLatch;
-import org.snapscript.engine.agent.debug.SuspendMatcher;
+import org.snapscript.engine.event.BreakpointsEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -31,9 +33,8 @@ import org.snapscript.engine.event.ProcessEventAdapter;
 import org.snapscript.engine.event.ProcessEventChannel;
 import org.snapscript.engine.event.ProcessEventType;
 import org.snapscript.engine.event.RegisterEvent;
-import org.snapscript.engine.event.ResumeEvent;
 import org.snapscript.engine.event.StartEvent;
-import org.snapscript.engine.event.SuspendEvent;
+import org.snapscript.engine.event.StepEvent;
 import org.snapscript.engine.event.socket.SocketEventClient;
 
 public class ProcessAgent {
@@ -58,7 +59,7 @@ public class ProcessAgent {
    private final ScriptAgentContext context;
    private final ResourceCompiler compiler;
    private final ScriptProfiler profiler;
-   private final SuspendMatcher matcher;
+   private final BreakpointMatcher matcher;
    private final RemoteReader remoteReader;
    private final SuspendLatch latch;
    private final String process;
@@ -69,7 +70,7 @@ public class ProcessAgent {
       this.reader = new ScriptResourceReader(remoteReader);
       this.context = new ScriptAgentContext(reader);
       this.compiler = new ResourceCompiler(context);
-      this.matcher = new SuspendMatcher();
+      this.matcher = new BreakpointMatcher();
       this.profiler = new ScriptProfiler();
       this.latch = new SuspendLatch();
       this.process = process;
@@ -132,15 +133,25 @@ public class ProcessAgent {
       }
       
       @Override
-      public void onSuspend(ProcessEventChannel channel, SuspendEvent event) throws Exception {
+      public void onBreakpoints(ProcessEventChannel channel, BreakpointsEvent event) throws Exception {
          Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
          matcher.update(breakpoints);
       }
       
       @Override
-      public void onResume(ProcessEventChannel channel, ResumeEvent event) throws Exception {
+      public void onStep(ProcessEventChannel channel, StepEvent event) throws Exception {
          String thread = event.getThread();
-         latch.resume(thread);
+         int type = event.getType();
+         
+         if(type == StepEvent.RUN) {
+            latch.resume(ResumeType.RUN, thread);
+         } else if(type == StepEvent.STEP_IN) {
+            latch.resume(ResumeType.STEP_IN, thread);
+         } else if(type == StepEvent.STEP_OUT) {
+            latch.resume(ResumeType.STEP_OUT, thread);
+         } else if(type == StepEvent.STEP_OVER) {
+            latch.resume(ResumeType.STEP_OVER, thread);
+         }
       }
 
       @Override

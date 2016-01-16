@@ -10,8 +10,8 @@ public enum ProcessEventType {
    SYNTAX_ERROR(SyntaxErrorEventMarshaller.class, SyntaxErrorEvent.class, 7),
    EXIT(ExitEventMarshaller.class, ExitEvent.class, 8),
    SCOPE(ScopeEventMarshaller.class, ScopeEvent.class, 9),
-   SUSPEND(SuspendEventMarshaller.class, SuspendEvent.class, 10),
-   RESUME(ResumeEventMarshaller.class, ResumeEvent.class, 11),
+   BREAKPOINTS(BreakpointsEventMarshaller.class, BreakpointsEvent.class, 10),
+   STEP(StepEventMarshaller.class, StepEvent.class, 11),
    START(StartEventMarshaller.class, StartEvent.class, 12);
    
    public final Class<? extends ProcessEventMarshaller> marshaller;

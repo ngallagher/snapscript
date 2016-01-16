@@ -2,11 +2,11 @@ package org.snapscript.engine.agent;
 
 import java.util.Map;
 
+import org.snapscript.engine.event.BreakpointsEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.PingEvent;
 import org.snapscript.engine.event.ProcessEventChannel;
-import org.snapscript.engine.event.ResumeEvent;
-import org.snapscript.engine.event.SuspendEvent;
+import org.snapscript.engine.event.StepEvent;
 
 public class ProcessAgentConnection {
 
@@ -35,7 +35,7 @@ public class ProcessAgentConnection {
    
    public boolean suspend(Map<String, Map<Integer, Boolean>> breakpoints) {
       try {
-         SuspendEvent event = new SuspendEvent(process, breakpoints);
+         BreakpointsEvent event = new BreakpointsEvent(process, breakpoints);
          return channel.send(event);
       } catch (Exception e) {
          e.printStackTrace();
@@ -48,9 +48,9 @@ public class ProcessAgentConnection {
       }
    }
    
-   public boolean resume(String thread) {
+   public boolean step(String thread, int type) {
       try {
-         ResumeEvent event = new ResumeEvent(process, thread);
+         StepEvent event = new StepEvent(process, thread, type);
          return channel.send(event);
       } catch (Exception e) {
          e.printStackTrace();
