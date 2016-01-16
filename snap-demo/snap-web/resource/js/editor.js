@@ -23,6 +23,18 @@ function clearEditorHighlights() {
    editorMarkers = {};
 }
 
+function showEditorLine(line) {
+   var editor = ace.edit("editor");
+   
+   editor.resize(true);
+   
+   if(line > 1) {
+      editor.scrollToLine(line - 1, true, true, function () {})
+   } else {
+      editor.scrollToLine(0, true, true, function () {})
+   }
+}
+
 function clearEditorHighlight(line) {
    var editor = ace.edit("editor");
    var session = editor.getSession();

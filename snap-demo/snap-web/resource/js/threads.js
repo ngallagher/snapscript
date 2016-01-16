@@ -29,7 +29,14 @@ function clearThreads(socket, type, text) {
 
 function updateThreads(socket, type, text) {
    var scope = JSON.parse(text);
+   var editorData = loadEditor();
    
+   if(editorData.resource != scope.resource) {
+      var treeFile = buildTreeFile(scope.resource);
+      openTreeFile(treeFile);
+   }
+   updateThreadFocus(scope.thread);
+   showEditorLine(scope.line);
    suspendedThreadStatus[scope.thread] = 'SUSPENDED';
    suspendedThreads[scope.thread] = scope;
    showThreads();

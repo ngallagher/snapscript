@@ -106,7 +106,7 @@ public class SuspendInterceptor implements TraceInterceptor {
       public void run() {
          try {
             while(active.get()) {
-               Thread.sleep(2000);
+               Thread.sleep(1000);
                if(active.get()) {
                   channel.send(event);
                }
