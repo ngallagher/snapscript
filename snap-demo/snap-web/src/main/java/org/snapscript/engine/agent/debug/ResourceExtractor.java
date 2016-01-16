@@ -18,12 +18,13 @@ public class ResourceExtractor {
    }
    
    public static String extractResource(String module) {
-      String path = module.replace('.', '/');
+      String path = module;
       
       if(!path.startsWith(SOURCE_PREFIX)) {
          path = SOURCE_PREFIX + path;
       }
       if(!path.endsWith(SOURCE_SUFFIX)) {
+         path = path.replace('.', '/');
          path = path + SOURCE_SUFFIX;
       }
       return path;
