@@ -1,5 +1,4 @@
 var suspendedThreads = {};
-var suspendedThreadStatus = {};
 var currentFocusThread = null;
 var currentFocusLine = -1;
 
@@ -44,17 +43,9 @@ function updateThreads(socket, type, text) {
          showEditorLine(scope.line);
       }
    }
-   suspendedThreadStatus[scope.thread] = 'SUSPENDED';
    suspendedThreads[scope.thread] = scope;
    showThreads();
    showVariables();
-}
-
-function focusedThreadResume() {
-   if(currentFocusThread != null) {
-      suspendedThreadStatus[currentFocusThread] = 'RUNNING';
-   }
-   showThreads();
 } 
 
 function focusedThread() {
@@ -77,9 +68,8 @@ function updateThreadFocus(thread, line) {
 function focusedThreadVariables() {
    if(currentFocusThread != null) {
       var threadScope = suspendedThreads[currentFocusThread];
-      var threadStatus = suspendedThreadStatus[currentFocusThread];
       
-      if(threadStatus == 'SUSPENDED') {
+      if(threadScope != null) {
          return threadScope.variables;
       }
    }
@@ -94,18 +84,14 @@ function showThreads() {
    for (var threadName in suspendedThreads) {
       if (suspendedThreads.hasOwnProperty(threadName)) {
          var threadScope = suspendedThreads[threadName];
-         var threadStatus = suspendedThreadStatus[threadName];
-         
-         if(threadStatus == null) {
-            threadStatus = 'SUSPENDED';
-         }
-         if(editorData.resource == threadScope.resource && threadStatus == 'SUSPENDED') {
+
+         if(editorData.resource == threadScope.resource && threadScope.status == 'SUSPENDED') {
             createEditorHighlight(threadScope.line, "threadHighlight");
          }
          threadRecords.push({
             recid: threadIndex++,
             thread: threadName,
-            status: threadStatus,
+            status: threadScope.status,
             depth: threadScope.depth,
             instruction: threadScope.instruction,
             variables: threadScope.variables,

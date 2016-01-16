@@ -71,8 +71,6 @@ function deleteScript() {
 }
 
 function updateScriptBreakpoints() {
-   // reconnect("company");
-
    var editorData = loadEditor();
    var message = JSON.stringify({
       breakpoints : editorData.breakpoints,
@@ -88,7 +86,6 @@ function stepOverScript() {
          thread: threadScope.thread,
          type: "STEP_OVER"
       });
-      focusedThreadResume();
       clearEditorHighlights() // XXX what about other highlights?
       socket.send("STEP:" + message);
    }
@@ -101,7 +98,6 @@ function stepInScript() {
          thread: threadScope.thread,
          type: "STEP_IN"
       });
-      focusedThreadResume();
       clearEditorHighlights() // XXX what about other highlights?
       socket.send("STEP:" + message);
    }
@@ -114,21 +110,18 @@ function stepOutScript() {
          thread: threadScope.thread,
          type: "STEP_OUT"
       });
-      focusedThreadResume();
       clearEditorHighlights() // XXX what about other highlights?
       socket.send("STEP:" + message);
    }
 }
 
 function resumeScript() {
-   // reconnect("company");
    var threadScope = focusedThread();
    if(threadScope != null) {
       var message = JSON.stringify({
          thread: threadScope.thread,
          type: "RUN"
       });
-      focusedThreadResume();
       clearEditorHighlights() // XXX what about other highlights?
       socket.send("STEP:" + message);
    }

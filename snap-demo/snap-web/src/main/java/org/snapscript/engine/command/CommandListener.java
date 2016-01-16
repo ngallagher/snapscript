@@ -102,6 +102,7 @@ public class CommandListener {
    
    public void onStop(StopCommand command) {
       try {
+         client.sendProcessTerminate();
          engine.stop(name);
       } catch(Exception e) {
          e.printStackTrace();

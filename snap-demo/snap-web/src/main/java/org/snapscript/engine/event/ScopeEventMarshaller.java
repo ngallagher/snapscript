@@ -24,6 +24,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       String process = input.readUTF();
       String thread = input.readUTF();
       String instruction = input.readUTF();
+      String status = input.readUTF();
       String resource = input.readUTF();
       int line = input.readInt();
       int depth = input.readInt();
@@ -36,7 +37,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
          
          variables.put(name, value);
       }
-      return new ScopeEvent(process, thread, instruction, resource, line, depth, key, variables);
+      return new ScopeEvent(process, thread, instruction, status, resource, line, depth, key, variables);
    }
 
    @Override
@@ -48,6 +49,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       String process = event.getProcess();
       String thread = event.getThread();
       String instruction = event.getInstruction();
+      String status = event.getStatus();
       String resource = event.getResource();
       int line = event.getLine();
       int depth = event.getDepth();
@@ -57,6 +59,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       output.writeUTF(process);
       output.writeUTF(thread);
       output.writeUTF(instruction);
+      output.writeUTF(status);
       output.writeUTF(resource);
       output.writeInt(line);
       output.writeInt(depth);

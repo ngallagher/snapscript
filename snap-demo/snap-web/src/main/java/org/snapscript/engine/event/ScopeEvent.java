@@ -6,6 +6,7 @@ public class ScopeEvent implements ProcessEvent {
 
    private Map<String, String> variables;
    private String instruction;
+   private String status;
    private String process;
    private String resource;
    private String thread;
@@ -13,12 +14,13 @@ public class ScopeEvent implements ProcessEvent {
    private int depth;
    private int key;
    
-   public ScopeEvent(String process, String thread, String instruction, String resource, int line, int depth, int key, Map<String, String> variables) {
+   public ScopeEvent(String process, String thread, String instruction, String status, String resource, int line, int depth, int key, Map<String, String> variables) {
       this.variables = variables;
       this.instruction = instruction;
       this.resource = resource;
       this.process = process;
       this.thread = thread;
+      this.status = status;
       this.depth = depth;
       this.line = line;
       this.key = key;
@@ -39,6 +41,14 @@ public class ScopeEvent implements ProcessEvent {
    
    public String getResource() {
       return resource;
+   }
+
+   public String getStatus() {
+      return status;
+   }
+
+   public void setStatus(String status) {
+      this.status = status;
    }
 
    public String getThread() {

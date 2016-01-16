@@ -1,6 +1,7 @@
 package org.snapscript.engine.agent.debug;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,9 @@ public class SuspendInterceptor implements TraceInterceptor {
             int depth = step.currentDepth();
             String path = ResourceExtractor.extractResource(resource);
             Map<String, String> variables = new HashMap<String, String>();
-            ScopeEvent event = new ScopeEvent(process, thread, origin, path, line, depth, count, variables);
-            ScopeNotifier notifier = new ScopeNotifier(event);
+            ScopeEvent suspend = new ScopeEvent(process, thread, origin, "SUSPENDED", path, line, depth, count, variables);
+            ScopeEvent resume = new ScopeEvent(process, thread, origin, "RUNNING", path, line, depth, count, Collections.EMPTY_MAP);
+            ScopeNotifier notifier = new ScopeNotifier(suspend);
             
             for(String name : names) {
                Value value = state.getValue(name);
@@ -63,9 +65,10 @@ public class SuspendInterceptor implements TraceInterceptor {
                variables.put(name, text);
             }
             step.clear(); // clear config
-            channel.send(event);
+            channel.send(suspend);
             notifier.start();
             suspend(notifier, resource, line);
+            channel.send(resume);
          } catch(Exception e) {
             e.printStackTrace();
          }
@@ -122,8 +125,6 @@ public class SuspendInterceptor implements TraceInterceptor {
       public void resume(String thread) {
          active.set(false);
       }
-      
-      
    }
 
 }

@@ -24,10 +24,11 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       Map<String, String> variables = event.getVariables();
       String thread = event.getThread();
       String instruction = event.getInstruction();
+      String status = event.getStatus();
       String resource = event.getResource();
       int depth = event.getDepth();
       int line = event.getLine();
-      client.sendScope(thread, instruction, resource, line, depth, variables);
+      client.sendScope(thread, instruction, status, resource, line, depth, variables);
    }
    
    @Override
