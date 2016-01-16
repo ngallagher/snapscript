@@ -84,10 +84,11 @@ function suspendScript(resource, line) {
 
 function resumeScript() {
    // reconnect("company");
-   var currentThread = focusedThread();
-   if(currentThread != null) {
-      clearFocusThread();
-      socket.send("RESUME:" + currentThread);
+   var threadScope = focusedThread();
+   if(threadScope != null) {
+      focusedThreadResume();
+      clearEditorHighlights() // XXX what about other highlights?
+      socket.send("RESUME:" + threadScope.thread);
    }
 }
 
@@ -330,10 +331,16 @@ function createLayout() {
       }, {
          field : 'status',
          caption : 'Status',
-         size : '20%',
+         size : '10%',
          sortable : true,
          resizable : true
       }, {
+         field : 'instruction',
+         caption : 'Instruction',
+         size : '20%',
+         sortable : true,
+         resizable : true
+      },{
          field : 'resource',
          caption : 'Resource',
          size : '40%',

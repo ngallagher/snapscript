@@ -34,13 +34,15 @@ public class SuspendInterceptor implements TraceInterceptor {
       if(matcher.match(resource, line)) { 
          try {
             String thread = Thread.currentThread().getName();
+            Class type = instruction.getClass();
+            String origin = type.getSimpleName();
             State state = scope.getState();
             Set<String> names = state.getNames();
             int count = counter.getAndIncrement();
             
             if(!names.isEmpty()) {
                Map<String, String> variables = new HashMap<String, String>();
-               ScopeEvent event = new ScopeEvent(process, thread, resource, line, count, variables);
+               ScopeEvent event = new ScopeEvent(process, thread, origin, resource, line, count, variables);
                ScopeNotifier notifier = new ScopeNotifier(event);
                
                for(String name : names) {
@@ -80,7 +82,9 @@ public class SuspendInterceptor implements TraceInterceptor {
          try {
             while(active.get()) {
                Thread.sleep(2000);
-               channel.send(event);
+               if(active.get()) {
+                  channel.send(event);
+               }
             }
          } catch(Exception e) {
             e.printStackTrace();

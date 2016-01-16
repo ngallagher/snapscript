@@ -95,4 +95,12 @@ public class CommandListener {
    public void onSuspend(SuspendCommand command) {
       
    }
+   
+   public void onClose() {
+      try {
+         engine.stop(name);
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
 }

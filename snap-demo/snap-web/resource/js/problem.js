@@ -44,7 +44,7 @@ function updateProblems(socket, type, text) {
    problemMessage = message.description;
    problemLocation = message.resource;
    problemProject = message.project;
-   createEditorHighlight(problemLine, "errorMarker");
+   createEditorHighlight(problemLine, "problemHighlight");
 	
 	if(problems != null) {
       problems.records = [{

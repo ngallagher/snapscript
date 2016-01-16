@@ -14,3 +14,8 @@
     bottom: 8px;
     left: 8px;
 }
+.threadHighlight {
+  position:absolute;
+  background:rgba(255,215,0,0.3);
+  z-index:20
+}

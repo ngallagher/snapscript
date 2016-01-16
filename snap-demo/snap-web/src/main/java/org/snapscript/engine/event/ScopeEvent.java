@@ -5,14 +5,16 @@ import java.util.Map;
 public class ScopeEvent implements ProcessEvent {
 
    private Map<String, String> variables;
+   private String instruction;
    private String process;
    private String resource;
    private String thread;
    private int line;
    private int key;
    
-   public ScopeEvent(String process, String thread, String resource, int line, int key, Map<String, String> variables) {
+   public ScopeEvent(String process, String thread, String instruction, String resource, int line, int key, Map<String, String> variables) {
       this.variables = variables;
+      this.instruction = instruction;
       this.resource = resource;
       this.process = process;
       this.thread = thread;
@@ -29,6 +31,10 @@ public class ScopeEvent implements ProcessEvent {
       return variables;
    }
 
+   public String getInstruction() {
+      return instruction;
+   }
+   
    public String getResource() {
       return resource;
    }

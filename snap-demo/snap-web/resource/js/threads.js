@@ -1,8 +1,10 @@
 var suspendedThreads = {};
+var suspendedThreadStatus = {};
 var currentFocusThread = null;
 
 function createThreads() {
    createRoute("SCOPE", updateThreads);
+   createRoute("TERMINATE", clearThreads);
    createRoute("EXIT", clearThreads);
 }
 
@@ -15,11 +17,23 @@ function clearThreads(socket, type, text) {
 
 function updateThreads(socket, type, text) {
    var scope = JSON.parse(text);
+   
+   suspendedThreadStatus[scope.thread] = 'SUSPENDED';
    suspendedThreads[scope.thread] = scope;
+   showThreads();
 }
 
+function focusedThreadResume() {
+   if(currentFocusThread != null) {
+      suspendedThreadStatus[currentFocusThread] = 'RUNNING';
+   }
+} 
+
 function focusedThread() {
-   return currentFocusThread;
+   if(currentFocusThread != null) {
+      return suspendedThreads[currentFocusThread];
+   }
+   return null;
 }
 
 function clearFocusThread() {
@@ -32,27 +46,37 @@ function updateThreadFocus(thread) {
 
 function focusedThreadVariables() {
    if(currentFocusThread != null) {
-      var suspendedThread = suspendedThreads[currentFocusThread];
+      var threadScope = suspendedThreads[currentFocusThread];
+      var threadStatus = suspendedThreadStatus[currentFocusThread];
       
-      if(suspendedThread != null) {
-         return suspendedThread.variables;
+      if(threadStatus == 'SUSPENDED') {
+         return threadScope.variables;
       }
    }
    return {};
 }
 
 function showThreads() {
+   var editorData = loadEditor();
    var threadRecords = [];
    var threadIndex = 1;
    
    for (var threadName in suspendedThreads) {
       if (suspendedThreads.hasOwnProperty(threadName)) {
          var threadScope = suspendedThreads[threadName];
-
+         var threadStatus = suspendedThreadStatus[threadName];
+         
+         if(threadStatus == null) {
+            threadStatus = 'SUSPENDED';
+         }
+         if(editorData.resource == threadScope.resource) {
+            createEditorHighlight(threadScope.line, "threadHighlight");
+         }
          threadRecords.push({
             recid: threadIndex++,
             thread: threadName,
-            status: 'SUSPENDED',
+            status: threadStatus,
+            instruction: threadScope.instruction,
             variables: threadScope.variables,
             resource: threadScope.resource,
             line: threadScope.line,

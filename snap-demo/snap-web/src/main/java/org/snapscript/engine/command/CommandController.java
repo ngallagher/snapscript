@@ -8,7 +8,6 @@ import org.simpleframework.http.socket.FrameListener;
 import org.simpleframework.http.socket.FrameType;
 import org.simpleframework.http.socket.Reason;
 import org.simpleframework.http.socket.Session;
-import org.snapscript.engine.ExceptionBuilder;
 import org.snapscript.engine.agent.ProcessEngine;
 
 public class CommandController implements FrameListener {
@@ -46,17 +45,17 @@ public class CommandController implements FrameListener {
             e.printStackTrace();
          }
       } 
-      System.err.println("onFrame(" + type + ")");
    }
 
    @Override
    public void onError(Session socket, Exception cause) {
-      System.err.println("onError(" + ExceptionBuilder.build(cause) + ")");
+      cause.printStackTrace();
+      listener.onClose();
    }
 
    @Override
    public void onClose(Session session, Reason reason) {
-      System.err.println("onClose(" + reason + ")");
+      listener.onClose();
    }
 
 }

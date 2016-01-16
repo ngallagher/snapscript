@@ -5,6 +5,7 @@ import java.util.Map;
 public class ScopeCommand implements Command {
    
    private Map<String, String> variables;
+   private String instruction;
    private String resource;
    private String thread;
    private int line;
@@ -13,8 +14,9 @@ public class ScopeCommand implements Command {
       super();
    }
 
-   public ScopeCommand(String thread, String resource, int line, Map<String, String> variables) {
+   public ScopeCommand(String thread, String instruction, String resource, int line, Map<String, String> variables) {
       this.variables = variables;
+      this.instruction = instruction;
       this.thread = thread;
       this.resource = resource;
       this.line = line;
@@ -26,6 +28,14 @@ public class ScopeCommand implements Command {
 
    public void setVariables(Map<String, String> variables) {
       this.variables = variables;
+   }
+
+   public String getInstruction() {
+      return instruction;
+   }
+
+   public void setInstruction(String instruction) {
+      this.instruction = instruction;
    }
 
    public String getResource() {

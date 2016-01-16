@@ -37,11 +37,6 @@
 <script src="/js/problem.js"></script>
 </head>
 <style>
-.errorMarker {
-  position:absolute;
-  background:rgba(250,10,10,0.3);
-  z-index:20
-}
 .titleTop {
 	padding: 5px;
 	height: 40px;

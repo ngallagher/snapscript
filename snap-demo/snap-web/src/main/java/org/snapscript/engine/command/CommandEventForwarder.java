@@ -23,9 +23,10 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       try {
          Map<String, String> variables = event.getVariables();
          String thread = event.getThread();
+         String instruction = event.getInstruction();
          String resource = event.getResource();
          int line = event.getLine();
-         client.sendScope(thread, resource, line, variables);
+         client.sendScope(thread, instruction, resource, line, variables);
       } catch(Exception e) {
          e.printStackTrace();
       }

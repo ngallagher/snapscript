@@ -1,4 +1,5 @@
 var editorBreakpoints = {};
+var editorMarkers = {};
 var editorResource = null;
 var editorText = null;
 
@@ -10,17 +11,38 @@ function clearEditorHighlights() {
    var editor = ace.edit("editor");
    var session = editor.getSession();
 
-   for ( var editorMarker in session.$backMarkers) {
-      session.removeMarker(editorMarker);
+   for ( var editorLine in editorMarkers) {
+      if (editorMarkers.hasOwnProperty(editorLine)) {
+         var marker = editorMarkers[editorLine];
+         console.log("clearEditorHighlights(): line="+editorLine+" marker="+marker+" resource="+editorResource);
+         session.removeMarker(marker);
+      }
+   }
+   editorMarkers = {};
+}
+
+function clearEditorHighlight(line) {
+   var editor = ace.edit("editor");
+   var session = editor.getSession();
+   var marker = editorMarkers[line];
+   
+   console.log("clearEditorHighlight("+line+"): line="+line+ " marker="+marker+" resource="+editorResource);
+   
+   if(marker != null) {
+      session.removeMarker(marker);
    }
 }
 
 function createEditorHighlight(line, css) {
    var editor = ace.edit("editor");
    var Range = ace.require('ace/range').Range;
-   // editor.session.addMarker(new Range(from, 0, to, 1), "errorMarker",
-   // "fullLine");
-   editor.session.addMarker(new Range(line - 1, 0, line - 1, 1), css, "fullLine");
+   var session = editor.getSession();
+
+   clearEditorHighlight(line);
+   // session.addMarker(new Range(from, 0, to, 1), "errorMarker", "fullLine");
+   var marker = session.addMarker(new Range(line - 1, 0, line - 1, 1), css, "fullLine");
+   console.log("createEditorHighlight("+line+","+css+"): line="+line+ " marker="+marker+" resource="+editorResource);
+   editorMarkers[line] = marker;
 }
 
 function clearEditorBreakpoints(row) {
@@ -37,12 +59,12 @@ function clearEditorBreakpoints(row) {
 function showEditorBreakpoints() {
    var breakpointRecords = [];
    var breakpointIndex = 1;
-   
-   for (var resourceName in editorBreakpoints) {
+
+   for ( var resourceName in editorBreakpoints) {
       if (editorBreakpoints.hasOwnProperty(resourceName)) {
          var breakpoints = editorBreakpoints[resourceName];
 
-         for (var lineNumber in breakpoints) {
+         for ( var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
                   breakpointRecords.push({
@@ -66,7 +88,7 @@ function setEditorBreakpoint(row, value) {
       var session = editor.getSession();
       var resourceBreakpoints = editorBreakpoints[editorResource];
       var line = parseInt(row);
-      
+
       if (value) {
          session.setBreakpoint(line);
       } else {
@@ -101,7 +123,7 @@ function toggleEditorBreakpoint(row) {
          session.setBreakpoint(row);
       }
       var line = parseInt(row);
-      
+
       if (resourceBreakpoints == null) {
          resourceBreakpoints = {};
          resourceBreakpoints[line + 1] = true;
@@ -121,6 +143,7 @@ function resetEditor() {
    var editor = ace.edit("editor");
    var session = editor.getSession();
 
+   editorMarkers = {};
    editorResource = null;
    editorText = "// TODO write code";
    session.setValue(editorText, 1);
@@ -163,13 +186,14 @@ function updateEditor(text, resource) {
    clearProblems();
    scrollEditorToTop();
    editorResource = extractTreePath(resource);
+   editorMarkers = {};
    editorText = text;
 
    if (resource != null) {
       var breakpoints = editorBreakpoints[editorResource];
-      
+
       if (breakpoints != null) {
-         for (var lineNumber in breakpoints) {
+         for ( var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
                   setEditorBreakpoint(lineNumber - 1, true);
