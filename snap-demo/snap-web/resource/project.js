@@ -395,7 +395,7 @@ function createLayout() {
       },{
          field : 'resource',
          caption : 'Resource',
-         size : '40%',
+         size : '30%',
          sortable : true,
          resizable : true
       },{
@@ -403,6 +403,12 @@ function createLayout() {
          caption : 'Line',
          size : '10%',
          sortable : true,
+         resizable : true
+      },{
+         field : 'depth',
+         caption : 'Depth',
+         size : '10%',
+         sortable : false,
          resizable : true
       },],
       onClick : function(event) {

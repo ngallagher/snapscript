@@ -15,6 +15,10 @@ public class ThreadStep {
       this.depth = new AtomicInteger();
    }
    
+   public int currentDepth() {
+      return depth.get();
+   }
+   
    public void increaseDepth() {
       depth.getAndIncrement();
    }

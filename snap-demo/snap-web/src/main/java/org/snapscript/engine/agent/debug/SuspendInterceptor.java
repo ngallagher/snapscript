@@ -41,10 +41,7 @@ public class SuspendInterceptor implements TraceInterceptor {
    public void before(Scope scope, Object instruction, String resource, int line, int key) {
       ThreadStep step = monitor.get();
       Class type = instruction.getClass();
-      
-      if(INSTRUCTIONS.contains(type)) {
-         step.increaseDepth();
-      }
+
       if(matcher.match(resource, line) || step.suspend()) { 
          try {
             String thread = Thread.currentThread().getName();
@@ -52,9 +49,10 @@ public class SuspendInterceptor implements TraceInterceptor {
             State state = scope.getState();
             Set<String> names = state.getNames();
             int count = counter.getAndIncrement();
+            int depth = step.currentDepth();
             String path = ResourceExtractor.extractResource(resource);
             Map<String, String> variables = new HashMap<String, String>();
-            ScopeEvent event = new ScopeEvent(process, thread, origin, path, line, count, variables);
+            ScopeEvent event = new ScopeEvent(process, thread, origin, path, line, depth, count, variables);
             ScopeNotifier notifier = new ScopeNotifier(event);
             
             for(String name : names) {
@@ -71,6 +69,9 @@ public class SuspendInterceptor implements TraceInterceptor {
          } catch(Exception e) {
             e.printStackTrace();
          }
+      }
+      if(INSTRUCTIONS.contains(type)) {
+         step.increaseDepth();
       }
    }
 

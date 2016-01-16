@@ -88,6 +88,7 @@ function showThreads() {
             recid: threadIndex++,
             thread: threadName,
             status: threadStatus,
+            depth: threadScope.depth,
             instruction: threadScope.instruction,
             variables: threadScope.variables,
             resource: threadScope.resource,

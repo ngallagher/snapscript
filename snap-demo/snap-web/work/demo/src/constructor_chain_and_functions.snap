@@ -1,6 +1,8 @@
 class A {
    var x;
    new(x){
+      var i = 0;
+      i++;
       System.err.println("A.new("+x+")->"+class);
       this.x=x;
    }
