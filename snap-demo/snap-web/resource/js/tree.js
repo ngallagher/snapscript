@@ -1,3 +1,4 @@
+var FILE_TYPES = [".snap", ".html", ".xml", ".json", ".properties", ".txt", ".png", ".gif", ".js", ".sql"];
 var treeVisible = false;
 
 function reloadTree(socket, type, text) {
@@ -57,6 +58,37 @@ function extractTreePath(path) {
          } else {
             path = "/";
          }
+      }
+   }
+   return path;
+}
+
+function extractTreePathNoFile(path) {
+   if(path != null) {
+      if(path.startsWith("/resource")) {
+         var segments = path.split("/");
+         if(segments.length > 3) {
+            path = "";
+            for(var i = 3; i < segments.length - 1; i++) {
+               path += "/" + segments[i];
+            }
+         } else {
+            path = "/";
+         }
+      } else {
+         var dotIndex = path.lastIndexOf(".");
+         var slashIndex = path.lastIndexOf("/");
+         
+         if(dotIndex == -1) {
+            return path;
+         }
+         if(slashIndex == -1) {
+            return "/src";
+         }
+         if(dotIndex < slashIndex) {
+            return path;
+         }
+         return path.substring(0, slashIndex);
       }
    }
    return path;

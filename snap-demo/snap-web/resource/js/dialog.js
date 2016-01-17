@@ -34,16 +34,18 @@ function openConfirmDialog() {
 function openTreeDialog(expandPath, foldersOnly, saveCallback) {
    var project = document.title;
    var dialogTitle = "Save As";
-   var folder = "/";
+   var folder = "/src";
+
    if (expandPath != null) {
       dialogTitle = "Save Changes";
+      folder = extractTreePathNoFile(expandPath);
    }
    w2popup.open({
       title : dialogTitle,
-      body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
+      body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFolder">'+folder+'</div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
       buttons : '<button id="dialogSave" class="btn">Save</button><button id="dialogCancel" class="btn">Cancel</button>',
       width : 500,
-      height : 300,
+      height : 400,
       overflow : 'hidden',
       color : '#333',
       speed : '0.3',
@@ -89,9 +91,12 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
       var path = extractTreePath(data.node.tooltip);
       if (data.node.isFolder()) {
          folder = path;
+         $('#dialogFolder').html(folder);
          $('#dialogFile').html("");
       } else {
          var file = extractTreeFile(data.node.tooltip);
+         var fileFolder = extractTreePathNoFile(data.node.tooltip);
+         $('#dialogFolder').html(fileFolder);
          $('#dialogFile').html(file);
       }
    });

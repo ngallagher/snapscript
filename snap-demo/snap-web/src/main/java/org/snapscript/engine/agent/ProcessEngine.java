@@ -19,7 +19,7 @@ public class ProcessEngine {
       this.pool = new ProcessAgentPool(root, port, capacity);
    }
    
-   public void execute(ProcessEventListener listener, ExecuteCommand command, String client) {
+   public boolean execute(ProcessEventListener listener, ExecuteCommand command, String client) {
       String system = System.getProperty("os.name");
       ProcessAgentConnection connection = pool.acquire(listener, system);
       ProcessAgentConnection current = connections.remove(client);
@@ -33,43 +33,56 @@ public class ProcessEngine {
          String resource = command.getResource();
          
          connections.put(client, connection);
-         connection.execute(project, resource, breakpoints);
+         return connection.execute(project, resource, breakpoints);
       }
+      return true;
    }
    
-   public void breakpoints(BreakpointsCommand command, String client) {
+   public boolean breakpoints(BreakpointsCommand command, String client) {
       ProcessAgentConnection connection = connections.get(client);
       
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
-         connection.suspend(breakpoints);
+         return connection.suspend(breakpoints);
       }
+      return true;
    }
    
-   public void step(StepCommand command, String client) {
+   public boolean step(StepCommand command, String client) {
       ProcessAgentConnection connection = connections.get(client);
       
       if(connection != null) {
          String thread = command.getThread();
          
          if(command.isRun()) {
-            connection.step(thread, StepEvent.RUN);
+            return connection.step(thread, StepEvent.RUN);
          } else if(command.isStepIn()) {
-            connection.step(thread, StepEvent.STEP_IN);
+            return connection.step(thread, StepEvent.STEP_IN);
          } else if(command.isStepOut()) {
-            connection.step(thread, StepEvent.STEP_OUT);
+            return connection.step(thread, StepEvent.STEP_OUT);
          } else if(command.isStepOver()) {
-            connection.step(thread, StepEvent.STEP_OVER);
+            return connection.step(thread, StepEvent.STEP_OVER);
          }
       }
+      return true;
    }
    
-   public void stop(String client) {
+   public boolean stop(String client) {
       ProcessAgentConnection connection = connections.remove(client);
       
       if(connection != null) {
          connection.close();
       }
+      return true;
+   }
+   
+   public boolean ping(String client) {
+      ProcessAgentConnection connection = connections.get(client);
+      
+      if(connection != null) {
+         return connection.ping();
+      }
+      return true;
    }
    
    public void start() {

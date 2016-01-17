@@ -63,11 +63,14 @@ function saveScriptWithAction(saveCallback) {
 }
 
 function deleteScript() {
-   // reconnect("company");
-   var text = loadEditor();
+   var editorData = loadEditor();
+   var message = JSON.stringify({
+      project : document.title,
+      resource : editorData.resource
+   });
    clearConsole();
    clearProblems();
-   socket.send("DELETE:" + text);
+   socket.send("DELETE:" + message);
 }
 
 function updateScriptBreakpoints() {
@@ -176,10 +179,11 @@ function createLayout() {
                      size : '60%',
                      style : pstyle,
                      content : "<div class='titleTop'><table><tr>"
+                           + "<td><button id='newScript' class='btn' onclick='newScript()'>New</button></td>"
+                           + "<td><button id='deleteScript' class='btn' onclick='deleteScript()'>Delete</button></td>"                           
                            + "<td><button id='runScript' class='btn' onclick='runScript()'>Run</button></td>"
                            + "<td><button id='stopScript' class='btn' onclick='stopScript()'>Stop</button></td>"
                            + "<td><button id='saveScript' class='btn' onclick='saveScript()'>Save</button></td>"
-                           + "<td><button id='newScript' class='btn' onclick='newScript()'>New</button></td>"
                            + "<td><button id='resumeScript' class='btn' onclick='resumeScript()'>Resume</button></td>"
                            + "<td><button id='stepInScript' class='btn' onclick='stepInScript()'>Step In</button></td>"
                            + "<td><button id='stepOutScript' class='btn' onclick='stepOutScript()'>Step Out</button></td>"

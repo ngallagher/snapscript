@@ -24,10 +24,9 @@ public class CommandController implements FrameListener {
    public void onFrame(Session socket, Frame frame) {
       FrameType type = frame.getType();
 
-      if(type == FrameType.TEXT){
-         String text = frame.getText();
-
-         try {
+      try {
+         if(type == FrameType.TEXT){
+            String text = frame.getText();
             Command command = reader.read(text);
             
             if(command instanceof ExecuteCommand) {
@@ -43,10 +42,12 @@ public class CommandController implements FrameListener {
             }else if(command instanceof StopCommand) {
                listener.onStop((StopCommand)command);
             }
-         } catch(Throwable e){
-            e.printStackTrace();
+         } else if(type == FrameType.PONG){
+            listener.onPing();
          }
-      } 
+      } catch(Throwable e){
+         e.printStackTrace();
+      }
    }
 
    @Override

@@ -86,6 +86,7 @@ public class CommandListener {
          
          if(file.exists()) {
             file.delete();
+            client.sendReloadTree();
          }
       } catch(Exception e) {
          e.printStackTrace();
@@ -104,6 +105,17 @@ public class CommandListener {
       try {
          client.sendProcessTerminate();
          engine.stop(name);
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
+   
+   public void onPing() {
+      try {
+         if(!engine.ping(name)) {
+            client.sendProcessTerminate();
+            engine.stop(name);
+         }
       } catch(Exception e) {
          e.printStackTrace();
       }
