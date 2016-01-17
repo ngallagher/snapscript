@@ -145,7 +145,7 @@ function createLayout() {
       padding : 0,
       panels : [ {
          type : 'top',
-         size : '40px',
+         size : '35px',
          resizable : false,
          style : pstyle
       }, {
@@ -179,15 +179,16 @@ function createLayout() {
                      size : '60%',
                      style : pstyle,
                      content : "<div class='titleTop'><table><tr>"
-                           + "<td><button id='newScript' class='btn' onclick='newScript()'>New</button></td>"
-                           + "<td><button id='deleteScript' class='btn' onclick='deleteScript()'>Delete</button></td>"                           
-                           + "<td><button id='runScript' class='btn' onclick='runScript()'>Run</button></td>"
-                           + "<td><button id='stopScript' class='btn' onclick='stopScript()'>Stop</button></td>"
-                           + "<td><button id='saveScript' class='btn' onclick='saveScript()'>Save</button></td>"
-                           + "<td><button id='resumeScript' class='btn' onclick='resumeScript()'>Resume</button></td>"
-                           + "<td><button id='stepInScript' class='btn' onclick='stepInScript()'>Step In</button></td>"
-                           + "<td><button id='stepOutScript' class='btn' onclick='stepOutScript()'>Step Out</button></td>"
-                           + "<td><button id='stepOverScript' class='btn' onclick='stepOverScript()'>Step Over</button></td>"
+                           + "<td>&nbsp;&nbsp;</td>" 
+                           + "<td><div class='saveScript' onclick='saveScript()' title='Save Script'></div></td>" 
+                           + "<td><div class='newScript' onclick='newScript()' title='New Script'></div></td>"
+                           + "<td><div class='deleteScript' onclick='deleteScript()' title='Delete Script'></div></td>"   
+                           + "<td><div class='runScript' onclick='runScript()' title='Run Script'></div></td>" 
+                           + "<td><div class='stopScript' onclick='stopScript()' title='Stop Script'></div></td>" 
+                           + "<td><div class='resumeScript' onclick='resumeScript()' title='Resume Script'></div></td>" 
+                           + "<td><div class='stepInScript' onclick='stepInScript()' title='Step In'></div></td>" 
+                           + "<td><div class='stepOutScript' onclick='stepOutScript()' title='Step Out'></div></td>" 
+                           + "<td><div class='stepOverScript' onclick='stepOverScript()' title='Step Over'></div></td>" 
                            + "</tr></table></div>"
                   }, {
                      type : 'main',

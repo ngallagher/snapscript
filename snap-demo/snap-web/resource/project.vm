@@ -37,6 +37,42 @@
 <script src="/js/problem.js"></script>
 </head>
 <style>
+.runScript {
+    content: url('/img/toolbar/nav_go.gif');
+    padding: 4px;
+}
+.resumeScript {
+    content: url('/img/toolbar/resume_co.gif');
+    padding: 4px;
+}
+.stepInScript {
+    content: url('/img/toolbar/stepinto_co.gif');
+    padding: 4px;   
+}
+.stepOutScript {
+    content: url('/img/toolbar/stepreturn_co.gif');
+    padding: 4px;    
+}
+.stepOverScript {
+    content: url('/img/toolbar/stepover_co.gif');
+    padding: 4px;    
+}
+.stopScript {
+    content: url('/img/toolbar/rem_co.gif');
+    padding: 4px;   
+}
+.saveScript {
+    content: url('/img/toolbar/save_edit.gif');
+    padding: 4px;  
+}
+.deleteScript {
+    content: url('/img/toolbar/trash.gif');
+    padding: 4px;   
+}
+.newScript {
+    content: url('/img/toolbar/create.gif');
+    padding: 4px;   
+}
 .titleTop {
 	padding: 5px;
 	height: 40px;
