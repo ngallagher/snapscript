@@ -3,6 +3,9 @@ package org.snapscript.agent.debug;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.snapscript.compile.instruction.FunctionInvocation;
+import org.snapscript.compile.instruction.construct.ConstructObject;
+
 public class ThreadProgress {
 
    private final AtomicReference<ResumeType> resume;
@@ -19,12 +22,20 @@ public class ThreadProgress {
       return depth.get();
    }
    
-   public void increaseDepth() {
-      depth.getAndIncrement();
+   public void beforeInstruction(Class type) {
+      if(type == ConstructObject.class) {
+         depth.getAndIncrement();
+      } else if(type == FunctionInvocation.class) {
+         depth.getAndIncrement();
+      }
    }
    
-   public void reduceDepth() {
-      depth.getAndDecrement();
+   public void afterInstruction(Class type) {
+      if(type == ConstructObject.class) {
+         depth.getAndDecrement();
+      } else if(type == FunctionInvocation.class) {
+         depth.getAndDecrement();
+      }
    }
    
    public void resume(ResumeType type) {

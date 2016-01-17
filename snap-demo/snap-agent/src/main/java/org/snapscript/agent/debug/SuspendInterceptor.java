@@ -1,21 +1,15 @@
 package org.snapscript.agent.debug;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.compile.instruction.FunctionInvocation;
-import org.snapscript.compile.instruction.construct.ConstructObject;
 import org.snapscript.core.Scope;
 import org.snapscript.core.TraceInterceptor;
 
 public class SuspendInterceptor implements TraceInterceptor {
-   
-   private static final List<Class> INSTRUCTIONS = Arrays.<Class>asList(FunctionInvocation.class, ConstructObject.class);
-   
+
    private final ProcessEventChannel channel;
    private final ThreadProgressLocal monitor;
    private final BreakpointMatcher matcher;
@@ -34,14 +28,14 @@ public class SuspendInterceptor implements TraceInterceptor {
 
    @Override
    public void before(Scope scope, Object instruction, String resource, int line, int key) {
-      ThreadProgress step = monitor.get();
+      ThreadProgress progress = monitor.get();
       Class type = instruction.getClass();
 
-      if(matcher.match(resource, line) || step.suspend()) { 
+      if(matcher.match(resource, line) || progress.suspend()) { 
          try {
             String thread = Thread.currentThread().getName();
             int count = counter.getAndIncrement();
-            int depth = step.currentDepth();
+            int depth = progress.currentDepth();
             String path = ResourceExtractor.extractResource(resource);
             ScopeExtractor extractor = new ScopeExtractor(scope);
             ScopeEventBuilder builder = new ScopeEventBuilder(extractor, process, thread, type, path, line, depth, count);
@@ -49,7 +43,7 @@ public class SuspendInterceptor implements TraceInterceptor {
             ScopeEvent suspend = builder.suspendEvent();
             ScopeEvent resume = builder.resumeEvent();
             
-            step.clear(); // clear config
+            progress.clear(); // clear config
             channel.send(suspend);
             notifier.start();
             suspend(notifier, extractor, resource, line);
@@ -58,19 +52,15 @@ public class SuspendInterceptor implements TraceInterceptor {
             e.printStackTrace();
          }
       }
-      if(INSTRUCTIONS.contains(type)) {
-         step.increaseDepth();
-      }
+      progress.beforeInstruction(type);
    }
 
    @Override
    public void after(Scope scope, Object instruction, String resource, int line, int key) {
-      ThreadProgress step = monitor.get();
+      ThreadProgress progress = monitor.get();
       Class type = instruction.getClass();
       
-      if(INSTRUCTIONS.contains(type)) {
-         step.reduceDepth();
-      }
+      progress.afterInstruction(type);
    }
    
    private void suspend(ScopeNotifier notifier, ScopeBrowser browser, String resource, int line) {

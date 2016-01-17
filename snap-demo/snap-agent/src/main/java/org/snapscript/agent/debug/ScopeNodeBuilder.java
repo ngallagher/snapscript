@@ -7,17 +7,8 @@ import static org.snapscript.agent.debug.ScopeNode.TYPE_KEY;
 import static org.snapscript.agent.debug.ScopeNode.VALUE_KEY;
 
 import java.lang.reflect.Proxy;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.PrimitivePromoter;
@@ -25,32 +16,15 @@ import org.snapscript.core.Type;
 import org.snapscript.core.convert.ProxyExtractor;
 
 public class ScopeNodeBuilder {
-
-   private static final List<Class> PRIMITIVES = Arrays.<Class>asList(
-         String.class,
-         Integer.class,
-         Double.class,
-         Float.class,
-         Long.class,
-         BigInteger.class,
-         BigDecimal.class,
-         AtomicInteger.class,
-         AtomicLong.class,
-         AtomicBoolean.class,
-         Boolean.class,
-         Short.class,
-         Character.class,
-         Byte.class,
-         Date.class,
-         Locale.class
-   );
    
    private final Map<String, Map<String, String>> variables;
    private final PrimitivePromoter promoter;
+   private final ScopeNodeChecker checker;
    private final ProxyExtractor extractor;
    
    public ScopeNodeBuilder(Map<String, Map<String, String>> variables) {
       this.promoter = new PrimitivePromoter();
+      this.checker = new ScopeNodeChecker();
       this.extractor = new ProxyExtractor();
       this.variables = variables;
    }
@@ -71,7 +45,7 @@ public class ScopeNodeBuilder {
          Class actual = object.getClass();
          Class type = promoter.promote(actual);
          
-         if(!isPrimitive(type)) { 
+         if(!checker.isPrimitive(type)) { 
             if(type.isArray()) {
                StringBuilder dimensions = new StringBuilder();
                Class entry = type.getComponentType();
@@ -110,16 +84,5 @@ public class ScopeNodeBuilder {
       criteria.put(DEPTH_KEY, String.valueOf(depth));
       
       return criteria;
-   }
-   
-   private boolean isPrimitive(Class type) {
-      Class parent = type.getSuperclass();
-      
-      if(parent != null) {
-         if(parent.isEnum() || type.isEnum()) {
-            return true;
-         }
-      }
-      return PRIMITIVES.contains(type);
    }
 }
