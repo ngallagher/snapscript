@@ -79,8 +79,11 @@ function showEditorBreakpoints() {
          for ( var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
+                  var displayName = "<div class='breakpointEnabled'>"+resourceName+"</div>";
+                  
                   breakpointRecords.push({
                      recid: breakpointIndex++,
+                     name: displayName,
                      location : "Line " + lineNumber,
                      resource : resourceName,
                      line: parseInt(lineNumber),

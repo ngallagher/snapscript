@@ -293,6 +293,12 @@ function createLayout() {
    $().w2grid({
       name : 'problems',
       columns : [ {
+         field : 'description',
+         caption : 'Description',
+         size : '45%',
+         sortable : true,
+         resizable : true
+      },{
          field : 'location',
          caption : 'Location',
          size : '10%',
@@ -304,13 +310,7 @@ function createLayout() {
          size : '45%',
          sortable : true,
          resizable : true
-      }, {
-         field : 'description',
-         caption : 'Description',
-         size : '45%',
-         sortable : true,
-         resizable : true
-      }, ],
+      },  ],
       onClick : function(event) {
          var grid = this;
          event.onComplete = function() {
@@ -354,19 +354,20 @@ function createLayout() {
 
    $().w2grid({
       name : 'breakpoints',
-      columns : [ {
+      columns : [ 
+       {
+         field : 'name',
+         caption : 'Resource',
+         size : '60%',
+         sortable : true,
+         resizable : true
+      },{
          field : 'location',
          caption : 'Location',
-         size : '13%',
+         size : '40%',
          sortable : true,
          resizable : true
-      }, {
-         field : 'resource',
-         caption : 'Resource',
-         size : '86%',
-         sortable : true,
-         resizable : true
-      }, ],
+      } ],
       onClick : function(event) {
          var grid = this;
          event.onComplete = function() {

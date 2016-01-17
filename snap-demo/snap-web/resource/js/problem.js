@@ -41,14 +41,14 @@ function updateProblems(socket, type, text) {
 	var message = JSON.parse(text);
    
    problemLine = message.line;
-   problemMessage = message.description;
+   problemMessage = "<div class='errorDescription'>"+message.description+"</div>";
    problemLocation = message.resource;
    problemProject = message.project;
    createEditorHighlight(problemLine, "problemHighlight");
 	
 	if(problems != null) {
       problems.records = [{
-            recid: 1,
+            recid: 1, // only one problem at a time for now!!!!
             location: "Line " + problemLine, 
             resource: problemLocation, 
             description: problemMessage, 

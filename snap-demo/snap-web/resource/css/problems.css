@@ -18,3 +18,11 @@
   background:rgba(250,10,10,0.3);
   z-index:20
 }
+.errorDescription {
+	font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+	background-image: url('/img/toolbar/rem_co.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}
