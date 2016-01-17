@@ -103,7 +103,6 @@ public class ProjectTreeResource implements Resource {
             builder.append(currentPath);
             
             if(openPath) {
-               System.err.println("Expanding currentPath=["+currentPath+"] expandPath=["+expandPath+"]");
                builder.append("\" class=\"expanded folder\">");
             } else {
                builder.append("\" class=\"folder\">");

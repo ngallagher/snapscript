@@ -16,3 +16,4 @@ const thread = new Thread(task);
 
 task.run();
 thread.start();
+thread.join();
