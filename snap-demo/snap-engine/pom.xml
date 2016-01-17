@@ -23,6 +23,11 @@
     </dependency>
     <dependency>
       <groupId>org.snapscript</groupId>
+      <artifactId>snap-run</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.snapscript</groupId>
       <artifactId>snap-swing</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>    

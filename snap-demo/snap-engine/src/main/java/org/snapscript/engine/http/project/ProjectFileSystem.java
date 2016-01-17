@@ -21,11 +21,6 @@ public class ProjectFileSystem {
    
    public void writeAsByteArray(String path, byte[] resource) throws Exception {
       File sourcePath = project.getSourcePath();
-      File tempPath = project.getTempPath();
-      
-      if(!tempPath.exists()) {
-         tempPath.mkdirs();
-      }
       String realPath = path.replace('/', File.separatorChar);
       File sourceFile = new File(sourcePath, realPath);
       FileOutputStream outputStream = new FileOutputStream(sourceFile);
@@ -41,22 +36,14 @@ public class ProjectFileSystem {
    public byte[] readAsByteArray(String path) throws Exception {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       File sourcePath = project.getSourcePath();
-      File tempPath = project.getTempPath();
       File rootPath = project.getProjectPath();
-      
-      if(!tempPath.exists()) {
-         tempPath.mkdirs();
-      }
       String realPath = path.replace('/', File.separatorChar);
       File sourceFile = new File(sourcePath, realPath);
-      File tempFile = new File(tempPath, realPath);
       File projectFile = new File(rootPath, realPath);
       InputStream inputStream = null;
       
       if(sourceFile.exists()) {
          inputStream = new FileInputStream(sourceFile);
-      } else if(tempFile.exists()) {
-         inputStream = new FileInputStream(tempFile);
       } else if(projectFile.exists()) {
          inputStream = new FileInputStream(projectFile);
       } else {

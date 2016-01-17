@@ -21,3 +21,4 @@ var thread = new Thread(task);
 
 run(thread);
 start(thread);
+thread.join();
