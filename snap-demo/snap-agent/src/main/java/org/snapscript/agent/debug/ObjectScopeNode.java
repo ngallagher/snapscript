@@ -1,6 +1,7 @@
 package org.snapscript.agent.debug;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,8 +76,9 @@ public class ObjectScopeNode implements ScopeNode {
          for(int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             String name = field.getName();
+            int modifiers = field.getModifiers();
             
-            if(!accessors.containsKey(name)) {
+            if(!Modifier.isStatic(modifiers) || !Modifier.isFinal(modifiers)) {
                field.setAccessible(true);
                accessors.put(name, field);
             }

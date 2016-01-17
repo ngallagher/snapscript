@@ -1,4 +1,4 @@
-<project>
+<project default="build">
 
   <target name="build" description="Build a JAR with everything">
     <delete dir="output" />
@@ -12,22 +12,22 @@
       </fileset>
     </copy>
     <copy todir="output">
-      <fileset dir="../snap-common/target/classes">
+            <fileset dir="../../snap-common/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-      <fileset dir="../snap-compile/target/classes">
+            <fileset dir="../../snap-compile/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-      <fileset dir="../snap-core/target/classes">
+            <fileset dir="../../snap-core/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-      <fileset dir="../snap-parse/target/classes">
+            <fileset dir="../../snap-parse/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
