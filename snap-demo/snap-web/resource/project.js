@@ -134,6 +134,17 @@ function stopScript() {
    socket.send("STOP");
 }
 
+function browseScriptVariables(variables) {
+   var threadScope = focusedThread();
+   if(threadScope != null) {
+      var message = JSON.stringify({
+         thread: threadScope.thread,
+         expand: variables
+      });
+      socket.send("BROWSE:" + message);
+   }
+}
+
 function createLayout() {
 
    // $('#topLayer').spin({ lines: 10, length: 30, width: 20, radius: 40 });
@@ -337,7 +348,7 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               console.log(record.fname);
+               toggleExpandVariable(record.name);
             }
          }
       }

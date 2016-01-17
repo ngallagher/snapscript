@@ -33,14 +33,16 @@ public class CommandController implements FrameListener {
                listener.onExecute((ExecuteCommand)command);
             } else if(command instanceof BreakpointsCommand) {
                listener.onBreakpoints((BreakpointsCommand)command);
-            }else if(command instanceof DeleteCommand) {
+            } else if(command instanceof DeleteCommand) {
                listener.onDelete((DeleteCommand)command);
-            }else if(command instanceof SaveCommand) {
+            } else if(command instanceof SaveCommand) {
                listener.onSave((SaveCommand)command);
-            }else if(command instanceof StepCommand) {
+            } else if(command instanceof StepCommand) {
                listener.onStep((StepCommand)command);
-            }else if(command instanceof StopCommand) {
+            } else if(command instanceof StopCommand) {
                listener.onStop((StopCommand)command);
+            } else if(command instanceof BrowseCommand) {
+               listener.onBrowse((BrowseCommand)command);
             }
          } else if(type == FrameType.PONG){
             listener.onPing();

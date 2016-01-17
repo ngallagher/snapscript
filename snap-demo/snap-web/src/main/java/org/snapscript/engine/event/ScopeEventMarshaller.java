@@ -53,7 +53,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       String resource = event.getResource();
       int line = event.getLine();
       int depth = event.getDepth();
-      int key = event.getKey();
+      int key = event.getCount();
       int count = variables.size();
       
       output.writeUTF(process);

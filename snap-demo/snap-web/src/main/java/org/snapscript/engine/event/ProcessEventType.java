@@ -12,7 +12,8 @@ public enum ProcessEventType {
    SCOPE(ScopeEventMarshaller.class, ScopeEvent.class, 9),
    BREAKPOINTS(BreakpointsEventMarshaller.class, BreakpointsEvent.class, 10),
    STEP(StepEventMarshaller.class, StepEvent.class, 11),
-   START(StartEventMarshaller.class, StartEvent.class, 12);
+   START(StartEventMarshaller.class, StartEvent.class, 12),
+   BROWSE(BrowseEventMarshaller.class, BrowseEvent.class, 13);
    
    public final Class<? extends ProcessEventMarshaller> marshaller;
    public final Class<? extends ProcessEvent> event;

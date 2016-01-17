@@ -56,16 +56,19 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       client.sendSyntaxError(resource, line);
    }
    
+   @Override
    public void onStart(ProcessEventChannel channel, StartEvent event) throws Exception {
       String resource = event.getResource();
       String process = event.getProcess();
       client.sendStart(process, resource);
    }
-
+   
+   @Override
    public void onExit(ProcessEventChannel channel, ExitEvent event) throws Exception {              
       client.sendProcessExit();
    }
    
+   @Override
    public void onClose(ProcessEventChannel channel) throws Exception {             
       client.sendProcessTerminate();
    }

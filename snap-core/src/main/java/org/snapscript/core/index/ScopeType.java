@@ -3,7 +3,6 @@ package org.snapscript.core.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;

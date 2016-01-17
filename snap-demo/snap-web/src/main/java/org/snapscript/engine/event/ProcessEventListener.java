@@ -11,6 +11,7 @@ public interface ProcessEventListener {
    void onBreakpoints(ProcessEventChannel channel, BreakpointsEvent event) throws Exception;
    void onStart(ProcessEventChannel channel, StartEvent event) throws Exception;
    void onStep(ProcessEventChannel channel, StepEvent event) throws Exception;
+   void onBrowse(ProcessEventChannel channel, BrowseEvent event) throws Exception;
    void onPing(ProcessEventChannel channel, PingEvent event) throws Exception;
    void onPong(ProcessEventChannel channel, PongEvent event) throws Exception;
    void onClose(ProcessEventChannel channel) throws Exception;

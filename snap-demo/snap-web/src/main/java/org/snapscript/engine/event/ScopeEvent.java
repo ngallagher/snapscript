@@ -3,6 +3,9 @@ package org.snapscript.engine.event;
 import java.util.Map;
 
 public class ScopeEvent implements ProcessEvent {
+   
+   public static final String SUSPENDED = "SUSPENDED";
+   public static final String RUNNING = "RUNNING";
 
    private Map<String, String> variables;
    private String instruction;
@@ -12,9 +15,9 @@ public class ScopeEvent implements ProcessEvent {
    private String thread;
    private int line;
    private int depth;
-   private int key;
+   private int count;
    
-   public ScopeEvent(String process, String thread, String instruction, String status, String resource, int line, int depth, int key, Map<String, String> variables) {
+   public ScopeEvent(String process, String thread, String instruction, String status, String resource, int line, int depth, int count, Map<String, String> variables) {
       this.variables = variables;
       this.instruction = instruction;
       this.resource = resource;
@@ -23,7 +26,7 @@ public class ScopeEvent implements ProcessEvent {
       this.status = status;
       this.depth = depth;
       this.line = line;
-      this.key = key;
+      this.count = count;
    }
    
    @Override
@@ -47,10 +50,6 @@ public class ScopeEvent implements ProcessEvent {
       return status;
    }
 
-   public void setStatus(String status) {
-      this.status = status;
-   }
-
    public String getThread() {
       return thread;
    }
@@ -63,7 +62,7 @@ public class ScopeEvent implements ProcessEvent {
       return line;
    }
    
-   public int getKey() {
-      return key;
+   public int getCount() {
+      return count;
    }
 }

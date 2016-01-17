@@ -3,6 +3,7 @@ package org.snapscript.engine.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Set;
 
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.engine.agent.ProcessEngine;
@@ -97,6 +98,14 @@ public class CommandListener {
       try {
          engine.breakpoints(command, name);
       } catch(Exception e){
+         e.printStackTrace();
+      }
+   }
+   
+   public void onBrowse(BrowseCommand command) {
+      try {
+         engine.browse(command, name);
+      } catch(Exception e) {
          e.printStackTrace();
       }
    }

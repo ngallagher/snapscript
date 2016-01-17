@@ -1,9 +1,11 @@
 package org.snapscript.engine.agent;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.engine.command.BreakpointsCommand;
+import org.snapscript.engine.command.BrowseCommand;
 import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.command.StepCommand;
 import org.snapscript.engine.event.ProcessEventListener;
@@ -44,6 +46,17 @@ public class ProcessEngine {
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
          return connection.suspend(breakpoints);
+      }
+      return true;
+   }
+   
+   public boolean browse(BrowseCommand command, String client) {
+      ProcessAgentConnection connection = connections.get(client);
+      
+      if(connection != null) {
+         Set<String> expand = command.getExpand();
+         String thread = command.getThread();
+         return connection.browse(thread, expand);
       }
       return true;
    }

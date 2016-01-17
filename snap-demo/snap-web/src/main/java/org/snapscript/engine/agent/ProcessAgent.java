@@ -3,6 +3,7 @@ package org.snapscript.engine.agent;
 import java.io.PrintStream;
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 
@@ -22,9 +23,10 @@ import org.snapscript.engine.ScriptProfiler.ProfileResult;
 import org.snapscript.engine.ScriptResourceReader;
 import org.snapscript.engine.agent.debug.BreakpointMatcher;
 import org.snapscript.engine.agent.debug.ResumeType;
+import org.snapscript.engine.agent.debug.SuspendController;
 import org.snapscript.engine.agent.debug.SuspendInterceptor;
-import org.snapscript.engine.agent.debug.SuspendLatch;
 import org.snapscript.engine.event.BreakpointsEvent;
+import org.snapscript.engine.event.BrowseEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -55,13 +57,13 @@ public class ProcessAgent {
    "System.err.println(privateVariableInScriptAgent.x);\n"+
    "System.err.println(InternalTypeForScriptAgent.ARR);";
 
+   private final SuspendController controller;
    private final ScriptResourceReader reader;
    private final ScriptAgentContext context;
    private final ResourceCompiler compiler;
    private final ScriptProfiler profiler;
    private final BreakpointMatcher matcher;
    private final RemoteReader remoteReader;
-   private final SuspendLatch latch;
    private final String process;
    private final int port;
 
@@ -70,9 +72,9 @@ public class ProcessAgent {
       this.reader = new ScriptResourceReader(remoteReader);
       this.context = new ScriptAgentContext(reader);
       this.compiler = new ResourceCompiler(context);
+      this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
       this.profiler = new ScriptProfiler();
-      this.latch = new SuspendLatch();
       this.process = process;
       this.port = port;
    }
@@ -101,7 +103,7 @@ public class ProcessAgent {
          ClientListener listener = new ClientListener(process);
          SocketEventClient client = new SocketEventClient(listener);
          ProcessEventChannel channel = client.connect(port);
-         SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, latch, process);
+         SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, controller, process);
          
          analyzer.register(profiler);
          analyzer.register(interceptor);
@@ -144,14 +146,22 @@ public class ProcessAgent {
          int type = event.getType();
          
          if(type == StepEvent.RUN) {
-            latch.resume(ResumeType.RUN, thread);
+            controller.resume(ResumeType.RUN, thread);
          } else if(type == StepEvent.STEP_IN) {
-            latch.resume(ResumeType.STEP_IN, thread);
+            controller.resume(ResumeType.STEP_IN, thread);
          } else if(type == StepEvent.STEP_OUT) {
-            latch.resume(ResumeType.STEP_OUT, thread);
+            controller.resume(ResumeType.STEP_OUT, thread);
          } else if(type == StepEvent.STEP_OVER) {
-            latch.resume(ResumeType.STEP_OVER, thread);
+            controller.resume(ResumeType.STEP_OVER, thread);
          }
+      }
+      
+      @Override
+      public void onBrowse(ProcessEventChannel channel, BrowseEvent event) throws Exception {
+         String thread = event.getThread();
+         Set<String> expand = event.getExpand();
+         
+         controller.browse(expand, thread);
       }
 
       @Override

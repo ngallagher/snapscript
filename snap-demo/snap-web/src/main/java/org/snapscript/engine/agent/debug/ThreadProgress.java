@@ -3,13 +3,13 @@ package org.snapscript.engine.agent.debug;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ThreadStep {
+public class ThreadProgress {
 
    private final AtomicReference<ResumeType> resume;
    private final AtomicInteger match;
    private final AtomicInteger depth;
    
-   public ThreadStep() {
+   public ThreadProgress() {
       this.resume = new AtomicReference<ResumeType>();
       this.match = new AtomicInteger();
       this.depth = new AtomicInteger();

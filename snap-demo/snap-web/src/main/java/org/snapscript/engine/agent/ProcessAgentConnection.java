@@ -1,8 +1,10 @@
 package org.snapscript.engine.agent;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.snapscript.engine.event.BreakpointsEvent;
+import org.snapscript.engine.event.BrowseEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.PingEvent;
 import org.snapscript.engine.event.ProcessEventChannel;
@@ -45,6 +47,21 @@ public class ProcessAgentConnection {
             ex.printStackTrace();
          }
          throw new IllegalStateException("Could not set breakpoints '" + breakpoints + "' for '" + process + "'", e);
+      }
+   }
+   
+   public boolean browse(String thread, Set<String> expand) {
+      try {
+         BrowseEvent event = new BrowseEvent(process, thread, expand);
+         return channel.send(event);
+      } catch (Exception e) {
+         e.printStackTrace();
+         try {
+            channel.close();
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+         throw new IllegalStateException("Could not browse '" + thread + "' for '" + process + "'", e);
       }
    }
    

@@ -1,6 +1,7 @@
 package org.snapscript.engine.command;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.simpleframework.http.socket.FrameChannel;
 
@@ -48,6 +49,12 @@ public class CommandClient {
    
    public void sendProcessExit() throws Exception {
       ExitCommand command = new ExitCommand();
+      String message = writer.write(command);
+      channel.send(message);
+   }
+   
+   public void sendBrowse(String thread, Set<String> expand) throws Exception {
+      TerminateCommand command = new TerminateCommand();
       String message = writer.write(command);
       channel.send(message);
    }

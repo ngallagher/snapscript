@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.engine.event.BreakpointsEvent;
+import org.snapscript.engine.event.BrowseEvent;
 import org.snapscript.engine.event.ExecuteEvent;
 import org.snapscript.engine.event.ExitEvent;
 import org.snapscript.engine.event.PingEvent;
@@ -172,6 +173,8 @@ public class SocketEventServer implements ProcessEventChannel {
                   listener.onStart(this, (StartEvent)event);
                } else if(event instanceof StepEvent) {
                   listener.onStep(this, (StepEvent)event);
+               } else if(event instanceof BrowseEvent) {
+                  listener.onBrowse(this, (BrowseEvent)event);
                }
             }
          }catch(Exception e) {
