@@ -22,6 +22,9 @@ function startThreads(socket, type, text) {
 function clearThreads(socket, type, text) {
    suspendedThreads = {};
    currentFocusThread = null;
+   clearEditorHighlights(); // this should be done in editor.js, i.e createRoute("EXIT" ... )
+   w2ui['variables'].records = [];
+   w2ui['variables'].refresh();
    w2ui['threads'].records = [];
    w2ui['threads'].refresh();
    $("#status").html("");
