@@ -51,7 +51,7 @@ public class ThreadProgress {
          if(type == ResumeType.RUN) {
             return false;
          } else if(type == ResumeType.STEP_IN) {
-            return actual >= require;
+            return true; // always step in
          } else if(type == ResumeType.STEP_OUT) {
             return actual <= require;
          } else if(type == ResumeType.STEP_OVER) {
