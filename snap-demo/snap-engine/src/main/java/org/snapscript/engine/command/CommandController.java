@@ -8,7 +8,7 @@ import org.simpleframework.http.socket.FrameListener;
 import org.simpleframework.http.socket.FrameType;
 import org.simpleframework.http.socket.Reason;
 import org.simpleframework.http.socket.Session;
-import org.snapscript.engine.agent.ProcessEngine;
+import org.snapscript.engine.ProcessEngine;
 
 public class CommandController implements FrameListener {
 

@@ -6,8 +6,8 @@ import java.io.OutputStreamWriter;
 import java.util.Set;
 
 import org.simpleframework.http.socket.FrameChannel;
-import org.snapscript.engine.agent.ProcessEngine;
-import org.snapscript.engine.project.ProjectScriptValidator;
+import org.snapscript.engine.ProcessEngine;
+import org.snapscript.engine.http.project.ProjectScriptValidator;
 
 public class CommandListener {
    

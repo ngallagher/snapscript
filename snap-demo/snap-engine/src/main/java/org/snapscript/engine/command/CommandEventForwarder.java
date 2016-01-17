@@ -2,14 +2,14 @@ package org.snapscript.engine.command;
 
 import java.util.Map;
 
-import org.snapscript.engine.event.ExitEvent;
-import org.snapscript.engine.event.ProcessEventAdapter;
-import org.snapscript.engine.event.ProcessEventChannel;
-import org.snapscript.engine.event.ScopeEvent;
-import org.snapscript.engine.event.StartEvent;
-import org.snapscript.engine.event.SyntaxErrorEvent;
-import org.snapscript.engine.event.WriteErrorEvent;
-import org.snapscript.engine.event.WriteOutputEvent;
+import org.snapscript.agent.event.ExitEvent;
+import org.snapscript.agent.event.ProcessEventAdapter;
+import org.snapscript.agent.event.ProcessEventChannel;
+import org.snapscript.agent.event.ScopeEvent;
+import org.snapscript.agent.event.StartEvent;
+import org.snapscript.agent.event.SyntaxErrorEvent;
+import org.snapscript.agent.event.WriteErrorEvent;
+import org.snapscript.agent.event.WriteOutputEvent;
 
 public class CommandEventForwarder extends ProcessEventAdapter {
    
