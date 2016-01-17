@@ -13,3 +13,25 @@
     bottom: 8px;
     left: 8px;
 }
+.variableNode {	
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+	background-image: url('/img/toolbar/green_dot.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}	
+
+.variableLeaf {  
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+	background-image: url('/img/toolbar/grey_dot.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}
+
+.variableData {  
+    font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+}

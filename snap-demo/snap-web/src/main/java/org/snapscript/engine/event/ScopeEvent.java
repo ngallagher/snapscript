@@ -7,26 +7,26 @@ public class ScopeEvent implements ProcessEvent {
    public static final String SUSPENDED = "SUSPENDED";
    public static final String RUNNING = "RUNNING";
 
-   private Map<String, String> variables;
+   private Map<String, Map<String, String>> variables;
    private String instruction;
    private String status;
    private String process;
    private String resource;
    private String thread;
+   private int sequence;
    private int line;
    private int depth;
-   private int count;
    
-   public ScopeEvent(String process, String thread, String instruction, String status, String resource, int line, int depth, int count, Map<String, String> variables) {
+   public ScopeEvent(String process, String thread, String instruction, String status, String resource, int line, int depth, int sequence, Map<String, Map<String, String>> variables) {
       this.variables = variables;
       this.instruction = instruction;
+      this.sequence = sequence;
       this.resource = resource;
       this.process = process;
       this.thread = thread;
       this.status = status;
       this.depth = depth;
       this.line = line;
-      this.count = count;
    }
    
    @Override
@@ -34,7 +34,7 @@ public class ScopeEvent implements ProcessEvent {
       return process;
    }
 
-   public Map<String, String> getVariables() {
+   public Map<String, Map<String, String>> getVariables() {
       return variables;
    }
 
@@ -62,7 +62,7 @@ public class ScopeEvent implements ProcessEvent {
       return line;
    }
    
-   public int getCount() {
-      return count;
+   public int getSequence() {
+      return sequence;
    }
 }

@@ -2,7 +2,6 @@ package org.snapscript.engine.agent.debug;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.snapscript.core.Scope;
@@ -15,10 +14,15 @@ public class ScopeNodeTree implements ScopeNode {
    private final List<ScopeNode> nodes;
    private final Scope scope;
    
-   public ScopeNodeTree(Map<String, String> variables, Scope scope) {
-      this.builder = new ScopeNodeBuilder(variables);
+   public ScopeNodeTree(ScopeNodeBuilder builder, Scope scope) {
       this.nodes = new ArrayList<ScopeNode>();
+      this.builder = builder;
       this.scope = scope;
+   }
+   
+   @Override
+   public int getDepth() {
+      return 0;
    }
    
    @Override
@@ -41,7 +45,7 @@ public class ScopeNodeTree implements ScopeNode {
             for(String name : names) {
                Value value = state.getValue(name);
                Object object = value.getValue();
-               ScopeNode node = builder.createNode(name, name, object);
+               ScopeNode node = builder.createNode(name, name, object, 0);
                
                if(node != null) {
                   nodes.add(node);

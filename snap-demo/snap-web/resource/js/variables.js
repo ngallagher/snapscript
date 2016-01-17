@@ -35,18 +35,33 @@ function showVariables() {
    
    for (var variableName in threadVariables) {
       if (threadVariables.hasOwnProperty(variableName)) {
-         sortedNames.push(variableName);
+         sortedNames.push(variableName); // add a '.' to ensure dot notation sorts e.g x.y.z
       }
    }
    sortedNames.sort();
    
    for(var i = 0; i < sortedNames.length; i++) {
       var variableName = sortedNames[i];
+      var variable = threadVariables[variableName];
+      var displayStyle = "variableLeaf";
+      
+      if(variable.expandable == "true") {
+         displayStyle = "variableNode";
+      }
+      var displayValue = "<div class='variableData'>"+variable.value+"</div>";
+      var displayName = "<div style='padding-left: " + 
+         (variable.depth * 20)+ 
+         "px;'><div class='"+displayStyle+
+         "'>"+variable.name+"</div></div>";
       
       variableRecords.push({
          recid: variableIndex++,
-         name: variableName,
-         value: threadVariables[variableName]
+         path: variableName,
+         name: displayName,
+         value: variable.value,
+         type: variable.type,
+         expandable: variable.expandable
+         //depth: variable.depth // seems to cause issues?
       });
    }
    w2ui['variables'].records = variableRecords;

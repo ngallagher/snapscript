@@ -1,7 +1,14 @@
 package org.snapscript.engine.agent.debug;
 
+import static org.snapscript.engine.agent.debug.ScopeNode.DEPTH_KEY;
+import static org.snapscript.engine.agent.debug.ScopeNode.EXPANDABLE_KEY;
+import static org.snapscript.engine.agent.debug.ScopeNode.NAME_KEY;
+import static org.snapscript.engine.agent.debug.ScopeNode.TYPE_KEY;
+import static org.snapscript.engine.agent.debug.ScopeNode.VALUE_KEY;
+
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -13,6 +20,7 @@ import org.snapscript.core.InstanceScope;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ModelScope;
+import org.snapscript.core.Property;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
@@ -20,7 +28,7 @@ import org.snapscript.core.Type;
 import org.snapscript.core.index.ScopeType;
 
 public class ScopeNodeTraverserTest extends TestCase {
-
+   
    private static class ExampleClass1 {
       private final ExampleClass2 example;
       private final String text;
@@ -90,13 +98,23 @@ public class ScopeNodeTraverserTest extends TestCase {
       expand.add("example1.example.*");
       expand.add("example1.example.list.*");
       
-      Map<String, String> variables = traverser.expand(expand);
+      Map<String, Map<String, String>> variables = traverser.expand(expand);
       Set<String> keys = variables.keySet();
       SortedSet<String> sorted = new TreeSet<String>(keys);
       
       for(String key : sorted) {
-         String value = variables.get(key);
-         System.err.println("key=["+key+"] value=["+value+"]");
+         Map<String, String> value = variables.get(key);
+         System.err.println("key=["+key+"] value=["+
+               value.get(VALUE_KEY)+
+               "] type=["+
+               value.get(TYPE_KEY)+
+               "] expandable=["+
+               value.get(EXPANDABLE_KEY)+
+               "] name=[" +
+               value.get(NAME_KEY)+
+               "] depth=[" +
+               value.get(DEPTH_KEY)+
+               "]");
       }
       
    }
@@ -120,12 +138,15 @@ public class ScopeNodeTraverserTest extends TestCase {
       Scope scope = new ModelScope(model, null);
       Type type = new ScopeType(name, null);
       InstanceScope instance = new InstanceScope(scope, type);
+      List<Property> properties = type.getProperties();
       State state = instance.getState();
       Set<String> keys = values.keySet();
       
       for(String key : keys) {
          Object value = values.get(key);
+         Property property = new Property(key, null, null);
          Reference reference = new Reference(value);
+         properties.add(property);
          state.addVariable(key, reference);
       }
       return instance;

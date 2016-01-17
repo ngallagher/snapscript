@@ -31,14 +31,14 @@ public class ScopeEventBuilder {
    }
    
    public ScopeEvent suspendEvent() {
-      Map<String, String> variables = extractor.build();
+      Map<String, Map<String, String>> variables = extractor.build();
       String name = instruction.getSimpleName();
       
       return new ScopeEvent(process, thread, name, SUSPENDED, resource, line, depth, count, variables);
    }
    
    public ScopeEvent resumeEvent() {
-      Map<String, String> variables = Collections.emptyMap();
+      Map<String, Map<String, String>> variables = Collections.emptyMap();
       String name = instruction.getSimpleName();
       
       return new ScopeEvent(process, thread, name, RUNNING, resource, line, depth, count, variables);

@@ -17,7 +17,7 @@ public class CommandClient {
       this.project = project;
    } 
    
-   public void sendScope(String thread, String instruction, String status, String resource, int line, int depth, Map<String, String> variables) throws Exception {
+   public void sendScope(String thread, String instruction, String status, String resource, int line, int depth, Map<String, Map<String, String>> variables) throws Exception {
       ScopeCommand command = new ScopeCommand(thread, instruction, status, resource, line, depth, variables);
       String message = writer.write(command);
       channel.send(message);

@@ -21,7 +21,7 @@ public class CommandEventForwarder extends ProcessEventAdapter {
    
    @Override
    public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
-      Map<String, String> variables = event.getVariables();
+      Map<String, Map<String, String>> variables = event.getVariables();
       String thread = event.getThread();
       String instruction = event.getInstruction();
       String status = event.getStatus();

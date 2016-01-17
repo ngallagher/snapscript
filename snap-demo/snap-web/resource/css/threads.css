@@ -19,3 +19,21 @@
   background:rgba(255,215,0,0.3);
   z-index:20
 }
+	
+.threadSuspended {
+	font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+	background-image: url('/img/toolbar/suspend_co.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}
+
+.threadRunning {
+	font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;  	
+	background-image: url('/img/toolbar/resume_co.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}

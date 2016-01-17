@@ -14,13 +14,20 @@ public class ObjectScopeNode implements ScopeNode {
    private final Object object;
    private final String path;
    private final String name;
+   private final int depth;
    
-   public ObjectScopeNode(ScopeNodeBuilder builder, Object object, String path, String name) {
+   public ObjectScopeNode(ScopeNodeBuilder builder, Object object, String path, String name, int depth) {
       this.nodes = new ArrayList<ScopeNode>();
       this.builder = builder;
       this.object = object;
+      this.depth = depth;
       this.path = path;
       this.name = name;
+   }
+   
+   @Override
+   public int getDepth() {
+      return depth;
    }
    
    @Override
@@ -45,7 +52,7 @@ public class ObjectScopeNode implements ScopeNode {
                try {
                   Field field = fields.get(name);
                   Object value = field.get(object);
-                  ScopeNode node = builder.createNode(path + "." + name, name, value);
+                  ScopeNode node = builder.createNode(path + "." + name, name, value, depth);
                   
                   if(node != null) {
                      nodes.add(node);

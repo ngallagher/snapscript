@@ -38,40 +38,58 @@
 </head>
 <style>
 .runScript {
-    content: url('/img/toolbar/nav_go.gif');
-    padding: 4px;
+	background-image: url('/img/toolbar/nav_go.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;
 }
 .resumeScript {
-    content: url('/img/toolbar/resume_co.gif');
-    padding: 4px;
+	background-image: url('/img/toolbar/resume_co.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;
 }
 .stepInScript {
-    content: url('/img/toolbar/stepinto_co.gif');
-    padding: 4px;   
+	background-image: url('/img/toolbar/stepinto_co.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;
 }
 .stepOutScript {
-    content: url('/img/toolbar/stepreturn_co.gif');
-    padding: 4px;    
+	background-image: url('/img/toolbar/stepreturn_co.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;
 }
 .stepOverScript {
-    content: url('/img/toolbar/stepover_co.gif');
-    padding: 4px;    
+	background-image: url('/img/toolbar/stepover_co.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;   
 }
 .stopScript {
-    content: url('/img/toolbar/rem_co.gif');
-    padding: 4px;   
+	background-image: url('/img/toolbar/rem_co.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px; 
 }
 .saveScript {
-    content: url('/img/toolbar/save_edit.gif');
-    padding: 4px;  
+	background-image: url('/img/toolbar/save_edit.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px; 
 }
 .deleteScript {
-    content: url('/img/toolbar/trash.gif');
-    padding: 4px;   
+	background-image: url('/img/toolbar/trash.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;
 }
 .newScript {
-    content: url('/img/toolbar/create.gif');
-    padding: 4px;   
+	background-image: url('/img/toolbar/new_con.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px;  
 }
 .titleTop {
 	padding: 5px;

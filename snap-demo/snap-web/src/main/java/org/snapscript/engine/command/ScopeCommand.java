@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class ScopeCommand implements Command {
    
-   private Map<String, String> variables;
+   private Map<String, Map<String, String>> variables;
    private String instruction;
    private String resource;
    private String status;
@@ -16,7 +16,7 @@ public class ScopeCommand implements Command {
       super();
    }
 
-   public ScopeCommand(String thread, String instruction, String status, String resource, int line, int depth, Map<String, String> variables) {
+   public ScopeCommand(String thread, String instruction, String status, String resource, int line, int depth, Map<String, Map<String, String>> variables) {
       this.variables = variables;
       this.instruction = instruction;
       this.thread = thread;
@@ -26,11 +26,11 @@ public class ScopeCommand implements Command {
       this.line = line;
    }
 
-   public Map<String, String> getVariables() {
+   public Map<String, Map<String, String>> getVariables() {
       return variables;
    }
 
-   public void setVariables(Map<String, String> variables) {
+   public void setVariables(Map<String, Map<String, String>> variables) {
       this.variables = variables;
    }
 

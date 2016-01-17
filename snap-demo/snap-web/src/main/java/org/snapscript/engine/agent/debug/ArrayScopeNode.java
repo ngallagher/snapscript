@@ -9,12 +9,19 @@ public class ArrayScopeNode implements ScopeNode {
    private final Object object;
    private final String name;
    private final String path;
+   private final int depth;
    
-   public ArrayScopeNode(ScopeNodeBuilder builder, Object object, String path, String name) {
+   public ArrayScopeNode(ScopeNodeBuilder builder, Object object, String path, String name, int depth) {
       this.builder = builder;
       this.object = object;
+      this.depth = depth;
       this.path = path;
       this.name = name;
+   }
+   
+   @Override
+   public int getDepth() {
+      return depth;
    }
    
    @Override

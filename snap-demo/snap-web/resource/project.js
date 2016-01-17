@@ -329,14 +329,12 @@ function createLayout() {
          field : 'name',
          caption : 'Name',
          size : '30%',
-         sortable : true,
-         searchable : true
+         sortable : false
       }, {
          field : 'value',
          caption : 'Value',
          size : '40%',
-         sortable : true,
-         searchable : true
+         sortable : false
       }, {
          field : 'type',
          caption : 'Type',
@@ -348,7 +346,7 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               toggleExpandVariable(record.name);
+               toggleExpandVariable(record.path);
             }
          }
       }
@@ -386,7 +384,7 @@ function createLayout() {
    $().w2grid({
       name : 'threads',
       columns : [ {
-         field : 'thread',
+         field : 'name',
          caption : 'Thread',
          size : '20%',
          sortable : true,

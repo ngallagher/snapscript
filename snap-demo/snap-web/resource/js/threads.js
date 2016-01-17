@@ -84,12 +84,19 @@ function showThreads() {
    for (var threadName in suspendedThreads) {
       if (suspendedThreads.hasOwnProperty(threadName)) {
          var threadScope = suspendedThreads[threadName];
-
+         var displayStyle = 'threadSuspended';
+         
          if(editorData.resource == threadScope.resource && threadScope.status == 'SUSPENDED') {
             createEditorHighlight(threadScope.line, "threadHighlight");
          }
+         if(threadScope.status != 'SUSPENDED') {
+            displayStyle = 'threadRunning';
+         }
+         var displayName = "<div class='"+displayStyle+"'>"+threadName+"</div>";
+         
          threadRecords.push({
             recid: threadIndex++,
+            name: displayName,
             thread: threadName,
             status: threadScope.status,
             depth: threadScope.depth,

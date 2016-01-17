@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> {
 
@@ -18,7 +19,7 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
-      Map<String, String> variables = new HashMap<String, String>();
+      Map<String, Map<String, String>> variables = new TreeMap<String, Map<String, String>>();
       ByteArrayInputStream buffer = new ByteArrayInputStream(array, offset, length);
       DataInputStream input = new DataInputStream(buffer);
       String process = input.readUTF();
@@ -28,32 +29,39 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       String resource = input.readUTF();
       int line = input.readInt();
       int depth = input.readInt();
-      int key = input.readInt();
+      int sequence = input.readInt();
       int count = input.readInt();
       
       for(int i = 0; i < count; i++) {
+         Map<String, String> criteria = new HashMap<String, String>();
          String name = input.readUTF();
-         String value = input.readUTF();
+         int size = input.readInt();
          
-         variables.put(name, value);
+         for(int j = 0; j < size; j++) {
+            String key = input.readUTF();
+            String value = input.readUTF();
+            
+            criteria.put(key, value);
+         }
+         variables.put(name, criteria);
       }
-      return new ScopeEvent(process, thread, instruction, status, resource, line, depth, key, variables);
+      return new ScopeEvent(process, thread, instruction, status, resource, line, depth, sequence, variables);
    }
 
    @Override
    public MessageEnvelope toMessage(ScopeEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
-      Map<String, String> variables = event.getVariables();
+      Map<String, Map<String, String>> variables = event.getVariables();
       Set<String> names = variables.keySet();
       String process = event.getProcess();
       String thread = event.getThread();
       String instruction = event.getInstruction();
       String status = event.getStatus();
       String resource = event.getResource();
+      int sequence = event.getSequence();
       int line = event.getLine();
       int depth = event.getDepth();
-      int key = event.getCount();
       int count = variables.size();
       
       output.writeUTF(process);
@@ -63,14 +71,23 @@ public class ScopeEventMarshaller implements ProcessEventMarshaller<ScopeEvent> 
       output.writeUTF(resource);
       output.writeInt(line);
       output.writeInt(depth);
-      output.writeInt(key);
+      output.writeInt(sequence);
       output.writeInt(count);
       
       for(String name : names) {
-         String value = variables.get(name);
+         Map<String, String> criteria = variables.get(name);
+         Set<String> keys = criteria.keySet();
+         int size = criteria.size();
          
          output.writeUTF(name);
-         output.writeUTF(value);
+         output.writeInt(size);
+         
+         for(String key : keys) {
+            String value = criteria.get(key);
+            
+            output.writeUTF(key);
+            output.writeUTF(value);
+         }
       }
       output.flush();
       

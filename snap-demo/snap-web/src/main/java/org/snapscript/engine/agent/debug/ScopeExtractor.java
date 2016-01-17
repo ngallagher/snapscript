@@ -16,7 +16,7 @@ public class ScopeExtractor implements ScopeBrowser {
       this.paths = new CopyOnWriteArraySet<String>();
    }
    
-   public Map<String, String> build() {
+   public Map<String, Map<String, String>> build() {
       return traverser.expand(paths);
    }
    

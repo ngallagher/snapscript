@@ -15,9 +15,10 @@ public class ScopeNodeTraverser {
       this.scope = scope;
    }
    
-   public Map<String, String> expand(Set<String> expand) {
-      Map<String, String> variables = new HashMap<String, String>();
-      ScopeNode node = new ScopeNodeTree(variables, scope);
+   public Map<String, Map<String, String>> expand(Set<String> expand) {
+      Map<String, Map<String, String>> variables = new HashMap<String, Map<String, String>>();
+      ScopeNodeBuilder builder = new ScopeNodeBuilder(variables);
+      ScopeNode node = new ScopeNodeTree(builder, scope);
       
       if(!expand.isEmpty()) {
          for(String path : expand) {
