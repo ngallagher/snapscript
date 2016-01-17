@@ -3,27 +3,36 @@ var threadVariables = {};
 function toggleExpandVariable(name) {
    var threadScope = focusedThread();
    var expandPath = name + ".*"; // this ensures they sort in sequence with '.' notation, e.g blah.foo.*
+   var removePrefix = name + ".";
    
    if(threadScope != null) {
-      var variables = threadVariables[threadScope.thread];
-      if(variables == null) {
-         variables = [];
-         threadVariables[threadScope.thread] = variables;
-      }
-      var contains = false;
+      var variablesPaths = threadVariables[threadScope.thread];
       
-      for(var i = 0; i< variables.length; i++) {
-         var value = variables[i];
-         if(variables == expandPath) {
-            contains = true;
-            variables.splice(i, 1); // remove variable
-            break;
+      if(variablesPaths == null) {
+         variablesPaths = [];
+         threadVariables[threadScope.thread] = variablesPaths;
+      }
+      var removePaths = [];
+      
+      for(var i = 0; i< variablesPaths.length; i++) {
+         var currentPath = variablesPaths[i];
+         
+         if(currentPath.startsWith(removePrefix)) {
+            removePaths.push(currentPath); // remove variable
          }
       }
-      if(!contains) {
-         variables.push(expandPath); // add variable
+      for(var i = 0; i< removePaths.length; i++) {
+         var removePath = removePaths[i];
+         var removeIndex = variablesPaths.indexOf(removePath);
+
+         if(removeIndex != -1) {
+            variablesPaths.splice(removeIndex, 1); // remove variable
+         }
       }
-      browseScriptVariables(variables);
+      if(removePaths.length == 0) {
+         variablesPaths.push(expandPath); // add variable
+      }
+      browseScriptVariables(variablesPaths);
    }
 }
 
