@@ -6,6 +6,7 @@ import static org.snapscript.agent.debug.ScopeNode.NAME_KEY;
 import static org.snapscript.agent.debug.ScopeNode.TYPE_KEY;
 import static org.snapscript.agent.debug.ScopeNode.VALUE_KEY;
 
+import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ProxyExtractor;
 
 public class ScopeNodeBuilder {
 
@@ -45,14 +47,19 @@ public class ScopeNodeBuilder {
    
    private final Map<String, Map<String, String>> variables;
    private final PrimitivePromoter promoter;
+   private final ProxyExtractor extractor;
    
    public ScopeNodeBuilder(Map<String, Map<String, String>> variables) {
       this.promoter = new PrimitivePromoter();
+      this.extractor = new ProxyExtractor();
       this.variables = variables;
    }
 
    public ScopeNode createNode(String path, String name, Object object, int depth) {
       if(object != null) {
+         if(object instanceof Proxy) {
+            object = extractor.extract(object);
+         }
          if(object instanceof InstanceScope) {
             InstanceScope instance = (InstanceScope)object;
             Type type = instance.getType();
