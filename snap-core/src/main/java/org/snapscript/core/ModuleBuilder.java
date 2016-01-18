@@ -28,6 +28,7 @@ public class ModuleBuilder {
       return module;
    }
    
+   @Bug("Bad name for method!!")
    public Module create(String name) {
       if(name != null) {
          int length = name.length();

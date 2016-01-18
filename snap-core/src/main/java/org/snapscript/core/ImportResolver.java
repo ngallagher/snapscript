@@ -14,8 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.snapscript.core.resource.ResourceReader;
-
 @Bug("This needs refactoring")
 public class ImportResolver {
    
@@ -33,14 +31,14 @@ public class ImportResolver {
    private final List<String> imports;
    private final LibraryLoader loader;
    
-   public ImportResolver(PackageLinker linker, ResourceReader reader) {
-      this(linker, reader, Arrays.asList(DEFAULTS));
+   public ImportResolver(PackageLinker linker, ResourceManager manager) {
+      this(linker, manager, Arrays.asList(DEFAULTS));
    }
    
-   public ImportResolver(PackageLinker linker, ResourceReader reader, List<String> imports) {
+   public ImportResolver(PackageLinker linker, ResourceManager manager, List<String> imports) {
       this.types = new LinkedHashMap<String, Class>();
       this.imports = new ArrayList<String>(imports);
-      this.loader = new LibraryLoader(linker, reader);
+      this.loader = new LibraryLoader(linker, manager);
    }
    
    public Package addImport(String name) {

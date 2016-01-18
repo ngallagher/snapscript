@@ -1,5 +1,6 @@
 package org.snapscript.core;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,6 +102,16 @@ public class ContextModule implements Module {
          throw new IllegalStateException(e);
       }
    }   
+   
+   @Override
+   public InputStream getResource(String path) {
+      try {
+         ResourceManager manager = context.getManager();
+         return manager.getInputStream(path);
+      } catch(Exception e){
+         throw new IllegalStateException(e);
+      }
+   }
 
    @Override
    public Scope getScope() {
@@ -116,4 +127,5 @@ public class ContextModule implements Module {
    public String toString() {
       return name;
    }
+
 }

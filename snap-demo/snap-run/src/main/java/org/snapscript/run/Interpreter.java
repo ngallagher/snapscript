@@ -4,13 +4,15 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.snapscript.compile.ClassPathContext;
 import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
+import org.snapscript.compile.StoreContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
+import org.snapscript.core.resource.ClassPathStore;
+import org.snapscript.core.resource.Store;
 
 public class Interpreter {
    
@@ -35,7 +37,8 @@ public class Interpreter {
       }catch(Exception e) {
          throw new IllegalStateException("Could not load script '" + script+ "'", e);
       }
-      Context context = new ClassPathContext();
+      Store store = new ClassPathStore();
+      Context context = new StoreContext(store);
       Compiler compiler = new StringCompiler(context);
       Model model = new MapModel(map);
       

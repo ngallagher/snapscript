@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
@@ -12,10 +13,10 @@ public class ScopeType implements Type {
    private final List<Property> properties;
    private final List<Function> functions;
    private final List<Type> types;
-   private final String module;
+   private final Module module;
    private final String name;
    
-   public ScopeType(String name, String module){
+   public ScopeType(Module module, String name){
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
@@ -35,7 +36,7 @@ public class ScopeType implements Type {
       return types;
    }
    
-   public String getModule(){
+   public Module getModule(){
       return module;
    }
    

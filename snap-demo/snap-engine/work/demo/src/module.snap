@@ -1,0 +1,7 @@
+class X{
+}
+System.err.println(X.class);
+var x=new X();
+var m = x.class;
+var y = m.getModule();
+System.err.println(y==null);

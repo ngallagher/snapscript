@@ -25,19 +25,18 @@ import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.StartEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.socket.SocketEventClient;
-import org.snapscript.agent.script.ScriptAgentContext;
-import org.snapscript.agent.script.ScriptProfiler;
-import org.snapscript.agent.script.ScriptResourceReader;
-import org.snapscript.agent.script.ScriptProfiler.ProfileResult;
+import org.snapscript.agent.profiler.ExecutionProfiler;
+import org.snapscript.agent.profiler.ExecutionProfiler.ProfileResult;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
+import org.snapscript.compile.StoreContext;
 import org.snapscript.core.Module;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
-import org.snapscript.core.resource.RemoteReader;
+import org.snapscript.core.resource.RemoteStore;
 
 public class ProcessAgent {
 
@@ -58,23 +57,23 @@ public class ProcessAgent {
    "System.err.println(InternalTypeForScriptAgent.ARR);";
 
    private final SuspendController controller;
-   private final ScriptResourceReader reader;
-   private final ScriptAgentContext context;
+   private final ProcessAgentStore store;
+   private final StoreContext context;
    private final ResourceCompiler compiler;
-   private final ScriptProfiler profiler;
+   private final ExecutionProfiler profiler;
    private final BreakpointMatcher matcher;
-   private final RemoteReader remoteReader;
+   private final RemoteStore remoteReader;
    private final String process;
    private final int port;
 
    public ProcessAgent(URI rootURI, String process, int port) {
-      this.remoteReader = new RemoteReader(rootURI);
-      this.reader = new ScriptResourceReader(remoteReader);
-      this.context = new ScriptAgentContext(reader);
+      this.remoteReader = new RemoteStore(rootURI);
+      this.store = new ProcessAgentStore(remoteReader);
+      this.context = new StoreContext(store);
       this.compiler = new ResourceCompiler(context);
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
-      this.profiler = new ScriptProfiler();
+      this.profiler = new ExecutionProfiler();
       this.process = process;
       this.port = port;
    }
@@ -129,7 +128,7 @@ public class ProcessAgent {
          String process = event.getProcess();
          String project = event.getProject();
          matcher.update(breakpoints);
-         reader.update(project); // XXX rubbish
+         store.update(project); // XXX rubbish
          ExecuteTask task = new ExecuteTask(channel, process, project, resource);
          task.start();
       }

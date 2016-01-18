@@ -43,10 +43,12 @@ public class InvocationBinder {
    
    private class TypeHandler implements InvocationDispatcher {
       
+      private final ObjectHandler handler;
       private final Scope scope;      
       private final Type type;
       
       public TypeHandler(Scope scope, Object object) {
+         this.handler = new ObjectHandler(scope, object);
          this.type = (Type)object;
          this.scope = scope;
       }
@@ -59,7 +61,7 @@ public class InvocationBinder {
          Callable<Result> call = binder.bind(scope, type, name, arguments);
          
          if(call == null) {
-            throw new IllegalStateException("Method '" + name + "' not found for type '" + type + "'");
+            return handler.dispatch(name, arguments);
          }
          Result result = call.call();
          Object data = result.getValue();
@@ -73,10 +75,12 @@ public class InvocationBinder {
    
    private class ModuleHandler implements InvocationDispatcher {
       
+      private final ObjectHandler handler;
       private final Module module;
       private final Scope scope;      
       
       public ModuleHandler(Scope scope, Object object) {
+         this.handler = new ObjectHandler(scope, object);
          this.module = (Module)object;
          this.scope = scope;
       }
@@ -89,7 +93,7 @@ public class InvocationBinder {
          Callable<Result> call = binder.bind(scope, module, name, arguments);
          
          if(call == null) {
-            throw new IllegalStateException("Method '" + name + "' not found in module '" + module + "'");
+            return handler.dispatch(name, arguments);
          }
          Result result = call.call();
          Object data = result.getValue();

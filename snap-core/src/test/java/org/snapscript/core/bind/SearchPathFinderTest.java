@@ -25,16 +25,16 @@ public class SearchPathFinderTest extends TestCase {
     */
    public void testSearchPath() throws Exception {
       TypePathBuilder finder = new TypePathBuilder();
-      Type a = new ClassType("A", "", null);
-      Type b = new ClassType("B", "", null);
-      Type c = new ClassType("C", "", null);
-      Type d = new ClassType("D", "", null);
-      Type x = new ClassType("X", "", null);
-      Type y = new ClassType("Y", "", null);
-      Type z = new ClassType("Z", "", null);
-      Type i = new ClassType("I", "", null);
-      Type j = new ClassType("J", "", null);
-      Type k = new ClassType("K", "", null);
+      Type a = new ClassType(null, "A", null);
+      Type b = new ClassType(null, "B", null);
+      Type c = new ClassType(null, "C", null);
+      Type d = new ClassType(null, "D", null);
+      Type x = new ClassType(null, "X", null);
+      Type y = new ClassType(null, "Y", null);
+      Type z = new ClassType(null, "Z", null);
+      Type i = new ClassType(null, "I", null);
+      Type j = new ClassType(null, "J", null);
+      Type k = new ClassType(null, "K", null);
       
       List<Type> typesA = a.getTypes();
       List<Type> typesB = b.getTypes();

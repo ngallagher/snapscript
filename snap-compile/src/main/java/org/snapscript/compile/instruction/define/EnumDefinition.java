@@ -24,7 +24,7 @@ import org.snapscript.core.ValueType;
 public class EnumDefinition extends Statement {
 
    private final DefaultConstructor constructor;
-   private final DefaultInitializer initializer;
+   private final PropertyInitializer initializer;
    private final TypeHierarchy hierarchy;
    private final EnumList list;
    private final TypeName name;
@@ -32,7 +32,7 @@ public class EnumDefinition extends Statement {
    
    public EnumDefinition(TypeName name, TypeHierarchy hierarcy, EnumList list, TypePart... parts) {
       this.constructor = new DefaultConstructor(true);
-      this.initializer = new DefaultInitializer();
+      this.initializer = new PropertyInitializer();
       this.hierarchy = hierarcy;
       this.parts = parts;
       this.list = list;

@@ -5,22 +5,20 @@ import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.snapscript.core.resource.ResourceReader;
-
 public class LibraryLoader {
    
-   private final ResourceReader reader;
+   private final ResourceManager manager;
    private final PackageLinker linker;
    private final String suffix;
    private final Set libraries;
 
-   public LibraryLoader(PackageLinker linker, ResourceReader reader){
-      this(linker, reader, SCRIPT_EXTENSION);
+   public LibraryLoader(PackageLinker linker, ResourceManager manager){
+      this(linker, manager, SCRIPT_EXTENSION);
    }
    
-   public LibraryLoader(PackageLinker linker, ResourceReader reader, String suffix){
+   public LibraryLoader(PackageLinker linker, ResourceManager manager, String suffix){
       this.libraries = new CopyOnWriteArraySet();
-      this.reader = reader;
+      this.manager = manager;
       this.linker = linker;
       this.suffix = suffix;
    }
@@ -30,7 +28,7 @@ public class LibraryLoader {
          String path = qualifier.replace('.', '/');
          
          try {
-            String source = reader.read(path + suffix);
+            String source = manager.getString(path + suffix);
             
             try {
                return linker.link(qualifier, source);

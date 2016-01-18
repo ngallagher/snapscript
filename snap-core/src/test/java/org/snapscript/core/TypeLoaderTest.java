@@ -2,10 +2,10 @@ package org.snapscript.core;
 
 import java.util.Arrays;
 
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
-
 import junit.framework.TestCase;
+
+import org.snapscript.core.resource.ClassPathStore;
+import org.snapscript.core.resource.Store;
 
 public class TypeLoaderTest extends TestCase {
    
@@ -39,9 +39,11 @@ public class TypeLoaderTest extends TestCase {
       long start = System.currentTimeMillis();
       
       for(int i = 0; i < 1000; i++) {
-         ResourceReader reader = new ClassPathReader();
-         ImportResolver resolver = new ImportResolver(linker, reader);
-         TypeLoader loader = new TypeLoader(resolver);
+         Store store = new ClassPathStore();
+         ResourceManager manager = new StoreManager(store);
+         ImportResolver resolver = new ImportResolver(linker, manager);
+         ModuleBuilder builder = new ModuleBuilder(null);
+         TypeLoader loader = new TypeLoader(resolver, builder);
          
          loader.loadType(ExampleObject.class);
       }

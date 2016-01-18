@@ -6,7 +6,7 @@ import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
-import org.snapscript.core.resource.ResourceReader;
+import org.snapscript.core.ResourceManager;
 
 public class ResourceCompiler implements Compiler {
 
@@ -37,8 +37,8 @@ public class ResourceCompiler implements Compiler {
       Executable executable = cache.fetch(resource);
       
       if(executable == null) {
-         ResourceReader reader = context.getReader();
-         String source = reader.read(resource);
+         ResourceManager manager = context.getManager();
+         String source = manager.getString(resource);
          PackageLinker linker = context.getLinker();
          Package library = linker.link(resource, source, instruction.name);
          

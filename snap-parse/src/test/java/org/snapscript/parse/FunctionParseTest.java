@@ -71,28 +71,16 @@ public class FunctionParseTest extends TestCase {
       analyzeScript(tree, 13);
    }
    
-   private String load(File file) throws Exception{      
-      FileInputStream in = new FileInputStream(file);
-      ByteArrayOutputStream out=new ByteArrayOutputStream();
-      byte[] buffer=new byte[1024];
-      int count = 0;
-      while((count=in.read(buffer))!=-1){
-         out.write(buffer,0,count);
-      }
-      return out.toString();
-   }
-   
    private void testParsePerformance(SyntaxParser analyzer) throws Exception {
       int iterations = 1;
       for(int i = 0; i < 100;i++) {
-         File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".js");  
-         if(file.exists()) {
-            String source=load(file);
+         String source = ClassPathReader.load("/script"+i+".snap");
+         if(source != null) {
             long start=System.currentTimeMillis();
             long last=start;
             for(int j=0;j<iterations;j++){
                last=System.currentTimeMillis();
-               SyntaxNode list = analyzer.parse(file.getCanonicalPath(),source, "script");
+               SyntaxNode list = analyzer.parse("/script"+i+".snap",source, "script");
                assertNotNull(list);
             }
             long finish=System.currentTimeMillis();
@@ -106,24 +94,23 @@ public class FunctionParseTest extends TestCase {
 
    private void analyzeScripts(SyntaxParser analyzer) throws Exception {
       for(int i = 0; i < 100;i++) {
-         File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\parse\\script"+i+".js");  
-         if(file.exists()) {
-            analyze(analyzer,load(file),"script");
+         String source = ClassPathReader.load("/script"+i+".snap");
+         if(source != null) {
+            analyze(analyzer,source,"script");
          }
       }
    }
    
    private void analyzeScript(SyntaxParser analyzer, int num) throws Exception {
       int iterations = 10;      
-      File file = new File("c:\\Work\\development\\github\\snapscript\\snap-interpret\\src\\test\\java\\org\\snapscript\\parse\\script"+num+".js");  
-      if(file.exists()) {
-         String source=load(file);
+      String source = ClassPathReader.load("/script"+num+".snap");
+      if(source != null) {
          //LexerBuilder.print(analyzer, source, "script");
          long start=System.currentTimeMillis();
          long last=start;
          for(int j=0;j<iterations;j++){
             last=System.currentTimeMillis();
-            SyntaxNode list = analyzer.parse(file.getCanonicalPath(),source, "script");
+            SyntaxNode list = analyzer.parse("/script"+num+".snap",source, "script");
             assertNotNull(list);
          }
          long finish=System.currentTimeMillis();

@@ -6,8 +6,8 @@ public interface Type {
    List<Property> getProperties();
    List<Function> getFunctions();
    List<Type> getTypes();
+   Module getModule();
    Class getType();
    Type getEntry();
-   String getModule();
    String getName();
 }

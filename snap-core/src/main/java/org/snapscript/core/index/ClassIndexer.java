@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
+import org.snapscript.core.Module;
+import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -17,14 +19,16 @@ public class ClassIndexer {
    private final FunctionIndexer functions;
    private final PropertyIndexer properties;
    private final PrimitivePromoter promoter;
+   private final ModuleBuilder builder;
    private final TypeIndexer indexer;
    private final TypeCache cache;
    
-   public ClassIndexer(TypeIndexer indexer, TypeCache cache){
+   public ClassIndexer(ModuleBuilder builder, TypeIndexer indexer, TypeCache cache){
       this.constructors = new ConstructorIndexer(indexer);
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer);
       this.promoter = new PrimitivePromoter();
+      this.builder = builder;
       this.indexer = indexer;
       this.cache = cache;
    }
@@ -52,11 +56,12 @@ public class ClassIndexer {
             bbse=indexer.load(base);
             hier.put(bbse.getName(),bbse);
          }
+         Module module = builder.create(pack); // create lzy
          Type done=null;
          if(type.isArray()){
-            done=new ClassType(simpleName,pack,indexer.load(type.getComponentType()),cls);
+            done=new ClassType(module,simpleName,indexer.load(type.getComponentType()),cls);
          }else {
-            done=new ClassType(simpleName,pack,null,cls);
+            done=new ClassType(module,simpleName,null,cls);
          }
          List<Function> functions = done.getFunctions();
          List<Property> properties = done.getProperties();

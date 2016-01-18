@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.snapscript.core.Bug;
 import org.snapscript.core.ImportResolver;
+import org.snapscript.core.Module;
+import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.NoStatement;
 import org.snapscript.core.Package;
 import org.snapscript.core.Scope;
@@ -18,16 +20,18 @@ public class TypeIndexer {
 
    private final Map<Object, Type> types;
    private final ImportResolver resolver;
+   private final ModuleBuilder builder;
    private final ClassIndexer indexer;
    private final List<String> modules;
    private final TypeCache cache;
    
-   public TypeIndexer(ImportResolver resolver){
+   public TypeIndexer(ImportResolver resolver, ModuleBuilder builder){
       this.types = new LinkedHashMap<Object, Type>(); 
       this.modules = new ArrayList<String>();
       this.cache = new TypeCache();
-      this.indexer = new ClassIndexer(this, cache);
+      this.indexer = new ClassIndexer(builder, this, cache);
       this.resolver = resolver;
+      this.builder = builder;
    }
    public Package addImport(String name) {
       modules.add(name);///XXX????
@@ -68,7 +72,12 @@ public class TypeIndexer {
     
       
       if(t==null) {
-         t=new ScopeType(name, moduleName);
+         Module module = builder.resolve(moduleName);
+         
+         if(module == null) {
+            throw new IllegalArgumentException("Module '"+moduleName+"' does not exist");
+         }
+         t=new ScopeType(module, name);
          registerType(full,t);
       }
       return t;
@@ -105,6 +114,7 @@ public class TypeIndexer {
       }
       return t;
    }
+   @Bug("Add to module")
    public Type load(final Class cls) throws Exception {
       Type done=resolveType(cls);
       if(done == null) {
@@ -112,6 +122,7 @@ public class TypeIndexer {
          Type type = new ClassReference(indexer, cls, cls.getSimpleName());
          registerType(cls, type);
          registerType(name, type);
+        
          return type;
       }
       return done;

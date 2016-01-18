@@ -3,6 +3,7 @@ package org.snapscript.core.index;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
@@ -34,13 +35,13 @@ public class ClassReference implements Type {
    }
 
    @Override
-   public Type getEntry() {
-      return index.getType().getEntry();
+   public Module getModule() {
+      return index.getType().getModule();
    }
 
    @Override
-   public String getModule() {
-      return index.getType().getModule();
+   public Type getEntry() {
+      return index.getType().getEntry();
    }
 
    @Override

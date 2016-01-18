@@ -6,8 +6,8 @@ public class TypeLoader {
    
    private final TypeIndexer indexer;
    
-   public TypeLoader(ImportResolver resolver){
-      this.indexer = new TypeIndexer(resolver);
+   public TypeLoader(ImportResolver resolver, ModuleBuilder builder){
+      this.indexer = new TypeIndexer(resolver, builder);
    }
    
    public synchronized Package importPackage(String name) {

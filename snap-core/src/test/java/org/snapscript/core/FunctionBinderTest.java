@@ -7,8 +7,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.convert.ConstraintMatcher;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
+import org.snapscript.core.resource.ClassPathStore;
+import org.snapscript.core.resource.Store;
 
 public class FunctionBinderTest extends TestCase {
    
@@ -25,9 +25,11 @@ public class FunctionBinderTest extends TestCase {
             return null;
          }
       };
-      ResourceReader reader = new ClassPathReader();
-      ImportResolver resolver = new ImportResolver(linker, reader);
-      TypeLoader loader = new TypeLoader(resolver);
+      Store store = new ClassPathStore();
+      ResourceManager manager = new StoreManager(store);
+      ImportResolver resolver = new ImportResolver(linker, manager);
+      ModuleBuilder builder = new ModuleBuilder(null);
+      TypeLoader loader = new TypeLoader(resolver, builder);
       ConstraintMatcher matcher = new ConstraintMatcher(loader);
       FunctionBinder binder = new FunctionBinder(matcher, loader);
       Type type = loader.loadType(Map.class);
@@ -66,9 +68,11 @@ public class FunctionBinderTest extends TestCase {
             return null;
          }
       };
-      ResourceReader reader = new ClassPathReader();
-      ImportResolver resolver = new ImportResolver(linker, reader);
-      TypeLoader loader = new TypeLoader(resolver);
+      Store store = new ClassPathStore();
+      ResourceManager manager = new StoreManager(store);
+      ImportResolver resolver = new ImportResolver(linker, manager);
+      ModuleBuilder builder = new ModuleBuilder(null);
+      TypeLoader loader = new TypeLoader(resolver, builder);
       ConstraintMatcher matcher = new ConstraintMatcher(loader);
       FunctionBinder binder = new FunctionBinder(matcher, loader);
       Type type = loader.loadType(Map.class);

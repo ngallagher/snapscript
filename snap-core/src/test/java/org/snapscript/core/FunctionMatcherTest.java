@@ -4,12 +4,11 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.bind.FunctionMatcher;
 import org.snapscript.core.bind.FunctionPointer;
 import org.snapscript.core.convert.ConstraintMatcher;
-import org.snapscript.core.resource.ClassPathReader;
-import org.snapscript.core.resource.ResourceReader;
+import org.snapscript.core.resource.ClassPathStore;
+import org.snapscript.core.resource.Store;
 
 public class FunctionMatcherTest extends TestCase {
    
@@ -41,9 +40,11 @@ public class FunctionMatcherTest extends TestCase {
             return null;
          }
       };
-      ResourceReader reader = new ClassPathReader();
-      ImportResolver resolver = new ImportResolver(linker, reader);
-      TypeLoader loader = new TypeLoader(resolver);
+      Store store = new ClassPathStore();
+      ResourceManager manager = new StoreManager(store);
+      ImportResolver resolver = new ImportResolver(linker, manager);
+      ModuleBuilder builder = new ModuleBuilder(null);
+      TypeLoader loader = new TypeLoader(resolver, builder);
       ConstraintMatcher matcher2 = new ConstraintMatcher(loader);
       FunctionMatcher matcher = new FunctionMatcher(matcher2, loader);
       Type type = loader.loadType(ExampleObject.class);
@@ -93,9 +94,11 @@ public class FunctionMatcherTest extends TestCase {
             return null;
          }
       };
-      ResourceReader reader = new ClassPathReader();
-      ImportResolver resolver = new ImportResolver(linker, reader);
-      TypeLoader loader = new TypeLoader(resolver);
+      Store store = new ClassPathStore();
+      ResourceManager manager = new StoreManager(store);
+      ImportResolver resolver = new ImportResolver(linker, manager);
+      ModuleBuilder builder = new ModuleBuilder(null);
+      TypeLoader loader = new TypeLoader(resolver, builder);
       ConstraintMatcher matcher2 = new ConstraintMatcher(loader);
       FunctionMatcher matcher = new FunctionMatcher(matcher2, loader);
       Type type = loader.loadType(ExampleObject.class);
