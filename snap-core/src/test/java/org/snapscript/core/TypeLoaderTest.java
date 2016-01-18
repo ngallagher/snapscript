@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.snapscript.core.resource.ClassPathStore;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.ClassPathStore;
+import org.snapscript.core.store.Store;
 
 public class TypeLoaderTest extends TestCase {
    

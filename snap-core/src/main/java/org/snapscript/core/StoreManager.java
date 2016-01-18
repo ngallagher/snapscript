@@ -3,8 +3,8 @@ package org.snapscript.core;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import org.snapscript.core.resource.Store;
-import org.snapscript.core.resource.StoreException;
+import org.snapscript.core.store.Store;
+import org.snapscript.core.store.StoreException;
 
 public class StoreManager implements ResourceManager {
 

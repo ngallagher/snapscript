@@ -3,7 +3,7 @@ package org.snapscript.agent;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.Store;
 
 public class ProcessAgentStore implements Store {
 

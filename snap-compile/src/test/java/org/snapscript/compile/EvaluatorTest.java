@@ -8,8 +8,8 @@ import junit.framework.TestCase;
 import org.snapscript.core.Context;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.resource.ClassPathStore;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.ClassPathStore;
+import org.snapscript.core.store.Store;
 
 public class EvaluatorTest extends TestCase {
 

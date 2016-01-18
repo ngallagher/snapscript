@@ -10,7 +10,7 @@ import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.convert.ConstraintMatcher;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.Store;
 
 public class StoreContext implements Context {
 

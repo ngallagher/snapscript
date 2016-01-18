@@ -1,4 +1,4 @@
-package org.snapscript.core.resource;
+package org.snapscript.core.store;
 
 import java.io.File;
 import java.io.FileInputStream;

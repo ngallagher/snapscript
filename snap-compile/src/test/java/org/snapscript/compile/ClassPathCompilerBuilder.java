@@ -1,8 +1,8 @@
 package org.snapscript.compile;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.resource.ClassPathStore;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.ClassPathStore;
+import org.snapscript.core.store.Store;
 
 public class ClassPathCompilerBuilder {
 

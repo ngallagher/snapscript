@@ -7,8 +7,8 @@ import junit.framework.TestCase;
 import org.snapscript.core.bind.FunctionMatcher;
 import org.snapscript.core.bind.FunctionPointer;
 import org.snapscript.core.convert.ConstraintMatcher;
-import org.snapscript.core.resource.ClassPathStore;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.ClassPathStore;
+import org.snapscript.core.store.Store;
 
 public class FunctionMatcherTest extends TestCase {
    

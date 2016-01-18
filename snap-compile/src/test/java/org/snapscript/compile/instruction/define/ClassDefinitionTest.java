@@ -19,8 +19,8 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
-import org.snapscript.core.resource.ClassPathStore;
-import org.snapscript.core.resource.Store;
+import org.snapscript.core.store.ClassPathStore;
+import org.snapscript.core.store.Store;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 

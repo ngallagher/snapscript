@@ -36,7 +36,7 @@ import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
-import org.snapscript.core.resource.RemoteStore;
+import org.snapscript.core.store.RemoteStore;
 
 public class ProcessAgent {
 

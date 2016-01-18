@@ -1,4 +1,4 @@
-package org.snapscript.core.resource;
+package org.snapscript.core.store;
 
 public class StoreException extends RuntimeException {
    
