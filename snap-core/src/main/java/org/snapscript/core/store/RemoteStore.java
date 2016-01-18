@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.snapscript.core.Bug;
+
 public class RemoteStore implements Store {
 
    private final LocationBuilder builder;
@@ -42,6 +44,7 @@ public class RemoteStore implements Store {
       }
    }
    
+   @Bug("path is often http://host:port/x//y, i.e double slash")
    private static class LocationBuilder {
       
       private final URI root;
