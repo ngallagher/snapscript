@@ -5,120 +5,90 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.snapscript.core.Bug;
-import org.snapscript.core.FieldAccessor;
-import org.snapscript.core.Function;
-import org.snapscript.core.Invocation;
-import org.snapscript.core.MethodAccessor;
-import org.snapscript.core.MethodInvocation;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
-import org.snapscript.core.PropertyType;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
-@Bug("This is rubbish and needs to be cleaned up")
 public class PropertyIndexer {
    
+   private final PropertyGenerator generator;
    private final PrimitivePromoter promoter;
    private final TypeIndexer indexer;
    
    public PropertyIndexer(TypeIndexer indexer){
+      this.generator = new PropertyGenerator();
       this.promoter = new PrimitivePromoter();
       this.indexer = indexer;
    }
 
-   public List<Property> index(Class type) throws Exception {
-      List<Property> properties = new ArrayList<Property>();
-      Field[] fields= type.getDeclaredFields();
-      for(Field f:fields){
-         int mod=f.getModifiers();
-         if(Modifier.isPublic(mod)) {
-            String nb=f.getName();
-            Type ft=indexer.load(f.getType());
-            FieldAccessor acc=new FieldAccessor(f);
-            Property v=new Property(nb,ft,acc);               
-            properties.add(v);
+   public List<Property> index(Class source) throws Exception {
+      Method[] methods = source.getDeclaredMethods();
+      Field[] fields = source.getDeclaredFields();
+
+      if(fields.length > 0 || methods.length > 0) {
+         List<Property> properties = new ArrayList<Property>();
+         Set<String> done = new HashSet<String>();
+         
+         for(Field field : fields) {
+            int modifiers = field.getModifiers();
+            
+            if(Modifier.isPublic(modifiers)) {
+               String name = field.getName();
+               Class declaration = field.getType();
+               Type type = indexer.load(declaration);
+               Property property = generator.generate(field, type, name); 
+               
+               properties.add(property);
+            }
          }
-      }
-//      for(Class i:interfaces){
-//         Type baset=indexer.load(i);
-//         hier.put(i.getName(),baset);
-//         //hierL.addAll(baset.getTypes());
-//         //for(Type ttp:baset.getTypes()){
-//         //   hier.put(ttp.getName(),ttp);
-//         //}
-//      }
-//      //if(base != null) {
-//         //Type baset=load(base); 
-//         //hier.put(base.getName(), baset);
-//         //for(Type ttp:baset.getTypes()){
-//         //   hier.put(ttp.getName(),ttp);
-//         //}
-//      //}
-      Method[] methods = type.getDeclaredMethods();
-      for(Method m:methods){
-         int mod=m.getModifiers();
-         if(Modifier.isPublic(mod)) {
-            Class[] c=m.getParameterTypes();
-            if(c.length == 0) {
-   
-               m.setAccessible(true);
-               //SignatureKey k=new SignatureKey(nb,tt);
-               int modifiers=m.getModifiers();
-               Signature sig=new Signature(Collections.EMPTY_LIST, Collections.EMPTY_LIST, modifiers);
-               Invocation ex=new MethodInvocation(m);
-               Function gg=new Function(sig, ex, m.getName());
-   
-               if(!Modifier.isStatic(mod)) {
-                  String prop=getProperty(m);
-                  if(prop!=null){
-                     Method read=m;
-                     Class readT=read.getReturnType();
-                     Method write=getPropertySetterMatch(methods,readT,prop);
-                     if(write!=null){
+         for(Method method : methods){
+            int modifiers = method.getModifiers();
+            
+            if(Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers)) {
+               Class[] parameters = method.getParameterTypes();
+               
+               if(parameters.length == 0) {
+                  String name = PropertyType.getPropertyName(method);
+                  
+                  if(done.add(name)){
+                     Class declaration = method.getReturnType();
+                     Method write = match(methods, declaration, name);
+                     Class normal = promoter.promote(declaration);
+                     Type type = indexer.load(normal);
+                     Property property = generator.generate(method, write, type, name);                
+                     
+                     if(write != null){
                         write.setAccessible(true);
                      }
-                     Type propT=indexer.load(readT);
-                     MethodAccessor acc=new MethodAccessor(promoter.promote(readT),read,write);
-                     Property v=new Property(prop,propT,acc);               
-                     properties.add(v);
-                     
+                     method.setAccessible(true);
+                     properties.add(property);
                   }
                }
             }
          }
+         return properties;
       }
-      return properties;
+      return Collections.emptyList();
    }
    
-   private String getProperty(Method method)throws Exception{
-      PropertyType[] types = PropertyType.values();
-      
-      for(PropertyType matchType : types) {
-         if(matchType.isRead(method)) {
-            return matchType.getProperty(method);
-         }
-      }
-      return null;
-   }
-   
-   private Method getPropertySetterMatch(Method[] methods, Class require, String name) throws Exception {
+   private Method match(Method[] methods, Class require, String name) throws Exception {
       PropertyType[] types = PropertyType.values();
 
       for(Method method : methods) {         
          int modifiers = method.getModifiers();
          
          if(!Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
-            for(PropertyType matchType : types) {            
-               if(matchType.isWrite(method)) {
-                  Class[] param = method.getParameterTypes();
-                  Class actual = param[0];
+            for(PropertyType type : types) {            
+               if(type.isWrite(method)) {
+                  Class[] parameters = method.getParameterTypes();
+                  Class actual = parameters[0];
                   
                   if(actual == require) {
-                     String property = matchType.getProperty(method);
+                     String property = type.getProperty(method);
       
                      if(property.equalsIgnoreCase(name)) {
                         return method;

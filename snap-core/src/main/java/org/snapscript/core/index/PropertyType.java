@@ -1,4 +1,4 @@
-package org.snapscript.core;
+package org.snapscript.core.index;
 
 import java.lang.reflect.Method;
 
@@ -61,9 +61,9 @@ public enum PropertyType {
    public static String getPropertyName(Method method) {
       PropertyType[] types = PropertyType.values();
 
-      for(PropertyType matchType : types) {
-         if(matchType.isRead(method)) {
-            return matchType.getProperty(method);
+      for(PropertyType type : types) {
+         if(type.isRead(method)) {
+            return type.getProperty(method);
          }
       }
       return method.getName();

@@ -2,6 +2,8 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.compile.instruction.dispatch.InvocationBinder;
+import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
 import org.snapscript.core.Bug;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperScope;
@@ -34,7 +36,7 @@ public class SuperFunction implements Evaluation {
       }
       Type real = (Type)left;
       SuperScope s =new SuperScope(instance, real, type);
-      InvocationDispatcher handler = dispatcher.dispatch(s, null);
+      InvocationDispatcher handler = dispatcher.bind(s, null);
       Value reference = function.evaluate(s, left);
       String name = reference.getString();      
       

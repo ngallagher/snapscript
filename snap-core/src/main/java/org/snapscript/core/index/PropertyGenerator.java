@@ -1,0 +1,47 @@
+package org.snapscript.core.index;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import org.snapscript.core.FieldAccessor;
+import org.snapscript.core.MethodAccessor;
+import org.snapscript.core.Property;
+import org.snapscript.core.Type;
+
+public class PropertyGenerator {
+   
+   public PropertyGenerator(){
+      super();
+   }
+   
+   public Property generate(Field field, Type type, String name) {
+      try {
+         FieldAccessor accessor = new FieldAccessor(field);
+         
+         if(!field.isAccessible()) {
+            field.setAccessible(true);
+         }
+         return new Property(name, type, accessor); 
+      } catch(Exception e) {
+         throw new IllegalStateException("Could not create property from " + field);
+      }
+   }
+   
+   public Property generate(Method read, Method write, Type type, String name) {
+      try {
+         MethodAccessor accessor = new MethodAccessor(type, read, write);
+         
+         if(read.isAccessible()) {
+            read.setAccessible(true);
+         }
+         if(write != null) {
+            if(!write.isAccessible()) {
+               write.setAccessible(true);
+            }
+         }
+         return new Property(name,type,accessor);  
+      } catch(Exception e) {
+         throw new IllegalStateException("Could not create property from " + read);
+      }
+   }
+}

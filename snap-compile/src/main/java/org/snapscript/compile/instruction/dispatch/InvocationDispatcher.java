@@ -1,4 +1,4 @@
-package org.snapscript.compile.instruction.define;
+package org.snapscript.compile.instruction.dispatch;
 
 import org.snapscript.core.Value;
 

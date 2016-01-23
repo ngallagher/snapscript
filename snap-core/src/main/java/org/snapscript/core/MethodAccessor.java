@@ -8,11 +8,11 @@ public class MethodAccessor implements Accessor<Object> {
    private final Method write;
    private final Method read;
 
-   public MethodAccessor(Class type, Method read){
+   public MethodAccessor(Type type, Method read){
       this(type, read, null);
    }
    
-   public MethodAccessor(Class type, Method read, Method write){
+   public MethodAccessor(Type type, Method read, Method write){
       this.converter = new ParameterConverter(type);
       this.write = write;
       this.read = read;
@@ -44,38 +44,39 @@ public class MethodAccessor implements Accessor<Object> {
    
    private static class ParameterConverter {
       
-      private final Class type;
+      private final Type type;
       
-      public ParameterConverter(Class type) {
+      public ParameterConverter(Type type) {
          this.type = type;
       }
       
       public Object convert(Object value) {
          Class actual = value.getClass();
          Class parent = actual.getSuperclass();
+         Class require = type.getType();
          
-         if(type == String.class) {
+         if(require == String.class) {
             return String.valueOf(value);
          }
          if(parent == Number.class) {
             Number number = (Number)value;
             
-            if(type == Double.class) {
+            if(require == Double.class) {
                return number.doubleValue();
             }
-            if(type == Integer.class) {
+            if(require == Integer.class) {
                return number.intValue();
             }
-            if(type == Float.class) {
+            if(require == Float.class) {
                return number.floatValue();
             }
-            if(type == Long.class) {
+            if(require == Long.class) {
                return number.longValue();
             }
-            if(type == Short.class) {
+            if(require == Short.class) {
                return number.shortValue();
             }
-            if(type == Byte.class) {
+            if(require == Byte.class) {
                return number.byteValue();
             }
          }

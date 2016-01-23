@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction;
 
-import org.snapscript.compile.instruction.define.InvocationBinder;
-import org.snapscript.compile.instruction.define.InvocationDispatcher;
+import org.snapscript.compile.instruction.dispatch.InvocationBinder;
+import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -22,7 +22,7 @@ public class FunctionInvocation implements Evaluation {
    }
    
    public Value evaluate(Scope scope, Object left) throws Exception {
-      InvocationDispatcher handler = dispatcher.dispatch(scope, left);
+      InvocationDispatcher handler = dispatcher.bind(scope, left);
       Value reference = function.evaluate(scope, left);
       String name = reference.getString();      
       
