@@ -9,13 +9,15 @@ public class MapState implements State {
 
    private final Map<String, Value> values;
    private final Scope scope;
+   private final Model model;
    
-   public MapState() {
-      this(null);
+   public MapState(Model model) {
+      this(model, null);
    }
    
-   public MapState(Scope scope) {
-      this.values = new HashMap<String, Value>();      
+   public MapState(Model model, Scope scope) {
+      this.values = new HashMap<String, Value>();
+      this.model = model;
       this.scope = scope;
    }
    
@@ -39,6 +41,7 @@ public class MapState implements State {
       return names;
    }
 
+   @Bug("This could be better!!")
    @Override
    public Value getValue(String name) {
       Value value = values.get(name);
@@ -49,7 +52,14 @@ public class MapState implements State {
          if(state == null) {
             throw new IllegalStateException("Scope for '" + name + "' does not exist");
          }
-         return state.getValue(name);
+         value = state.getValue(name);
+      }
+      if(value == null && model != null) {
+         Object object = model.getAttribute(name);
+         
+         if(object != null) {
+            return ValueType.getConstant(object);
+         }
       }
       return value;
    }
@@ -92,5 +102,10 @@ public class MapState implements State {
          throw new IllegalStateException("Variable '" + name + "' already exists");
       }
       values.put(name, value);     
+   }
+   
+   @Override
+   public String toString() {
+      return String.valueOf(values);
    }
 }

@@ -6,7 +6,7 @@ import org.snapscript.core.Value;
 import org.snapscript.parse.NumberToken;
 import org.snapscript.parse.StringToken;
 
-public class NumberLiteral implements Evaluation {
+public class NumberLiteral extends Literal {
    
    private final SignOperator operator;
    private final NumberToken token;
@@ -20,7 +20,8 @@ public class NumberLiteral implements Evaluation {
       this.token = token;
    }
 
-   public Value evaluate(Scope scope, Object left) throws Exception {
+   @Override
+   protected Value create(Scope scope) throws Exception {
       Number number = token.getValue();
       
       if(number == null) {

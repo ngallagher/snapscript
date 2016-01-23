@@ -30,10 +30,14 @@ import org.snapscript.agent.profiler.ExecutionProfiler.ProfileResult;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Model;
+import org.snapscript.core.ModelScope;
 import org.snapscript.core.Module;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.store.RemoteStore;
@@ -63,6 +67,7 @@ public class ProcessAgent {
    private final ExecutionProfiler profiler;
    private final BreakpointMatcher matcher;
    private final RemoteStore remoteReader;
+   private final Model model;
    private final String process;
    private final int port;
 
@@ -74,6 +79,7 @@ public class ProcessAgent {
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
       this.profiler = new ExecutionProfiler();
+      this.model = new EmptyModel();
       this.process = process;
       this.port = port;
    }
@@ -85,7 +91,7 @@ public class ProcessAgent {
          PackageLinker linker = context.getLinker();
          Package library = linker.link("moduleForTheScriptAgent", SOURCE, "script");
          Module module = context.getBuilder().create("moduleForTheScriptAgent");
-         Scope scope = module.getScope();
+         Scope scope = new ModelScope(model, module);
          Statement script = library.compile(scope); 
          long middle = System.currentTimeMillis();
          script.execute(scope);  // warm up the agent for quicker execution

@@ -1,5 +1,8 @@
 package org.snapscript.compile;
 
+import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
+
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.instruction.Instruction;
@@ -12,15 +15,21 @@ public class StringCompiler implements Compiler {
    private final Cache<String, Executable> cache;
    private final Instruction instruction;
    private final Context context;   
+   private final String module;
    
    public StringCompiler(Context context) {
-      this(context, Instruction.SCRIPT);
+      this(context, SCRIPT);
    }
    
    public StringCompiler(Context context, Instruction instruction) {
+      this(context, instruction, DEFAULT_PACKAGE);
+   }
+   
+   public StringCompiler(Context context, Instruction instruction, String module) {
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
       this.instruction = instruction;
       this.context = context;
+      this.module = module;
    } 
    
    @Override
@@ -37,9 +46,9 @@ public class StringCompiler implements Compiler {
       
       if(executable == null) {
          PackageLinker linker = context.getLinker();
-         Package library = linker.link(null, source, instruction.name);
+         Package library = linker.link(module, source, instruction.name);
          
-         return new ContextExecutable(context, library);
+         return new ContextExecutable(context, library, module);
       }
       return executable;
    } 

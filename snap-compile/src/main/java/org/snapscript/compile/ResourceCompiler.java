@@ -1,25 +1,31 @@
 package org.snapscript.compile;
 
+import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
+
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
+import org.snapscript.core.PathConverter;
 import org.snapscript.core.ResourceManager;
 
 public class ResourceCompiler implements Compiler {
 
    private final Cache<String, Executable> cache;
+   private final PathConverter converter;
    private final Instruction instruction;
    private final Context context;   
    
    public ResourceCompiler(Context context) {
-      this(context, Instruction.SCRIPT);
+      this(context, SCRIPT);
    }
    
    public ResourceCompiler(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
+      this.converter = new PathConverter(SCRIPT_EXTENSION);
       this.instruction = instruction;
       this.context = context;
    } 
@@ -41,8 +47,9 @@ public class ResourceCompiler implements Compiler {
          String source = manager.getString(resource);
          PackageLinker linker = context.getLinker();
          Package library = linker.link(resource, source, instruction.name);
+         String module = converter.convert(resource);
          
-         return new ContextExecutable(context, library);
+         return new ContextExecutable(context, library, module);
       }
       return executable;
    } 

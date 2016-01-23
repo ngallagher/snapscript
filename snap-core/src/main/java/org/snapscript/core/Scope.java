@@ -7,4 +7,5 @@ public interface Scope {
    Module getModule();
    Context getContext();    
    State getState();
+   Model getModel();
 }

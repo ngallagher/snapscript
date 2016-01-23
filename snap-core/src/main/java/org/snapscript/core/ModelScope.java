@@ -1,20 +1,20 @@
 package org.snapscript.core;
 
-import java.util.Set;
-
 public class ModelScope implements Scope {
    
    private final Module module;
    private final State state;
+   private final Model model;
    
    public ModelScope(Model model, Module module) {
-      this.state = new ModelState(model);
+      this.state = new MapState(model);
       this.module = module;
+      this.model = model;
    }
    
    @Override
    public Scope getInner() {
-      return new CompoundScope(this, this);
+      return new CompoundScope(model, this, this);
    } 
    
    @Override
@@ -26,6 +26,11 @@ public class ModelScope implements Scope {
    public Context getContext() {
       return module.getContext();
    } 
+   
+   @Override
+   public Model getModel() {
+      return model;
+   }
 
    @Override
    public State getState() {
@@ -42,49 +47,8 @@ public class ModelScope implements Scope {
       return module;
    }
    
-   private static class ModelState implements State {
-      
-      private final Model model;
-      private final State state;
-      
-      public ModelState(Model model) {
-         this.state = new MapState();
-         this.model = model;
-      }
-      
-      @Override
-      public Set<String> getNames() {
-         return state.getNames();
-      }
-      
-      @Override
-      public Value getValue(String name) {
-         Value variable = state.getValue(name);
-         
-         if(variable == null) {
-            Object object = model.getAttribute(name);
-            
-            if(object != null) {
-               return ValueType.getConstant(object);
-            }
-         }
-         return variable;
-      }
-   
-      @Override
-      public void setValue(String name, Value value) {
-         state.setValue(name, value);
-      }
-      
-      @Override
-      public void addVariable(String name, Value value) {
-         state.addVariable(name, value);
-      }
-      
-      @Override
-      public void addConstant(String name, Value value) {
-         state.addConstant(name, value);
-      }    
+   @Override
+   public String toString() {
+      return String.valueOf(state);
    }
-
 }

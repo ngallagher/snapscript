@@ -4,15 +4,17 @@ public class CompoundScope implements Scope {
    
    private final State state;
    private final Scope outer;
+   private final Model model;
    
-   public CompoundScope(Scope inner, Scope outer) {
-      this.state = new MapState(inner);  
+   public CompoundScope(Model model, Scope inner, Scope outer) {
+      this.state = new MapState(model, inner);  
       this.outer = outer;
+      this.model = model;
    } 
   
    @Override
    public Scope getInner() {
-      return new StateScope(this, outer);
+      return new StateScope(model, this, outer);
    }  
    
    @Override
@@ -36,23 +38,35 @@ public class CompoundScope implements Scope {
    }   
 
    @Override
+   public Model getModel() {
+      return model;
+   }
+   
+   @Override
    public State getState() {
       return state;
+   }
+   
+   @Override
+   public String toString() {
+      return String.valueOf(state);
    }
    
    private static class StateScope implements Scope {
       
       private final State state;
       private final Scope outer;
+      private final Model model;
       
-      public StateScope(Scope inner, Scope outer) {
-         this.state = new MapState(inner);
+      public StateScope(Model model, Scope inner, Scope outer) {
+         this.state = new MapState(model, inner);
          this.outer = outer;
+         this.model = model;
       }
 
       @Override
       public Scope getInner() {
-         return new StateScope(this, outer);
+         return new StateScope(model, this, outer);
       }
       
       @Override
@@ -74,10 +88,20 @@ public class CompoundScope implements Scope {
       public Context getContext() {
          return outer.getContext();
       }
+      
+      @Override
+      public Model getModel() {
+         return model;
+      }
 
       @Override
       public State getState() {
          return state;
+      }
+      
+      @Override
+      public String toString() {
+         return String.valueOf(state);
       }
    }
 }

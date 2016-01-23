@@ -15,7 +15,7 @@ public class Script extends Statement {
    
    @Bug("TODO why do we need to compile every time??? declarations go missing???")
    @Override
-   public Result execute(Scope scope) throws Exception {
+   public Result compile(Scope scope) throws Exception {
       Result last = null;
       
       for(Statement statement : statements) {
@@ -25,6 +25,14 @@ public class Script extends Statement {
             throw new IllegalStateException("Illegal statement");
          }
       }
+      return last;
+   }
+   
+   @Bug("TODO why do we need to compile every time??? declarations go missing???")
+   @Override
+   public Result execute(Scope scope) throws Exception {
+      Result last = null;
+      
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
          

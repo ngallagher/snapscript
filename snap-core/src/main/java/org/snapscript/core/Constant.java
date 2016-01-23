@@ -28,4 +28,9 @@ public class Constant extends Value {
    public void setValue(Object value){
       throw new IllegalStateException("Illegal modification of constant");
    } 
+   
+   @Override
+   public String toString() {
+      return String.valueOf(value);
+   }
 }

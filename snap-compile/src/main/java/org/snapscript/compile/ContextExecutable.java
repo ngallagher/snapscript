@@ -13,9 +13,9 @@ public class ContextExecutable implements Executable{
    private final ScopeMerger merger;
    private final Package library;
    private final Model model;
- 
-   public ContextExecutable(Context context, Package library){
-      this.merger = new ScopeMerger(context);
+   
+   public ContextExecutable(Context context, Package library, String name){
+      this.merger = new ScopeMerger(context, name);
       this.model = new EmptyModel();
       this.library = library;
    }

@@ -5,7 +5,7 @@ import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
-public class BooleanLiteral implements Evaluation {
+public class BooleanLiteral extends Literal {
    
    private StringToken token;
    private Boolean value;
@@ -14,7 +14,8 @@ public class BooleanLiteral implements Evaluation {
       this.token = token;
    }
  
-   public Value evaluate(Scope scope, Object left) throws Exception{
+   @Override
+   protected Value create(Scope scope) throws Exception{
       if(value == null) {
          String text = token.getValue();
          

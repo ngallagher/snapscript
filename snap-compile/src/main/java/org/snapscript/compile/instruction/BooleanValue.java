@@ -27,4 +27,9 @@ public class BooleanValue extends Value {
    public void setValue(Object value){
       throw new IllegalStateException("Illegal modification of value");
    }
+   
+   @Override
+   public String toString() {
+      return String.valueOf(value);
+   }
 }

@@ -6,13 +6,13 @@ public class ModuleScope implements Scope {
    private final State state;
    
    public ModuleScope(Module module) {
-      this.state = new MapState();
+      this.state = new MapState(null);
       this.module = module;
    }
    
    @Override
    public Scope getInner() {
-      return new CompoundScope(this, this);
+      return new CompoundScope(null, this, this);
    } 
    
    @Override
@@ -31,6 +31,11 @@ public class ModuleScope implements Scope {
    }
    
    @Override
+   public Model getModel() {
+      return null;
+   }
+   
+   @Override
    public Type getType() {
       return null;
    }  
@@ -38,5 +43,10 @@ public class ModuleScope implements Scope {
    @Override
    public Module getModule() {
       return module;
+   }
+   
+   @Override
+   public String toString() {
+      return String.valueOf(state);
    }
 }

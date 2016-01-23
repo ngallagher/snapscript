@@ -203,13 +203,14 @@ public class EvaluationTest extends TestCase {
       Context cc = new StoreContext(store);
       Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
-      ScopeMerger b = new ScopeMerger(cc);
+      ScopeMerger b = new ScopeMerger(cc, "default");
       Scope s = b.merge(model);
       SyntaxParser analyzer = bb.compile();
       SyntaxNode token = analyzer.parse(null, source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the
                                                       // following
       Statement statement = (Statement) builder.assemble(token, "xx");
+      statement.compile(s);
       return statement.execute(s).getType();
    }
 
@@ -219,7 +220,7 @@ public class EvaluationTest extends TestCase {
       Context cc = new StoreContext(store);
       Assembler builder = new ContextAssembler(cc);
       SyntaxCompiler bb = new SyntaxCompiler();
-      ScopeMerger b = new ScopeMerger(cc);
+      ScopeMerger b = new ScopeMerger(cc, "default");
       Scope s = b.merge(model);
       SyntaxParser analyzer = bb.compile();
       SyntaxNode token = analyzer.parse(null, source, grammar);

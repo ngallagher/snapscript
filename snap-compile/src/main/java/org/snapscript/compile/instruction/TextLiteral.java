@@ -5,15 +5,16 @@ import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
-public class TextLiteral implements Evaluation {
+public class TextLiteral extends Literal {
    
    private final StringToken token;
-
+   
    public TextLiteral(StringToken token) {
       this.token = token;
    }
 
-   public Value evaluate(Scope scope, Object left) throws Exception {
+   @Override
+   protected Value create(Scope scope) throws Exception {
       String text = token.getValue();
       
       if(text == null) {

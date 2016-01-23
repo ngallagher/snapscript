@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.collection;
 
 import org.snapscript.core.Value;
+import java.lang.reflect.Array;
 
 public class ArrayValue extends Value {
    
@@ -21,11 +22,16 @@ public class ArrayValue extends Value {
    
    @Override
    public Object getValue(){
-      return java.lang.reflect.Array.get(array, index);
+      return Array.get(array, index);
    }
    
    @Override
    public void setValue(Object value){
-      java.lang.reflect.Array.set(array, index, value);
+      Array.set(array, index, value);
    }       
+   
+   @Override
+   public String toString() {
+      return String.valueOf(array);
+   }
 }

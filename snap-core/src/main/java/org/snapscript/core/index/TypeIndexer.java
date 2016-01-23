@@ -72,11 +72,11 @@ public class TypeIndexer {
     
       
       if(t==null) {
-         Module module = builder.resolve(moduleName);
+         Module module = builder.create(moduleName);
          
-         if(module == null) {
-            throw new IllegalArgumentException("Module '"+moduleName+"' does not exist");
-         }
+//         if(module == null) {
+//            throw new IllegalArgumentException("Module '"+moduleName+"' does not exist");
+//         }
          t=new ScopeType(module, name);
          registerType(full,t);
       }

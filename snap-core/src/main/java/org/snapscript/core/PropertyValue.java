@@ -25,4 +25,9 @@ public class PropertyValue extends Value {
    public void setValue(Object value) {
       accessor.setValue(object, value);
    }
+   
+   @Override
+   public String toString() {
+      return String.valueOf(object);
+   }
 }

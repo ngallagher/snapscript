@@ -5,7 +5,7 @@ import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.parse.StringToken;
 
-public class NullLiteral implements Evaluation {
+public class NullLiteral extends Literal {
    
    private final StringToken token;
 
@@ -17,7 +17,8 @@ public class NullLiteral implements Evaluation {
       this.token = token;
    }
 
-   public Value evaluate(Scope scope, Object left) throws Exception {
+   @Override
+   protected Value create(Scope scope) throws Exception {
       return ValueType.getTransient(null);
    }
 }

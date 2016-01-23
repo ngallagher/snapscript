@@ -47,4 +47,9 @@ public class ListValue extends Value {
       }
       list.set(index, proxy);
    }       
+   
+   @Override
+   public String toString() {
+      return String.valueOf(list);
+   }
 }

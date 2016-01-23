@@ -1,5 +1,8 @@
 package org.snapscript.compile;
 
+import static org.snapscript.compile.instruction.Instruction.EXPRESSION;
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
+
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.compile.instruction.Evaluation;
@@ -24,13 +27,17 @@ public class StringEvaluator implements Evaluator{
    private final Model model;
    
    public StringEvaluator(Context context){
-      this(context, Instruction.EXPRESSION);
+      this(context, EXPRESSION);
    }
    
    public StringEvaluator(Context context, Instruction instruction) {
+      this(context, instruction, DEFAULT_PACKAGE);
+   }
+   
+   public StringEvaluator(Context context, Instruction instruction, String module) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new ContextAssembler(context);
-      this.merger = new ScopeMerger(context);
+      this.merger = new ScopeMerger(context, module);
       this.compiler = new SyntaxCompiler();
       this.model = new EmptyModel();
       this.instruction = instruction;

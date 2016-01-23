@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
 import org.snapscript.core.Bug;
-import org.snapscript.core.Constant;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
@@ -94,9 +93,11 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       // functoin calls need to be handled better!!!
       // super is actually a very special value!!! its no good to just provide the base!!
       //
+
       /// XXX here we need to split body to fields and method
       // wrapper needs both its functions, and the super class functions in the 'this' scope???
       if(body != null) {
+         //body.compile(scope, real); // static stuff if needed
          // This should be done only for non-enums!!
          if(!e) {
             body.compile(scope, real); // static stuff if needed

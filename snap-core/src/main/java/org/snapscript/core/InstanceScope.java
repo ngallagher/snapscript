@@ -7,14 +7,14 @@ public class InstanceScope implements Scope {
    private final Type type;
    
    public InstanceScope(Scope scope, Type type) {
-      this.state = new MapState(scope);      
+      this.state = new MapState(null, scope);      
       this.scope = scope;
       this.type = type;
    }
    
    @Override
    public Scope getInner() {
-      return new CompoundScope(this, this);
+      return new CompoundScope(null, this, this);
    } 
    
    @Override
@@ -36,6 +36,11 @@ public class InstanceScope implements Scope {
    public Context getContext() {
       return scope.getContext();
    }   
+   
+   @Override
+   public Model getModel() {
+      return scope.getModel();
+   }
 
    @Override
    public State getState() {

@@ -38,7 +38,10 @@ public class ProcessAgentStore implements Store {
          if(!project.endsWith("/")) {
             project = project + "/";
          }
-         return project + resource;
+         if(!resource.startsWith("/")) {
+            resource = "/" + resource;
+         }
+         return project + "src" + resource;
       }
       return resource;
    }

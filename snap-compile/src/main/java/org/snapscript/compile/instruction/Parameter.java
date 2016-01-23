@@ -6,10 +6,11 @@ import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 
-public class Parameter implements Evaluation{
+public class Parameter implements Evaluation {
    
-   private final Evaluation evaluation;
-   private final Constraint constraint;
+   private volatile Evaluation evaluation;
+   private volatile Constraint constraint;
+   private volatile Value value;
    
    public Parameter(Evaluation evaluation){
       this(evaluation, null);
@@ -19,8 +20,16 @@ public class Parameter implements Evaluation{
       this.evaluation = evaluation;
       this.constraint = constraint;
    }
-   
+
+   @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
+      if(value == null) {
+         value = create(scope, left);
+      }
+      return value;
+   }
+   
+   private Value create(Scope scope, Object left) throws Exception {
       Value reference = evaluation.evaluate(scope, left);
       String name = reference.getString();
       

@@ -19,17 +19,25 @@ public class CompoundStatement extends Statement {
    }
    
    @Override
-   public Result execute(Scope scope) throws Exception {
-      Scope compound = scope.getInner(); 
+   public Result compile(Scope scope) throws Exception {
       Result last = null;
       
       for(Statement statement : statements) {
-         Result result = statement.compile(compound);
+         Result result = statement.compile(scope);
          
          if(!result.isNormal()){
             return result;
          }
+         last = result;
       }
+      return last;
+   }
+   
+   @Override
+   public Result execute(Scope scope) throws Exception {
+      Scope compound = scope.getInner(); 
+      Result last = null;
+      
       for(Statement statement : statements) {
          Result result = statement.execute(compound);
          

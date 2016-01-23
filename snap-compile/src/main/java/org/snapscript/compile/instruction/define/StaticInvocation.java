@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -30,6 +31,7 @@ public class StaticInvocation implements Invocation<Object> {
       this.inner = inner;
    }
    
+   @Bug("Must compile the statement before running")
    @Override
    public Result invoke(Scope outer, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
@@ -49,6 +51,7 @@ public class StaticInvocation implements Invocation<Object> {
          Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
+      statement.compile(scope); // we need to run static initializer
       return statement.execute(scope);
    }
 }
