@@ -2,11 +2,11 @@ package org.snapscript.core;
 
 import java.util.Set;
 
-public class InstanceChecker {
+public class HierarchyChecker {
 
    private final HierarchyExtractor extractor;
    
-   public InstanceChecker() {
+   public HierarchyChecker() {
       this.extractor = new HierarchyExtractor();
    }
    

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.InstanceChecker;
+import org.snapscript.core.HierarchyChecker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
@@ -17,14 +17,14 @@ import org.snapscript.core.TypeVerifier;
 public class ConstraintMatcher {
    
    private final Map<Type, ConstraintConverter> converters;
+   private final ConstraintConverter converter;
    private final TypeExtractor extractor;
    private final TypeVerifier comparator;
-   private final ConstraintConverter converter;
-   private final InstanceChecker checker;
+   private final HierarchyChecker checker;
    
    public ConstraintMatcher(TypeLoader loader) {
       this.converters = new HashMap<Type, ConstraintConverter>();
-      this.checker = new InstanceChecker();
+      this.checker = new HierarchyChecker();
       this.comparator = new TypeVerifier(loader, checker);
       this.extractor = new TypeExtractor(loader);
       this.converter = new NullConverter();

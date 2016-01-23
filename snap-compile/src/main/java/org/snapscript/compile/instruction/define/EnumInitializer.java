@@ -10,7 +10,6 @@ import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.core.Bug;
-import org.snapscript.core.Constant;
 import org.snapscript.core.Context;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;

@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
-import java.util.Collections;
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
+
 import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
@@ -11,8 +12,6 @@ import org.snapscript.compile.instruction.NumberLiteral;
 import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
-import org.snapscript.core.MapModel;
-import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleScope;
 import org.snapscript.core.Result;
@@ -38,7 +37,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Store store = new ClassPathStore();
       Context context =new StoreContext(store);
-      ContextModule module = new ContextModule(context);
+      ContextModule module = new ContextModule(context, DEFAULT_PACKAGE);
       ModuleScope scope = new ModuleScope(module);
       Type type = definer.compile(scope).getValue();
 
@@ -60,7 +59,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Store store = new ClassPathStore();
       Context context =new StoreContext(store);
-      Module module = new ContextModule(context);
+      Module module = new ContextModule(context, DEFAULT_PACKAGE);
       ModuleScope scope = new ModuleScope(module);
 
       Type type = definer.compile(scope).getValue(); 

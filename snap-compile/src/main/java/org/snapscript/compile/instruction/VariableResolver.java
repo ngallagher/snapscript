@@ -38,7 +38,7 @@ public class VariableResolver {
    public Value resolve(Scope scope, Object left) throws Exception {
       Value reference = identifier.evaluate(scope, left);
       String name = reference.getString();
-      Object key = builder.create(left, name);
+      Object key = builder.create(scope, left, name);
       ValueResolver resolver = resolvers.get(key);
       
       if(resolver == null) { // XXX is this really right?? 

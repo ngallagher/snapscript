@@ -21,27 +21,30 @@ public class MapState implements State {
       this.scope = scope;
    }
    
-   @Bug("clean up")
    @Override
    public Set<String> getNames() {
       Set<String> names = new HashSet<String>();   
       
-      if(!values.isEmpty()) {
-         Set<String> outer = values.keySet();
-         names.addAll(outer);
-      }
       if(scope != null) {
          State state = scope.getState();
          
-         if(state != null) {
-            Set<String> inner = state.getNames();
+         if(state == null) {
+            throw new IllegalStateException("Scope for does not exist");
+         }
+         Set<String> inner = state.getNames();
+         
+         if(!inner.isEmpty()) {
             names.addAll(inner);
          }
+      }
+      Set<String> outer = values.keySet();
+      
+      if(!outer.isEmpty()) {
+         names.addAll(outer);
       }
       return names;
    }
 
-   @Bug("This could be better!!")
    @Override
    public Value getValue(String name) {
       Value value = values.get(name);

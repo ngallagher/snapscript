@@ -34,7 +34,7 @@ module SpriteStore {
    
    /** The cached sprite map, from reference to sprite instance */
    var sprites = {:};
-   
+
    /**
     * Retrieve a sprite from the store
     * 

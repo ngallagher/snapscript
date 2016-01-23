@@ -13,10 +13,6 @@ public class ContextModule implements Module {
    private final Context context;
    private final Scope scope;
    private final String name;
-
-   public ContextModule(Context context) {
-      this(context, null);
-   }
    
    public ContextModule(Context context, String name) {
       this.functions = new CopyOnWriteArrayList<Function>();

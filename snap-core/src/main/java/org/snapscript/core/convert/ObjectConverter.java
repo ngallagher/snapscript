@@ -1,17 +1,17 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.InstanceChecker;
+import org.snapscript.core.HierarchyChecker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends ConstraintConverter {
    
    private final TypeExtractor extractor;
-   private final InstanceChecker checker;
+   private final HierarchyChecker checker;
    private final ProxyBuilder builder;
    private final Type type;
    
-   public ObjectConverter(TypeExtractor extractor, InstanceChecker checker, Type type) {
+   public ObjectConverter(TypeExtractor extractor, HierarchyChecker checker, Type type) {
       this.builder = new ProxyBuilder();
       this.extractor = extractor;
       this.checker = checker;

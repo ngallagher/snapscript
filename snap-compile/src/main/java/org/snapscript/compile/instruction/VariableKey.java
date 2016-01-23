@@ -1,11 +1,13 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Type;
+
 public class VariableKey {
 
    private final String name;
-   private final Class type;
+   private final Type type;
    
-   public VariableKey(String name, Class type) {
+   public VariableKey(String name, Type type) {
       this.name = name;
       this.type = type;
    }

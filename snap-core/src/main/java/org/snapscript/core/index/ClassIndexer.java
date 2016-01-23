@@ -1,5 +1,7 @@
 package org.snapscript.core.index;
 
+import static org.snapscript.core.Reserved.*;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +70,8 @@ public class ClassIndexer {
          List<Type> types = done.getTypes();
          
          if(type==Object.class){
-            Type any=indexer.load("Any", null,true);// XXX there should be some form of TypeCache
-            hier.put("Any",any);
+            Type any=indexer.load(ANY_TYPE, DEFAULT_PACKAGE, true);// XXX there should be some form of TypeCache
+            hier.put(ANY_TYPE,any);
          }
          cache.registerType(cls,done);
          for(Class i:interfaces){

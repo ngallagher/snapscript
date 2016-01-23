@@ -23,7 +23,15 @@ public enum ModifierType {
    
    public static boolean isConstant(int modifier){
       return (CONSTANT.mask & modifier) != 0;
-   }   
+   }  
+   
+   public static boolean isOverride(int modifier) {
+      return (OVERRIDE.mask & modifier) != 0;
+   }
+   
+   public static boolean isAbstract(int modifier) {
+      return (OVERRIDE.mask & modifier) != 0;
+   }
    
    public static ModifierType resolveModifier(String token) {
       ModifierType[] modifiers = ModifierType.values();

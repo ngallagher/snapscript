@@ -2,10 +2,10 @@ package org.snapscript.core;
 
 public class TypeVerifier {
    
-   private final InstanceChecker checker;
+   private final HierarchyChecker checker;
    private final TypeLoader loader;
    
-   public TypeVerifier(TypeLoader loader, InstanceChecker checker) {
+   public TypeVerifier(TypeLoader loader, HierarchyChecker checker) {
       this.checker = checker;
       this.loader = loader;
    }

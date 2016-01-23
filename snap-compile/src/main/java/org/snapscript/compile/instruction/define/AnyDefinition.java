@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.Reserved.ANY_TYPE;
+import static org.snapscript.core.Reserved.*;
 import static org.snapscript.core.Reserved.METHOD_ARGUMENT;
 import static org.snapscript.core.Reserved.METHOD_EQUALS;
 import static org.snapscript.core.Reserved.METHOD_HASH_CODE;
@@ -36,7 +36,7 @@ public class AnyDefinition extends Statement {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
-      Type type = loader.defineType(ANY_TYPE, null);
+      Type type = loader.defineType(ANY_TYPE, DEFAULT_PACKAGE);
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {

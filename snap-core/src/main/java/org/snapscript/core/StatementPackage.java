@@ -14,7 +14,6 @@ public class StatementPackage implements Package {
       this.name = name;
    }
 
-   @Bug("Model is not inherited by the scope of the Module")
    @Override
    public Statement compile(Scope scope) throws Exception {
       if(compile.compareAndSet(true, false)) {
