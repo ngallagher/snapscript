@@ -35,7 +35,7 @@ public class AnyDefinition extends Statement {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
-      Type type = loader.defineType(ANY_TYPE, DEFAULT_PACKAGE);
+      Type type = loader.defineType(DEFAULT_PACKAGE, ANY_TYPE);
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {

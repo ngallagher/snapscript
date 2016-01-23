@@ -10,20 +10,20 @@ public class TypeLoader {
       this.indexer = new TypeIndexer(resolver, builder);
    }
    
-   public synchronized Package importPackage(String name) {
-      return indexer.addImport(name);
+   public synchronized Package importPackage(String module) {
+      return indexer.addImport(module);
    }   
    
-   public synchronized Package importType(String name, String module) {
-      return indexer.addType(name, module); 
+   public synchronized Package importType(String module, String name) {
+      return indexer.addImport(module, name); 
    }
    
-   public synchronized Type resolveType(String name, String module) throws Exception {
-      return indexer.load(name, module, false);
+   public synchronized Type resolveType(String module, String name) throws Exception {
+      return indexer.load(module, name, false);
    }
    
-   public synchronized Type defineType(String name, String module) throws Exception {
-      return indexer.load(name, module, true);
+   public synchronized Type defineType(String module, String name) throws Exception {
+      return indexer.load(module, name, true);
    }
    
    public synchronized Type loadType(Class cls) throws Exception {

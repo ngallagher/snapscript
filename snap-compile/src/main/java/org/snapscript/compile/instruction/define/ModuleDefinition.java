@@ -41,6 +41,9 @@ public class ModuleDefinition extends Statement {
       Context context = parent.getContext();
       ModuleBuilder builder = context.getBuilder();
       Module module = builder.create(name);
+      String include = parent.getName();
+      
+      module.addImport(include);
       
       return ValueType.getConstant(module);
    }

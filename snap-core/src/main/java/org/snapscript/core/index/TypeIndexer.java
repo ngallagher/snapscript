@@ -37,19 +37,18 @@ public class TypeIndexer {
       modules.add(name);///XXX????
       return resolver.addImport(name);
    }   
-   public Package addType(final String name, final String module) {
+   public Package addImport(final String module, final String name) {
       
       //modules.add(module);
       //resolver.addImport(location);// helps with java types
       
-      Package library = resolver.addType(name, module);
+      Package library = resolver.addType(module, name);
       if(library == null) {
          return new Package() {
 
             @Override
             public Statement compile(Scope scope) throws Exception {
-               String full = createName(name, module);
-               load(name, module);
+               load(module, name);
                return new NoStatement();
             }
             
@@ -66,8 +65,8 @@ public class TypeIndexer {
    private Type resolveType(Object name) {
       return types.get(name);
    }
-   private Type define(String name,String moduleName) throws Exception {
-      String full=createName(name, moduleName);
+   private Type define(String moduleName, String name) throws Exception {
+      String full=createName(moduleName, name);
       Type t  =resolveType(full);
     
       
@@ -82,18 +81,18 @@ public class TypeIndexer {
       }
       return t;
    }
-   private String createName(String name, String module){
+   private String createName(String module, String name){
       if(module != null && module.length() >0) {
          return module + "." + name;
       }
       return name;
    }
    
-   public Type load(String name,String moduleName) throws Exception {
-      return load(name,moduleName,true); // XXX moduleName was null here?????
+   public Type load(String moduleName, String name) throws Exception {
+      return load(moduleName, name,true); // XXX moduleName was null here?????
    }
-   public Type load(String nameX, String moduleName, boolean create) throws Exception {
-      String name = createName(nameX, moduleName);
+   public Type load(String moduleName, String nameX, boolean create) throws Exception {
+      String name = createName(moduleName, nameX);
       Type t = resolveType(name);
       
       if(t==null) { 
@@ -106,7 +105,7 @@ public class TypeIndexer {
                }
             }
             if(create){
-               return define(nameX,moduleName);
+               return define(moduleName, nameX);
             }
             return null;
          }

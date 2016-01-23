@@ -1,25 +1,25 @@
 
 import org.snapscript.swing.JPanelInterface;
 import org.snapscript.swing.JPanelAdapter;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.util.Date;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import awt.BasicStroke;
+import awt.Color;
+import awt.Dimension;
+import awt.EventQueue;
+import awt.Graphics;
+import awt.Graphics2D;
+import awt.Image;
+import util.Date;
+import util.concurrent.ScheduledThreadPoolExecutor;
+import util.concurrent.TimeUnit;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import swing.JFrame;
+import swing.JPanel;
+import swing.SwingUtilities;
+import awt.Color;
+import awt.Graphics;
+import util.ArrayList;
+import util.List;
+import util.Random;
 
 /**
  * Description: Swing application, plot points for physics simulation.
@@ -402,7 +402,7 @@ class UpdatableCanvas with JPanelInterface {
     /**
      * Use double buffering.
      * 
-     * @see java.awt.Component#update(java.awt.Graphics)
+     * @see awt.Component#update(awt.Graphics)
      */
     update(panel, g) {
         const d = cannon.canvas.panel.getSize();
@@ -417,7 +417,7 @@ class UpdatableCanvas with JPanelInterface {
     /**
      * Draw this generation.
      * 
-     * @see java.awt.Component#paint(java.awt.Graphics)
+     * @see awt.Component#paint(awt.Graphics)
      */
     paint(panel, g) {
         // Draw grid on background image, which is faster

@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Package;
 import org.snapscript.core.Module;
+import org.snapscript.core.Package;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -31,13 +31,14 @@ public class Import extends Statement {
          Package library = loader.importPackage(location);
          
          if(library != null) {
+            module.addImport(location);
             library.compile(scope);
          }
       } else {
-         Package library = loader.importType(target, location);
+         Package library = loader.importType(location, target);
          
          if(library != null) {
-            module.addImport(target, location);
+            module.addImport(location, target);
             library.compile(scope);
          }
       }

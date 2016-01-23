@@ -6,7 +6,7 @@ import org.snapscript.core.EmptyModel;
 
 public class ModuleTest extends TestCase {
    
-   private static final String SOURCE =
+   private static final String SOURCE_1=
    "module M{\n"+
    "   class X{\n"+
    "      var i;\n"+
@@ -22,15 +22,35 @@ public class ModuleTest extends TestCase {
    "\n"+
    "   System.err.println(this);\n"+
    "   System.err.println(x);\n"+
+   "}\n";
+
+   private static final String SOURCE_2=
+   "module Mod {\n"+
+   "   function createTyp(i){\n"+
+   "      return new Typ(i);\n"+
+   "   }\n"+
    "}\n"+
-   "var x = new M.X(33);\n"+
-   "System.err.println(x);\n"+
-   "\n";
+   "class Typ{\n"+
+   "   var i;\n"+
+   "   new(i){\n"+
+   "      this.i = i;\n"+
+   "   }\n"+
+   "   toString() {\n"+
+   "      return \"\"+i;\n"+
+   "   }\n"+
+   "}\n"+
+   "System.err.println(Mod.createTyp(55));\n";
 
 
-   public void testModule() throws Exception {
+   public void testModuleInnerClass() throws Exception {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-      System.err.println(SOURCE);
-      compiler.compile(SOURCE).execute(new EmptyModel());
+      System.err.println(SOURCE_1);
+      compiler.compile(SOURCE_1).execute(new EmptyModel());
+   }
+   
+   public void testModuleOuterClass() throws Exception {
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      System.err.println(SOURCE_2);
+      compiler.compile(SOURCE_2).execute(new EmptyModel());
    }
 }

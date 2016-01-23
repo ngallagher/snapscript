@@ -1,15 +1,20 @@
 package org.snapscript.core;
 
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class ContextModule implements Module {
 
    private final Map<String, Type> imports;
-   private final List<Function> functions;    
+   private final List<Function> functions;   
+   private final Set<String> modules;
    private final Context context;
    private final Scope scope;
    private final String name;
@@ -17,6 +22,7 @@ public class ContextModule implements Module {
    public ContextModule(Context context, String name) {
       this.functions = new CopyOnWriteArrayList<Function>();
       this.imports = new ConcurrentHashMap<String, Type>();
+      this.modules = new CopyOnWriteArraySet<String>();
       this.scope = new ModuleScope(this);
       this.context = context;
       this.name = name;
@@ -39,7 +45,7 @@ public class ContextModule implements Module {
          
          if(t == null) {
             TypeLoader loader = context.getLoader();
-            t= loader.defineType(name, this.name);
+            t= loader.defineType(this.name, name);
             
             if(t!=null) {
                imports.put(name, t);
@@ -52,10 +58,26 @@ public class ContextModule implements Module {
    }
    
    @Override
-   public Type addImport(String name, String module) {
+   public Module addImport(String module) {
+      try {
+         ModuleBuilder builder = context.getBuilder();
+         Module result = builder.create(module);
+         
+         if(result != null) {
+            modules.add(module); // add package "tetris.game."
+         }
+         return result;
+      } catch(Exception e){
+         throw new IllegalStateException(e);
+      }
+   }
+   
+   
+   @Override
+   public Type addImport(String module, String name) {
       try {
          TypeLoader loader = context.getLoader();
-         Type type = loader.defineType(name, module);
+         Type type = loader.defineType(module, name);
          
          if(name != null && name.length() > 0) {
             imports.put(name, type);
@@ -73,10 +95,15 @@ public class ContextModule implements Module {
          
          if(type == null) {
             TypeLoader loader = context.getLoader();
-            Type result = loader.resolveType(name, this.name);
+            Type result = loader.resolveType(this.name, name);
             
             if(result == null) {
-               result = loader.resolveType(name, null);
+               for(String prefix : modules) {
+                  result = loader.resolveType(prefix, name); // this is "tetris.game.*"
+               }
+               if(result == null) {
+                  result = loader.resolveType(null, name); // null is "java.*"
+               }
             }
             if(result != null) {
                imports.put(name, result);
@@ -123,5 +150,4 @@ public class ContextModule implements Module {
    public String toString() {
       return name;
    }
-
 }

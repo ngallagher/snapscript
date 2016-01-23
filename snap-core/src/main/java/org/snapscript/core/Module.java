@@ -9,7 +9,8 @@ public interface Module {
    Type getType(Class type);   
    Type getType(String name);
    Type addType(String name);  
-   Type addImport(String name, String module); 
+   Module addImport(String module);
+   Type addImport(String module, String name);  
    InputStream getResource(String path);
    List<Function> getFunctions();
    String getName();

@@ -71,7 +71,7 @@ public class ClassIndexer {
          List<Type> types = done.getTypes();
          
          if(type==Object.class){
-            Type any=indexer.load(ANY_TYPE, DEFAULT_PACKAGE, true);// XXX there should be some form of TypeCache
+            Type any=indexer.load(DEFAULT_PACKAGE, ANY_TYPE, true);// XXX there should be some form of TypeCache
             hier.put(ANY_TYPE,any);
          }
          cache.registerType(cls,done);

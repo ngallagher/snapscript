@@ -41,16 +41,16 @@ public class ImportResolver {
       this.loader = new LibraryLoader(linker, manager);
    }
    
-   public Package addImport(String name) {
+   public Package addImport(String module) {
       try {
-         imports.add(name);
-         return loader.load(name);
+         //imports.add(module); // XXX this is global so it might not be a good idea
+         return loader.load(module);
       } catch(Exception e){
-         throw new IllegalStateException("Problem importing " + name);
+         throw new IllegalStateException("Problem importing " + module);
       }
    }
    
-   public Package addType(String name, String location) {
+   public Package addType(String location, String name) {
       Class type = getType(location+"."+name);
       
       if(type != null) {
