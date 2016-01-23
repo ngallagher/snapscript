@@ -14,10 +14,10 @@ function showProblems() {
 		problems.records = [{ 
 		   recid: 1,
 		   location: "Line " + problemLine, 
-         resource: problemLocation, 
+         resource: problemLocation.filePath, // /blah/file.snap 
          description: problemMessage, 
          project: problemProject, 
-         script: "/resource/" + problemProject + problemLocation
+         script: problemLocation.resourcePath // /resource/<project>/src/blah/file.snap
       }];
 		problems.refresh();
 	}
@@ -42,7 +42,7 @@ function updateProblems(socket, type, text) {
    
    problemLine = message.line;
    problemMessage = "<div class='errorDescription'>"+message.description+"</div>";
-   problemLocation = message.resource;
+   problemLocation = createResourcePath(message.resource);
    problemProject = message.project;
    createEditorHighlight(problemLine, "problemHighlight");
 	
@@ -50,10 +50,10 @@ function updateProblems(socket, type, text) {
       problems.records = [{
             recid: 1, // only one problem at a time for now!!!!
             location: "Line " + problemLine, 
-            resource: problemLocation, 
+            resource: problemLocation.filePath, // /blah/file.snap
             description: problemMessage, 
-            project: problemProject, 
-            script: "/resource/" + problemProject + problemLocation
+            project: problemProject, // <project>
+            script: problemLocation.resourcePath // /resource/<project>/src/blah/file.snap
       }];
    	problems.refresh();
 	}

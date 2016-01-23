@@ -1,12 +1,8 @@
 import awt.Point;
-import util.Arrays;
 import awt.Point;
 import awt.Point;
-import util.Random;
 import awt.event.KeyEvent;
 import awt.event.KeyListener;
-import util.Map;
-import util.concurrent.ConcurrentHashMap;
 import awt.Canvas;
 import awt.Color;
 import awt.Dimension;
@@ -19,6 +15,10 @@ import awt.event.WindowEvent;
 import awt.image.BufferStrategy;
 import swing.JFrame;
 import swing.JPanel;
+import util.Arrays;
+import util.Map;
+import util.concurrent.ConcurrentHashMap;
+import util.Random;
 
 
 class Tetris {

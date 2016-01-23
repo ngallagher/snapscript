@@ -72,22 +72,23 @@ function showEditorBreakpoints() {
    var breakpointRecords = [];
    var breakpointIndex = 1;
 
-   for ( var resourceName in editorBreakpoints) {
-      if (editorBreakpoints.hasOwnProperty(resourceName)) {
-         var breakpoints = editorBreakpoints[resourceName];
+   for ( var filePath in editorBreakpoints) {
+      if (editorBreakpoints.hasOwnProperty(filePath)) {
+         var breakpoints = editorBreakpoints[filePath];
 
          for ( var lineNumber in breakpoints) {
             if (breakpoints.hasOwnProperty(lineNumber)) {
                if (breakpoints[lineNumber] == true) {
-                  var displayName = "<div class='breakpointEnabled'>"+resourceName+"</div>";
+                  var resourcePathDetails = createResourcePath(filePath);
+                  var displayName = "<div class='breakpointEnabled'>"+resourcePathDetails.projectPath+"</div>";
                   
                   breakpointRecords.push({
                      recid: breakpointIndex++,
                      name: displayName,
                      location : "Line " + lineNumber,
-                     resource : resourceName,
+                     resource : resourcePathDetails.projectPath,
                      line: parseInt(lineNumber),
-                     script : buildTreeFile(resourceName)
+                     script : resourcePathDetails.resourcePath
                   });
                }
             }
@@ -103,7 +104,7 @@ function setEditorBreakpoint(row, value) {
    if (editorResource != null) {
       var editor = ace.edit("editor");
       var session = editor.getSession();
-      var resourceBreakpoints = editorBreakpoints[editorResource];
+      var resourceBreakpoints = editorBreakpoints[editorResource.filePath];
       var line = parseInt(row);
 
       if (value) {
@@ -113,7 +114,7 @@ function setEditorBreakpoint(row, value) {
       }
       if (resourceBreakpoints == null) {
          resourceBreakpoints = {};
-         editorBreakpoints[editorResource] = resourceBreakpoints;
+         editorBreakpoints[editorResource.filePath] = resourceBreakpoints;
       }
       resourceBreakpoints[line + 1] = value;
    }
@@ -124,7 +125,7 @@ function toggleEditorBreakpoint(row) {
    if (editorResource != null) {
       var editor = ace.edit("editor");
       var session = editor.getSession();
-      var resourceBreakpoints = editorBreakpoints[editorResource];
+      var resourceBreakpoints = editorBreakpoints[editorResource.filePath];
       var breakpoints = session.getBreakpoints();
       var remove = false;
 
@@ -144,7 +145,7 @@ function toggleEditorBreakpoint(row) {
       if (resourceBreakpoints == null) {
          resourceBreakpoints = {};
          resourceBreakpoints[line + 1] = true;
-         editorBreakpoints[editorResource] = resourceBreakpoints;
+         editorBreakpoints[editorResource.filePath] = resourceBreakpoints;
       } else {
          if (resourceBreakpoints[line + 1] == true) {
             resourceBreakpoints[line + 1] = false;
@@ -184,14 +185,10 @@ function clearEditor() {
 function loadEditor() {
    var editor = ace.edit("editor");
    var text = editor.getValue();
-   var path = editorResource;
-   
-   if (path != null) {
-      path = extractTreePath(path);
-   }
+
    return {
       breakpoints : editorBreakpoints,
-      resource : path,
+      resource : editorResource,
       source : text
    };
 }
@@ -203,12 +200,12 @@ function updateEditor(text, resource) {
    clearEditor();
    clearProblems();
    scrollEditorToTop();
-   editorResource = extractTreePath(resource);
+   editorResource = createResourcePath(resource);
    editorMarkers = {};
    editorText = text;
 
    if (resource != null) {
-      var breakpoints = editorBreakpoints[editorResource];
+      var breakpoints = editorBreakpoints[editorResource.filePath];
 
       if (breakpoints != null) {
          for ( var lineNumber in breakpoints) {

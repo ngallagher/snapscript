@@ -31,18 +31,18 @@ function openConfirmDialog() {
    });
 }
 
-function openTreeDialog(expandPath, foldersOnly, saveCallback) {
+function openTreeDialog(resourceDetails, foldersOnly, saveCallback) {
    var project = document.title;
    var dialogTitle = "Save As";
-   var folder = "/src";
+   var dialogExpandPath = "/src";
 
-   if (expandPath != null) {
+   if (resourceDetails != null) {
       dialogTitle = "Save Changes";
-      folder = extractTreePathNoFile(expandPath);
+      dialogExpandPath = resourceDetails.projectDirectory; // /src/blah
    }
    w2popup.open({
       title : dialogTitle,
-      body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFolder">'+folder+'</div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
+      body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFolder">'+dialogExpandPath+'</div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
       buttons : '<button id="dialogSave" class="btn">Save</button><button id="dialogCancel" class="btn">Cancel</button>',
       width : 500,
       height : 400,
@@ -70,37 +70,36 @@ function openTreeDialog(expandPath, foldersOnly, saveCallback) {
       }
    });
    $("#dialogSave").click(function() {
-      w2popup.lock('Saving', true);
-      var resource = $('#dialogFile').html();
-      var path = folder + "/" + resource;
-      saveCallback(path);
-      setTimeout(function() {
-         w2popup.unlock();
-         w2popup.close();
-      }, 1000);
+//      w2popup.lock('Saving', true);
+      var dialogFileName = $('#dialogFile').html();
+      var dialogFolder = $('#dialogFolder').html();
+      var dialogProjectPath = dialogFolder + "/" + dialogFileName; // /src/blah/script.snap
+      var dialogPathDetails = createResourcePath(dialogProjectPath); 
+      
+      saveCallback(dialogPathDetails);
+      w2popup.close();
+//      setTimeout(function() {
+//         w2popup.unlock();
+//         w2popup.close();
+//      }, 1000);
    });
    $("#dialogCancel").click(function() {
       w2popup.close();
    });
-   var file = extractTreeFile(expandPath);
-   if (file != null) {
-      $('#dialogFile').html(file);
+   if (resourceDetails != null) {
+      $('#dialogFolder').html(resourceDetails.projectDirectory); // /src/blah
+      $('#dialogFile').html(resourceDetails.fileName); // script.snap
    }
-   expandPath = extractTreePath(expandPath);
-   createTree("dialog", "dialogTree", expandPath, foldersOnly, function(event, data) {
-      var path = extractTreePath(data.node.tooltip);
+   createTree("dialog", "dialogTree", dialogExpandPath, foldersOnly, function(event, data) {
+      var selectedFileDetails = createResourcePath(data.node.tooltip);
+
       if (data.node.isFolder()) {
-         folder = path;
-         $('#dialogFolder').html(folder);
+         $('#dialogFolder').html(selectedFileDetails.projectDirectory);
          $('#dialogFile').html("");
       } else {
-         var file = extractTreeFile(data.node.tooltip);
-         var fileFolder = extractTreePathNoFile(data.node.tooltip);
-         $('#dialogFolder').html(fileFolder);
-         $('#dialogFile').html(file);
+         $('#dialogFolder').html(selectedFileDetails.projectDirectory); // /src/blah
+         $('#dialogFile').html(selectedFileDetails.fileName); // file.snap
       }
    });
 }
 
-// registerModule("dialog", "Dialog module: dialog.js", startDialog, [ "common",
-// "socket" ]);

@@ -13,7 +13,7 @@ function runScript() {
       var message = JSON.stringify({
          breakpoints : editorData.breakpoints,
          project : document.title,
-         resource : editorData.resource,
+         resource : editorData.resource.filePath,
          source : editorData.source,
       });
       socket.send("EXECUTE:" + message);
@@ -28,30 +28,30 @@ function saveScript() {
 function saveScriptWithAction(saveCallback) {
    var editorData = loadEditor();
    if (editorData.resource == null) {
-      openTreeDialog(null, false, function(resourcePath) {
+      openTreeDialog(null, false, function(resourceDetails) {
          var message = JSON.stringify({
             project : document.title,
-            resource : resourcePath,
+            resource : resourceDetails.filePath,
             source : editorData.source,
          });
          clearConsole();
          clearProblems();
          socket.send("SAVE:" + message);
-         updateEditor(editorData.source, buildTreeFile(resourcePath));
+         updateEditor(editorData.source, resourceDetails.projectPath);
          saveCallback();
       });
    } else {
       if (isEditorChanged()) {
-         openTreeDialog(editorData.resource, true, function(resourcePath) {
+         openTreeDialog(editorData.resource, true, function(resourceDetails) {
             var message = JSON.stringify({
                project : document.title,
-               resource : editorData.resource,
+               resource : resourceDetails.filePath,
                source : editorData.source,
             });
             clearConsole();
             clearProblems();
             socket.send("SAVE:" + message); 
-            updateEditor(editorData.source, buildTreeFile(editorData.resource));
+            updateEditor(editorData.source, resourceDetails.projectPath);
             saveCallback();
          });
       } else {
@@ -66,7 +66,7 @@ function deleteScript() {
    var editorData = loadEditor();
    var message = JSON.stringify({
       project : document.title,
-      resource : editorData.resource
+      resource : editorData.resource.filePath
    });
    clearConsole();
    clearProblems();
@@ -89,7 +89,7 @@ function stepOverScript() {
          thread: threadScope.thread,
          type: "STEP_OVER"
       });
-      clearEditorHighlights() // XXX what about other highlights?
+      clearEditorHighlights() 
       socket.send("STEP:" + message);
    }
 }
@@ -101,7 +101,7 @@ function stepInScript() {
          thread: threadScope.thread,
          type: "STEP_IN"
       });
-      clearEditorHighlights() // XXX what about other highlights?
+      clearEditorHighlights() 
       socket.send("STEP:" + message);
    }
 }
@@ -113,7 +113,7 @@ function stepOutScript() {
          thread: threadScope.thread,
          type: "STEP_OUT"
       });
-      clearEditorHighlights() // XXX what about other highlights?
+      clearEditorHighlights() 
       socket.send("STEP:" + message);
    }
 }
@@ -125,7 +125,7 @@ function resumeScript() {
          thread: threadScope.thread,
          type: "RUN"
       });
-      clearEditorHighlights() // XXX what about other highlights?
+      clearEditorHighlights() 
       socket.send("STEP:" + message);
    }
 }

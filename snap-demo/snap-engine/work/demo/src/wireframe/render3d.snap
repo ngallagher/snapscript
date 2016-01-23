@@ -582,7 +582,7 @@ class ThreeD with JPanelInterface with MouseMotionListener {
       var is = null;
       try {
          Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-         is = Thread.currentThread().getContextClassLoader().getResourceAsStream("wireframe/cube.spec");
+         is = ThreeD.class.getModule().getResource("/wireframe/cube.spec");
          var m = new Model3D(is);
          md = m;
          m.findBB();

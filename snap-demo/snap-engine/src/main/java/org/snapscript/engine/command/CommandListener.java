@@ -36,7 +36,7 @@ public class CommandListener {
          int line = validator.parse(resource, source);
          
          if(line == -1) {
-            File file = new File(root, resource);
+            File file = new File(root, "/src/" + resource);
             FileOutputStream out = new FileOutputStream(file);
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
             encoder.write(source);
@@ -57,7 +57,7 @@ public class CommandListener {
          int line = validator.parse(resource, source);
          
          if(line == -1) {
-            File file = new File(root, resource);
+            File file = new File(root, "/src/" + resource);
             FileOutputStream out = new FileOutputStream(file);
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
             encoder.write(source);
@@ -83,7 +83,7 @@ public class CommandListener {
    public void onDelete(DeleteCommand command) {
       try {
          String resource = command.getResource();
-         File file = new File(root, resource);
+         File file = new File(root, "/src/" + resource);
          
          if(file.exists()) {
             file.delete();
