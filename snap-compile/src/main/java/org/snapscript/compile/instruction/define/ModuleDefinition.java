@@ -1,12 +1,16 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.Reserved.TYPE_THIS;
+
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ModuleDefinition extends Statement {   
    
@@ -20,16 +24,25 @@ public class ModuleDefinition extends Statement {
 
    @Override
    public Result compile(Scope scope) throws Exception {
+      Value value = create(scope);
+      Module module = value.getValue();
+      Scope inner = module.getScope();
+      State state = inner.getState();
+      
+      state.addConstant(TYPE_THIS, value);
+      
+      return body.execute(inner);
+   }
+   
+   protected Value create(Scope scope) throws Exception {
       Value value = module.evaluate(scope, null);
       String name = value.getString();
-      Module module = scope.getModule();
-      Context context = module.getContext();
+      Module parent = scope.getModule();
+      Context context = parent.getContext();
       ModuleBuilder builder = context.getBuilder();
-      Module define = builder.create(name);
-      Scope inner = define.getScope();
+      Module module = builder.create(name);
       
-      // this will define the classes in this module!!
-      return body.execute(inner);
+      return ValueType.getConstant(module);
    }
 
 }

@@ -21,7 +21,7 @@ class Point {
    var y;
    new(x, y){
      this.x=x;
-     thix.y=y;
+     this.y=y;
    }
 }
 System.err.println("static="+StaticVar.PI);

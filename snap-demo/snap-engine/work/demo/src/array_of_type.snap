@@ -5,4 +5,5 @@ class X{
    }
 }
 var arr=new X[10][10];
+var x = new X(1);
 System.err.println(arr);

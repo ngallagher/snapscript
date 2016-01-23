@@ -1,6 +1,7 @@
 package org.snapscript.core.index;
 
-import static org.snapscript.core.Reserved.*;
+import static org.snapscript.core.Reserved.ANY_TYPE;
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import java.util.LinkedHashMap;
 import java.util.List;

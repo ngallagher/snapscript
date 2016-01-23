@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class MapState implements State {
-
+   
    private final Map<String, Value> values;
    private final Scope scope;
    private final Model model;
