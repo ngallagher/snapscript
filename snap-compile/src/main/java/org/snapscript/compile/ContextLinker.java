@@ -8,7 +8,7 @@ import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
-import org.snapscript.core.NoLibrary;
+import org.snapscript.core.NoPackage;
 import org.snapscript.core.PathConverter;
 import org.snapscript.core.Statement;
 import org.snapscript.core.StatementPackage;
@@ -54,6 +54,6 @@ public class ContextLinker implements PackageLinker {
          cache.cache(resource, statement); 
          return new StatementPackage(statement, module);
       }
-      return new NoLibrary(); 
+      return new NoPackage(); 
    } 
 }

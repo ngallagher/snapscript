@@ -25,32 +25,32 @@ public class TypeLoaderTest extends TestCase {
    }
    
    public void testLoader() throws Exception {
-      PackageLinker linker = new PackageLinker() {
-         
-         @Override
-         public Package link(String name, String source) throws Exception {
-            return null;
-         }
-         @Override
-         public Package link(String name, String source, String grammar) throws Exception {
-            return null;
-         }
-      };
-      long start = System.currentTimeMillis();
-      
-      for(int i = 0; i < 1000; i++) {
-         Store store = new ClassPathStore();
-         ResourceManager manager = new StoreManager(store);
-         ImportResolver resolver = new ImportResolver(linker, manager);
-         ModuleBuilder builder = new ModuleBuilder(null);
-         TypeLoader loader = new TypeLoader(resolver, builder);
-         
-         loader.loadType(ExampleObject.class);
-      }
-      long finish = System.currentTimeMillis();
-      long duration = finish - start;
-      
-      System.err.println("Duration: " + duration);
+//      PackageLinker linker = new PackageLinker() {
+//         
+//         @Override
+//         public Package link(String name, String source) throws Exception {
+//            return null;
+//         }
+//         @Override
+//         public Package link(String name, String source, String grammar) throws Exception {
+//            return null;
+//         }
+//      };
+//      long start = System.currentTimeMillis();
+//      
+//      for(int i = 0; i < 1000; i++) {
+//         Store store = new ClassPathStore();
+//         ResourceManager manager = new StoreManager(store);
+//         PackageManager resolver = new PackageManager(linker, manager);
+//         ModuleBuilder builder = new ModuleBuilder(null);
+//         TypeLoader loader = new TypeLoader(resolver, builder);
+//         
+//         loader.loadType(ExampleObject.class);
+//      }
+//      long finish = System.currentTimeMillis();
+//      long duration = finish - start;
+//      
+//      System.err.println("Duration: " + duration);
    }
 
 }

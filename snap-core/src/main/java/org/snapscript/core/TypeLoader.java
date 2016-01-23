@@ -4,18 +4,24 @@ import org.snapscript.core.index.TypeIndexer;
 
 public class TypeLoader {
    
+   private final PackageManager manager;
+   private final PackageLoader loader;
+   private final ImportScanner scanner;
    private final TypeIndexer indexer;
    
-   public TypeLoader(ImportResolver resolver, ModuleBuilder builder){
-      this.indexer = new TypeIndexer(resolver, builder);
+   public TypeLoader(PackageLinker linker, ModuleBuilder builder, ResourceManager manager){
+      this.scanner = new ImportScanner();
+      this.indexer = new TypeIndexer(builder, scanner);
+      this.loader = new PackageLoader(linker, manager);
+      this.manager = new PackageManager(loader, scanner);
    }
    
    public synchronized Package importPackage(String module) {
-      return indexer.addImport(module);
+      return manager.importPackage(module);
    }   
    
    public synchronized Package importType(String module, String name) {
-      return indexer.addImport(module, name); 
+      return manager.importType(module, name); 
    }
    
    public synchronized Type resolveType(String module, String name) throws Exception {
@@ -26,7 +32,7 @@ public class TypeLoader {
       return indexer.load(module, name, true);
    }
    
-   public synchronized Type loadType(Class cls) throws Exception {
-      return indexer.load(cls);
+   public synchronized Type loadType(Class type) throws Exception {
+      return indexer.load(type);
    } 
 }

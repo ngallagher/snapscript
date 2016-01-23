@@ -1,7 +1,6 @@
 package org.snapscript.compile;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.ImportResolver;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.ResourceManager;
@@ -16,7 +15,6 @@ public class StoreContext implements Context {
 
    private final ConstraintMatcher matcher;
    private final ResourceManager manager;
-   private final ImportResolver resolver;
    private final TraceAnalyzer analyzer;
    private final FunctionBinder binder;
    private final ModuleBuilder builder;
@@ -27,9 +25,8 @@ public class StoreContext implements Context {
       this.analyzer = new TraceAnalyzer();
       this.manager = new StoreManager(store);
       this.builder = new ModuleBuilder(this);
-      this.linker = new ContextLinker(this);
-      this.resolver = new ImportResolver(linker, manager);      
-      this.loader = new TypeLoader(resolver, builder);
+      this.linker = new ContextLinker(this);      
+      this.loader = new TypeLoader(linker, builder, manager);
       this.matcher = new ConstraintMatcher(loader);
       this.binder = new FunctionBinder(matcher, loader);
    }

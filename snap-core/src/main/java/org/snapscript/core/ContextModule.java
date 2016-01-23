@@ -104,6 +104,17 @@ public class ContextModule implements Module {
                if(result == null) {
                   result = loader.resolveType(null, name); // null is "java.*"
                }
+               if(result == null) {
+                  ModuleBuilder builder= context.getBuilder();
+                  
+                  for(String prefix : modules) {
+                     Module module = builder.resolve(prefix);
+                     
+                     if(module != null) {
+                        result = module.getType(name); // get imports from the outer module if it exists
+                     }
+                  }
+               }
             }
             if(result != null) {
                imports.put(name, result);

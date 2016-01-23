@@ -1,6 +1,6 @@
 package org.snapscript.core;
 
-public class NoLibrary implements Package {
+public class NoPackage implements Package {
 
    @Override
    public Statement compile(Scope scope) throws Exception {

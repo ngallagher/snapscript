@@ -5,18 +5,18 @@ import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class LibraryLoader {
+public class PackageLoader {
    
    private final ResourceManager manager;
    private final PackageLinker linker;
    private final String suffix;
    private final Set libraries;
 
-   public LibraryLoader(PackageLinker linker, ResourceManager manager){
+   public PackageLoader(PackageLinker linker, ResourceManager manager){
       this(linker, manager, SCRIPT_EXTENSION);
    }
    
-   public LibraryLoader(PackageLinker linker, ResourceManager manager, String suffix){
+   public PackageLoader(PackageLinker linker, ResourceManager manager, String suffix){
       this.libraries = new CopyOnWriteArraySet();
       this.manager = manager;
       this.linker = linker;
@@ -39,6 +39,6 @@ public class LibraryLoader {
             libraries.add(qualifier);         
          }
       }
-      return new NoLibrary();
+      return new NoPackage();
    }
 }
