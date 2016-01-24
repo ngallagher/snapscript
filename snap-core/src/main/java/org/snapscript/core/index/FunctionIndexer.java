@@ -29,7 +29,7 @@ public class FunctionIndexer {
                String name = method.getName();
                Class[] parameters = method.getParameterTypes();
                Function function = generator.generate(method, parameters, name, modifiers);
-   
+               
                functions.add(function);
             }
          }

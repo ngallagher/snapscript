@@ -8,11 +8,11 @@ import static org.snapscript.core.Reserved.IMPORT_JAVA_MATH;
 import static org.snapscript.core.Reserved.IMPORT_JAVA_NET;
 import static org.snapscript.core.Reserved.IMPORT_JAVA_UTIL;
 
+import java.lang.Package;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.lang.Package;
 
 public class ImportScanner {
    
@@ -28,6 +28,7 @@ public class ImportScanner {
    
    private final Map<String, Package> packages;
    private final Map<String, Class> types;
+   private final Map<Object, String> names;
    private final Set<String> failures;
    private final String[] prefixes;
   
@@ -36,9 +37,10 @@ public class ImportScanner {
    }
    
    public ImportScanner(String... prefixes) {
-      this.packages = new ConcurrentHashMap<String, Package>();
-      this.types = new ConcurrentHashMap<String, Class>();
-      this.failures = new CopyOnWriteArraySet<String>();
+      this.packages = new HashMap<String, Package>();
+      this.names = new HashMap<Object, String>();
+      this.types = new HashMap<String, Class>();
+      this.failures = new HashSet<String>();
       this.prefixes = prefixes;
    }
    
@@ -54,6 +56,8 @@ public class ImportScanner {
                result = loadPackage(prefix + name);
                
                if(result != null) {
+                  packages.put(name, result);
+                  names.put(result, name);
                   return result;
                }
             }   
@@ -76,6 +80,8 @@ public class ImportScanner {
                type = loadType(prefix + name);
                
                if(type != null) {
+                  types.put(name, type);
+                  names.put(type, name);
                   return type;
                }
             }   
@@ -86,10 +92,35 @@ public class ImportScanner {
       return null;
    }
    
+   public String importName(Class type) {
+      String result = names.get(type);
+      
+      if(result == null) {
+         String absolute = type.getName();
+         
+         for(String prefix : prefixes) {
+            if(absolute.startsWith(prefix)) {
+               int length = prefix.length();
+               String name = absolute.substring(length);
+               
+               types.put(absolute, type);
+               types.put(name, type);
+               names.put(type, name);
+               
+               return name;
+            }
+            types.put(absolute, type);
+            names.put(type, absolute);
+         }   
+         return absolute;
+      }
+      return result;
+   }
+   
    private Class loadType(String name) {
       try {
          Class result = Class.forName(name);
-         
+
          if(result != null) {
             types.put(name, result);
          }

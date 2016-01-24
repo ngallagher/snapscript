@@ -25,8 +25,8 @@ public class ClassIndexer {
    private final ModuleBuilder builder;
    private final TypeIndexer indexer;
    private final TypeCache cache;
-   
-   public ClassIndexer(ModuleBuilder builder, TypeIndexer indexer, TypeCache cache){
+
+   public ClassIndexer(ModuleBuilder builder, TypeIndexer indexer, TypeCache cache) {
       this.constructors = new ConstructorIndexer(indexer);
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer);
@@ -35,56 +35,52 @@ public class ClassIndexer {
       this.indexer = indexer;
       this.cache = cache;
    }
-   
+
    public synchronized Type index(Class cls) throws Exception {
       Class type = promoter.promote(cls);
-      Type t=cache.resolveType(cls); // XXX there should be some form of TypeCache
-      
-      if(t==null){
+      Type t = cache.resolveType(cls); 
+      if (t == null) {
+         //System.err.println(cls);
          String key = type.getName();
          java.lang.Package p = type.getPackage();
-         String pack="";
-         if(p!=null){
-            pack=p.getName();
-         }else {
-            pack="";// debug types
+         String pack = "";
+         if (p != null) {
+            pack = p.getName();
+         } else {
+            pack = "";// debug types
          }
          String simpleName = type.getSimpleName();
          Class base = type.getSuperclass();
          Class[] interfaces = type.getInterfaces();
-         Map<String,Type> hier = new LinkedHashMap<String,Type>();
+         Map<String, Type> hier = new LinkedHashMap<String, Type>();
 
-         Type bbse=null;
-         if(base!=null) {
-            bbse=indexer.load(base);
-            hier.put(bbse.getName(),bbse);
+         Type bbse = null;
+         if (base != null) {
+            bbse = indexer.loadType(base);
+            hier.put(bbse.getName(), bbse);
          }
          Module module = builder.create(pack); // create lzy
-         Type done=null;
-         if(type.isArray()){
-            done=new ClassType(module,simpleName,indexer.load(type.getComponentType()),cls);
-         }else {
-            done=new ClassType(module,simpleName,null,cls);
+         Type done = null;
+         if (type.isArray()) {
+            done = new ClassType(module, simpleName, indexer.loadType(type.getComponentType()), cls);
+         } else {
+            done = new ClassType(module, simpleName, null, cls);
          }
          List<Function> functions = done.getFunctions();
          List<Property> properties = done.getProperties();
          List<Type> types = done.getTypes();
-         
-         if(type==Object.class){
-            Type any=indexer.load(DEFAULT_PACKAGE, ANY_TYPE, true);// XXX there should be some form of TypeCache
-            hier.put(ANY_TYPE,any);
+
+         if (type == Object.class) {
+            Type any = indexer.loadType(DEFAULT_PACKAGE, ANY_TYPE, true);
+            hier.put(ANY_TYPE, any);
          }
-         cache.registerType(cls,done);
-         for(Class i:interfaces){
-            Type baset=indexer.load(i);
-            hier.put(i.getName(),baset);
-            //hierL.addAll(baset.getTypes());
-            //for(Type ttp:baset.getTypes()){
-            //   hier.put(ttp.getName(),ttp);
-            //}
+         //cache.registerType(cls, done);
+         for (Class i : interfaces) {
+            Type baset = indexer.loadType(i);
+            hier.put(i.getName(), baset);
          }
-         if(!cls.isPrimitive()&&!cls.isArray()) { // need to know if a type is primitive for methods or constructors, MIGHT cause problems!!!!
-            cache.registerType(key,done);// XXX there should be some form of TypeCache
+         if (!cls.isPrimitive() && !cls.isArray()) { 
+            //cache.registerType(key, done);
             List<Function> f = this.functions.index(type);
             List<Property> pd = this.properties.index(type);
             List<Function> cons = this.constructors.index(type);

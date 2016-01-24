@@ -16,12 +16,10 @@ public class TypeIndexer {
    private final ModuleBuilder builder;
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
-   //private final List<String> modules;
    private final TypeCache cache;
-   
-   public TypeIndexer(ModuleBuilder builder, ImportScanner scanner){
-      this.types = new LinkedHashMap<Object, Type>(); 
-      //this.modules = new ArrayList<String>();
+
+   public TypeIndexer(ModuleBuilder builder, ImportScanner scanner) {
+      this.types = new LinkedHashMap<Object, Type>();
       this.cache = new TypeCache();
       this.indexer = new ClassIndexer(builder, this, cache);
       this.scanner = scanner;
@@ -29,71 +27,72 @@ public class TypeIndexer {
    }
 
    private void registerType(Object name, Type type) {
-      if(types.containsKey(name)) {
-         throw new IllegalStateException("Key " + name + " already registered");
-      }
+      //if (types.containsKey(name)) {
+      //   throw new IllegalStateException("Key " + name + " already registered");
+      //}
       types.put(name, type);
    }
+
    private Type resolveType(Object name) {
       return types.get(name);
    }
-   private Type define(String moduleName, String name) throws Exception {
-      String full=createName(moduleName, name);
-      Type t  =resolveType(full);
-    
-      
-      if(t==null) {
+
+   private Type defineType(String moduleName, String name) throws Exception {
+      String full = createName(moduleName, name);
+      Type type = resolveType(full);
+
+      if (type == null) {
          Module module = builder.create(moduleName);
-         
-//         if(module == null) {
-//            throw new IllegalArgumentException("Module '"+moduleName+"' does not exist");
-//         }
-         t=new ScopeType(module, name);
-         registerType(full,t);
+
+         // if(module == null) {
+         // throw new
+         // IllegalArgumentException("Module '"+moduleName+"' does not exist");
+         // }
+         type = new ScopeType(module, name);
+         registerType(full, type);
       }
-      return t;
+      return type;
    }
-   private String createName(String module, String name){
-      if(module != null && module.length() >0) {
+
+   private String createName(String module, String name) {
+      if (module != null && module.length() > 0) {
          return module + "." + name;
       }
       return name;
    }
-   
-   public Type load(String moduleName, String name) throws Exception {
-      return load(moduleName, name,true); // XXX moduleName was null here?????
+
+   public Type loadType(String moduleName, String name) throws Exception {
+      return loadType(moduleName, name, true); // XXX moduleName was null here?????
    }
-   public Type load(String moduleName, String nameX, boolean create) throws Exception {
+
+   public Type loadType(String moduleName, String nameX, boolean create) throws Exception {
       String name = createName(moduleName, nameX);
-      Type t = resolveType(name);
-      
-      if(t==null) { 
-         Class cls=scanner.importType(name); 
-         if(cls==null){
-//            for(String n:modules){// was the type named in a module???
-//               t=resolveType(n+"."+name);
-//               if(t!=null){
-//                  return t;
-//               }
-//            }
-            if(create){
-               return define(moduleName, nameX);
+      Type type = resolveType(name);
+
+      if (type == null) {
+         Class cls = scanner.importType(name);
+         if (cls == null) {
+            if (create) {
+               return defineType(moduleName, nameX);
             }
             return null;
          }
-         t=load(cls);
+         type = loadType(cls);
       }
-      return t;
+      return type;
    }
+
    @Bug("Add to module")
-   public Type load(final Class cls) throws Exception {
-      Type done=resolveType(cls);
-      if(done == null) {
-         String name = cls.getName();
+   public Type loadType(final Class cls) throws Exception {
+      Type done = resolveType(cls);
+      if (done == null) {
+         String name = scanner.importName(cls);
+         String absolute = cls.getName();
          Type type = new ClassReference(indexer, cls, cls.getSimpleName());
          registerType(cls, type);
          registerType(name, type);
-        
+         registerType(absolute, type);
+
          return type;
       }
       return done;

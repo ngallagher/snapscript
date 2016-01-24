@@ -16,23 +16,23 @@ public class TypeLoader {
       this.manager = new PackageManager(loader, scanner);
    }
    
-   public synchronized Package importPackage(String module) {
+   public synchronized Package importPackage(String module) throws Exception  {
       return manager.importPackage(module);
    }   
    
-   public synchronized Package importType(String module, String name) {
+   public synchronized Package importType(String module, String name) throws Exception {
       return manager.importType(module, name); 
    }
    
    public synchronized Type resolveType(String module, String name) throws Exception {
-      return indexer.load(module, name, false);
+      return indexer.loadType(module, name, false);
    }
    
    public synchronized Type defineType(String module, String name) throws Exception {
-      return indexer.load(module, name, true);
+      return indexer.loadType(module, name, true);
    }
    
    public synchronized Type loadType(Class type) throws Exception {
-      return indexer.load(type);
+      return indexer.loadType(type);
    } 
 }

@@ -24,7 +24,7 @@ public class FunctionGenerator {
          List<String> names = new ArrayList<String>();
    
          for(int i = 0; i < parameters.length; i++){
-            Type type = indexer.load(parameters[i]);
+            Type type = indexer.loadType(parameters[i]);
    
             types.add(type);
             names.add("a" + i);

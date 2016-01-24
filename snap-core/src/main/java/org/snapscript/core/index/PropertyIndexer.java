@@ -39,7 +39,7 @@ public class PropertyIndexer {
             if(Modifier.isPublic(modifiers)) {
                String name = field.getName();
                Class declaration = field.getType();
-               Type type = indexer.load(declaration);
+               Type type = indexer.loadType(declaration);
                Property property = generator.generate(field, type, name); 
                
                properties.add(property);
@@ -58,7 +58,7 @@ public class PropertyIndexer {
                      Class declaration = method.getReturnType();
                      Method write = match(methods, declaration, name);
                      Class normal = promoter.promote(declaration);
-                     Type type = indexer.load(normal);
+                     Type type = indexer.loadType(normal);
                      Property property = generator.generate(method, write, type, name);                
                      
                      if(write != null){
