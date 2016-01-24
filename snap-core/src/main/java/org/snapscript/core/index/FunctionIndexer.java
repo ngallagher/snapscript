@@ -3,7 +3,6 @@ package org.snapscript.core.index;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.snapscript.core.Function;
@@ -11,12 +10,15 @@ import org.snapscript.core.Function;
 public class FunctionIndexer {
    
    private final FunctionGenerator generator;
+   private final ConstructorIndexer indexer;
    
    public FunctionIndexer(TypeIndexer indexer){
       this.generator = new FunctionGenerator(indexer);
+      this.indexer = new ConstructorIndexer(indexer);
    }
 
    public List<Function> index(Class source) throws Exception {
+      List<Function> constructors = indexer.index(source);
       Method[] methods = source.getDeclaredMethods();
       
       if(methods.length > 0) {
@@ -33,8 +35,11 @@ public class FunctionIndexer {
                functions.add(function);
             }
          }
+         if(!constructors.isEmpty()) {
+            functions.addAll(constructors);
+         }
          return functions;
       }
-      return Collections.emptyList();
+      return constructors;
    }
 }

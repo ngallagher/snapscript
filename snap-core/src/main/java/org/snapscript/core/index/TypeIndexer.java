@@ -16,12 +16,10 @@ public class TypeIndexer {
    private final ModuleBuilder builder;
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
-   private final TypeCache cache;
 
    public TypeIndexer(ModuleBuilder builder, ImportScanner scanner) {
+      this.indexer = new ClassIndexer(this, builder, scanner);
       this.types = new LinkedHashMap<Object, Type>();
-      this.cache = new TypeCache();
-      this.indexer = new ClassIndexer(builder, this, cache);
       this.scanner = scanner;
       this.builder = builder;
    }
@@ -37,6 +35,7 @@ public class TypeIndexer {
       return types.get(name);
    }
 
+   @Bug("Should this use full name or name, or both!!!!")
    private Type defineType(String moduleName, String name) throws Exception {
       String full = createName(moduleName, name);
       Type type = resolveType(full);
@@ -88,6 +87,7 @@ public class TypeIndexer {
       if (done == null) {
          String name = scanner.importName(cls);
          String absolute = cls.getName();
+         @Bug("Should this be full or name, or both!!!!")
          Type type = new ClassReference(indexer, cls, cls.getSimpleName());
          registerType(cls, type);
          registerType(name, type);

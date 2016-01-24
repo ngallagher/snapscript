@@ -21,27 +21,27 @@ public class ClassReference implements Type {
    
    @Override
    public List<Property> getProperties() {
-      return index.getType().getProperties();
+      return index.getProperties();
    }
 
    @Override
    public List<Function> getFunctions() {
-      return index.getType().getFunctions();
+      return index.getFunctions();
    }
 
    @Override
    public List<Type> getTypes() {
-      return index.getType().getTypes();
+      return index.getTypes();
    }
 
    @Override
    public Module getModule() {
-      return index.getType().getModule();
+      return index.getModule();
    }
 
    @Override
    public Type getEntry() {
-      return index.getType().getEntry();
+      return index.getEntry();
    }
 
    @Override

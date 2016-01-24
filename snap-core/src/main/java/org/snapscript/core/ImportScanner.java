@@ -58,7 +58,6 @@ public class ImportScanner {
                
                if(result != null) {
                   packages.put(name, result);
-                  names.put(result, name);
                   return result;
                }
             }   
@@ -82,7 +81,6 @@ public class ImportScanner {
                
                if(type != null) {
                   types.put(name, type);
-                  names.put(type, name);
                   return type;
                }
             }   
@@ -112,6 +110,31 @@ public class ImportScanner {
             }
             types.put(absolute, type);
             names.put(type, absolute);
+         }   
+         return absolute;
+      }
+      return result;
+   }
+   
+   public String importName(Package module) {
+      String result = names.get(module);
+      
+      if(result == null) {
+         String absolute = module.getName();
+         
+         for(String prefix : prefixes) {
+            if(absolute.startsWith(prefix)) {
+               int length = prefix.length();
+               String name = absolute.substring(length);
+               
+               packages.put(absolute, module);
+               packages.put(name, module);
+               names.put(module, name);
+               
+               return name;
+            }
+            packages.put(absolute, module);
+            names.put(module, absolute);
          }   
          return absolute;
       }

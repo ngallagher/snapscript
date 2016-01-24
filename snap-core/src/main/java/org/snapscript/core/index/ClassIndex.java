@@ -1,32 +1,80 @@
 package org.snapscript.core.index;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.snapscript.core.Function;
+import org.snapscript.core.Module;
+import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
 public class ClassIndex {
    
-   private final AtomicReference<Type> reference;
-   private final ClassIndexer indexer;
-   private final Class require;
+   private List<Property> properties;
+   private List<Function> functions;
+   private ClassIndexer indexer;
+   private List<Type> types;
+   private Module module;
+   private Class require;
+   private Type entry;
    
    public ClassIndex(ClassIndexer indexer, Class require) {      
-      this.reference = new AtomicReference<Type>();
       this.indexer = indexer;
       this.require = require;
    }
 
-   public Type getType() {
-      Type type = reference.get();
-      
-      if(type == null) {
+   public List<Property> getProperties() {
+      if(properties == null) {
          try {
-            type = indexer.index(require);
+            properties = indexer.indexProperties(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not load " + require, e);
+            throw new IllegalStateException("Could not index " + require, e);
          }
-         reference.set(type);
       }
-      return type;
-   } 
+      return properties;
+   }
+   
+   public List<Function> getFunctions() {
+      if(functions == null) {
+         try {
+            functions = indexer.indexFunctions(require);
+         } catch(Exception e) {
+            throw new IllegalStateException("Could not index " + require, e);
+         }
+      }
+      return functions;
+   }
+   
+   public List<Type> getTypes() {
+      if(types == null) {
+         try {
+            types = indexer.indexTypes(require);
+         } catch(Exception e) {
+            throw new IllegalStateException("Could not index " + require, e);
+         }
+      }
+      return types;
+   }
+   
+   public Module getModule() {
+      if(module == null) {
+         try {
+            module = indexer.indexModule(require);
+         } catch(Exception e) {
+            throw new IllegalStateException("Could not index " + require, e);
+         }
+      }
+      return module;
+   }
+
+   public Type getEntry() {
+      if(entry == null) {
+         try {
+            entry = indexer.indexEntry(require);
+         } catch(Exception e) {
+            throw new IllegalStateException("Could not index " + require, e);
+         }
+      }
+      return entry;
+   }
 }
