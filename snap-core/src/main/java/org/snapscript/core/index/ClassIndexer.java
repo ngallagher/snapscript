@@ -4,7 +4,6 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportScanner;
 import org.snapscript.core.Module;
@@ -82,7 +81,6 @@ public class ClassIndexer {
       Class entry = source.getComponentType();
       
       if(entry != null) {
-         @Bug("Should we promote here!!!! maybe we need primitive")
          Class type = promoter.promote(entry);
          
          if(type == null) {

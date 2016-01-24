@@ -3,13 +3,10 @@ package org.snapscript.core.index;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.ImportScanner;
-import org.snapscript.core.Module;
 import org.snapscript.core.ModuleBuilder;
 import org.snapscript.core.Type;
 
-@Bug("This is rubbish and needs to be cleaned up")
 public class TypeIndexer {
 
    private final Map<Object, Type> types;
@@ -24,78 +21,87 @@ public class TypeIndexer {
       this.builder = builder;
    }
 
-   private void registerType(Object name, Type type) {
-      //if (types.containsKey(name)) {
-      //   throw new IllegalStateException("Key " + name + " already registered");
-      //}
-      types.put(name, type);
-   }
+   public Type loadType(String module, String name) throws Exception {
+      String alias = createName(module, name);
+      Type done = types.get(alias);
 
-   private Type resolveType(Object name) {
-      return types.get(name);
-   }
-
-   @Bug("Should this use full name or name, or both!!!!")
-   private Type defineType(String moduleName, String name) throws Exception {
-      String full = createName(moduleName, name);
-      Type type = resolveType(full);
-
-      if (type == null) {
-         Module module = builder.create(moduleName);
-
-         // if(module == null) {
-         // throw new
-         // IllegalArgumentException("Module '"+moduleName+"' does not exist");
-         // }
-         type = new ScopeType(module, name);
-         registerType(full, type);
-      }
-      return type;
-   }
-
-   private String createName(String module, String name) {
-      if (module != null && module.length() > 0) {
-         return module + "." + name;
-      }
-      return name;
-   }
-
-   public Type loadType(String moduleName, String name) throws Exception {
-      return loadType(moduleName, name, true); // XXX moduleName was null here?????
-   }
-
-   public Type loadType(String moduleName, String nameX, boolean create) throws Exception {
-      String name = createName(moduleName, nameX);
-      Type type = resolveType(name);
-
-      if (type == null) {
-         Class cls = scanner.importType(name);
-         if (cls == null) {
-            if (create) {
-               return defineType(moduleName, nameX);
-            }
+      if (done == null) {
+         Class match = scanner.importType(alias);
+         
+         if (match == null) {
             return null;
          }
-         type = loadType(cls);
+         return loadType(match);
       }
-      return type;
+      return done;
    }
 
-   @Bug("Add to module")
-   public Type loadType(final Class cls) throws Exception {
-      Type done = resolveType(cls);
-      if (done == null) {
-         String name = scanner.importName(cls);
-         String absolute = cls.getName();
-         @Bug("Should this be full or name, or both!!!!")
-         Type type = new ClassReference(indexer, cls, cls.getSimpleName());
-         registerType(cls, type);
-         registerType(name, type);
-         registerType(absolute, type);
+   public Type defineType(String module, String name) throws Exception {
+      String alias = createName(module, name);
+      Type done = types.get(alias);
 
+      if (done == null) {
+         Class match = scanner.importType(alias);
+         
+         if (match == null) {
+            Type type = createType(module, name);
+            
+            types.put(type, type);
+            types.put(alias, type);
+            
+            return type;
+         }
+         return loadType(match);
+      }
+      return done;
+   }
+
+   public Type loadType(Class source) throws Exception {
+      Type done = types.get(source);
+      
+      if (done == null) {
+         String alias = scanner.importName(source);
+         String absolute = source.getName();
+         Type type = createType(source);
+
+         types.put(source, type);
+         types.put(alias, type);
+         types.put(absolute, type);
+         
          return type;
       }
       return done;
    }
 
+   private Type createType(String module, String name) throws Exception {
+      String alias = createName(module, name);
+      Type type = types.get(alias);
+      
+      if(type == null) {
+         return new ScopeType(builder, module, name);
+      }
+      return type;
+   }
+   
+   private Type createType(Class source) throws Exception {
+      String alias = scanner.importName(source);
+      String name = source.getSimpleName();
+      Type type = types.get(alias);
+      
+      if(type == null) {
+         return new ClassReference(indexer, source, name);
+      }
+      return type;
+   }
+   
+   private String createName(String module, String name) {
+      if(module != null) {
+         int length = module.length();
+         
+         if(length > 0) {
+            return module + "." + name;
+         }
+      }
+      return name;
+   }
 }
