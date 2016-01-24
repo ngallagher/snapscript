@@ -36,7 +36,6 @@ public class ListValue extends Value {
       return value;
    }
    
-   @Bug("Is list.add(null) right here??? what about arrays")
    @Override
    public void setValue(Object value){
       Object proxy = builder.create(value);

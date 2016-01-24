@@ -8,7 +8,6 @@ public class Signature {
    private final List<Type> types;
    private final int modifiers;
    
-   @Bug("Make sure modifiers work properly and consistently")
    public Signature(List<String> names, List<Type> types, int modifiers){
       this.modifiers = modifiers;
       this.types = types;

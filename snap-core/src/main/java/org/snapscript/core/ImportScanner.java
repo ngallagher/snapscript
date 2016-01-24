@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Bug("importName(Class) should resolve longest name, i.e 'lang.System'->java. over 'System'->java.lang.")
 public class ImportScanner {
    
    private static final String[] DEFAULTS = {

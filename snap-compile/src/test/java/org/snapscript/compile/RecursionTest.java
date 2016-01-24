@@ -2,7 +2,7 @@ package org.snapscript.compile;
 
 import junit.framework.TestCase;
 
-public class FibTest extends TestCase {
+public class RecursionTest extends TestCase {
 
    private static final String SOURCE=
    "function fib(n) {\n"+
@@ -14,7 +14,7 @@ public class FibTest extends TestCase {
    "var result = fib(30);\n"+
    "System.err.println(result);\n";
          
-   public void testFib() throws Exception{
+   public void testRecursion() throws Exception{
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile(SOURCE);
       long start = System.currentTimeMillis();
@@ -24,6 +24,6 @@ public class FibTest extends TestCase {
    }
    
    public static void main(String[] list) throws Exception {
-      new FibTest().testFib();
+      new RecursionTest().testRecursion();
    }
 }
