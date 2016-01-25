@@ -3,12 +3,13 @@ package org.snapscript.compile;
 import junit.framework.TestCase;
 
 public class StaticVariableTest extends TestCase {
-   
-   private static final String SOURCE=
+  
+   private static final String SOURCE_1=
    "class StaticVar {\n"+
    "   static const PI = 3.14;\n"+
    "   static const circle = new Circle(PI);\n"+
    "   static var count = 0;\n"+
+   //"   new(){}\n"+
    "   static inc(){\n"+
    "      return count++;\n"+
    "   }\n"+
@@ -39,8 +40,8 @@ public class StaticVariableTest extends TestCase {
          
    public void testStaticVariable() throws Exception{
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-      System.err.println(SOURCE);
-      Executable executable = compiler.compile(SOURCE);
+      System.err.println(SOURCE_1);
+      Executable executable = compiler.compile(SOURCE_1);
       long start = System.currentTimeMillis();
       
       executable.execute();

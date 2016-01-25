@@ -1,8 +1,5 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.Bug;
-
-@Bug("This might be too flexible")
 public class StringConverter extends ConstraintConverter {
    
    @Override
