@@ -10,7 +10,7 @@ public class MapState implements State {
    private final Map<String, Value> values;
    private final Scope scope;
    private final Model model;
-   
+  
    public MapState(Model model) {
       this(model, null);
    }

@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.CompoundStatement;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Invocation;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -17,16 +15,17 @@ import org.snapscript.core.Value;
 
 public class MemberFunction implements TypePart {
    
+   private final MemberFunctionBuilder builder;
    private final ParameterList parameters;
+   private final ModifierList modifiers;
    private final Evaluation identifier;
-   private final Statement statement;
-   private final ModifierList modifier;
+
    
    public MemberFunction(ModifierList modifier, Evaluation identifier, ParameterList parameters, Statement statement){  
+      this.builder = new MemberFunctionBuilder(statement);
       this.identifier = identifier;
       this.parameters = parameters;
-      this.statement = statement;
-      this.modifier = modifier;
+      this.modifiers = modifier;
    } 
 
    @Bug("This is rubbish and needs to be cleaned up")
@@ -36,32 +35,21 @@ public class MemberFunction implements TypePart {
       Value handle = identifier.evaluate(scope, null);  
       String name = handle.getString();
       Signature signature = parameters.create(scope);
-      Value mod = modifier.evaluate(scope, null);
+      Value mod = modifiers.evaluate(scope, null);
       int modifiers = mod.getInteger();
       
       if(ModifierType.isStatic(modifiers)) {
          Module module = scope.getModule();
          String qualifier=type.getName();
          //XXX invocation
-         Statement init = new InitializerStatement(statements, type); // initialize static scope first
-         Statement compound = new CompoundStatement(init, statement); // this should call onlt the init stuff
-         
-         
-         Invocation invocation = new StaticInvocation(compound, signature, scope);
-         Function functionStatic = new Function(signature, invocation, name);// description is wrong here.....      
-         Function function = new Function(signature, invocation, name);// description is wrong here.....
-         
-         // add functions !!!!!!!!
-         type.getFunctions().add(function);
+         Function functionStatic = builder.create(signature, statements, scope, type, name);// description is wrong here.....
+
          type.getFunctions().add(functionStatic);
-         module.getFunctions().add(functionStatic);
+         module.getFunctions().add(functionStatic); // This is VERY STRANGE!!! NEEDED BUT SHOULD NOT BE HERE!!!
 
          return null;//new FunctionDefinition(function,name); // we cannot invoke with scope registry
       }
-      //XXX invocation
-      Invocation invocation = new InstanceInvocation(statement, signature);
-      //Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
-      Function function = new Function(signature, invocation, name);// description is wrong here.....
+      Function function = builder.create(signature, scope, type, name);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

@@ -32,6 +32,9 @@ public class InstanceInvocation implements Invocation<Scope> {
    @Bug("This needs to be cleaned up")
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
+      if(statement == null) {
+         throw new IllegalStateException("Function is abstract");
+      }
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array

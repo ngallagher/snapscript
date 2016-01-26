@@ -1,11 +1,11 @@
 package org.snapscript.compile.instruction.define;
 
+import java.util.List;
+
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.ParameterList;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Invocation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -14,42 +14,33 @@ import org.snapscript.core.Value;
 
 public class TraitFunction implements TypePart {
 
+   private final TraitFunctionBuilder builder;
    private final ParameterList parameters;
+   private final ModifierList modifiers;
    private final Evaluation identifier;
    private final Statement statement;
-   private final ModifierList modifier;
    
-   public TraitFunction(ModifierList modifier, Evaluation identifier, ParameterList parameters) {
-      this(modifier, identifier, parameters, null);
+   public TraitFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters) {
+      this(modifiers, identifier, parameters, null);
    }
    
-   public TraitFunction(ModifierList modifier, Evaluation identifier, ParameterList parameters, Statement statement) {
+   public TraitFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters, Statement statement) {
+      this.builder = new TraitFunctionBuilder(statement);
       this.identifier = identifier;
       this.parameters = parameters;
       this.statement = statement;
-      this.modifier = modifier;
+      this.modifiers = modifiers;
    }
    
-   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
-      // XXX if this function is called it must be called on the internal scope of the instance...
-      Value handle = identifier.evaluate(null, null);  
+      List<Function> functions = type.getFunctions();
+      Value handle = identifier.evaluate(scope, null);  
       String name = handle.getString();
       Signature signature = parameters.create(null);
+      Function function = builder.create(signature, scope, name);
       
-      //XXX invocation
-      Invocation invocation = null;
-      if(statement != null){
-         invocation = new InstanceInvocation(statement, signature);
-      }else {
-         invocation = new AbstractInvocation(statement, signature);
-      }
-      Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
-      Function function = new Function(signature, scopeCall, name);// description is wrong here.....
-      
-      // add functions !!!!!!!!
-      type.getFunctions().add(function);
+      functions.add(function);
 
       return null;
    }

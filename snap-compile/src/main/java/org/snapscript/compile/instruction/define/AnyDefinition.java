@@ -39,6 +39,7 @@ public class AnyDefinition extends Statement {
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {
+         Scope value = module.getScope();
          Function hashCode = createHashCode();
          Function toString = createToString();
          Function equals = createEquals();
@@ -46,7 +47,7 @@ public class AnyDefinition extends Statement {
          functions.add(hashCode);
          functions.add(equals);
          functions.add(toString);
-         constructor.define(scope, null, type);
+         constructor.define(value, null, type);
       }
       return ResultType.getNormal(type);
    }

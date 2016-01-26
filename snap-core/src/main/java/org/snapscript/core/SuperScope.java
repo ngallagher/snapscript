@@ -7,8 +7,8 @@ public class SuperScope extends InstanceScope {
 
    private final Type base;
    
-   public SuperScope(Scope scope, Type type, Type base) {
-      super(scope, type);
+   public SuperScope(Model model, Scope scope, Type type, Type base) {
+      super(model, scope, null, type);
       this.base = base;
    }
    

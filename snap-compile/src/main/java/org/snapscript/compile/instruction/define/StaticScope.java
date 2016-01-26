@@ -15,7 +15,7 @@ public class StaticScope implements Scope {
    private final Scope scope;
    
    public StaticScope(Scope scope) {
-      this.state = new MapState(null, scope);      
+      this.state = new MapState(null, scope);
       this.scope = scope;
    }
    

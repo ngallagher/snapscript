@@ -6,8 +6,8 @@ public class InstanceScope implements Scope {
    private final Scope scope;
    private final Type type;
    
-   public InstanceScope(Scope scope, Type type) {
-      this.state = new MapState(null, scope);      
+   public InstanceScope(Model model, Scope scope, Scope base, Type type) {
+      this.state = new InstanceState(model, scope, base);      
       this.scope = scope;
       this.type = type;
    }

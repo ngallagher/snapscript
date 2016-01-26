@@ -9,6 +9,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.Model;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -58,16 +59,16 @@ public class SuperConstructor implements TypePart {
       }
 
       @Override
-      public Result execute(Scope scope, Type real) throws Exception {
-         Value reference = expression.evaluate(scope, real);
+      public Result execute(Scope instance, Type real) throws Exception {
+         Value reference = expression.evaluate(instance, real);
          Scope value = reference.getValue();
          
          // This won't work, there needs to be two forms of binding, a special Value needs to be 
          // assigned to super so that it takes a unique path through the FunctionBinder, perhaps
          // there needs to be a parameter we can pass that says when a method is referenced as
          // super then it needs to bind to a 
-         
-         Scope compound = new SuperScope(value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
+         Model model = instance.getModel();
+         Scope compound = new SuperScope(model, value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
          Value constant = ValueType.getConstant(compound, type);
          State state = compound.getState();
          state.addConstant(TYPE_SUPER, constant);

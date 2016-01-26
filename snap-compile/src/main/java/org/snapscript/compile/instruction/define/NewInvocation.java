@@ -10,6 +10,7 @@ import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Model;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -28,31 +29,28 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
    private final Signature signature;
    private final Initializer factory;
    private final Initializer body;
-   private final Type type;
+   private final Scope staticScope;
    private final boolean e;
    
-   public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor) {
-      this(type, signature, factory, body, constructor, false);
+   public NewInvocation(Scope staticScope, Signature signature, Initializer factory, Initializer body, Invocation constructor) {
+      this(staticScope, signature, factory, body, constructor, false);
    }
    
    @Bug("Find better way to pass enum bool")
-   public NewInvocation(Type type, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enm) {
+   public NewInvocation(Scope staticScope, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enm) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
       this.constructor = constructor;
       this.signature = signature;
       this.factory = factory;
       this.body = body;
-      this.type = type;
+      this.staticScope = staticScope;
       this.e = enm;
    }
 
    @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
-      if(list.length == 0) {
-         throw new IllegalArgumentException("Type '" + type + "' must be given an explicit type");
-      }
       Type real = (Type)list[0];
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
@@ -73,15 +71,20 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       }
       // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
       Result result = factory.execute(inner, real);
-      Scope instance = result.getValue();
+      Scope superScopeInstance = result.getValue();
       
-      if(instance == null) {
+      if(superScopeInstance == null) {
          throw new IllegalStateException("Instance could not be created");
       }
       // this could easily be the "Any" type
       //Type superT = type.getTypes().size() > 0 ? type.getTypes().get(0) : null; // XXX this is rubbish!!
+      Model model = scope.getModel();
+      // this could easily be the "Any" type
+      //Type superT = type.getTypes().size() > 0 ? type.getTypes().get(0) : null; // XXX this is rubbish!!
+      InstanceScope wrapper = new InstanceScope(model, staticScope, superScopeInstance, real);// we need to pass the base type up!!
+      //@Bug("needs to be superScopeInstance")
+      //InstanceScope wrapper = new InstanceScope(staticScope, real);// we need to pass the base type up!!
       
-      InstanceScope wrapper = new InstanceScope(instance, real);// we need to pass the base type up!!
       
       // Super should probably be a special variable and have special instructions!!!!!
       Value self = ValueType.getConstant(wrapper, real);

@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.construct;
 
+import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
+
 import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
@@ -17,13 +19,13 @@ import org.snapscript.core.bind.FunctionBinder;
 public class ConstructObject implements Evaluation {
    
    private final ArgumentList list;
-   private final TextLiteral type;
+   private final Evaluation type;
    
-   public ConstructObject(TextLiteral type) {
+   public ConstructObject(Evaluation type) {
       this(type, null);         
    }
    
-   public ConstructObject(TextLiteral type, ArgumentList list) {
+   public ConstructObject(Evaluation type, ArgumentList list) {
       this.type = type;
       this.list = list;
    }      
@@ -49,7 +51,7 @@ public class ConstructObject implements Evaluation {
       return ValueType.getTransient(instance);
    }
    
-   private Callable<Result> bind(Scope scope, Type type) throws Exception {
+   public Callable<Result> bind(Scope scope, Type type) throws Exception {
       Module module = scope.getModule();
       Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
@@ -67,13 +69,13 @@ public class ConstructObject implements Evaluation {
             }
             expand[0] = type;
             
-            return binder.bind(scope, type, "new", expand);
+            return binder.bind(scope, type, TYPE_CONSTRUCTOR, expand);
          }
-         return binder.bind(scope, type, "new", arguments);
+         return binder.bind(scope, type, TYPE_CONSTRUCTOR, arguments);
       }
       if(real == null) {
-         return binder.bind(scope, type, "new", type);
+         return binder.bind(scope, type, TYPE_CONSTRUCTOR, type);
       }
-      return binder.bind(scope, type, "new");
+      return binder.bind(scope, type, TYPE_CONSTRUCTOR);
    }
 }

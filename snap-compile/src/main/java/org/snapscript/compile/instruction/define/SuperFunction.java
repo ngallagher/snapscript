@@ -5,6 +5,7 @@ import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.dispatch.InvocationBinder;
 import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
 import org.snapscript.core.Bug;
+import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
@@ -35,7 +36,8 @@ public class SuperFunction implements Evaluation {
          throw new IllegalArgumentException("Type required for super function call");
       }
       Type real = (Type)left;
-      SuperScope s =new SuperScope(instance, real, type);
+      Model model = instance.getModel();
+      SuperScope s =new SuperScope(model, instance, real, type);
       InvocationDispatcher handler = dispatcher.bind(s, null);
       Value reference = function.evaluate(s, left);
       String name = reference.getString();      
