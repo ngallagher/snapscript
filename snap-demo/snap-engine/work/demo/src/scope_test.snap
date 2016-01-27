@@ -1,0 +1,44 @@
+function print(t){
+   System.err.println(t);
+}
+function fun(x) {
+   print("x="+x);
+}
+
+function b(){
+   new X("tt").dump();
+}
+class X {
+   var i;
+   dump(){
+      fun(i);
+   }
+   new(i){
+      this.i=i;
+      this.y=y;
+   }
+   var y;
+}
+new X(4).dump();
+
+module Blah {
+   class Y{
+      var x;
+      var y;
+      new(x,y){   
+         this.x=x;
+         this.y=y;
+      }
+      a(){
+         fun(x);
+      }
+      b(){
+         fun(y);
+      }
+   }
+   function go(){
+      System.err.println("XX");
+   }
+}
+Blah.go();
+b();

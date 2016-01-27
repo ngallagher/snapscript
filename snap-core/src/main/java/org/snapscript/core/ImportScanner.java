@@ -7,6 +7,7 @@ import static org.snapscript.core.Reserved.IMPORT_JAVA_LANG;
 import static org.snapscript.core.Reserved.IMPORT_JAVA_MATH;
 import static org.snapscript.core.Reserved.IMPORT_JAVA_NET;
 import static org.snapscript.core.Reserved.IMPORT_JAVA_UTIL;
+import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 
 import java.lang.Package;
 import java.util.HashMap;
@@ -23,7 +24,8 @@ public class ImportScanner {
       IMPORT_JAVA_UTIL, 
       IMPORT_JAVA_IO,
       IMPORT_JAVA_NET,     
-      IMPORT_JAVA_MATH
+      IMPORT_JAVA_MATH,
+      IMPORT_SNAPSCRIPT
    };
    
    private final Map<String, Package> packages;

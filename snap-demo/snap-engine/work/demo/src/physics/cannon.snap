@@ -1,6 +1,6 @@
 
-import org.snapscript.swing.JPanelInterface;
-import org.snapscript.swing.JPanelAdapter;
+import swing.JPanelInterface;
+import swing.JPanelAdapter;
 import awt.BasicStroke;
 import awt.Color;
 import awt.Dimension;

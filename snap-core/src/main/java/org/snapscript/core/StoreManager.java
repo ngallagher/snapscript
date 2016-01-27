@@ -39,12 +39,19 @@ public class StoreManager implements ResourceManager {
 
    @Override
    public String getString(String path) {
-      byte[] array = getBytes(path);
+      InputStream source = getInputStream(path);
       
       try {
-         return new String(array, "UTF-8");
+         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+         byte[] array = new byte[1024];
+         int count = 0;
+         
+         while((count = source.read(array)) != -1) {
+            buffer.write(array, 0, count);
+         }
+         return buffer.toString("UTF-8");
       } catch(Exception e) {
-         throw new StoreException("Could not encode resource '" + path + "'", e);
+         throw new StoreException("Could not read resource '" + path + "'", e);
       }
    }
 

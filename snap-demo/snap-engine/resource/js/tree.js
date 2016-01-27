@@ -41,10 +41,61 @@ function createTree(element, id, expandPath, foldersOnly, clickCallback) { // #e
          $('#' + id).fancytree({
             click : clickCallback
          });
+         $("#" + id).contextmenu({
+            delegate: "span.fancytree-title",
+//            menu: "#options",
+            menu: [
+                {title: "&nbsp;New", uiIcon: "menu-new", children: [
+                   {title: "&nbsp;Script", cmd: "sub1", uiIcon: "menu-new"},
+                   {title: "&nbsp;Image", cmd: "sub1", uiIcon: "menu-new"}
+                   ]},
+                {title: "&nbsp;Run", cmd: "cut", uiIcon: "menu-run"},
+                {title: "&nbsp;Stop", cmd: "cut", uiIcon: "menu-stop"},                
+                {title: "&nbsp;Save", cmd: "copy", uiIcon: "menu-save"},             
+                {title: "&nbsp;Delete", cmd: "paste", uiIcon: "menu-trash", disabled: false },
+                {title: "----"},
+                {title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
+                {title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true }
+                ],
+            beforeOpen: function(event, ui) {
+              var node = $.ui.fancytree.getNode(ui.target);
+//                      node.setFocus();
+              node.setActive();
+              var $menu = ui.menu,
+              $target = ui.target,
+              extraData = ui.extraData; // passed when menu was opened by call to open()
+
+           // console.log("beforeOpen", event, ui, event.originalEvent.type);
+
+              ui.menu.zIndex( $(event.target).zIndex() + 2000);
+            },
+            select: function(event, ui) {
+              var node = $.ui.fancytree.getNode(ui.target);
+              alert("select " + ui.cmd + " on " + node);
+            }
+          });         
       }
       window.setTimeout(showFancyTree, 500);
    });
 }
+
+function bindTreeContextMenu(span) {
+   // Add context menu to this node:
+   $(span).contextMenu({menu: "myMenu"}, function(action, el, pos) {
+     // The event was bound to the <span> tag, but the node object
+     // is stored in the parent <li> tag
+     var node = $.ui.fancytree.getNode(el);
+     switch( action ) {
+     case "cut":
+     case "copy":
+     case "paste":
+       copyPaste(action, node);
+       break;
+     default:
+       alert("Todo: appply action '" + action + "' to node " + node);
+     }
+   });
+ };
 
 function createResourcePath(path) { 
    var resourcePathPrefix = "/resource/" + document.title + "/src/";

@@ -18,8 +18,9 @@
 <link href="/css/threads.css" rel="stylesheet" />
 <link href="/css/variables.css" rel="stylesheet" />
 <script src="/js/external/ace/ace.js"></script>
-<script src="/js/external/jquery.min.js"></script>
-<script src="/js/external/jquery-ui.min.js"></script>
+<script src="/js/external/jquery.js"></script>
+<script src="/js/external/jquery-ui.js"></script>
+<script src="/js/external/jquery-context-menu.js"></script>
 <script src="/js/external/bootstrap.min.js"></script>
 <script src="/js/external/spin.js"></script>
 <script src="/js/external/fancytree.js"></script>
@@ -35,6 +36,7 @@
 <script src="/js/dialog.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/problem.js"></script>
+<script src="/js/menu.js"></script>
 </head>
 <style>
 .runScript {
