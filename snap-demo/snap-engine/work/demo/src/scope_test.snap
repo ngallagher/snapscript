@@ -2,7 +2,7 @@ function print(t){
    System.err.println(t);
 }
 function fun(x) {
-   print("x="+x);
+   print("fun("+x+")");
 }
 
 function b(){
@@ -37,6 +37,8 @@ module Blah {
       }
    }
    function go(){
+      var v = new X("Blah.go="+22);
+      v.dump();
       System.err.println("XX");
    }
 }

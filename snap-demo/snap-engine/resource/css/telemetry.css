@@ -1,4 +1,4 @@
-#problems {
+#telemetry {
     font-family: "Lucida Console", sans-serif; 
     font-size: 0.9em;   
     background-color: #ffffff;
@@ -13,21 +13,9 @@
     bottom: 8px;
     left: 8px;
 }
-.problemHighlight {
-  position:absolute;
-  background:rgba(250,10,10,0.3);
-  z-index:20
-}
-.errorDescription {
-	font-family: "Lucida Console", sans-serif; 
-    font-size: 1.2em;  	
-	background-image: url('/img/toolbar/rem_co.gif');	
-	background-position: left center;
-	background-repeat: no-repeat;
-	padding-left: 22px; /* Or size of icon + spacing */
-}
-.errorTab {	
-	background-image: url('/img/toolbar/errorwarning_tab.gif');	
+
+.telemetryTab {	
+	background-image: url('/img/toolbar/th_vertical.gif');	
 	background-position: left bottom;
 	background-repeat: no-repeat;
 	padding-top: 3px;

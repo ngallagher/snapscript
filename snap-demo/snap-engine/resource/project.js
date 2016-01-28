@@ -245,19 +245,22 @@ function createLayout() {
             active : 'tab1',
             tabs : [ {
                id : 'tab1',
-               caption : 'Console'
+               caption : '<div class="consoleTab">Console</div>'
             }, {
                id : 'tab2',
-               caption : 'Problems'
+               caption : '<div class="errorTab">Problems</div>'
             }, {
                id : 'tab3',
-               caption : 'Breakpoints'
+               caption : '<div class="breakpointsTab">Breakpoints</div>'
             }, {
                id : 'tab4',
-               caption : 'Threads'
+               caption : '<div class="threadTab">Threads</div>'
             }, {
                id : 'tab5',
-               caption : 'Variables'
+               caption : '<div class="variableTab">Variables</div>'
+            }, {
+               id : 'tab6',
+               caption : '<div class="telemetryTab">Telemetry</div>'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
@@ -279,10 +282,15 @@ function createLayout() {
                   w2ui['tabLayout'].refresh();
                   $('#threads').w2render('threads');
                   showThreads();
-               } else {
+               } else if(event.target == 'tab5'){
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='variables'></div>");
                   w2ui['tabLayout'].refresh();
                   $('#variables').w2render('variables');
+                  showVariables();
+               } else {
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='telemetry'></div>");
+                  w2ui['tabLayout'].refresh();
+                  $('#telemetry').w2render('telemetry');
                   showVariables();
                }
             }
@@ -348,6 +356,35 @@ function createLayout() {
                var record = grid.get(sel[0]);
                toggleExpandVariable(record.path);
             }
+         }
+      }
+   });
+   
+   $().w2grid({
+      name : 'telemetry',
+      columns : [ {
+         field : 'name',
+         caption : 'Name',
+         size : '30%',
+         sortable : false
+      }, {
+         field : 'value',
+         caption : 'Value',
+         size : '40%',
+         sortable : false
+      }, {
+         field : 'type',
+         caption : 'Type',
+         size : '30%'
+      } ],
+      onClick : function(event) {
+         var grid = this;
+         event.onComplete = function() {
+            var sel = grid.getSelection();
+//            if (sel.length == 1) {
+//               var record = grid.get(sel[0]);
+//               toggleExpandVariable(record.path);
+//            }
          }
       }
    });

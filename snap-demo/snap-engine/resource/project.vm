@@ -17,6 +17,7 @@
 <link href="/css/problems.css" rel="stylesheet" />
 <link href="/css/threads.css" rel="stylesheet" />
 <link href="/css/variables.css" rel="stylesheet" />
+<link href="/css/telemetry.css" rel="stylesheet" />
 <script src="/js/external/ace/ace.js"></script>
 <script src="/js/external/jquery.js"></script>
 <script src="/js/external/jquery-ui.js"></script>

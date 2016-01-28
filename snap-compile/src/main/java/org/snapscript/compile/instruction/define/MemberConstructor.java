@@ -23,17 +23,17 @@ public class MemberConstructor implements TypePart {
    private final ParameterList parameters;
    private final ModifierList modifier;
    private final Statement statement;
-   private final ArgumentList list;
+   private final TypePart part;
 
    public MemberConstructor(ModifierList modifier, ParameterList parameters, Statement statement){  
       this(modifier, parameters, null, statement);
    }  
    
-   public MemberConstructor(ModifierList modifier, ParameterList parameters, ArgumentList list, Statement statement){  
+   public MemberConstructor(ModifierList modifier, ParameterList parameters, TypePart part, Statement statement){  
       this.parameters = parameters;
       this.statement = statement;
       this.modifier = modifier;
-      this.list = list;
+      this.part = part;
    } 
    
    @Override
@@ -65,16 +65,8 @@ public class MemberConstructor implements TypePart {
    }
    
    public Initializer extract(Scope scope, Initializer statements, Type type) throws Exception {
-      if(list != null){
-         TypePart part = new SuperConstructor(list);
-         return part.define(scope, null, type);
-      }
-      List<Type> types = type.getTypes();
-      
-      for(Type base : types) {
-         ArgumentList list = new ArgumentList();
-         TypePart part = new SuperConstructor(list);
-         return part.define(scope, null, type);                  
+      if(part != null){
+         return part.define(scope, null, type);              
       }
       return new PrimitiveConstructor(); // just create the scope object
    }

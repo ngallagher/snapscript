@@ -34,6 +34,8 @@ import org.snapscript.compile.instruction.define.Modifier;
 import org.snapscript.compile.instruction.define.ModifierList;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
 import org.snapscript.compile.instruction.define.ModuleName;
+import org.snapscript.compile.instruction.define.SuperConstructor;
+import org.snapscript.compile.instruction.define.ThisConstructor;
 import org.snapscript.compile.instruction.define.TraitDefinition;
 import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
@@ -139,7 +141,9 @@ public enum Instruction {
    MODIFIER_LIST(ModifierList.class, "modifier-list", false), 
    MEMBER_FIELD(MemberField.class, "member-field", false),
    MEMBER_FUNCTION(MemberFunction.class, "member-function", false),   
-   MEMBER_CONSTRUCTOR(MemberConstructor.class, "member-constructor", false),        
+   MEMBER_CONSTRUCTOR(MemberConstructor.class, "member-constructor", false),     
+   SUPER_CONSTRUCTOR(SuperConstructor.class, "super-constructor", false),
+   THIS_CONSTRUCTOR(ThisConstructor.class, "this-constructor", false),
    EXPRESSION(Expression.class, "expression", false),
    WILD_QUALIFIER(WildQualifier.class, "wild-qualifier", false),
    FULL_QUALIFIER(FullQualifier.class, "full-qualifier", false),

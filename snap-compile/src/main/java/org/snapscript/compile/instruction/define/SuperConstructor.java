@@ -23,6 +23,10 @@ public class SuperConstructor implements TypePart {
    
    private final ArgumentList list;
    
+   public SuperConstructor() {
+      this(null);
+   }
+   
    public SuperConstructor(ArgumentList list) {
       this.list = list;
    }
