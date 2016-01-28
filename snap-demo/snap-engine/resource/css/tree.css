@@ -17,12 +17,13 @@
 .ui-menu {
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 12px;
+	font-color: #000000;
 	background-color: #f3f3f3;
 	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 	padding: 1px;
-	width: 100px;
+	width: 150px;
 	z-index: 3; /* over ext-wide titles */
 }
 
