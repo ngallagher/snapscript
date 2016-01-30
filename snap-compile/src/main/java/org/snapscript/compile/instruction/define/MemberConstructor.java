@@ -61,7 +61,6 @@ public class MemberConstructor implements TypePart {
       
       
       
-      
       //ERROR!!!!!!!
       return new PrimitiveConstructor(); // just create the scope object
    }
