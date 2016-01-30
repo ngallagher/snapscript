@@ -50,7 +50,7 @@ public class MemberField implements TypePart {
       String name = value.getString();
       
       if (checker.isStatic()) {
-         Accessor accessor = new StaticAccessor(declare, scope, type, name);
+         Accessor accessor = new StaticAccessor(initializer, scope, type, name);
          Property property = new Property(name, constraint, accessor);
          
          properties.add(property);
