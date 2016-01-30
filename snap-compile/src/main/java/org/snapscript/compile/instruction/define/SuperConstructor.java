@@ -1,82 +1,41 @@
 package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
-import static org.snapscript.core.Reserved.TYPE_SUPER;
-
-import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.core.Bug;
+import org.snapscript.compile.instruction.TextLiteral;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Model;
-import org.snapscript.core.Result;
-import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
-import org.snapscript.core.State;
-import org.snapscript.core.SuperScope;
+import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
-import org.snapscript.core.Value;
-import org.snapscript.core.ValueType;
+import org.snapscript.parse.StringToken;
 
 public class SuperConstructor implements TypePart {
    
-   private final ArgumentList list;
+   private final SuperExtractor extractor;
+   private final ArgumentList arguments;
    
    public SuperConstructor() {
       this(null);
    }
    
-   public SuperConstructor(ArgumentList list) {
-      this.list = list;
+   public SuperConstructor(ArgumentList arguments) {
+      this.extractor = new SuperExtractor();
+      this.arguments = arguments;
    }
 
-   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {
-      List<Type> types=type.getTypes();
-         Type superT=types.isEmpty()?null:types.get(0);
+      Type base = extractor.extractor(type);
       
-      if(superT == null) {
-         throw new IllegalStateException("No super constructor exists");
+      if(base == null) {
+         throw new IllegalStateException("No super type for '" + type + "'");
       }     
-      Name name = new Name();
-      Evaluation evaluation= new SuperFunction(name, superT,list);
-      return new SuperStatement(evaluation, superT);
-   }
-   public final class Name implements Evaluation {
-
-      @Override
-      public Value evaluate(Scope scope, Object left) throws Exception {
-         return ValueType.getTransient(TYPE_CONSTRUCTOR);
-      }
+      StringToken name = new StringToken(TYPE_CONSTRUCTOR);
+      Evaluation literal = new TextLiteral(name);
+      Evaluation evaluation = new SuperInvocation(literal, arguments, base);
       
-   }
-   public final class SuperStatement extends Initializer {
-      
-      private final Evaluation expression;
-      private final Type type;
-      
-      public SuperStatement(Evaluation expression, Type type) {
-         this.expression = expression;
-         this.type = type;
-      }
-
-      @Override
-      public Result execute(Scope instance, Type real) throws Exception {
-         Value reference = expression.evaluate(instance, real);
-         Scope value = reference.getValue();
-         
-         // This won't work, there needs to be two forms of binding, a special Value needs to be 
-         // assigned to super so that it takes a unique path through the FunctionBinder, perhaps
-         // there needs to be a parameter we can pass that says when a method is referenced as
-         // super then it needs to bind to a 
-         Model model = instance.getModel();
-         Scope compound = new SuperScope(model, value, real, type); // this is a scope that sits between the instance and its super instance!!! kind of CRAP!!
-         Value constant = ValueType.getConstant(compound, type);
-         State state = compound.getState();
-         state.addConstant(TYPE_SUPER, constant);
-         return ResultType.getNormal(compound);
-      }
+      return new SuperInitializer(evaluation, base);
    }
 }

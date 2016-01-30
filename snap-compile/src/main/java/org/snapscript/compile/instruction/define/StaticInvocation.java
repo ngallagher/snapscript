@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
 import org.snapscript.core.Bug;
@@ -19,6 +20,7 @@ public class StaticInvocation implements Invocation<Object> {
 
    private final ConstraintChecker checker;
    private final SignatureAligner aligner;
+   private final AtomicBoolean compile;
    private final Signature signature;
    private final Statement statement;
    private final Scope inner;
@@ -26,12 +28,12 @@ public class StaticInvocation implements Invocation<Object> {
    public StaticInvocation(Statement statement, Signature signature, Scope inner) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
+      this.compile = new AtomicBoolean();
       this.statement = statement;
       this.signature = signature;
       this.inner = inner;
    }
    
-   @Bug("Must compile the statement before running")
    @Override
    public Result invoke(Scope outer, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
@@ -51,7 +53,9 @@ public class StaticInvocation implements Invocation<Object> {
          Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
-      statement.compile(scope); // we need to run static initializer
+      if(compile.compareAndSet(false, true)) {
+         statement.compile(scope); // we need to run static initializer
+      }
       return statement.execute(scope);
    }
 }

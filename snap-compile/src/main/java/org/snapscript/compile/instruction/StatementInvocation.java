@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.core.Bug;
 import org.snapscript.core.Invocation;
@@ -18,17 +19,18 @@ public class StatementInvocation implements Invocation<Object> {
 
    private final ConstraintChecker checker;
    private final SignatureAligner aligner;
+   private final AtomicBoolean compile;
    private final Signature signature;
    private final Statement statement;
    
    public StatementInvocation(Statement statement, Signature signature) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
+      this.compile = new AtomicBoolean();
       this.statement = statement;
       this.signature = signature;
    }
    
-   @Bug("Static init via compile()")
    @Override
    public Result invoke(Scope scope, Object object, Object... list) throws Exception {
       List<String> names = signature.getNames();
@@ -49,7 +51,9 @@ public class StatementInvocation implements Invocation<Object> {
          Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
-      statement.compile(inner);
+      if(compile.compareAndSet(false, true)) {
+         statement.compile(inner);
+      }
       return statement.execute(inner);
    }
 
