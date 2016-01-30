@@ -28,12 +28,12 @@ public class SuperInitializer extends Initializer {
    public Result execute(Scope instance, Type real) throws Exception {
       Value reference = expression.evaluate(instance, real);
       Scope value = reference.getValue();
-      Scope compound = builder.create(value, real); 
-      Value constant = ValueType.getConstant(compound, type);
-      State state = compound.getState();
+      Scope base = builder.create(value, real); 
+      Value constant = ValueType.getConstant(base, type);
+      State state = base.getState();
       
       state.addConstant(TYPE_SUPER, constant);
       
-      return ResultType.getNormal(compound);
+      return ResultType.getNormal(base);
    }
 }
