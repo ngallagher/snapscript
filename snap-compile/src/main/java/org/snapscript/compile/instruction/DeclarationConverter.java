@@ -11,35 +11,29 @@ import org.snapscript.core.convert.ConstraintMatcher;
 
 public class DeclarationConverter {
 
-   private final Constraint constraint;
+   private final ConstraintExtractor extractor;
 
    public DeclarationConverter(Constraint constraint) {      
-      this.constraint = constraint;
+      this.extractor = new ConstraintExtractor(constraint);
    }   
 
    public Value convert(Scope scope, Object value, String name) throws Exception {
-      if(constraint != null) {
-         Value qualifier = constraint.evaluate(scope, null);
-         String alias = qualifier.getString();
+      Type type = extractor.extract(scope);
+      
+      if(type != null) {
          Module module = scope.getModule();
-         Type type = module.getType(alias);
-         
-         if(type == null) {
-            throw new IllegalStateException("Constraint '" + alias +"' has not been imported");
-         }
          Context context = module.getContext();
          ConstraintMatcher matcher = context.getMatcher();
          ConstraintConverter converter = matcher.match(type);
          int score = converter.score(value);
          
          if(score == 0) {
-            throw new IllegalStateException("Variable '" + name + "' does not match constraint '" + alias + "'");
+            throw new IllegalStateException("Variable '" + name + "' does not match constraint '" + type + "'");
          }
          if(value != null) {
             value = converter.convert(value);
          }
-         return ValueType.getTransient(value, type);
       }
-      return ValueType.getTransient(value, null);
+      return ValueType.getTransient(value, type);
    }
 }

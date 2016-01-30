@@ -10,11 +10,9 @@ import org.snapscript.core.Type;
 public class InstanceInitializer extends Initializer {
    
    private final Evaluation evaluation;
-   private final Type type;
    
-   public InstanceInitializer(Evaluation evaluation, Type type){
+   public InstanceInitializer(Evaluation evaluation){
       this.evaluation = evaluation;
-      this.type = type;
    }
 
    @Override

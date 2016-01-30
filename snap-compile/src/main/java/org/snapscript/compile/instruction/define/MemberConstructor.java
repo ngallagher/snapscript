@@ -13,7 +13,6 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
-import org.snapscript.core.Value;
 
 public class MemberConstructor implements TypePart {
    

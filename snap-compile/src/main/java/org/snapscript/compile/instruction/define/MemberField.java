@@ -3,13 +3,11 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 
 import org.snapscript.compile.instruction.Constraint;
-import org.snapscript.compile.instruction.DeclareConstant;
-import org.snapscript.compile.instruction.DeclareVariable;
+import org.snapscript.compile.instruction.ConstraintExtractor;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.TextLiteral;
-import org.snapscript.core.Bug;
+import org.snapscript.core.Accessor;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeAccessor;
@@ -19,10 +17,10 @@ import org.snapscript.core.Value;
 
 public class MemberField implements TypePart {
 
+   private final MemberFieldDeclaration declaration;
+   private final ConstraintExtractor extractor;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
-   private final Constraint constraint;
-   private final Evaluation value;
 
    public MemberField(ModifierList modifiers, TextLiteral identifier) {
       this(modifiers, identifier, null, null);
@@ -37,46 +35,31 @@ public class MemberField implements TypePart {
    }
 
    public MemberField(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
+      this.declaration = new MemberFieldDeclaration(modifiers, identifier, constraint, value);
+      this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(modifiers);
-      this.constraint = constraint;
       this.identifier = identifier;
-      this.value = value;
    }
 
-   @Bug("This is rubbish and needs to be cleaned up")
    @Override
-   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
+   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
+      Initializer declare = declaration.declare(scope, initializer);
       List<Property> properties = type.getProperties();
-      Value vvvv = identifier.evaluate(scope, null);
-      String name = vvvv.getString();
-
+      Value value = identifier.evaluate(scope, null);
+      Type constraint = extractor.extract(scope);
+      String name = value.getString();
+      
       if (checker.isStatic()) {
-         Initializer initializer = null;
-         if (checker.isConstant()) {
-            Evaluation evaluation = new DeclareConstant(identifier, constraint, value);
-            initializer = new StaticInitializer(evaluation, scope);
-         } else {
-            Evaluation evaluation = new DeclareVariable(identifier, constraint, value);
-            initializer = new StaticInitializer(evaluation, scope);
-         }
-         StaticAccessor accessor = new StaticAccessor(statements, scope, type, name);
-         Property property = new Property(name, type, accessor);
-
+         Accessor accessor = new StaticAccessor(declare, scope, type, name);
+         Property property = new Property(name, constraint, accessor);
+         
          properties.add(property);
-
-         return initializer;
+      } else {
+         Accessor accessor = new ScopeAccessor(name);
+         Property property = new Property(name, constraint, accessor); // is this the correct type!!??
+         
+         properties.add(property);
       }
-      ScopeAccessor accessor = new ScopeAccessor(name);
-      Property property = new Property(name, type, accessor);
-
-      properties.add(property);
-
-      if (checker.isConstant()) {
-         Evaluation evaluation = new DeclareConstant(identifier, constraint, value);
-         return new InstanceInitializer(evaluation, type);
-      }
-      Evaluation evaluation = new DeclareVariable(identifier, constraint, value);
-      return new InstanceInitializer(evaluation, type);
-
+      return declare;
    }
 }
