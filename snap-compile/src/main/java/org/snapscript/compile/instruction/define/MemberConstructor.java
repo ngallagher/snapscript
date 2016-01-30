@@ -20,18 +20,18 @@ public class MemberConstructor implements TypePart {
    private final MemberConstructorBuilder builder;
    private final SuperExtractor extractor;
    private final ParameterList parameters;
-   private final ModifierList modifier;
+   private final ModifierChecker checker;
    private final TypePart part;
 
-   public MemberConstructor(ModifierList modifier, ParameterList parameters, Statement statement){  
-      this(modifier, parameters, null, statement);
+   public MemberConstructor(ModifierList modifiers, ParameterList parameters, Statement statement){  
+      this(modifiers, parameters, null, statement);
    }  
    
-   public MemberConstructor(ModifierList modifier, ParameterList parameters, TypePart part, Statement statement){  
+   public MemberConstructor(ModifierList modifiers, ParameterList parameters, TypePart part, Statement statement){  
       this.builder = new MemberConstructorBuilder(statement);
+      this.checker = new ModifierChecker(modifiers);
       this.extractor = new SuperExtractor();
       this.parameters = parameters;
-      this.modifier = modifier;
       this.part = part;
    } 
    
@@ -43,8 +43,6 @@ public class MemberConstructor implements TypePart {
    @Bug("This is rubbish and needs to be cleaned up, also better way of passing enum bool")
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean enumeration) throws Exception {
       Signature signature = parameters.create(scope, TYPE_CLASS);
-      Value value = modifier.evaluate(scope, null);
-      int modifiers = value.getInteger();
       Initializer baseCall = extract(scope, statements, type);
       Function constructor = builder.create(signature, scope, statements, baseCall, type, enumeration);
       List<Function> functions = type.getFunctions();

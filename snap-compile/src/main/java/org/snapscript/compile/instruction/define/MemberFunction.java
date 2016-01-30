@@ -17,15 +17,15 @@ public class MemberFunction implements TypePart {
    
    private final MemberFunctionBuilder builder;
    private final ParameterList parameters;
-   private final ModifierList modifiers;
+   private final ModifierChecker checker;
    private final Evaluation identifier;
 
    
-   public MemberFunction(ModifierList modifier, Evaluation identifier, ParameterList parameters, Statement statement){  
+   public MemberFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters, Statement statement){  
       this.builder = new MemberFunctionBuilder(statement);
+      this.checker = new ModifierChecker(modifiers);
       this.identifier = identifier;
       this.parameters = parameters;
-      this.modifiers = modifier;
    } 
 
    @Bug("This is rubbish and needs to be cleaned up")
@@ -35,10 +35,8 @@ public class MemberFunction implements TypePart {
       Value handle = identifier.evaluate(scope, null);  
       String name = handle.getString();
       Signature signature = parameters.create(scope);
-      Value mod = modifiers.evaluate(scope, null);
-      int modifiers = mod.getInteger();
       
-      if(ModifierType.isStatic(modifiers)) {
+      if(checker.isStatic()) {
          Module module = scope.getModule();
          String qualifier=type.getName();
          //XXX invocation

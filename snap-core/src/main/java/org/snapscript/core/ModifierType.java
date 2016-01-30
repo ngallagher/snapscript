@@ -30,7 +30,15 @@ public enum ModifierType {
    }
    
    public static boolean isAbstract(int modifier) {
-      return (OVERRIDE.mask & modifier) != 0;
+      return (ABSTRACT.mask & modifier) != 0;
+   }
+   
+   public static boolean isPublic(int modifier) {
+      return (PUBLIC.mask & modifier) != 0;
+   }
+   
+   public static boolean isPrivate(int modifier) {
+      return (PRIVATE.mask & modifier) != 0;
    }
    
    public static ModifierType resolveModifier(String token) {
