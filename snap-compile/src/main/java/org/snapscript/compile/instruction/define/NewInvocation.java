@@ -21,7 +21,7 @@ import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 
-public class NewInvocation implements Invocation<Scope> { // every constructor created must have an extra parameter 'this' for example new(x: String) is actually new(t: Type, s: String), so we pass up the parameter of type!!!
+public class NewInvocation implements Invocation<Scope> {
    
    private final ConstraintChecker checker;
    private final SignatureAligner aligner;
@@ -30,14 +30,14 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
    private final Initializer factory;
    private final Initializer body;
    private final Scope staticScope;
-   private final boolean e;
+   private final boolean enumeration;
    
    public NewInvocation(Scope staticScope, Signature signature, Initializer factory, Initializer body, Invocation constructor) {
       this(staticScope, signature, factory, body, constructor, false);
    }
    
    @Bug("Find better way to pass enum bool")
-   public NewInvocation(Scope staticScope, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enm) {
+   public NewInvocation(Scope staticScope, Signature signature, Initializer factory, Initializer body, Invocation constructor, boolean enumeration) {
       this.aligner = new SignatureAligner(signature);
       this.checker = new ConstraintChecker();
       this.constructor = constructor;
@@ -45,7 +45,7 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
       this.factory = factory;
       this.body = body;
       this.staticScope = staticScope;
-      this.e = enm;
+      this.enumeration = enumeration;
    }
 
    @Bug("This is rubbish and needs to be cleaned up")
@@ -69,47 +69,43 @@ public class NewInvocation implements Invocation<Scope> { // every constructor c
          Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
       }
-      // XXX HACK in the type for the new invocation e.g new(Type class, a,b,c,b)
       Result result = factory.execute(inner, real);
-      Scope superScopeInstance = result.getValue();
+      Scope instance = result.getValue();
       
-      if(superScopeInstance == null) {
+      if(instance == null) {
          throw new IllegalStateException("Instance could not be created");
       }
-      // this could easily be the "Any" type
-      //Type superT = type.getTypes().size() > 0 ? type.getTypes().get(0) : null; // XXX this is rubbish!!
+      return create(scope, instance, list);
+   }
+
+   private Result create(Scope scope, Scope instance, Object... list) throws Exception {
+      Type real = (Type)list[0];
       Model model = scope.getModel();
-      // this could easily be the "Any" type
-      //Type superT = type.getTypes().size() > 0 ? type.getTypes().get(0) : null; // XXX this is rubbish!!
-      InstanceScope wrapper = new InstanceScope(model, staticScope, superScopeInstance, real);// we need to pass the base type up!!
-      //@Bug("needs to be superScopeInstance")
-      //InstanceScope wrapper = new InstanceScope(staticScope, real);// we need to pass the base type up!!
+      Class type = instance.getClass();
       
-      
-      // Super should probably be a special variable and have special instructions!!!!!
-      Value self = ValueType.getConstant(wrapper, real);
-      Value info = ValueType.getConstant(real); // give it the REAL type
-
-      wrapper.getState().addConstant(TYPE_CLASS, info);    
-      wrapper.getState().addConstant(TYPE_THIS, self);
-      //
-      // functoin calls need to be handled better!!!
-      // super is actually a very special value!!! its no good to just provide the base!!
-      //
-
-      /// XXX here we need to split body to fields and method
-      // wrapper needs both its functions, and the super class functions in the 'this' scope???
-      if(body != null) {
-         //body.compile(scope, real); // static stuff if needed
-         // This should be done only for non-enums!!
-         if(!e) {
-            body.compile(scope, real); // static stuff if needed
+      if(type != InstanceScope.class) {
+         InstanceScope wrapper = new InstanceScope(model, staticScope, instance, real);// we need to pass the base type up!!
+   
+         State state = wrapper.getState();
+         Value self = ValueType.getConstant(wrapper, real);
+         Value info = ValueType.getConstant(real); 
+   
+         state.addConstant(TYPE_CLASS, info);    
+         state.addConstant(TYPE_THIS, self);
+         instance = wrapper;
+         
+         if(body != null) {
+            //body.compile(scope, real); // static stuff if needed
+            // This should be done only for non-enums!!
+            if(!enumeration) {
+               body.compile(scope, real); // static stuff if needed
+            }
+            body.execute(instance, real);
          }
-         body.execute(wrapper, real);
       }
-      constructor.invoke(wrapper, wrapper, list);
+      constructor.invoke(instance, instance, list);
       
-      return ResultType.getNormal(wrapper);
+      return ResultType.getNormal(instance);
    }
 
 }

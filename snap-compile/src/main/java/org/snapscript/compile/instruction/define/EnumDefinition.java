@@ -67,17 +67,8 @@ public class EnumDefinition extends Statement {
          collector.update(s);
       }  
       initializer.execute(scope, t);
-      
-      List<Function>mapL=t.getFunctions();
-      int count=0;
-      for(Function f:mapL){
-         if(f.getName().equals(TYPE_CONSTRUCTOR)) {
-            count++;
-         }
-      }
-      if(count==0){
-         constructor.define(other, collector, t); // add the default no arg constructor!!
-      }
+      constructor.define(other, collector, t); // add the default no arg constructor!!
+
       //collector.compile(scope, t); // initialize the static scope
       keys.execute(other, t);
       collector.compile(other, t); // compile the fields after we are done!!!!

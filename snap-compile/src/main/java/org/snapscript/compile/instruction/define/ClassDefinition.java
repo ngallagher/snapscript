@@ -60,17 +60,8 @@ public class ClassDefinition extends Statement {
       t.getProperties().add(property);
       other.getState().addConstant(TYPE_CLASS, constant);
       initializer.execute(scope, t);
-      
-      List<Function>mapL=t.getFunctions();
-      int count=0;
-      for(Function f:mapL){
-         if(f.getName().equals(TYPE_CONSTRUCTOR)) {
-            count++;
-         }
-      }
-      if(count==0){
-         constructor.define(other, collector, t); // add the default no arg constructor!!
-      }
+      constructor.define(other, collector, t); // add the default no arg constructor!!
+
       //collector.compile(other, t); // do all of the static initialization!! 
       return ResultType.getNormal(t);
    }
