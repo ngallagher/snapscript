@@ -12,10 +12,19 @@ public class InstanceState implements State {
       this.base = base;
    }
    
-   @Bug("What about super names i.e 'base'!!")
    @Override
    public Set<String> getNames() {
-      return state.getNames();
+      Set<String> names = state.getNames();
+      
+      if(base != null) {
+         State state = base.getState();
+         Set<String> inner = state.getNames();
+         
+         if(!inner.isEmpty()) {
+            names.addAll(inner);
+         }
+      }
+      return names;
    }
 
    @Override
