@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
@@ -18,22 +18,21 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class ConstructObject implements Evaluation {
    
+   private final NameExtractor extractor;
    private final ArgumentList list;
-   private final Evaluation type;
    
    public ConstructObject(Evaluation type) {
       this(type, null);         
    }
    
    public ConstructObject(Evaluation type, ArgumentList list) {
-      this.type = type;
+      this.extractor = new NameExtractor(type);
       this.list = list;
    }      
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-      Value value = type.evaluate(scope, null);
-      String name = value.getString();
+      String name = extractor.extract(scope);
       Module module = scope.getModule();
       Type type = module.getType(name);
       

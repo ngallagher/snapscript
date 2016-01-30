@@ -25,11 +25,6 @@ public class TypeInvocation implements Invocation<Object>{
       } else {
          scope = inner;
       }
-      try{
-         return invocation.invoke(scope, object, list);
-      }catch(Exception e){
-         e.printStackTrace();
-         throw e;
-      }
+      return invocation.invoke(scope, object, list);
    }
 }

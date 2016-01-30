@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.collection.Iteration;
 import org.snapscript.compile.instruction.collection.IterationConverter;
 import org.snapscript.core.Result;
@@ -14,22 +15,21 @@ import org.snapscript.core.ValueType;
 public class ForInStatement extends Statement {
    
    private final IterationConverter converter;
-   private final Evaluation identifier;
+   private final NameExtractor extractor;
    private final Evaluation collection;
    private final Statement statement;
 
    public ForInStatement(Evaluation identifier, Evaluation collection, Statement statement) {
+      this.extractor = new NameExtractor(identifier);
       this.converter = new IterationConverter();
-      this.identifier = identifier;
       this.collection = collection;
       this.statement = statement;
    }
 
    @Override
-   public Result execute(Scope scope) throws Exception {     
-      Value reference = identifier.evaluate(scope, null);
+   public Result execute(Scope scope) throws Exception { 
       Value list = collection.evaluate(scope, null);
-      String name = reference.getString();
+      String name = extractor.extract(scope);
       Object object = list.getValue();
       Iteration iteration = converter.convert(object);
       Iterable iterable = iteration.getIterable(scope);

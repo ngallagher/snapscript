@@ -1,14 +1,13 @@
 package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.Reserved.TYPE_CLASS;
-import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Constant;
 import org.snapscript.core.ConstantAccessor;
-import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
@@ -20,18 +19,18 @@ import org.snapscript.core.Type;
 
 public class ClassDefinition extends Statement {   
    
-   private final DefaultConstructor constructor;
    private final PropertyInitializer initializer;
+   private final DefaultConstructor constructor;
    private final TypeHierarchy hierarchy;
-   private final TypeName name;
+   private final NameExtractor extractor;
    private final TypePart[] parts;
    
    public ClassDefinition(TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
       this.initializer = new PropertyInitializer(TYPE_THIS);
       this.constructor = new DefaultConstructor();
+      this.extractor = new NameExtractor(name);
       this.hierarchy = hierarchy;
       this.parts = parts;
-      this.name = name;
    }
 
    @Override
@@ -40,10 +39,10 @@ public class ClassDefinition extends Statement {
       InitializerCollector collector = new InitializerCollector();
       
       // this should be passed in to the ClassHierarchy to define the type hierarchy!!!
-      String n=name.evaluate(other, null).getString();
+      String name=extractor.extract(scope);
       
       Module module = other.getModule();
-      Type t = module.addType(n);
+      Type t = module.addType(name);
       List<Type>types=t.getTypes();
      
       types.addAll(hierarchy.create(other)); // add in the type hierarchy!!

@@ -1,0 +1,19 @@
+
+function print(x) {
+   System.err.println(x);
+}
+
+var x = 10;
+var y = 12;
+
+print(x > 2 ? "x > 2" : "x < 2");
+print(x > 24 ? "x > 24" : "x < 24");
+
+function max(a, b) { 
+   return a >b?a:b;
+}
+
+var max = max(44,55);
+
+System.err.println(max);
+   

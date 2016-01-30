@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.core.Reference;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 

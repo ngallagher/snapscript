@@ -1,14 +1,13 @@
 package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.Reserved.ENUM_VALUES;
-import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.Bug;
-import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
@@ -26,31 +25,30 @@ public class EnumDefinition extends Statement {
    private final DefaultConstructor constructor;
    private final PropertyInitializer initializer;
    private final TypeHierarchy hierarchy;
+   private final NameExtractor extractor;
    private final EnumList list;
-   private final TypeName name;
    private final TypePart[] parts;
    
    public EnumDefinition(TypeName name, TypeHierarchy hierarcy, EnumList list, TypePart... parts) {
       this.constructor = new DefaultConstructor(true);
       this.initializer = new PropertyInitializer();
+      this.extractor = new NameExtractor(name);
       this.hierarchy = hierarcy;
       this.parts = parts;
       this.list = list;
-      this.name = name;
    }
 
    @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);
-      //InitializerCollector duh = new InitializerCollector();
       InitializerCollector collector = new InitializerCollector();
 
       // this should be passed in to the ClassHierarchy to define the type hierarchy!!!
-      String n=name.evaluate(other, null).getString();
+      String name = extractor.extract(scope);
       
       Module module = other.getModule();
-      Type t = module.addType(n);
+      Type t = module.addType(name);
       List<Type>types=t.getTypes();
       List values = new ArrayList();
       Value ref = ValueType.getConstant(values);

@@ -8,16 +8,16 @@ import org.snapscript.core.ValueType;
 
 public class Parameter implements Evaluation {
    
-   private volatile Evaluation evaluation;
+   private volatile NameExtractor extractor;
    private volatile Constraint constraint;
    private volatile Value value;
    
-   public Parameter(Evaluation evaluation){
-      this(evaluation, null);
+   public Parameter(Evaluation identifier){
+      this(identifier, null);
    }
    
-   public Parameter(Evaluation evaluation, Constraint constraint){
-      this.evaluation = evaluation;
+   public Parameter(Evaluation identifier, Constraint constraint){
+      this.extractor = new NameExtractor(identifier);
       this.constraint = constraint;
    }
 
@@ -30,8 +30,7 @@ public class Parameter implements Evaluation {
    }
    
    private Value create(Scope scope, Object left) throws Exception {
-      Value reference = evaluation.evaluate(scope, left);
-      String name = reference.getString();
+      String name = extractor.extract(scope);
       
       if(constraint != null && name != null) {
          Value value = constraint.evaluate(scope, left);  

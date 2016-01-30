@@ -20,10 +20,10 @@ public class MemberConstructorBuilder {
    } 
    
    public Function create(Signature signature, Scope scope, Initializer statements, Initializer baseCall, Type type, boolean enumeration) throws Exception {
-      Invocation bodyCall = new StatementInvocation(statement, signature);  // this needs to be accessible 
-      Invocation invocation = new NewInvocation(scope, signature, baseCall, statements, bodyCall, enumeration); // now call the constructor code!!!
-      Invocation scopeCall = new TypeInvocation(invocation, scope);// ensure the static stuff is in scope
+      Invocation bodyCall = new StatementInvocation(statement, signature);
+      Invocation invocation = new NewInvocation(scope, signature, baseCall, statements, bodyCall, enumeration); 
+      Invocation scopeCall = new TypeInvocation(invocation, scope);
       
-      return new Function(signature, scopeCall, TYPE_CONSTRUCTOR, 1);// description is wrong here.....
+      return new Function(signature, scopeCall, TYPE_CONSTRUCTOR, 1);
    }
 }

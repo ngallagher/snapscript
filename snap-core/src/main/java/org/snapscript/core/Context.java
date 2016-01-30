@@ -8,6 +8,7 @@ public interface Context{
    ModuleBuilder getBuilder();
    TraceAnalyzer getAnalyzer();
    ConstraintMatcher getMatcher();
+   ExpressionExecutor getExecutor();
    FunctionBinder getBinder();
    PackageLinker getLinker();
    TypeLoader getLoader();  

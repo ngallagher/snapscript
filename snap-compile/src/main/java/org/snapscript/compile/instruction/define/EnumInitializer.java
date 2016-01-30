@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Initializer;
@@ -25,21 +26,20 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class EnumInitializer extends Initializer {
    
+   private final NameExtractor extractor;
    private final ArgumentList list;
-   private final EnumKey key;
    private final int index;
    
    public EnumInitializer(EnumKey key, ArgumentList list, int index) {
+      this.extractor = new NameExtractor(key);
       this.index = index;
       this.list = list;
-      this.key = key;
    }
    
    @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result execute(Scope scope, Type type) throws Exception {
-      Value value = key.evaluate(scope, null);
-      String name = value.getString();
+      String name = extractor.extract(scope);
       
       if(type == null) {
          throw new IllegalStateException("No type found for " + name); // class not found

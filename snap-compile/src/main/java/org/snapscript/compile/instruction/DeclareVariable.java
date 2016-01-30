@@ -9,7 +9,7 @@ import org.snapscript.core.ValueType;
 public class DeclareVariable implements Evaluation {
    
    private final DeclarationConverter checker;
-   private final TextLiteral identifier;
+   private final NameExtractor extractor;
    private final Evaluation value;
    
    public DeclareVariable(TextLiteral identifier) {
@@ -26,14 +26,13 @@ public class DeclareVariable implements Evaluation {
    
    public DeclareVariable(TextLiteral identifier, Constraint constraint, Evaluation value) {
       this.checker = new DeclarationConverter(constraint);
-      this.identifier = identifier;
+      this.extractor = new NameExtractor(identifier);
       this.value = value;
    }   
 
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
-      Value variable = identifier.evaluate(scope, null);
-      String name = variable.getString();
+      String name = extractor.extract(scope);
       Value value = create(scope, name);
 
       return declare(scope, value, name);

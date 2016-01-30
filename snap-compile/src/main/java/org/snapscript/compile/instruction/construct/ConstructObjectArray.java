@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction.construct;
 
 import org.snapscript.compile.instruction.Argument;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.collection.ArrayConverter;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -13,19 +13,18 @@ import org.snapscript.core.ValueType;
 public class ConstructObjectArray implements Evaluation {
    
    private final ArrayConverter converter;
+   private final NameExtractor extractor;
    private final Argument[] arguments;
-   private final TextLiteral type;
 
-   public ConstructObjectArray(TextLiteral type, Argument... arguments) {
+   public ConstructObjectArray(Evaluation type, Argument... arguments) {
+      this.extractor = new NameExtractor(type);
       this.converter = new ArrayConverter();
       this.arguments = arguments;
-      this.type = type;
    }      
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-      Value value = type.evaluate(scope, null);
-      String name = value.getString();
+      String name = extractor.extract(scope);
       Module module = scope.getModule();
       Type type = module.getType(name);
       Class entry = type.getType();

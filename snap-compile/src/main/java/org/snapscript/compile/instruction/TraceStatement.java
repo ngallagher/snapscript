@@ -14,8 +14,8 @@ public class TraceStatement extends Statement {
    private final int key;
    
    public TraceStatement(TraceAnalyzer analyzer, Statement statement, Line line, int key) {
-      this.analyzer = analyzer;
       this.statement = statement;
+      this.analyzer = analyzer;
       this.line = line;
       this.key = key;
    }

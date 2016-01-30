@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
