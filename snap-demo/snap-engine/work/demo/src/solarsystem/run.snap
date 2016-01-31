@@ -1,15 +1,15 @@
 /**
- * This program displays a simulated solar system in 2 dimensions.
- * Buttons along the top of the GUI allow the user to show or hide
- * various physical properties of the planets. These properties are
- * the acceleration and velocity vectors, the percent kinetic and potential
- * energy, and the trajectory the planet has taken. In addition, two
- * buttons allow the user to zoom in or out for better viewing. Finally,
- * there is a sliding scale on the right of the GUI that allows the user
- * to alter the mass of the sun.
- *
- * To run the program, you first must compile it (javac SolarSystem.java),
- * then you execute it using java SolarSystem <number of planets>.
+ * This program displays a simulated solar system in 2 dimensions. Buttons along
+ * the top of the GUI allow the user to show or hide various physical properties
+ * of the planets. These properties are the acceleration and velocity vectors,
+ * the percent kinetic and potential energy, and the trajectory the planet has
+ * taken. In addition, two buttons allow the user to zoom in or out for better
+ * viewing. Finally, there is a sliding scale on the right of the GUI that
+ * allows the user to alter the mass of the sun.
+ * 
+ * To run the program, you first must compile it (javac SolarSystem.java), then
+ * you execute it using java SolarSystem <number of planets>.
+ * 
  * @author Brett Kraabel
  * @author us.geocities.com/brettkraabel
  * @version 1.0
@@ -26,9 +26,11 @@ import awt.geom.AffineTransform;
 import awt.geom.Area;
 import awt.geom.Ellipse2D;
 import awt.geom.Ellipse2D$Double;
+import awt.geom.Ellipse2D$Float;
 import awt.geom.GeneralPath;
 import awt.geom.Line2D;
 import awt.geom.Line2D$Double;
+import awt.geom.Line2D$Float;
 import awt.geom.Rectangle2D;
 import awt.geom.Rectangle2D$Double;
 import util.Vector;
@@ -41,15 +43,16 @@ import swing.JPanel;
 import swing.JSlider;
 import swing.event.ChangeEvent;
 import swing.event.ChangeListener;
+
 /**
  * This class is used to make the spatial coordinates more transparent.
  */
 class Coord {
     /**
-     * X represents the horizontal dimension which is measured from LHS
-     * of GUI. Y represents the vertical dimension which is measured
-     * from top of GUI (i.e. Y increases as you go down).
-     */
+    * X represents the horizontal dimension which is measured from LHS of
+    * GUI. Y represents the vertical dimension which is measured from top of
+    * GUI (i.e. Y increases as you go down).
+    */
     static const X = 1;
     static const Y = 0;
 }
@@ -67,8 +70,8 @@ class SolarSystem {
      */
     new() { }
     /**
-     * Main entry point into program. User may input number of planets
-     * on command line.
+     * Main entry point into program. User may input number of planets on
+     * command line.
      */
     static start(arguments) {
         var skyFrame;
@@ -81,27 +84,29 @@ class SolarSystem {
                 usage();
                 System.exit(1);
                 skyFrame = new SkyFrame(0, 0);
+           }
+           try {
+               numOfPlanets = Integer.parseInt(arguments[0]);
+               numOfPlanets = Math.abs(numOfPlanets);
+               skyFrame = new SkyFrame(numOfPlanets, 0);
+           }
+           catch(e) {
+               System.err.println(e.toString());
+               usage();
+               System.exit(0);
+               skyFrame = new SkyFrame(0, 0);
+           }
         }
-        try {
-            numOfPlanets = Integer.parseInt(arguments[0]);
-            numOfPlanets = Math.abs(numOfPlanets);
-            skyFrame = new SkyFrame(numOfPlanets, 0);
-        }
-        catch(e) {
-            System.err.println(e.toString());
-            usage();
-            System.exit(0);
-            skyFrame = new SkyFrame(0, 0);
-        }
-    }
 
         while (true) {
             skyFrame.getPanel().repaint();
+            Thread.sleep(20);
         }
     }
     /**
-     * The method getColor is used by the sattelites of the solar system
-     * to get their color.
+     * The method getColor is used by the sattelites of the solar system to
+     * get their color.
+     * 
      * @param i Integer that determines the color that is returned.
      * @return Color
      */
@@ -131,8 +136,8 @@ class SolarSystem {
         return color;
     }
     /**
-     * The method usage prints a message to the console instructing the
-     * use on how to use the program.
+     * The method usage prints a message to the console instructing the use on
+     * how to use the program.
      */
     static usage() {
         const explaination =
@@ -155,8 +160,8 @@ class SolarSystem {
 }
 
 /**
- * This class provides the frame that contains the GUI interface and
- * the display.
+ * This class provides the frame that contains the GUI interface and the
+ * display.
  */
 class SkyFrame with ChangeListener with ActionListener {
     /**
@@ -187,27 +192,29 @@ class SkyFrame with ChangeListener with ActionListener {
     static var maxScaleFactor = 5;
     /**
      * The sun for the solar system.
+     * 
      * @see Sun
      */
     var sun;
     /**
      * The slider that allows the user to modify the sun's mass.
+     * 
      * @see JSlider
      */
     var slider;
     /**
-     * Button that allows the user to zoom in (i.e. view the solar system
-     *  in more detail).
+     * Button that allows the user to zoom in (i.e. view the solar system in
+     * more detail).
      */
     var zoomIn;
     /**
-     * Button that allows the user to zoom out (i.e. view the solar system
-     * in less detail.
+     * Button that allows the user to zoom out (i.e. view the solar system in
+     * less detail.
      */
     var zoomOut;
     /**
-     * Button that allows the user to display the acceleration vectors of
-     * each planet in the solar system.
+     * Button that allows the user to display the acceleration vectors of each
+     * planet in the solar system.
      */
     var accButton;
     /**
@@ -216,8 +223,8 @@ class SkyFrame with ChangeListener with ActionListener {
      */
     var velButton;
     /**
-     * Button that allows the user to display the energy of each planet
-     * in the solar system.
+     * Button that allows the user to display the energy of each planet in the
+     * solar system.
      */
     var energyButton;
     /**
@@ -253,14 +260,17 @@ class SkyFrame with ChangeListener with ActionListener {
     const unFreeze = "Unfreeze";
     /**
      * Panel in which to put the buttons.
+     * 
      * @see JPanel
      */
     var buttonPanel;
     var frame;
     /**
      * Constructs a frame containing the specified number of planets.
+     * 
      * @param mNumberOfPlanets The number of planets in the solar system.
-     * @param dt The time differential for integrating the equations of motion.
+     * @param dt The time differential for integrating the equations of
+     *            motion.
      */
     new(mNumberOfPlanets, dt) {
        frame = new JFrame("Solar System");
@@ -268,7 +278,7 @@ class SkyFrame with ChangeListener with ActionListener {
 
         frame.setSize(xPixels, yPixels);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         skyPanel = new SkyPanel(dt,
         xPixels,
         yPixels,
@@ -331,10 +341,12 @@ class SkyFrame with ChangeListener with ActionListener {
 
         frame.setContentPane(pane);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
     /**
      * The method actionPerformed implements the action called for by the
      * user.
+     * 
      * @param event An ActionEvent.
      * @see ActionEvent
      */
@@ -403,14 +415,15 @@ class SkyFrame with ChangeListener with ActionListener {
         }
     }
     /**
-     * Gets the current value of lengthScaleFactor used to calculate
-     * position of planets within the display.
+     * Gets the current value of lengthScaleFactor used to calculate position
+     * of planets within the display.
      */
     static getScaleFactor() {
         return lengthScaleFactor;
     }
     /**
      * Gets the SkyPanel that displays the solar system.
+     * 
      * @see SkyPanel
      */
     getPanel() {
@@ -418,7 +431,9 @@ class SkyFrame with ChangeListener with ActionListener {
     }
     /**
      * Changes the sun's mass according to the input from the slider.
-     * @param event ChangeEvent
+     * 
+     * @param event
+     *           ChangeEvent
      * @see ChangeEvent
      */
     stateChanged(event) {
@@ -430,6 +445,7 @@ class SkyFrame with ChangeListener with ActionListener {
 
 /**
  * Contains the sun, planets and moons of the simulated solar system.
+ * 
  * @see JPanel
  */
 class SkyPanel with JPanelInterface {
@@ -446,7 +462,7 @@ class SkyPanel with JPanelInterface {
     var minPlanetDia = 20.0d;
     var maxPlanetDia = 60.0d;
     /**
-     * The maximun number of orbits allowed in solar system.
+     * The maximum number of orbits allowed in solar system.
      */
     var numberOfPlanets;
     /**
@@ -463,13 +479,15 @@ class SkyPanel with JPanelInterface {
      */
     var orbitOccupied;
     /**
-     * An array of planet objects. @see Planet
+     * An array of planet objects.
+     * 
+     * @see Planet
      */
     var planet;
     /**
-     * Boolean variables indicating whether or not to display energy, velocity,
-     * acceleration or position. Variable freeze is set to true to stop the
-     * display from updating.
+     * Boolean variables indicating whether or not to display energy,
+     * velocity, acceleration or position. Variable freeze is set to true to
+     * stop the display from updating.
      */
     var displayEnergy = false;
     var displayVel = false;
@@ -478,26 +496,28 @@ class SkyPanel with JPanelInterface {
     var freeze = false;
     /**
      * A vector containing Stars objects.
+     * 
      * @see Stars
      */
     var starGroup;
     /**
      * Sun object.
+     * 
      * @see Sun
      */
     var sun;
     var panel;
     /**
-     * SkyPanel constructor.
-     * The constructor calculates the maximum number of planets that will
-     * be visible given mMaxXPosition, and then determines the maximum
-     * number of orbits that are needed. It then creates an array of
-     * planets and places each planet at random within the orbits. Finally,
-     * it creates a star group which is displayed for the default view
-     * of the solar system (more star groups are created as needed when/if
-     * the user zooms out for a wider view of the solar system).
+     * SkyPanel constructor. The constructor calculates the maximum number of
+     * planets that will be visible given mMaxXPosition, and then determines
+     * the maximum number of orbits that are needed. It then creates an array
+     * of planets and places each planet at random within the orbits. Finally,
+     * it creates a star group which is displayed for the default view of the
+     * solar system (more star groups are created as needed when/if the user
+     * zooms out for a wider view of the solar system).
+     * 
      * @param dt Time increment for numerical integration of differential
-     * equations of motion.
+     *            equations of motion.
      * @param mMaxXPosition Maximum value of X coordinate allowed (in pixels).
      * @param mMaxYPosition Maximum value of Y coordinate allowed (in pixels).
      * @param mNumberOfPlanets Number of planets in solar system.
@@ -530,7 +550,8 @@ class SkyPanel with JPanelInterface {
             (maxPlanetDia - minPlanetDia);
             planet[i] = new Planet(dt, // Time increment for calculating motion.
                                    diameter, // Diameter of planet
-                                   getUnoccupiedOrbit(), // Radius of orbit for planet
+                                   getUnoccupiedOrbit(), // Radius of orbit for
+                                                         // planet
                                    SolarSystem.getColor(i), // Color of planet
                                    diameter/maxPlanetDia, // Mass of planet
                                    this, // Host panel
@@ -543,9 +564,10 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Creates a new star group if needed for the given lengthScaleFactor.
-     * @param mLengthScaleFactor The scale factor which determines sizing and
-     * distances for positioning objects in display. This allows user to
-     * zoom in or out.
+     * 
+     * @param mLengthScaleFactor The scale factor which determines sizing and distances for
+     *                            positioning objects in display. This allows user to zoom in
+     *                            or out.
      */
     populateStarGroup(mLengthScaleFactor) {
         //
@@ -558,19 +580,24 @@ class SkyPanel with JPanelInterface {
         // If not, make a new star group.
         //
 
-        var stars = new Stars(numStars/SkyFrame.getScaleFactor(), // number of stars
+        var stars = new Stars(numStars/SkyFrame.getScaleFactor(), // number of
+                                                                  // stars
         SkyFrame.getScaleFactor()*(xMaxPixels -
         sun.getAbsPos(Coord.X)), // maximum distance from sun
                       (SkyFrame.getScaleFactor() - 1)*(xMaxPixels -
-                                                       sun.getAbsPos(Coord.X)), // minimum distance from sun
+                                                       sun.getAbsPos(Coord.X)), // minimum
+                                                                                 // distance
+                                                                                 // from
+                                                                                 // sun
 
                       sun);
         starGroup.addElement(stars);
     }
 
     /**
-     * Searches randomly among the allowed orbits until it finds an
-     * unoccupied orbit.
+     * Searches randomly among the allowed orbits until it finds an unoccupied
+     * orbit.
+     * 
      * @return double The intial radius of the unoccupied orbit.
      */
     getUnoccupiedOrbit() {
@@ -594,6 +621,7 @@ class SkyPanel with JPanelInterface {
     
     /**
      * Repaints the display.
+     * 
      * @param comp A Graphics object.
      * @see Graphics
      */
@@ -624,8 +652,9 @@ class SkyPanel with JPanelInterface {
     }
 
     /**
-     * Prints the kinetic energy of the planet indicated by the parameter
-     * i as a percent of the total energy (kinetic + potential) of the planet.
+     * Prints the kinetic energy of the planet indicated by the parameter i as
+     * a percent of the total energy (kinetic + potential) of the planet.
+     * 
      * @param comp2D A 2D graphics object.
      * @see Graphics2D
      * @param i Index of planet for which to display the kinetic energy.
@@ -656,6 +685,7 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Displays the velocity vector of the planet indexed by the parameter i.
+     * 
      * @param comp2D A 2D graphics object.
      * @see Graphics2D
      * @param i Index of planet for which to display the kinetic energy.
@@ -674,6 +704,7 @@ class SkyPanel with JPanelInterface {
     /**
      * Displays the acceleration vector for the planet indexed by the
      * parameter i.
+     * 
      * @param comp2D A 2D graphics object.
      * @see Graphics2D
      * @param i Index of planet for which to display the kinetic energy.
@@ -698,6 +729,7 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Draws an arrow (vector) from (x0, y0) to (x1, y1).
+     * 
      * @param comp2D A 2D graphics object.
      * @see Graphics2D
      * @param x0 X coordinate of base of arrow.
@@ -735,9 +767,9 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Set method to set variable displayAcc.
-     * @param value Boolean value,
-     * true = display acceleration vector,
-     * false = do not display acceleration vector.
+     * 
+     * @param value Boolean value, true = display acceleration vector, false = do
+     *              not display acceleration vector.
      */
     displayAcc(value) {
         displayAcc = value;
@@ -745,9 +777,9 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Set method to set variable displayVel.
-     * @param value Boolean value,
-     * true = display velocity vector,
-     * false = do not display velocity vector.
+     * 
+     * @param value Boolean value, true = display velocity vector, false = do not
+     *               display velocity vector.
      */
     displayVel(value) {
         displayVel = value;
@@ -755,9 +787,9 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Set method to set variable displayEnergy.
-     * @param value Boolean value,
-     * true = display kinetic energy,
-     * false = do not display kinetic energy.
+     * 
+     * @param value Boolean value, true = display kinetic energy, false = do not
+     *               display kinetic energy.
      */
     displayEnergy(value){
         displayEnergy = value;
@@ -765,9 +797,9 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Set method to set variable displayPos.
-     * @param value Boolean value,
-     * true = display trace of spatial position,
-     * false = do not display trace of spatial position.
+     * 
+     * @param value Boolean value, true = display trace of spatial position,
+     *               false = do not display trace of spatial position.
      */
     displayPos(value) {
         displayPos = value;
@@ -775,9 +807,10 @@ class SkyPanel with JPanelInterface {
 
     /**
      * Get method to get the value of the variable displayPos.
-     * @return displayPos Boolean value.
-     * true = diplay trace of previous spatial positions of planets.
-     * false = do not display trace of previous spatial positions of planets.
+     * 
+     * @return displayPos Boolean value. true = diplay trace of previous
+     *         spatial positions of planets. false = do not display trace of
+     *         previous spatial positions of planets.
      */
     showPos() {
         return displayPos;
@@ -791,27 +824,26 @@ class SkyPanel with JPanelInterface {
             planet[i].erasePrevPositions();
     }
     /**
-     * A set method to set the variable freeze.
-     * true = do not translate planets.
-     * false = translate planets according to normal physical laws of motion.
+     * A set method to set the variable freeze. true = do not translate
+     * planets. false = translate planets according to normal physical laws of
+     * motion.
      */
     setFreeze(value) {
         freeze = value;
     }
 
     /**
-     * Get method to retrieve the maximum diameter allowed for planets.
-     * return double Maximum planet diameter (in pixels).
+     * Get method to retrieve the maximum diameter allowed for planets. return
+     * double Maximum planet diameter (in pixels).
      */
     getMaxPlanetDiameter() {
         return maxPlanetDia;
     }
 }
 /**
- * Class Stars defines a group of stars that are displayed at random
- * locations. The stars are yellow circles that change diameter to simulate
- * twinlking.
-
+ * Class Stars defines a group of stars that are displayed at random locations.
+ * The stars are yellow circles that change diameter to simulate twinlking.
+ * 
  */
 class Stars {
     /**
@@ -833,13 +865,13 @@ class Stars {
     var sun;
     /**
      * Constructor for creating a group of stars.
+     * 
      * @param mNumOfStars The number of stars to create.
-     * @param maxRadius The maximum distance from the sun that a star may
-     * be positioned.
-     * @param minRadius The minimum distance from the sun that a star may
-     * be positioned.
-     * @param mSun The Sun object which defines the center of the solar
-     * system.
+     * @param maxRadius The maximum distance from the sun that a star may be
+     *                   positioned.
+     * @param minRadius The minimum distance from the sun that a star may be
+     *                   positioned.
+     * @param mSun The Sun object which defines the center of the solar system.
      */
     new(mNumOfStars, maxRadius, minRadius, mSun) {
         numOfStars = Math.floor(mNumOfStars);
@@ -868,6 +900,7 @@ class Stars {
     }
     /**
      * The method draw displays the stars.
+     * 
      * @param comp2D The Graphics2D object in which to display the stars.
      */
     draw(comp2D) {
@@ -893,29 +926,31 @@ class Stars {
     }
 }
 /**
- * The interface host defines the interface needed for an object to serve
- * as a host about which a satellite may orbit.
+ * The interface host defines the interface needed for an object to serve as a
+ * host about which a satellite may orbit.
  */
 trait Host {
     /**
-     * The method getAbsPos calculates the absolute position of the
-     * Host. This is the position used to display the Host
-     * and is taken with respect to the upper left corner of the display.
-     * @param mAxis The cartesian axis with respect to which the position
-     * is to be calculated.
-     * @return double The absolute position of the Satellite with respect
-     * to the given axis.
+     * The method getAbsPos calculates the absolute position of the Host. This
+     * is the position used to display the Host and is taken with respect to
+     * the upper left corner of the display.
+     * 
+     * @param mAxis The cartesian axis with respect to which the position is to
+     *               be calculated.
+     * @return double The absolute position of the Satellite with respect to
+     *         the given axis.
      */
     getAbsPos(mAxis);
     /**
-     * The method getMass returns the mass of the Host in arbitrary
-     * units.
+     * The method getMass returns the mass of the Host in arbitrary units.
+     * 
      * @return double
      */
     getMass();
 }
 /**
  * The abstract class Satellite defines satellites that orbit about a Sun.
+ * 
  * @see Sun
  */
 class Satellite with Host{
@@ -949,11 +984,13 @@ class Satellite with Host{
     var color;
     /**
      * The Host about which the Satellite orbits.
+     * 
      * @see Host
      */
     var host;
     /**
      * Constructor for Satellite objects.
+     * 
      * @param mDt The time increment for calculating the motion.
      * @param mDiameter The diameter of the satellite (arb. units).
      * @param mRadius The initial radius of the Satellite's orbit.
@@ -985,19 +1022,21 @@ class Satellite with Host{
     /**
      * The method probOneHalf returns true with probability 1/2, otherwise
      * returns false.
+     * 
      * @return boolean
      */
     probOneHalf() {
         return Math.random() > 0.5;
     }
     /**
-     * The method getAbsPos calculates the absolute position of the
-     * Satellite. This is the position used to display the Satellite
-     * and is taken with respect to the upper left corner of the display.
-     * @param mAxis The cartesian axis with respect to which the position
-     * is to be calculated.
-     * @return double The absolute position of the Satellite with respect
-     * to the given axis.
+     * The method getAbsPos calculates the absolute position of the Satellite.
+     * This is the position used to display the Satellite and is taken with
+     * respect to the upper left corner of the display.
+     * 
+     * @param mAxis The cartesian axis with respect to which the position is to
+     *               be calculated.
+     * @return double The absolute position of the Satellite with respect to
+     *         the given axis.
      */
     getAbsPos(mAxis) {
         if (mAxis == Coord.X)
@@ -1008,11 +1047,12 @@ class Satellite with Host{
     /**
      * The getRelPosScaled calculate the relative position of the Satellite
      * scaled by the scale factor of the SkyFrame.
+     * 
      * @see SkyFrame
-     * @param mAxis The cartesian axis with respect to which the position
-     * is to be calculated.
-     * @return double The relative position of the Satellite scaled and
-     * with respect to the given axis.
+     * @param mAxis The cartesian axis with respect to which the position is to
+     *               be calculated.
+     * @return double The relative position of the Satellite scaled and with
+     *          respect to the given axis.
      */
     getRelPosScaled(mAxis) {
         if (mAxis == Coord.X)
@@ -1021,12 +1061,13 @@ class Satellite with Host{
             return yPos/SkyFrame.getScaleFactor();
     }
     /**
-     * The method getRelPosUnscaled calculates the relative position of
-     * the Satellite without scaling.
-     * @param mAxis The cartesian axis with respect to which to calculate
-     * the position.
-     * @return double The relative position of the Satellite with respect
-     * to the given axis.
+     * The method getRelPosUnscaled calculates the relative position of the
+     * Satellite without scaling.
+     * 
+     * @param mAxis The cartesian axis with respect to which to calculate the
+     *               position.
+     * @return double The relative position of the Satellite with respect to
+     *         the given axis.
      */
     getRelPosUnscaled(mAxis) {
     if (mAxis == Coord.X)
@@ -1035,9 +1076,10 @@ class Satellite with Host{
             return yPos;
     }
     /**
-     * The method getTheta returns the angular position of the Satellite.
-     * The angle is measured clockwise from the positive horizontal axis,
-     * with the Sun at the origin.
+     * The method getTheta returns the angular position of the Satellite. The
+     * angle is measured clockwise from the positive horizontal axis, with the
+     * Sun at the origin.
+     * 
      * @return double The angular position in radians.
      */
     getTheta() {
@@ -1051,6 +1093,7 @@ class Satellite with Host{
     /**
      * The method getVel calculates a Cartesian component of the Satellite's
      * velocity (arb. units).
+     * 
      * @param mAxis The cartesian component of the velocity to calculate.
      * @return double A cartesian component of the velocity (arb. units).
      */
@@ -1063,6 +1106,7 @@ class Satellite with Host{
     /**
      * The method getAcc calculates a Cartesian component of the Satellite's
      * acceleration (arb. units).
+     * 
      * @param mAxis The cartesian component of the acceleration to calculate.
      * @return double A cartesian component of the acceleration (arb. units).
      */
@@ -1074,12 +1118,13 @@ class Satellite with Host{
     }
     /**
      * The abstract method translate calculates the displacement of the
-     * Satellite as a function of time and updates the Satellite's
-     * coordinates xPos and yPos.
+     * Satellite as a function of time and updates the Satellite's coordinates
+     * xPos and yPos.
      */
     translate(){}
     /**
      * The method getDiameter returns the Satellite's diameter.
+     * 
      * @return double.
      */
     getDiameter() {
@@ -1087,6 +1132,7 @@ class Satellite with Host{
     }
     /**
      * The method getColor returns the Satellite's color.
+     * 
      * @return Color
      * @see Color
      */
@@ -1095,6 +1141,7 @@ class Satellite with Host{
     }
     /**
      * The method getMass returns the Satellite's mass (arb. units).
+     * 
      * @return double
      */
     getMass() {
@@ -1102,8 +1149,8 @@ class Satellite with Host{
     }
     /**
      * The method draw displays the Satellite.
-     * @param comp2D The Graphics2D object in which to display the
-     * Satellite.
+     * 
+     * @param comp2D The Graphics2D object in which to display the Satellite.
      * @see Graphics2D
      */
     draw(comp2D) {
@@ -1118,15 +1165,17 @@ class Satellite with Host{
     }
 }
 /**
- * Class Planet extends Satellite @see Satellite and implements the planets
- * that revolve about the Sun @see Sun. A Planet is given an initial
- * position and velocity and follows Newton's laws of motion.
+ * Class Planet extends Satellite
+ * 
+ * @see Satellite and implements the planets that revolve about the Sun
+ * @see Sun. A Planet is given an initial position and velocity and follows
+ *      Newton's laws of motion.
  */
 class Planet extends Satellite {
     /**
-     * An array of int's used to indicate the previous positions of the planet.
-     * Used to plot the trajectory of the planet. The array is filled and
-     * the index of the current position is tracked.
+     * An array of int's used to indicate the previous positions of the
+     * planet. Used to plot the trajectory of the planet. The array is filled
+     * and the index of the current position is tracked.
      */
     var prevXPos;
     var prevYPos;
@@ -1140,8 +1189,8 @@ class Planet extends Satellite {
      */
     var count = 0;
     /**
-     * Determines the number of translations between which the position of
-     * the Planet is recorded.
+     * Determines the number of translations between which the position of the
+     * Planet is recorded.
      */
     const recordPosition = 5;
     /**
@@ -1175,13 +1224,16 @@ class Planet extends Satellite {
     var hostPanel;
     /**
      * Constructor.
+     * 
      * @param mDt The time increment for calculting the motion of the planet.
      * @param mDiameter The diameter of the planet in pixels.
      * @param mRadius The radius of the planet's orbit in pixels.
-     * @param mColor The color of the planet. @see Color
+     * @param mColor The color of the planet.
+     * @see Color
      * @param mMass The planet's mass in arbitrary units.
      * @param mHostPanel The panel in which the planet is displayed.
-     * @param mHost The Host object about which the planet orbits. @see Host
+     * @param mHost The Host object about which the planet orbits.
+     * @see Host
      */
     new(mDt, mDiameter, mRadius, mColor, mMass, mHostPanel, mHost) : 
                      super(mDt, mDiameter, mRadius, mColor, mMass, mHost) {
@@ -1201,7 +1253,9 @@ class Planet extends Satellite {
             for (var i = 0; i < numOfMoons; ++i)
                 moon[i] = new Moon(dt, // Time increment for calculating motion.
                                    Math.random()*6 + 3, // Moon's diameter.
-                                   diameter*(1 + 0.2*Math.random()),// Radius of orbit.
+                                   diameter*(1 + 0.2*Math.random()),// Radius
+                                                                     // of
+                                                                     // orbit.
                                    this); // Host about which moon orbits.
         }
 
@@ -1277,8 +1331,8 @@ class Planet extends Satellite {
         }
     }
     /**
-     * The method recordPosition records the current position of the planet
-     * in the arrays prevXPos and prevYPos.
+     * The method recordPosition records the current position of the planet in
+     * the arrays prevXPos and prevYPos.
      */
     recordPosition() {
         if (++count > (recordPosition/dt)) {
@@ -1300,8 +1354,8 @@ class Planet extends Satellite {
         return mass*(xVel*xVel + yVel*yVel)/2;
     }
     /**
-     * The method getPE returns the potential energy of the planet in arbitrary
-     * units.
+     * The method getPE returns the potential energy of the planet in
+     * arbitrary units.
      */
     getPE() {
         return mass*Math.sqrt(xAcc*xAcc + yAcc*yAcc)*
@@ -1316,8 +1370,8 @@ class Planet extends Satellite {
     }
     /**
      * The method draw displays the Planet in scaled units of pixels.
-     * @param comp2D The Graphics2D object in which to display the
-     * planet.
+     * 
+     * @param comp2D The Graphics2D object in which to display the planet.
      * @see Graphics2D
      */
     draw(comp2D) {
@@ -1352,6 +1406,7 @@ class Planet extends Satellite {
     /**
      * The method drawPrevPositions draws the previous positions of the planet
      * by placing dots to indicate it's path.
+     * 
      * @param comp2D The Graphics2D object used for the display.
      */
     drawPrevPositions(comp2D) {
@@ -1382,16 +1437,17 @@ class Planet extends Satellite {
     }
     /**
      * The method semiCircle is used to draw a day-time and night-time
-     * semi-circle of the planet with respect to the Host about which
-     * the planet orbits.
-     * @param x The scaled horizontal positon of the planet with respect
-     * to the Host about which the planet orbits.
-     * @param y The scaled vertical positon of the planet with respect
-     * to the Host about which the planet orbits.
+     * semi-circle of the planet with respect to the Host about which the
+     * planet orbits.
+     * 
+     * @param x The scaled horizontal positon of the planet with respect to
+     *           the Host about which the planet orbits.
+     * @param y The scaled vertical positon of the planet with respect to the
+     *           Host about which the planet orbits.
      * @param dia The scaled diameter of the planet.
      * @param theta The angular position of the planet.
      * @return Area A semi-circular area used to draw the day-time or
-     * night-time part of the planet.
+     *         night-time part of the planet.
      */
     semiCircle(x, y, dia, theta) {
         var xp = x - dia/2;
@@ -1407,14 +1463,16 @@ class Planet extends Satellite {
     }
 }
 /**
- * The class Moon defines a moon which executes pure circular motion about
- * it's host, so the formulas for calculating position are simplified compared
- * to those used for calculating planetary motion about the sun.
+ * The class Moon defines a moon which executes pure circular motion about it's
+ * host, so the formulas for calculating position are simplified compared to
+ * those used for calculating planetary motion about the sun.
+ * 
  * @see Planet
  */
 class Moon extends Satellite {
     /**
      * Constructor.
+     * 
      * @param mDt The time increment used to integrate the equations of motion.
      * @param mDiameter The diameter of the moon in pixels.
      * @param mRadius The radius of the moon's orbit.
@@ -1424,9 +1482,10 @@ class Moon extends Satellite {
        super(mDt, mDiameter, mRadius, Color.lightGray, 1.0d, mHost){}
     
     /**
-     * The method translate calculates the motion of the moon. Since moons
-     * are only allowed to undergo circular motion, the calculation is
-     * simplified compared to planetary motion.
+     * The method translate calculates the motion of the moon. Since moons are
+     * only allowed to undergo circular motion, the calculation is simplified
+     * compared to planetary motion.
+     * 
      * @see Planet
      */
     translate() {
@@ -1452,17 +1511,20 @@ class Moon extends Satellite {
     }
 }
 /**
- * The class Sun extends Satellite @see Satellite and defines the origin
- * about which all planets orbit in the solar system. It is yellow and
- * has rays of random length eminatting from it.
+ * The class Sun extends Satellite
+ * 
+ * @see Satellite and defines the origin about which all planets orbit in the
+ *      solar system. It is yellow and has rays of random length eminatting from
+ *      it.
  */
 class Sun extends Satellite {
     /**
      * Constructor.
+     * 
      * @param mDiameter The Diameter of the sun in pixels.
      * @param mMass The mass of the sun in arbitrary units.
      * @param mXPos The position of the sun on the horizontal axis.
-     * @param mYPos The position of the sun on the vertical axis.
+     * @param mYPos  The position of the sun on the vertical axis.
      */
     new(mDiameter, mMass, mXPos, mYPos) :
         super(1.0d, mDiameter, 0.0d, Color.yellow, mMass, null) {
@@ -1471,8 +1533,11 @@ class Sun extends Satellite {
         yPos = mYPos;
     }
     /**
-     * The method getAbsPos returns the absolute position of the Sun in pixels.
-     * @param mAxis The cartesian axis of interest.
+     * The method getAbsPos returns the absolute position of the Sun in
+     * pixels.
+     * 
+     * @param mAxis
+     *           The cartesian axis of interest.
      * @return double The absolute positon of the Sun in pixels.
      */
     getAbsPos(mAxis) {
@@ -1485,6 +1550,7 @@ class Sun extends Satellite {
      * The methos setMass allows the user to set the mass of the sun in order
      * to observe the effects on planetary motion. The mass is measured in
      * arbitray units.
+     * 
      * @param newMass The new mass of the sun in arbitrary units.
      */
     setMass(newMass) {
@@ -1492,12 +1558,11 @@ class Sun extends Satellite {
         mass = newMass;
     }
     /**
-       * The method draw displays the Sun in scaled units of pixels.
-       * 
-       * @param comp2D
-       *           The Graphics2D object in which to display the Sun.
-       * @see Graphics2D
-       */
+     * The method draw displays the Sun in scaled units of pixels.
+     * 
+     * @param comp2D The Graphics2D object in which to display the Sun.
+     * @see Graphics2D
+     */
     draw(comp2D) {
         super.draw(comp2D);
 
