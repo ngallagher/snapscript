@@ -16,7 +16,7 @@ public class TraitFunctionBuilder {
    
    public Function create(Signature signature, Scope scope, String name) throws Exception {
       Invocation invocation = new InstanceInvocation(statement, signature);
-      Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
+      Invocation scopeCall = new BoundaryInvocation(invocation, scope); // ensure the static stuff is in scope
       
       return new Function(signature, scopeCall, name);// description is wrong here.....
    }

@@ -33,12 +33,12 @@ public class ContextExecutor implements ExpressionExecutor {
    }
    
    @Override
-   public <T> T execute(Scope scope, String source) throws Exception{
+   public <T> T execute(Scope scope, String module, String source) throws Exception{
       Evaluation evaluation = cache.fetch(source);
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(null, source, instruction.name);
+         SyntaxNode node = parser.parse(module, source, instruction.name);
          
          evaluation = assembler.assemble(node, source);
          cache.cache(source, evaluation);      

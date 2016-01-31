@@ -1,0 +1,8 @@
+println("x");
+print("xx");
+println(time());
+eval("blah('foo')");
+
+function blah(x){
+   println("blah("+x+")");
+}

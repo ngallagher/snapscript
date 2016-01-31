@@ -6,12 +6,12 @@ import org.snapscript.core.Model;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 
-public class TypeInvocation implements Invocation<Object>{
+public class BoundaryInvocation implements Invocation<Object>{
    
    private final Invocation<Object> invocation;
    private final Scope inner;
    
-   public TypeInvocation(Invocation<Object> invocation, Scope inner) {
+   public BoundaryInvocation(Invocation<Object> invocation, Scope inner) {
       this.invocation = invocation;
       this.inner = inner;
    }

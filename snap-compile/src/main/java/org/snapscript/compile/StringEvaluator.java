@@ -21,9 +21,10 @@ public class StringEvaluator implements Evaluator{
    
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
-   private final ScopeMerger merger; 
    private final Instruction instruction;
    private final Assembler assembler;
+   private final ScopeMerger merger; 
+   private final String module;
    private final Model model;
    
    public StringEvaluator(Context context){
@@ -41,6 +42,7 @@ public class StringEvaluator implements Evaluator{
       this.compiler = new SyntaxCompiler();
       this.model = new EmptyModel();
       this.instruction = instruction;
+      this.module = module;
    }
    
    @Override
@@ -54,7 +56,7 @@ public class StringEvaluator implements Evaluator{
       
       if(evaluation == null) {
          SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(null, source, instruction.name);
+         SyntaxNode node = parser.parse(module, source, instruction.name);
          
          evaluation = assembler.assemble(node, source);
          cache.cache(source, evaluation);      

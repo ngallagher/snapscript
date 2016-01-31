@@ -1,7 +1,5 @@
 package org.snapscript.core;
 
-import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
-
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;

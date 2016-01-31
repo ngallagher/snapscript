@@ -22,7 +22,7 @@ public class MemberConstructorBuilder {
    public Function create(Signature signature, Scope scope, Initializer statements, Initializer baseCall, Type type, boolean enumeration) throws Exception {
       Invocation bodyCall = new StatementInvocation(statement, signature);
       Invocation invocation = new NewInvocation(scope, signature, baseCall, statements, bodyCall, enumeration); 
-      Invocation scopeCall = new TypeInvocation(invocation, scope);
+      Invocation scopeCall = new BoundaryInvocation(invocation, scope);
       
       return new Function(signature, scopeCall, TYPE_CONSTRUCTOR, 1);
    }
