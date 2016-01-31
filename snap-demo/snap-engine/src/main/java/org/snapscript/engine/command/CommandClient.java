@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.simpleframework.http.socket.FrameChannel;
+import org.snapscript.agent.profiler.ProfileResult;
 
 public class CommandClient {
    
@@ -19,6 +20,12 @@ public class CommandClient {
    
    public void sendScope(String thread, String instruction, String status, String resource, int line, int depth, Map<String, Map<String, String>> variables) throws Exception {
       ScopeCommand command = new ScopeCommand(thread, instruction, status, resource, line, depth, variables);
+      String message = writer.write(command);
+      channel.send(message);
+   }
+   
+   public void sendProfile(String process, Set<ProfileResult> results) throws Exception {
+      ProfileCommand command = new ProfileCommand(process, results);
       String message = writer.write(command);
       channel.send(message);
    }

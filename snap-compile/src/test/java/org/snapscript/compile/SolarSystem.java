@@ -66,7 +66,7 @@ public class SolarSystem {
      * Main entry point into program. User may input number of planets
      * on command line.
      */
-    public static void main(String[] arguments) {
+    public static void main(String[] arguments) throws Exception {
         SkyFrame skyFrame;
         int numOfPlanets = 9;
 
@@ -93,6 +93,7 @@ public class SolarSystem {
 
         while (true) {
             skyFrame.getPanel().repaint();
+            Thread.sleep(20);
         }
     }
     /**

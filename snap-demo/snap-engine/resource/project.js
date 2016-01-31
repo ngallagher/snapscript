@@ -363,28 +363,34 @@ function createLayout() {
    $().w2grid({
       name : 'telemetry',
       columns : [ {
-         field : 'name',
-         caption : 'Name',
-         size : '30%',
-         sortable : false
-      }, {
-         field : 'value',
-         caption : 'Value',
+         field : 'resource',
+         caption : 'Resource',
          size : '40%',
          sortable : false
       }, {
-         field : 'type',
-         caption : 'Type',
-         size : '30%'
+         field : 'duration',
+         caption : 'Duration',
+         size : '20%',
+         sortable : false
+      }, {
+         field : 'line',
+         caption : 'Line',
+         size : '20%'
+      }, {
+         field : 'count',
+         caption : 'Count',
+         size : '20%'
       } ],
       onClick : function(event) {
          var grid = this;
          event.onComplete = function() {
             var sel = grid.getSelection();
-//            if (sel.length == 1) {
-//               var record = grid.get(sel[0]);
-//               toggleExpandVariable(record.path);
-//            }
+            if (sel.length == 1) {
+               var record = grid.get(sel[0]);
+               openTreeFile(record.script, function() {
+                  showEditorLine(record.line);  
+               }); 
+            }
          }
       }
    });

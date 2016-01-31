@@ -4,14 +4,16 @@ public class ProfileResult implements Comparable<ProfileResult>{
    
    private long time;
    private int line;
+   private int count;
    
    public ProfileResult() {
       super();
    }
    
-   public ProfileResult(long time, int line) {
+   public ProfileResult(long time, int count, int line) {
       this.time = time;
       this.line = line;
+      this.count = count;
    }
    
    @Override
@@ -24,6 +26,14 @@ public class ProfileResult implements Comparable<ProfileResult>{
       return compare;
    }
    
+   public int getCount() {
+      return count;
+   }
+
+   public void setCount(int count) {
+      this.count = count;
+   }
+
    public int getLine(){
       return line;
    }

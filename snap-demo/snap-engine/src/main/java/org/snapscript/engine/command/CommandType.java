@@ -19,7 +19,8 @@ public enum CommandType {
    SCOPE(ScopeCommandMarshaller.class, ScopeCommand.class, PROCESS),
    STEP(StepCommandMarshaller.class, StepCommand.class, CLIENT),
    BROWSE(BrowseCommandMarshaller.class, BrowseCommand.class, CLIENT),
-   BEGIN(BeginCommandMarshaller.class, BeginCommand.class, PROCESS);
+   BEGIN(BeginCommandMarshaller.class, BeginCommand.class, PROCESS),
+   PROFILE(ProfileCommandMarshaller.class, ProfileCommand.class, PROCESS);
    
    public final Class<? extends CommandMarshaller> marshaller;
    public final Class<? extends Command> command;

@@ -100,7 +100,7 @@ class SolarSystem {
 
         while (true) {
             skyFrame.getPanel().repaint();
-            Thread.sleep(20);
+            Thread.sleep(10);
         }
     }
     /**
@@ -616,7 +616,7 @@ class SkyPanel with JPanelInterface {
     }
 
     update(panel, comp) {
-      paint(panel, comp);
+      //paint(panel, comp);
     }
     
     /**
@@ -957,8 +957,8 @@ class Satellite with Host{
     /**
      * The x and y coordinates of the Satellite's position.
      */
-    var xPos;
-    var yPos;
+    var xPos = 0.0d;
+    var yPos = 0.0d;
     /**
      * The x and y components of the Satellite's velocity.
      */
@@ -1015,9 +1015,9 @@ class Satellite with Host{
         // intial position.
         //
         if (probOneHalf())
-            xPos*= -1;
+            xPos*= -1.0d;
         if (probOneHalf())
-            yPos*= -1;
+            yPos*= -1.0d;
     }
     /**
      * The method probOneHalf returns true with probability 1/2, otherwise
@@ -1070,7 +1070,7 @@ class Satellite with Host{
      *         the given axis.
      */
     getRelPosUnscaled(mAxis) {
-    if (mAxis == Coord.X)
+      if (mAxis == Coord.X)
             return xPos;
         else
             return yPos;
@@ -1137,7 +1137,7 @@ class Satellite with Host{
      * @see Color
      */
     getColor() {
-    return color;
+      return color;
     }
     /**
      * The method getMass returns the Satellite's mass (arb. units).
@@ -1145,7 +1145,7 @@ class Satellite with Host{
      * @return double
      */
     getMass() {
-    return mass;
+      return mass;
     }
     /**
      * The method draw displays the Satellite.
@@ -1155,8 +1155,7 @@ class Satellite with Host{
      */
     draw(comp2D) {
         var zoomedDiameter = diameter/SkyFrame.getScaleFactor();
-        var form =
-        new Ellipse2D$Double((getAbsPos(Coord.X) - zoomedDiameter/2),
+        var form = new Ellipse2D$Double((getAbsPos(Coord.X) - zoomedDiameter/2),
                                   (getAbsPos(Coord.Y) - zoomedDiameter/2),
                                   zoomedDiameter,
                                   zoomedDiameter);
@@ -1253,9 +1252,7 @@ class Planet extends Satellite {
             for (var i = 0; i < numOfMoons; ++i)
                 moon[i] = new Moon(dt, // Time increment for calculating motion.
                                    Math.random()*6 + 3, // Moon's diameter.
-                                   diameter*(1 + 0.2*Math.random()),// Radius
-                                                                     // of
-                                                                     // orbit.
+                                   diameter*(1 + 0.2*Math.random()),// Radius of orbit.
                                    this); // Host about which moon orbits.
         }
 
@@ -1337,13 +1334,13 @@ class Planet extends Satellite {
     recordPosition() {
         if (++count > (recordPosition/dt)) {
             count = 0;
-        if (currPosition == maxPrevPositions) {
-            currPosition = 0;
-            looped = true;
-        }
-
-        prevXPos[currPosition] = getRelPosUnscaled(Coord.X);
-        prevYPos[currPosition++] = getRelPosUnscaled(Coord.Y);
+            if (currPosition == maxPrevPositions) {
+                currPosition = 0;
+                looped = true;
+            }
+   
+            prevXPos[currPosition] = getRelPosUnscaled(Coord.X);
+            prevYPos[currPosition++] = getRelPosUnscaled(Coord.Y);
         }
     }
     /**
@@ -1495,7 +1492,7 @@ class Moon extends Satellite {
         // Find radial position of moon.
         //
         r = Math.sqrt(getRelPosUnscaled(Coord.X)*getRelPosUnscaled(Coord.X) +
-        getRelPosUnscaled(Coord.Y)*getRelPosUnscaled(Coord.Y));
+                     getRelPosUnscaled(Coord.Y)*getRelPosUnscaled(Coord.Y));
         //
         // Calculate new angular position which is old old angular position
         // plus speed multiplied by delta t. The number 1000 is an arbitrary

@@ -30,26 +30,35 @@ public class ObjectResolver implements ValueResolver<Object> {
       Accessor accessor = reference.get();
       
       if(accessor == null) {
-         Module module = scope.getModule();
-         Class type = left.getClass();
-         String alias = type.getName();
-         Type source = module.getType(alias);
-         Set<Type> list = traverser.traverse(source);
+         Accessor match = match(scope, left);
          
-         for(Type base : list) {
-            Accessor match = resolve(scope, left, base);
-            
-            if(match != null) {
-               reference.set(match);
-               return new PropertyValue(match, left, name);
-            }
+         if(match != null) {
+            reference.set(match);
+            return new PropertyValue(match, left, name);
          }
          return null;
       }
       return new PropertyValue(accessor, left, name);
    }
    
-   public Accessor resolve(Scope scope, Object left, Type type) {
+   public Accessor match(Scope scope, Object left) {
+      Module module = scope.getModule();
+      Class type = left.getClass();
+      String alias = type.getName();
+      Type source = module.getType(alias);
+      Set<Type> list = traverser.traverse(source);
+      
+      for(Type base : list) {
+         Accessor match = match(scope, left, base);
+         
+         if(match != null) {
+            return match;
+         }
+      }
+      return null;
+   }
+   
+   public Accessor match(Scope scope, Object left, Type type) {
       List<Property> properties = type.getProperties();
       
       for(Property property : properties){

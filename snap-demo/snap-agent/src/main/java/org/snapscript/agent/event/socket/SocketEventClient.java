@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.BreakpointsEvent;
 import org.snapscript.agent.event.BrowseEvent;
 import org.snapscript.agent.event.ExecuteEvent;
@@ -18,9 +19,9 @@ import org.snapscript.agent.event.ProcessEventConnection;
 import org.snapscript.agent.event.ProcessEventConsumer;
 import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.ProcessEventProducer;
+import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
@@ -105,6 +106,8 @@ public class SocketEventClient {
                   listener.onStep(this, (StepEvent)event);
                } else if(event instanceof BrowseEvent) {
                   listener.onBrowse(this, (BrowseEvent)event);
+               } else if(event instanceof ProfileEvent) {
+                  listener.onProfile(this, (ProfileEvent)event);
                }
             }
          }catch(Exception e) {

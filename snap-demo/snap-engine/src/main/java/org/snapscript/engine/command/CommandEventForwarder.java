@@ -1,15 +1,18 @@
 package org.snapscript.engine.command;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.ExitEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
+import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
 import org.snapscript.agent.event.WriteOutputEvent;
+import org.snapscript.agent.profiler.ProfileResult;
 
 public class CommandEventForwarder extends ProcessEventAdapter {
    
@@ -62,6 +65,13 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       String process = event.getProcess();
       long duration = event.getDuration();
       client.sendBegin(process, resource, duration);
+   }
+   
+   @Override
+   public void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception {
+      String process = event.getProcess();
+      Set<ProfileResult> results = event.getResults();
+      client.sendProfile(process, results);
    }
    
    @Override

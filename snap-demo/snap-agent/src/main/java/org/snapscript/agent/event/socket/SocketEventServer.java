@@ -21,6 +21,7 @@ import org.snapscript.agent.event.ProcessEventConnection;
 import org.snapscript.agent.event.ProcessEventConsumer;
 import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.ProcessEventProducer;
+import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.ScopeEvent;
 import org.snapscript.agent.event.BeginEvent;
@@ -32,8 +33,8 @@ import org.snapscript.agent.event.WriteOutputEvent;
 public class SocketEventServer implements ProcessEventChannel {
 
    private final Map<String, ProcessEventChannel> receivers;
-   private final SocketAcceptor acceptor;
    private final ProcessEventListener listener;
+   private final SocketAcceptor acceptor;
    
    public SocketEventServer(ProcessEventListener listener, int port) throws IOException {
       this.receivers = new ConcurrentHashMap<String, ProcessEventChannel>();
@@ -175,6 +176,8 @@ public class SocketEventServer implements ProcessEventChannel {
                   listener.onStep(this, (StepEvent)event);
                } else if(event instanceof BrowseEvent) {
                   listener.onBrowse(this, (BrowseEvent)event);
+               } else if(event instanceof ProfileEvent) {
+                  listener.onProfile(this, (ProfileEvent)event);
                }
             }
          }catch(Exception e) {

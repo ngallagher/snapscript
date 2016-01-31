@@ -32,15 +32,20 @@ public class TypeResolver implements ValueResolver<Type> {
          Set<Type> list = traverser.traverse(left);
          
          for(Type base : list) {
-            Accessor match = resolver.resolve(scope, left, base);
+            Accessor match = resolver.match(scope, left, base);
             
             if(match != null) {
                reference.set(match);
                return new PropertyValue(match, left, name);
             }
          } 
-         return resolver.resolve(scope, left);
-      }
+         Accessor match = resolver.match(scope, left);
+         
+         if(match != null) {
+            reference.set(match);
+         }
+         return null;
+      } 
       return new PropertyValue(accessor, left, name);
    }
 }

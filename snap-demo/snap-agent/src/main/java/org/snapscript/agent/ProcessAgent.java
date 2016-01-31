@@ -12,6 +12,7 @@ import org.snapscript.agent.debug.BreakpointMatcher;
 import org.snapscript.agent.debug.ResumeType;
 import org.snapscript.agent.debug.SuspendController;
 import org.snapscript.agent.debug.SuspendInterceptor;
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.BreakpointsEvent;
 import org.snapscript.agent.event.BrowseEvent;
 import org.snapscript.agent.event.ExecuteEvent;
@@ -23,11 +24,11 @@ import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProcessEventType;
 import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
-import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.socket.SocketEventClient;
 import org.snapscript.agent.profiler.ExecutionProfiler;
 import org.snapscript.agent.profiler.ProfileResult;
+import org.snapscript.agent.profiler.ProfileResultUpdater;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
@@ -204,9 +205,12 @@ public class ProcessAgent {
             Executable executable = compiler.compile(resource);
             long middle = System.nanoTime();
             BeginEvent event = new BeginEvent(process, project, resource, TimeUnit.NANOSECONDS.toMillis(middle-start));
+            ProfileResultUpdater updater = new ProfileResultUpdater(profiler, client);
             client.send(event);
             
             try {
+               updater.start(process); // start sending profile events!!!
+               middle = System.nanoTime();
                executable.execute(); // execute the script
             } catch(Exception e) {
                e.printStackTrace();
