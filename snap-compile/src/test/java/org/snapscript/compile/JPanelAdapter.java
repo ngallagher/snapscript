@@ -1,4 +1,4 @@
-package org.snapscript.swing;
+package org.snapscript.compile;
 
 import java.awt.Graphics;
 
