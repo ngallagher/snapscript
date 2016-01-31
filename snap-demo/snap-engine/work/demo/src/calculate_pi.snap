@@ -1,3 +1,4 @@
+var start = new Date().getTime();
 calculate();
 
 function calculate() {
@@ -17,3 +18,5 @@ function calculate() {
        }
       System.err.println(pi);
 }
+var stop =new Date().getTime();
+System.err.println(stop -start);

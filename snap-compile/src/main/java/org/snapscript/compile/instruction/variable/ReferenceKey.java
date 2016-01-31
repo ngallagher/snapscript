@@ -14,10 +14,10 @@ public class ReferenceKey {
    
    @Override
    public boolean equals(Object key) {
-      if(this != key) {
+      if(key instanceof ReferenceKey) {
          return equals((ReferenceKey)key);
       }
-      return true;
+      return false;
    }
    
    public boolean equals(ReferenceKey key) {

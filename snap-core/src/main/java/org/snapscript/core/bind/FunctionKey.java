@@ -17,29 +17,29 @@ public class FunctionKey {
    }
    
    @Override
-   public boolean equals(Object object) {
-      if(this != object) {
-         return equals((FunctionKey)object);
+   public boolean equals(Object key) {
+      if(key instanceof FunctionKey) {
+         return equals((FunctionKey)key);
       }
-      return true;
+      return false;
    }
    
-   public boolean equals(FunctionKey object) {
-      if(object.type != type) {
+   public boolean equals(FunctionKey key) {
+      if(key.type != type) {
          return false;
       }
-      if(object.types.length != types.length) {
+      if(key.types.length != types.length) {
          return false;
       }
-      if(object.length != length) {
+      if(key.length != length) {
          return false;
       }
       for(int i = 0; i < types.length; i++) {
-         if(types[i] != object.types[i]) {
+         if(types[i] != key.types[i]) {
             return false;
          }         
       }
-      return object.name.equals(name);
+      return key.name.equals(name);
    }
    
    @Override

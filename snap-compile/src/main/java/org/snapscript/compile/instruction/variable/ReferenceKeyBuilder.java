@@ -19,6 +19,6 @@ public class ReferenceKeyBuilder {
             return new ReferenceKey(name, type);
          }
       }
-      return new ReferenceKey(name, null);
+      return name;
    }
 }
