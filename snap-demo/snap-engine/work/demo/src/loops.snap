@@ -39,3 +39,7 @@ for(var i in 0..9){
    x+=i;
    println(x);
 }
+for(var i in 0..1000){
+   x++;
+   eval("println(x)");
+}

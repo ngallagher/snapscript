@@ -9,9 +9,10 @@ public class ProcessEventAdapter implements ProcessEventListener {
    public void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception {}
    public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {}
    public void onBreakpoints(ProcessEventChannel channel, BreakpointsEvent event) throws Exception {}
-   public void onStart(ProcessEventChannel channel, StartEvent event) throws Exception {}
+   public void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception {}
    public void onStep(ProcessEventChannel channel, StepEvent event) throws Exception {}
    public void onBrowse(ProcessEventChannel channel, BrowseEvent event) throws Exception {}
+   public void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception {}
    public void onPing(ProcessEventChannel channel, PingEvent event) throws Exception {}
    public void onPong(ProcessEventChannel channel, PongEvent event) throws Exception {}
    public void onClose(ProcessEventChannel channel) throws Exception {}

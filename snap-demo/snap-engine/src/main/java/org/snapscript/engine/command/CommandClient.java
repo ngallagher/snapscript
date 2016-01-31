@@ -23,8 +23,8 @@ public class CommandClient {
       channel.send(message);
    }
    
-   public void sendStart(String process, String resource) throws Exception {
-      StartCommand command = new StartCommand(process, resource);
+   public void sendBegin(String process, String resource, long duration) throws Exception {
+      BeginCommand command = new BeginCommand(process, resource, duration);
       String message = writer.write(command);
       channel.send(message);
    }

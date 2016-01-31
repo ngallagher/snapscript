@@ -20,7 +20,7 @@ import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.ProcessEventProducer;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.agent.event.StartEvent;
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
@@ -99,8 +99,8 @@ public class SocketEventClient {
                   listener.onScope(this, (ScopeEvent)event);
                } else if(event instanceof BreakpointsEvent) {
                   listener.onBreakpoints(this, (BreakpointsEvent)event);
-               } else if(event instanceof StartEvent) {
-                  listener.onStart(this, (StartEvent)event);
+               } else if(event instanceof BeginEvent) {
+                  listener.onBegin(this, (BeginEvent)event);
                } else if(event instanceof StepEvent) {
                   listener.onStep(this, (StepEvent)event);
                } else if(event instanceof BrowseEvent) {

@@ -21,12 +21,13 @@ public class ExecutionProfiler implements TraceInterceptor {
       this.max = 0;
    }
 
-   public SortedSet<ProfileResult> lines() {
+   public SortedSet<ProfileResult> lines(int count) {
       SortedSet<ProfileResult> result=new TreeSet<ProfileResult>();
     
-      for(int i = 0; i < max; i++){
+      for(int i = 0; i < max && i < count; i++){
          if(times[i] > 0) {
-            result.add(new ProfileResult(times[i], i));
+            long duration = TimeUnit.NANOSECONDS.toMillis(times[i]);
+            result.add(new ProfileResult(duration, i));
          }
       }
       return result;
@@ -71,28 +72,4 @@ public class ExecutionProfiler implements TraceInterceptor {
          max=line;
       }
    }
-   public static class ProfileResult implements Comparable<ProfileResult>{
-      private final Long time;
-      private final Integer line;
-      
-      private ProfileResult(Long time, Integer line) {
-         this.time = time;
-         this.line = line;
-      }
-      @Override
-      public int compareTo(ProfileResult e) {
-         int compare = e.time.compareTo(time);
-         if(compare == 0) {
-            return e.line.compareTo(line);
-         }
-         return compare;
-      }
-      public int getLine(){
-         return line;
-      }
-      public long getTime(){
-         return TimeUnit.NANOSECONDS.toMillis(time);
-      }
-   }
-   
 }

@@ -6,7 +6,7 @@ import org.snapscript.agent.event.ExitEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.agent.event.StartEvent;
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
 import org.snapscript.agent.event.WriteOutputEvent;
@@ -57,10 +57,11 @@ public class CommandEventForwarder extends ProcessEventAdapter {
    }
    
    @Override
-   public void onStart(ProcessEventChannel channel, StartEvent event) throws Exception {
+   public void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception {
       String resource = event.getResource();
       String process = event.getProcess();
-      client.sendStart(process, resource);
+      long duration = event.getDuration();
+      client.sendBegin(process, resource, duration);
    }
    
    @Override

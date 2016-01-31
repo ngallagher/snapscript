@@ -21,12 +21,13 @@ import org.snapscript.agent.event.PongEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProcessEventType;
+import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
-import org.snapscript.agent.event.StartEvent;
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.socket.SocketEventClient;
 import org.snapscript.agent.profiler.ExecutionProfiler;
-import org.snapscript.agent.profiler.ExecutionProfiler.ProfileResult;
+import org.snapscript.agent.profiler.ProfileResult;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
@@ -37,7 +38,6 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
-import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.store.RemoteStore;
@@ -197,36 +197,45 @@ public class ProcessAgent {
       
       @Override
       public void run() {
+         connectSystemStreams();
+         // start and listen for the socket close
+         long start = System.nanoTime();
          try {
-            StartEvent event = new StartEvent(process, project, resource);
+            Executable executable = compiler.compile(resource);
+            long middle = System.nanoTime();
+            BeginEvent event = new BeginEvent(process, project, resource, TimeUnit.NANOSECONDS.toMillis(middle-start));
             client.send(event);
-            execute(); // execute the script
-         } catch(Exception e) {
-            e.printStackTrace();
-         }finally {
+            
             try {
-               System.err.flush(); // flush output to sockets
-               System.out.flush();
-               Thread.sleep(200);
-               // should really be a heat map for the editor
-               SortedSet<ProfileResult> lines = profiler.lines();
-               System.err.println();
-               for(ProfileResult entry : lines) {
-                  int line = entry.getLine();
-                  long time = entry.getTime();
-                  System.err.println("Line " + line + " took " + time + " ms");
-               }
-               System.err.flush();
-               Thread.sleep(2000);
-               System.err.close();
-               System.out.close();
-               ExitEvent event = new ExitEvent(process);
-               client.send(event);
+               executable.execute(); // execute the script
             } catch(Exception e) {
                e.printStackTrace();
-            } finally {
-               System.exit(0); // shutdown when finished  
+            }finally {
+               try {
+                  long stop = System.nanoTime();
+                  System.err.flush(); // flush output to sockets
+                  System.out.flush();
+                  Thread.sleep(200);
+                  // should really be a heat map for the editor
+                  SortedSet<ProfileResult> lines = profiler.lines(100);
+                  System.err.flush();
+                  Thread.sleep(2000);
+                  System.err.close();
+                  System.out.close();
+                  ProfileEvent profileEvent = new ProfileEvent(process, lines);
+                  ExitEvent exitEvent = new ExitEvent(process, TimeUnit.NANOSECONDS.toMillis(stop-middle));
+                  client.send(profileEvent);
+                  client.send(exitEvent);
+               } catch(Exception e) {
+                  e.printStackTrace();
+               } finally {
+                  System.exit(0); // shutdown when finished  
+               }
             }
+         } catch (Exception e) {
+            System.err.println(ExceptionBuilder.build(e));
+         } finally {
+            System.exit(0); // shutdown when finished  
          }
       }
       
@@ -239,29 +248,6 @@ public class ProcessAgent {
             System.setOut(new PrintStream(output, false, "UTF-8"));
             System.setErr(new PrintStream(error, false, "UTF-8"));
          }catch(Exception e) {
-            System.err.println(ExceptionBuilder.build(e));
-         }
-      }
-
-      private void execute() {
-         try {
-            connectSystemStreams();
-            
-            // start and listen for the socket close
-            long start = System.nanoTime();
-            Executable executable = compiler.compile(resource);
-            long middle = System.nanoTime();
-            System.err.println("Compile time " + TimeUnit.NANOSECONDS.toMillis(middle-start));
-            executable.execute();
-            long stop = System.nanoTime();
-            System.out.flush();
-            System.err.flush();
-            System.err.println();
-            
-            //client.getPublisher().publish(MessageType.COMPILE_TIME, TimeUnit.NANOSECONDS.toMillis(middle-start));
-            //client.getPublisher().publish(MessageType.EXECUTE_TIME, TimeUnit.NANOSECONDS.toMillis(stop-middle));
-            System.err.println("Execute time " + TimeUnit.NANOSECONDS.toMillis(stop-middle));
-         } catch (Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }
       }

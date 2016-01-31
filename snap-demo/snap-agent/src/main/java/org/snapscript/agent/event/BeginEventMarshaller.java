@@ -8,10 +8,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class StartEventMarshaller implements ProcessEventMarshaller<StartEvent> {
+public class BeginEventMarshaller implements ProcessEventMarshaller<BeginEvent> {
 
    @Override
-   public StartEvent fromMessage(MessageEnvelope message) throws IOException {
+   public BeginEvent fromMessage(MessageEnvelope message) throws IOException {
       byte[] array = message.getData();
       int length = message.getLength();
       int offset = message.getOffset();
@@ -20,21 +20,24 @@ public class StartEventMarshaller implements ProcessEventMarshaller<StartEvent> 
       String process = input.readUTF();
       String project = input.readUTF();
       String resource = input.readUTF();
+      long duration = input.readLong();
       
-      return new StartEvent(process, project, resource);
+      return new BeginEvent(process, project, resource, duration);
    }
 
    @Override
-   public MessageEnvelope toMessage(StartEvent event) throws IOException {
+   public MessageEnvelope toMessage(BeginEvent event) throws IOException {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = event.getProcess();
       String project = event.getProject();
       String resource = event.getResource();
+      long duration = event.getDuration();
       
       output.writeUTF(process);
       output.writeUTF(project);
       output.writeUTF(resource);
+      output.writeLong(duration);
       output.flush();
       
       byte[] array = buffer.toByteArray();

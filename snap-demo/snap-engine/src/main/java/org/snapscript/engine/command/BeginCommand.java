@@ -1,15 +1,19 @@
-package org.snapscript.agent.event;
+package org.snapscript.engine.command;
 
-public class StartEvent implements ProcessEvent {
+public class BeginCommand implements Command {
 
    private String resource;
    private String process;
-   private String project;
+   private long duration;
    
-   public StartEvent(String process, String project, String resource) {
+   public BeginCommand() {
+      super();
+   }
+   
+   public BeginCommand(String process, String resource, long duration) {
       this.process = process;
-      this.project = project;
       this.resource = resource;
+      this.duration = duration;
    }
 
    public String getResource() {
@@ -28,11 +32,11 @@ public class StartEvent implements ProcessEvent {
       this.process = process;
    }
 
-   public String getProject() {
-      return project;
+   public long getDuration() { // compile time
+      return duration;
    }
 
-   public void setProject(String project) {
-      this.project = project;
+   public void setDuration(long duration) {
+      this.duration = duration;
    }
 }

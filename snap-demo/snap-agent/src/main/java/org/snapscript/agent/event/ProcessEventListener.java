@@ -9,9 +9,10 @@ public interface ProcessEventListener {
    void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception;
    void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception;
    void onBreakpoints(ProcessEventChannel channel, BreakpointsEvent event) throws Exception;
-   void onStart(ProcessEventChannel channel, StartEvent event) throws Exception;
+   void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception;
    void onStep(ProcessEventChannel channel, StepEvent event) throws Exception;
    void onBrowse(ProcessEventChannel channel, BrowseEvent event) throws Exception;
+   void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception;
    void onPing(ProcessEventChannel channel, PingEvent event) throws Exception;
    void onPong(ProcessEventChannel channel, PongEvent event) throws Exception;
    void onClose(ProcessEventChannel channel) throws Exception;

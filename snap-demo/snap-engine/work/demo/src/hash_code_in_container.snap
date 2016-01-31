@@ -4,15 +4,15 @@ class Key{
       this.key = key;
    }
    equals(other){
-      System.err.println("Key.equals");
+      println("Key.equals");
       return key.equals(other.key);
    }
    hashCode(){
-      System.err.println("Key.hashCode");
+      println("Key.hashCode");
       return key.hashCode();
    }
    toString(){
-      System.err.println("toString");
+      println("toString");
       return key.toString();
    }
 }
@@ -21,11 +21,12 @@ var a = new Key("a");
 var b = new Key("b");
 var c = new Key("c");
 
-System.err.println(a.toString());
-System.err.println(b.toString());
+println(a.toString());
+println(b.toString());
 set.add(a);
 set.add(b);
 
-System.err.println(set.contains(a));
-System.err.println(set.contains(b));
-System.err.println(set.contains(c));
+println(set.contains(a));
+println(set.contains(b));
+println(set.contains(c));
+

@@ -40,7 +40,7 @@ public class SocketTest extends TestCase {
       @Override
       public void onRegister(ProcessEventChannel channel, RegisterEvent event) throws Exception  {
          System.err.println("REGISTER: process=" + event.getProcess() + " name="+name);
-         channel.send(new ExitEvent("exit["+name+"]="+event.getProcess()));
+         channel.send(new ExitEvent("exit["+name+"]="+event.getProcess(), 0L));
       }
       
       @Override

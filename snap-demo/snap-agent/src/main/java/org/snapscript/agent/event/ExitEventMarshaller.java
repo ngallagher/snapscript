@@ -18,8 +18,9 @@ public class ExitEventMarshaller implements ProcessEventMarshaller<ExitEvent> {
       ByteArrayInputStream buffer = new ByteArrayInputStream(array, offset, length);
       DataInputStream input = new DataInputStream(buffer);
       String process = input.readUTF();
+      long duration = input.readLong();
       
-      return new ExitEvent(process);
+      return new ExitEvent(process, duration);
       
    }
 
@@ -28,8 +29,10 @@ public class ExitEventMarshaller implements ProcessEventMarshaller<ExitEvent> {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = value.getProcess();
+      long duration = value.getDuration();
       
       output.writeUTF(process);
+      output.writeLong(duration);
       output.flush();
       
       byte[] array = buffer.toByteArray();

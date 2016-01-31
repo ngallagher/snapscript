@@ -88,7 +88,7 @@ class CannonLogic {
         const y = maxHeightCannon;
         this.scaleX = (graphics.getRenderGridWidth() - 10.0) / x;
         this.scaleY = (graphics.getRenderGridHeight() - 10.0) / y;
-        System.out.println("INFO : ScaleX : " + this.scaleX);
+        println("INFO : ScaleX : " + this.scaleX);
     }
 
     loadForRender() {
@@ -181,7 +181,7 @@ class CannonLogic {
         if (time > 3600) {
             return 3;
         }
-        System.out.println("Position Projectile : " + s + " time=" + time);
+        println("Position Projectile : " + s + " time=" + time);
         return 0;
     } // End of the method, do simulation //
 
@@ -346,7 +346,7 @@ class TimerCounterTask with Runnable {
       this.cannon = cannon;
    }
    run() {
-      System.out.println("Still waiting ... " + cannon.counter);
+      println("Still waiting ... " + cannon.counter);
       cannon.counter++;
   }
 }
@@ -465,8 +465,9 @@ class UpdatableCanvasTask with Runnable {
 }
 
 
-System.out.println("Running");
+println("Running");
 var o = new PhysicsCannon();
 o.invokeLater();
-System.out.println("Done");
+println("Done");
 Thread.sleep(100000000);
+

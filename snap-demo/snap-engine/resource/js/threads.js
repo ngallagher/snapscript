@@ -3,7 +3,7 @@ var currentFocusThread = null;
 var currentFocusLine = -1;
 
 function createThreads() {
-   createRoute("START", startThreads)
+   createRoute("BEGIN", startThreads)
    createRoute("SCOPE", updateThreads);
    createRoute("TERMINATE", clearThreads);
    createRoute("EXIT", clearThreads);
@@ -16,7 +16,7 @@ function startThreads(socket, type, text) {
    currentFocusThread = null;
    w2ui['threads'].records = [];
    w2ui['threads'].refresh();
-   $("#status").html("<i>RUNNING: " + message.resource + " ("+message.process+")</i>");
+   $("#status").html("<i>RUNNING: " + message.resource + " ("+message.process+") "+message.duration+" milliseconds</i>");
 }
 
 function clearThreads(socket, type, text) {
