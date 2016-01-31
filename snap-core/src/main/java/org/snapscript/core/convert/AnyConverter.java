@@ -2,10 +2,10 @@ package org.snapscript.core.convert;
 
 public class AnyConverter extends ConstraintConverter {
    
-   private final ProxyBuilder builder;
+   private final ProxyWrapper wrapper;
    
    public AnyConverter() {
-      this.builder = new ProxyBuilder();
+      this.wrapper = new ProxyWrapper();
    }
    
    @Override
@@ -14,6 +14,6 @@ public class AnyConverter extends ConstraintConverter {
    }
    
    public Object convert(Object object) {
-      return builder.create(object);
+      return wrapper.toProxy(object);
    }
 }

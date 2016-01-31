@@ -8,15 +8,15 @@ import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
-import org.snapscript.core.convert.ProxyBuilder;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class MapEntryList implements Evaluation{
    
-   private final ProxyBuilder builder;
+   private final ProxyWrapper wrapper;
    private final MapEntry[] list;
    
    public MapEntryList(MapEntry... list) {
-      this.builder = new ProxyBuilder();
+      this.wrapper = new ProxyWrapper();
       this.list = list;
    }
    
@@ -29,8 +29,8 @@ public class MapEntryList implements Evaluation{
          Entry pair = entry.getValue();
          Object key = pair.getKey();
          Object value = pair.getValue();
-         Object keyProxy = builder.create(key);
-         Object valueProxy = builder.create(value);
+         Object keyProxy = wrapper.toProxy(key);
+         Object valueProxy = wrapper.toProxy(value);
          
          map.put(keyProxy, valueProxy);
       }

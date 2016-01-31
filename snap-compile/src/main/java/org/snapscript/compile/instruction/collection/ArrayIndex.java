@@ -6,16 +6,19 @@ import org.snapscript.compile.instruction.Argument;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class ArrayIndex implements Evaluation {
    
    private final ListConverter converter;
+   private final ProxyWrapper wrapper;
    private final Argument[] list;
    private final Argument first;
    private final Array array;
   
    public ArrayIndex(Array array, Argument first, Argument... list) {
       this.converter = new ListConverter();
+      this.wrapper = new ProxyWrapper();
       this.array = array;        
       this.first = first;
       this.list = list;
@@ -42,6 +45,6 @@ public class ArrayIndex implements Evaluation {
          index = argument.evaluate(scope, null);
          number = index.getInteger();
       }
-      return new ListValue(source, number);
+      return new ListValue(wrapper, source, number);
    }
 }

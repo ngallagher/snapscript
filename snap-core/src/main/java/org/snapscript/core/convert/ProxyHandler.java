@@ -15,8 +15,8 @@ public class ProxyHandler implements InvocationHandler {
    private final ProxyArgumentExtractor extractor;
    private final Scope scope;
    
-   public ProxyHandler(Scope scope) {
-      this.extractor = new ProxyArgumentExtractor();
+   public ProxyHandler(ProxyWrapper builder, Scope scope) {
+      this.extractor = new ProxyArgumentExtractor(builder);
       this.scope = scope;
    }
    

@@ -6,6 +6,7 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 import java.util.List;
 
 import org.snapscript.compile.instruction.NameExtractor;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Constant;
 import org.snapscript.core.ConstantAccessor;
 import org.snapscript.core.Initializer;
@@ -33,6 +34,7 @@ public class ClassDefinition extends Statement {
       this.parts = parts;
    }
 
+   @Bug("This is crap")
    @Override
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);

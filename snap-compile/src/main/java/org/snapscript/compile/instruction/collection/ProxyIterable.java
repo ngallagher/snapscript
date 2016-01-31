@@ -3,19 +3,16 @@ package org.snapscript.compile.instruction.collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.snapscript.core.convert.ProxyBuilder;
-import org.snapscript.core.convert.ProxyExtractor;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class ProxyIterable implements Iterable {
 
-   private final ProxyExtractor extractor;
-   private final ProxyBuilder builder;
+   private final ProxyWrapper wrapper;
    private final Iterable iterable;
    
-   public ProxyIterable(Iterable iterable) {
-      this.extractor = new ProxyExtractor();
-      this.builder = new ProxyBuilder();
+   public ProxyIterable(ProxyWrapper wrapper, Iterable iterable) {
       this.iterable = iterable;
+      this.wrapper = wrapper;
    }
    
    @Override
@@ -46,7 +43,7 @@ public class ProxyIterable implements Iterable {
                return new ProxyEntry((Entry)value);
             }
          }
-         return extractor.extract(value);
+         return wrapper.fromProxy(value);
       }
       
       @Override
@@ -68,7 +65,7 @@ public class ProxyIterable implements Iterable {
          Object key = entry.getKey();
          
          if(key != null) {
-            return extractor.extract(key);
+            return wrapper.fromProxy(key);
          }
          return key;
       }
@@ -78,18 +75,18 @@ public class ProxyIterable implements Iterable {
          Object value = entry.getValue();
          
          if(value != null) {
-            return extractor.extract(value);
+            return wrapper.fromProxy(value);
          }
          return value;
       }
 
       @Override
       public Object setValue(Object value) { 
-         Object proxy = builder.create(value);
+         Object proxy = wrapper.toProxy(value);
          Object previous = entry.setValue(proxy);
          
          if(previous != null) {
-            return extractor.extract(previous);
+            return wrapper.fromProxy(previous);
          }
          return previous;
       }

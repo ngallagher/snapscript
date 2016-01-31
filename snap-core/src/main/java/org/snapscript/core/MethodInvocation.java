@@ -2,17 +2,16 @@ package org.snapscript.core;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
-import org.snapscript.core.convert.ProxyExtractor;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class MethodInvocation implements Invocation<Object>{
 
-   private final ProxyExtractor extractor;
+   private final ProxyWrapper wrapper;
    private final Method method;
    
    public MethodInvocation(Method method) {
-      this.extractor = new ProxyExtractor();
+      this.wrapper = new ProxyWrapper();
       this.method = method;
    }
    
@@ -49,7 +48,7 @@ public class MethodInvocation implements Invocation<Object>{
          }
       }
       Object value = method.invoke(left, list);
-      Object result = extractor.extract(value);
+      Object result = wrapper.fromProxy(value);
       
       return ResultType.getNormal(result);
    }

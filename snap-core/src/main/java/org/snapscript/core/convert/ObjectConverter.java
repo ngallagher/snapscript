@@ -6,13 +6,13 @@ import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends ConstraintConverter {
    
-   private final TypeExtractor extractor;
    private final HierarchyChecker checker;
-   private final ProxyBuilder builder;
+   private final TypeExtractor extractor;
+   private final ProxyWrapper wrapper;
    private final Type type;
    
    public ObjectConverter(TypeExtractor extractor, HierarchyChecker checker, Type type) {
-      this.builder = new ProxyBuilder();
+      this.wrapper = new ProxyWrapper();
       this.extractor = extractor;
       this.checker = checker;
       this.type = type;
@@ -39,7 +39,7 @@ public class ObjectConverter extends ConstraintConverter {
       Class require = type.getType();
       
       if(require != null) {
-         return builder.create(object, require);
+         return wrapper.toProxy(object, require);
       }
       return object;
    }

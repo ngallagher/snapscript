@@ -2,23 +2,19 @@ package org.snapscript.compile.instruction.collection;
 
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Value;
-import org.snapscript.core.convert.ProxyBuilder;
-import org.snapscript.core.convert.ProxyExtractor;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class ListValue extends Value {
    
-   private final ProxyExtractor extractor;
-   private final ProxyBuilder builder;
-   private final List list;
+   private final ProxyWrapper wrapper;
    private final Integer index;
+   private final List list;
    
-   public ListValue(List list, Integer index) {
-      this.extractor = new ProxyExtractor();
-      this.builder = new ProxyBuilder();
-      this.list = list;
+   public ListValue(ProxyWrapper converter, List list, Integer index) {
+      this.wrapper = converter;
       this.index = index;
+      this.list = list;
    }
    
    @Override
@@ -31,14 +27,14 @@ public class ListValue extends Value {
       Object value = list.get(index);
       
       if(value != null) {
-         return extractor.extract(value);
+         return wrapper.fromProxy(value);
       }
       return value;
    }
    
    @Override
    public void setValue(Object value){
-      Object proxy = builder.create(value);
+      Object proxy = wrapper.toProxy(value);
       int length = list.size();
       
       for(int i = length; i <= index; i++) {

@@ -11,13 +11,16 @@ import java.util.Set;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class IterationConverter {
 
    private final ArrayConverter converter;
+   private final ProxyWrapper wrapper;
    
    public IterationConverter() {
       this.converter = new ArrayConverter();
+      this.wrapper = new ProxyWrapper();
    }
    
    public Iteration convert(Object value) throws Exception {
@@ -58,7 +61,7 @@ public class IterationConverter {
          List list = converter.convert(value);
          
          if(!list.isEmpty()) {
-            return new ProxyIterable(list);
+            return new ProxyIterable(wrapper, list);
          }
          return list;
       }
@@ -84,7 +87,7 @@ public class IterationConverter {
          Set set = map.entrySet();
          
          if(!set.isEmpty()) {
-            return new ProxyIterable(set);
+            return new ProxyIterable(wrapper, set);
          }
          return set;
       }
@@ -107,7 +110,7 @@ public class IterationConverter {
          Iterable iterable = (Iterable)value;
          
          if(value != null) {
-            return new ProxyIterable(iterable);
+            return new ProxyIterable(wrapper, iterable);
          }
          return Collections.emptyList();
       }
@@ -131,7 +134,7 @@ public class IterationConverter {
          
          if(list != null) {
             EnumerationIterable iterable = new EnumerationIterable(list);
-            ProxyIterable proxy = new ProxyIterable(iterable);
+            ProxyIterable proxy = new ProxyIterable(wrapper, iterable);
             
             return proxy;
          }

@@ -25,6 +25,8 @@ public class ProcessAgentLauncher {
       long sequence = counter.getAndIncrement();
       ProcessBuilder builder = new ProcessBuilder(
             String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar), 
+            "-XX:+UnlockCommercialFeatures",
+            "-XX:+FlightRecorder",
             "-cp", 
             path, 
             type, 

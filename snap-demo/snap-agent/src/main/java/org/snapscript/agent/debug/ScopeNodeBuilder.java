@@ -13,26 +13,26 @@ import java.util.Map;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Type;
-import org.snapscript.core.convert.ProxyExtractor;
+import org.snapscript.core.convert.ProxyWrapper;
 
 public class ScopeNodeBuilder {
    
    private final Map<String, Map<String, String>> variables;
    private final PrimitivePromoter promoter;
    private final ScopeNodeChecker checker;
-   private final ProxyExtractor extractor;
+   private final ProxyWrapper converter;
    
    public ScopeNodeBuilder(Map<String, Map<String, String>> variables) {
       this.promoter = new PrimitivePromoter();
       this.checker = new ScopeNodeChecker();
-      this.extractor = new ProxyExtractor();
+      this.converter = new ProxyWrapper();
       this.variables = variables;
    }
 
    public ScopeNode createNode(String path, String name, Object object, int depth) {
       if(object != null) {
          if(object instanceof Proxy) {
-            object = extractor.extract(object);
+            object = converter.fromProxy(object);
          }
          if(object instanceof InstanceScope) {
             InstanceScope instance = (InstanceScope)object;
