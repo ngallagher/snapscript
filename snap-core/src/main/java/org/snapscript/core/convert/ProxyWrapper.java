@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.snapscript.core.Any;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Scope;
 
 public class ProxyWrapper {
@@ -14,7 +15,8 @@ public class ProxyWrapper {
       this.loader = Any.class.getClassLoader();
    }
    
-   public Object toProxy(Object object, Class... interfaces) {
+   @Bug("We need all the interfaces implemented by the object")
+   public Object toProxy(Object object, Class... interfaces) { 
       if(object != null) {
          if(Scope.class.isInstance(object)) {
             ProxyHandler handler = new ProxyHandler(this, (Scope)object);

@@ -52,6 +52,7 @@ import org.snapscript.compile.instruction.operation.PrefixDecrement;
 import org.snapscript.compile.instruction.operation.PrefixIncrement;
 import org.snapscript.compile.instruction.operation.PrefixOperation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
+import org.snapscript.compile.instruction.variable.Variable;
 
 public enum Instruction {
    DECIMAL(NumberLiteral.class, "decimal", false),

@@ -23,9 +23,8 @@ allocate(list);
 
 function iterate(list) {
    var start = System.currentTimeMillis();
-   var size = list.size();
    
-   for(var i = 0; i < size; i++) {
+   for(var i = 0; i < list.size(); i++) {
       //list[i];
    }
    var stop = System.currentTimeMillis();

@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HierarchyExtractor {
+public class TypeTraverser {
    
    private final Map<Type, Set<Type>> types;
    
-   public HierarchyExtractor() {
+   public TypeTraverser() {
       this.types = new ConcurrentHashMap<Type, Set<Type>>();
    }
 
-   public Set<Type> extract(Type actual) {
+   public Set<Type> traverse(Type actual) {
       Set<Type> list = types.get(actual);
       
       if(list == null) {

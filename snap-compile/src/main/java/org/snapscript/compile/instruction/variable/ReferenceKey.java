@@ -1,30 +1,30 @@
-package org.snapscript.compile.instruction;
+package org.snapscript.compile.instruction.variable;
 
 import org.snapscript.core.Type;
 
-public class VariableKey {
+public class ReferenceKey {
 
    private final String name;
    private final Type type;
    
-   public VariableKey(String name, Type type) {
+   public ReferenceKey(String name, Type type) {
       this.name = name;
       this.type = type;
    }
    
    @Override
-   public boolean equals(Object object) {
-      if(this != object) {
-         return equals((VariableKey)object);
+   public boolean equals(Object key) {
+      if(this != key) {
+         return equals((ReferenceKey)key);
       }
       return true;
    }
    
-   public boolean equals(VariableKey object) {
-      if(object.type != type) {
+   public boolean equals(ReferenceKey key) {
+      if(key.type != type) {
          return false;
       }
-      return object.name.equals(name);
+      return key.name.equals(name);
    }
    
    @Override

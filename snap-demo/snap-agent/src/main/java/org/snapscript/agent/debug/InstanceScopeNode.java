@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.HierarchyExtractor;
+import org.snapscript.core.TypeTraverser;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
@@ -15,7 +15,7 @@ import org.snapscript.core.Value;
 
 public class InstanceScopeNode implements ScopeNode {
    
-   private final HierarchyExtractor extractor;
+   private final TypeTraverser extractor;
    private final ScopeNodeBuilder builder;
    private final List<ScopeNode> nodes;
    private final Scope scope;
@@ -24,7 +24,7 @@ public class InstanceScopeNode implements ScopeNode {
    private final int depth;
    
    public InstanceScopeNode(ScopeNodeBuilder builder, InstanceScope scope, String path, String name, int depth) {
-      this.extractor = new HierarchyExtractor();
+      this.extractor = new TypeTraverser();
       this.nodes = new ArrayList<ScopeNode>();
       this.builder = builder;
       this.scope = scope;
@@ -54,7 +54,7 @@ public class InstanceScopeNode implements ScopeNode {
          State state = scope.getState();
          Set<String> names = state.getNames();
          Type type = scope.getType();
-         Set<Type> types = extractor.extract(type);
+         Set<Type> types = extractor.traverse(type);
          
          if(!names.isEmpty() && !types.isEmpty()) {
             Set<String> include = new HashSet<String>();
