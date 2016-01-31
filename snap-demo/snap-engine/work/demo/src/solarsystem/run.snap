@@ -1574,21 +1574,21 @@ class Sun extends Satellite {
         // Draw rays of sun.
         //
         for (var i = 0; i < 10; ++i) {
-        if (probOneHalf())
-            xf = xPos+ Math.random()*zoomedDiameter*1.5;
-        else
-            xf = xPos - Math.random()*zoomedDiameter*1.5;
-
-        if (probOneHalf())
-            yf = yPos + Math.random()*zoomedDiameter*1.5;
-        else
-            yf = yPos - Math.random()*zoomedDiameter*1.5;
-
-        var ray = new Line2D$Double(xPos,
-                                              yPos,
-                                              xf,
-                                              yf);
-        comp2D.draw(ray);
+           if (probOneHalf())
+               xf = xPos+ Math.random()*zoomedDiameter*1.5;
+           else
+               xf = xPos - Math.random()*zoomedDiameter*1.5;
+   
+           if (probOneHalf())
+               yf = yPos + Math.random()*zoomedDiameter*1.5;
+           else
+               yf = yPos - Math.random()*zoomedDiameter*1.5;
+   
+           var ray = new Line2D$Double(xPos,
+                                                 yPos,
+                                                 xf,
+                                                 yf);
+           comp2D.draw(ray);
         }
     }
     
