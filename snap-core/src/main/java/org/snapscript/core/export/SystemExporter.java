@@ -11,12 +11,12 @@ public class SystemExporter {
    
    private final List<Function> functions;
    private final MethodExporter exporter;
-   private final SystemContext runtime;
+   private final SystemContext system;
    
    public SystemExporter(Context context) {
       this.functions = new ArrayList<Function>();
       this.exporter = new MethodExporter(context);
-      this.runtime = new SystemContext(context);
+      this.system = new SystemContext(context);
    }
    
    public synchronized void export(Module module){
@@ -24,7 +24,7 @@ public class SystemExporter {
       
       if(functions.isEmpty()) {
          try {
-            List<Function> list = exporter.export(runtime);
+            List<Function> list = exporter.export(system);
             
             for(Function function : list) {
                functions.add(function);

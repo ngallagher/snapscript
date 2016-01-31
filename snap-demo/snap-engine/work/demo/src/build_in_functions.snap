@@ -6,3 +6,11 @@ eval("blah('foo')");
 function blah(x){
    println("blah("+x+")");
 }
+
+// TODO: this function should take priority
+function println(x){
+   System.out.println("new("+x+")");
+}
+
+printf("%s=%s%n", 1, 2);
+println("x");

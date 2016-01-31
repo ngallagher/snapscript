@@ -1,41 +1,41 @@
 var x = 0;
 
 for(;x<10;x++){
-   System.err.println(x);
+   println(x);
 }
 for(;x < 100; x+=0){
    if(x++ > 20){
       break;
    }
-   System.err.println(x);
+   println(x);
 }
 for(;;){
    if(x++ > 30)   
       break;
-   System.err.println(x);
+   println(x);
 }
 for(;x<40;){
-   System.err.println(x++);
+   println(x++);
 }
 for(;x<50;x+=2){
-   System.err.println(x);
+   println(x);
 }
 while(x++<60){
-   System.err.println(x);
+   println(x);
 }
 while(true){
    if(x++>70)break;
-   System.err.println(x);
+   println(x);
 }
 for(var i = 0; i < 10;i++){
    x+=i;
-   System.err.println(x);
+   println(x);
 }
 for(var i = 0; i < 10;++i){
    x+=i;
-   System.err.println(x);
+   println(x);
 }
 for(var i in 0..9){
    x+=i;
-   System.err.println(x);
+   println(x);
 }

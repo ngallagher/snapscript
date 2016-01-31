@@ -35,9 +35,11 @@ public class FunctionMatcher {
       
       if(!cache.containsKey(key)) {
          List<Function> functions = module.getFunctions();
+         int size = functions.size();
          int best = 0;
    
-         for(Function next : functions) {
+         for(int i = size - 1; i >= 0; i--) { 
+            Function next = functions.get(i);
             String method = next.getName();
    
             if(name.equals(method)) {
@@ -72,8 +74,10 @@ public class FunctionMatcher {
          
          for(Type entry : path) {
             List<Function> functions = entry.getFunctions();
-   
-            for(Function next : functions) {
+            int size = functions.size();
+            
+            for(int i = size - 1; i >= 0; i--) {
+               Function next = functions.get(i);
                String method = next.getName();
    
                if(name.equals(method)) {
