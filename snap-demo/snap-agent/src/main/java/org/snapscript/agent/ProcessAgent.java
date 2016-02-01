@@ -111,7 +111,7 @@ public class ProcessAgent {
          ProcessEventChannel channel = client.connect(port);
          SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, controller, process);
          
-         analyzer.register(profiler);
+         ///analyzer.register(profiler);
          analyzer.register(interceptor);
          channel.send(register); // send the initial register event
       } catch (Exception e) {
