@@ -2,8 +2,10 @@ package org.snapscript.core.index;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import org.snapscript.core.FieldAccessor;
+import org.snapscript.core.FinalFieldAccessor;
 import org.snapscript.core.MethodAccessor;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -16,6 +18,16 @@ public class PropertyGenerator {
    
    public Property generate(Field field, Type type, String name) {
       try {
+         int modifiers = field.getModifiers();
+         
+         if(Modifier.isFinal(modifiers)) {
+            FinalFieldAccessor accessor = new FinalFieldAccessor(field);
+            
+            if(!field.isAccessible()) {
+               field.setAccessible(true);
+            }
+            return new Property(name, type, accessor); 
+         }
          FieldAccessor accessor = new FieldAccessor(field);
          
          if(!field.isAccessible()) {
