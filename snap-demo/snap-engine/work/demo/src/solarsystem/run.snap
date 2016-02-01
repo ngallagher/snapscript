@@ -274,7 +274,7 @@ class SkyFrame with ChangeListener with ActionListener {
      */
     new(mNumberOfPlanets, dt) {
        frame = new JFrame("Solar System");
-        sun = new Sun(75, 1000, xPixels/2, yPixels/2);
+        sun = new Sun(75, 2000, xPixels/2, yPixels/2);
 
         frame.setSize(xPixels, yPixels);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -626,6 +626,7 @@ class SkyPanel with JPanelInterface {
      * @see Graphics
      */
     paint(panel, comp) {
+      var start = System.currentTimeMillis();
         var comp2D = comp;
 
         comp2D.setPaint(Color.black);      
@@ -649,6 +650,7 @@ class SkyPanel with JPanelInterface {
             if (displayEnergy)
                 drawEnergy(comp2D, i);
         }
+        println(System.currentTimeMillis()-start);
     }
 
     /**

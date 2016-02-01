@@ -803,6 +803,9 @@ class SkyPanel implements JPanelInterface {
           if (displayEnergy)
               drawEnergy(comp2D, i);
       }
+      try {
+         Thread.sleep(100);
+      }catch(Exception e){}
    }
 }
 /**

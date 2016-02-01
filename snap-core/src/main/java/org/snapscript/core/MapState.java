@@ -56,6 +56,7 @@ public class MapState implements State {
             throw new IllegalStateException("Scope for '" + name + "' does not exist");
          }
          value = state.getValue(name);
+         values.put(name, value); // TODO will caching the variable here cause problems??
       }
       if(value == null && model != null) {
          Object object = model.getAttribute(name);
