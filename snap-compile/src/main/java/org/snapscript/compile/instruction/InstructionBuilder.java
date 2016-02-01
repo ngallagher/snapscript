@@ -3,11 +3,9 @@ package org.snapscript.compile.instruction;
 import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Result;
-import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
@@ -15,11 +13,11 @@ import org.snapscript.parse.Line;
 
 public class InstructionBuilder {
    
-   private final AtomicInteger counter;
+   private final TraceWrapper wrapper;
    private final Context context;
 
    public InstructionBuilder(Context context) {
-      this.counter = new AtomicInteger();
+      this.wrapper = new TraceWrapper();
       this.context = context;
    }
    
@@ -39,18 +37,10 @@ public class InstructionBuilder {
       Object value = result.getValue();
       
       if(trace) {
-         Class instruction = value.getClass();
-         int key = counter.getAndIncrement();
-         
-         if(Statement.class.isAssignableFrom(instruction)) {
-            Statement statement = (Statement)value;
-            return new TraceStatement(analyzer, statement, line, key);
-         }
-         if(Evaluation.class.isAssignableFrom(instruction)) {
-            Evaluation evaluation = (Evaluation)value;
-            return new TraceEvaluation(analyzer, evaluation, line, key);
-         }
+         return wrapper.wrap(analyzer, value, line);
       }
       return value;
    }
+
+
 }

@@ -25,7 +25,7 @@ public class Assignment implements Evaluation {
       if(operator != AssignmentOperator.EQUAL) {
          Object leftValue = leftResult.getValue();
          
-         if(!Number.class.isInstance(leftValue)) {         
+         if(!Number.class.isInstance(leftValue)) {           
             StringBuilder builder = new StringBuilder();
      
             if(operator != AssignmentOperator.PLUS_EQUAL) {

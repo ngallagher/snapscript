@@ -6,9 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ScopeEvent;
 import org.snapscript.core.Scope;
-import org.snapscript.core.TraceInterceptor;
+import org.snapscript.core.Trace;
+import org.snapscript.core.TraceListener;
 
-public class SuspendInterceptor implements TraceInterceptor {
+public class SuspendInterceptor implements TraceListener {
 
    private final ProcessEventChannel channel;
    private final ThreadProgressLocal monitor;
@@ -27,10 +28,12 @@ public class SuspendInterceptor implements TraceInterceptor {
    }
 
    @Override
-   public void before(Scope scope, Object instruction, String resource, int line, int key) {
+   public void before(Scope scope, Trace trace) {
       ThreadProgress progress = monitor.get();
-      Class type = instruction.getClass();
-
+      Class type = trace.getInstruction();
+      String resource = trace.getResource();
+      int line = trace.getLine();
+      
       if(matcher.match(resource, line) || progress.suspend()) { 
          try {
             String thread = Thread.currentThread().getName();
@@ -56,9 +59,9 @@ public class SuspendInterceptor implements TraceInterceptor {
    }
 
    @Override
-   public void after(Scope scope, Object instruction, String resource, int line, int key) {
+   public void after(Scope scope, Trace trace) {
       ThreadProgress progress = monitor.get();
-      Class type = instruction.getClass();
+      Class type = trace.getInstruction();
       
       progress.afterInstruction(type);
    }

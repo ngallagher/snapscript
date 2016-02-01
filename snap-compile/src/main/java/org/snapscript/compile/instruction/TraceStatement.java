@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
+import org.snapscript.core.Trace;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.parse.Line;
 
@@ -10,14 +11,12 @@ public class TraceStatement extends Statement {
    
    private final TraceAnalyzer analyzer;
    private final Statement statement;
-   private final Line line;
-   private final int key;
+   private final Trace trace;
    
    public TraceStatement(TraceAnalyzer analyzer, Statement statement, Line line, int key) {
+      this.trace = new LineTrace(statement, line, key);
       this.statement = statement;
       this.analyzer = analyzer;
-      this.line = line;
-      this.key = key;
    }
    
    @Override
@@ -27,14 +26,11 @@ public class TraceStatement extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      String resource = line.getResource();
-      int number = line.getNumber();
-      
       try {
-         analyzer.before(scope, statement, resource, number, key);
+         analyzer.before(scope, trace);
          return statement.execute(scope); 
       } finally {
-         analyzer.after(scope, statement, resource, number, key);
+         analyzer.after(scope, trace);
       }
    }
 }

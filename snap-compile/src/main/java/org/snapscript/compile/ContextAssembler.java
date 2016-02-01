@@ -119,7 +119,7 @@ public class ContextAssembler implements Assembler {
    }
    
    @Bug("This needs ot be a proper type, InstructionBuilder -> OperationBuilder")
-   private class Operation{
+   public static class Operation{
       
       private final Instruction instruction;
       private final Type type;

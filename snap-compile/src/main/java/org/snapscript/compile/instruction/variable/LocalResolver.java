@@ -13,17 +13,17 @@ import org.snapscript.core.ValueType;
 
 public class LocalResolver implements ValueResolver<Object> {
    
-   private final AtomicReference<Object> cache;
+   private final AtomicReference<Object> reference;
    private final String name;
    
    public LocalResolver(String name) {
-      this.cache = new AtomicReference<Object>();
+      this.reference = new AtomicReference<Object>();
       this.name = name;
    }
    
    @Override
    public Value resolve(Scope scope, Object left) {
-      Object result = cache.get();
+      Object result = reference.get();
       
       if(result == null) {
          State state = scope.getState();
@@ -33,7 +33,7 @@ public class LocalResolver implements ValueResolver<Object> {
             Object value = match(scope, left);
             
             if(value != null) {
-               cache.set(value);
+               reference.set(value);
                return ValueType.getTransient(value);
             }
          }

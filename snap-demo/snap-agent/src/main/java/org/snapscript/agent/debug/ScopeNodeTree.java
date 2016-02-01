@@ -44,11 +44,14 @@ public class ScopeNodeTree implements ScopeNode {
          if(!names.isEmpty()) {
             for(String name : names) {
                Value value = state.getValue(name);
-               Object object = value.getValue();
-               ScopeNode node = builder.createNode(name, name, object, 0);
                
-               if(node != null) {
-                  nodes.add(node);
+               if(value != null) {
+                  Object object = value.getValue();
+                  ScopeNode node = builder.createNode(name, name, object, 0);
+                  
+                  if(node != null) {
+                     nodes.add(node);
+                  }
                }
             }
          }

@@ -5,9 +5,10 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import org.snapscript.core.Scope;
-import org.snapscript.core.TraceInterceptor;
+import org.snapscript.core.Trace;
+import org.snapscript.core.TraceListener;
 
-public class ExecutionProfiler implements TraceInterceptor {
+public class ExecutionProfiler implements TraceListener {
    
    private volatile int[] counts;
    private volatile int[] visits;
@@ -40,7 +41,8 @@ public class ExecutionProfiler implements TraceInterceptor {
    }
    
    @Override
-   public void before(Scope scope, Object instruction, String resource, int line, int key) {
+   public void before(Scope scope, Trace trace) {
+      int line = trace.getLine();
       // thread local required, also recursion counter
       if(times.length < line) {
          counts = copyOf(counts, line + 50);
@@ -69,7 +71,8 @@ public class ExecutionProfiler implements TraceInterceptor {
    }
 
    @Override
-   public void after(Scope scope, Object instruction, String resource, int line, int key) {
+   public void after(Scope scope, Trace trace) {
+      int line = trace.getLine();
       int currentCount = --counts[line]; // exit instruction
 
       if(currentCount == 0) {

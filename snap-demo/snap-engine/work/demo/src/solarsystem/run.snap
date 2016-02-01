@@ -100,7 +100,7 @@ class SolarSystem {
 
         while (true) {
             skyFrame.getPanel().repaint();
-            Thread.sleep(10);
+            Thread.sleep(100);
         }
     }
     /**
@@ -626,7 +626,7 @@ class SkyPanel with JPanelInterface {
      * @see Graphics
      */
     paint(panel, comp) {
-      var start = System.currentTimeMillis();
+        var start = System.currentTimeMillis();
         var comp2D = comp;
 
         comp2D.setPaint(Color.black);      
@@ -1380,17 +1380,17 @@ class Planet extends Satellite {
         //
         comp2D.setColor(Color.darkGray);
         comp2D.fill(semiCircle(getAbsPos(Coord.X),
-        getAbsPos(Coord.Y),
-        zoomedDiameter,
-        getTheta() + 3*Math.PI/2));
+            getAbsPos(Coord.Y),
+            zoomedDiameter,
+            getTheta() + 3*Math.PI/2));
         //
         // Draw the day-time semi-circle of the planet.
         //
         comp2D.setColor(color);
         comp2D.fill(semiCircle(getAbsPos(Coord.X),
-        getAbsPos(Coord.Y),
-        zoomedDiameter,
-        getTheta() + Math.PI/2 ));
+            getAbsPos(Coord.Y),
+            zoomedDiameter,
+            getTheta() + Math.PI/2 ));
         //
         // Show previous positions of the planet if requested by hostPanel.
         //
@@ -1575,21 +1575,18 @@ class Sun extends Satellite {
         //
         // Draw rays of sun.
         //
-        for (var i = 0; i < 10; ++i) {
+        for (var i = 0; i < 20; ++i) {
            if (probOneHalf())
-               xf = xPos+ Math.random()*zoomedDiameter*1.5;
+               xf = xPos+ Math.random()*zoomedDiameter*0.5;
            else
-               xf = xPos - Math.random()*zoomedDiameter*1.5;
+               xf = xPos - Math.random()*zoomedDiameter*0.5;
    
            if (probOneHalf())
-               yf = yPos + Math.random()*zoomedDiameter*1.5;
+               yf = yPos + Math.random()*zoomedDiameter*0.5;
            else
-               yf = yPos - Math.random()*zoomedDiameter*1.5;
+               yf = yPos - Math.random()*zoomedDiameter*0.5;
    
-           var ray = new Line2D$Double(xPos,
-                                                 yPos,
-                                                 xf,
-                                                 yf);
+           var ray = new Line2D$Double(xPos, yPos, xf, yf);
            comp2D.draw(ray);
         }
     }
