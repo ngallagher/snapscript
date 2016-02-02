@@ -1,31 +1,27 @@
 package org.snapscript.agent.profiler;
 
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
-import org.snapscript.core.Scope;
-import org.snapscript.core.Trace;
-import org.snapscript.core.TraceListener;
-
-public class ExecutionProfiler implements TraceListener {
+public class ResourceProfiler {
    
+   private volatile String resource;
    private volatile int[] counts;
    private volatile int[] visits;
    private volatile long[] start;
    private volatile long[] times;
    private volatile int max;
-   
-   public ExecutionProfiler() {
+
+   public ResourceProfiler(String resource) {
       this.start = new long[500];
       this.counts = new int[500];
       this.times = new long[500];
       this.visits = new int[500];
+      this.resource = resource;
       this.max = 0;
    }
 
-   public SortedSet<ProfileResult> lines(int size) {
-      SortedSet<ProfileResult> result=new TreeSet<ProfileResult>();
+   public void collect(SortedSet<ProfileResult> results, int size) {
       long localMax = max;
       long[] localTimes = times;
       int[] localVisits = visits;
@@ -34,15 +30,12 @@ public class ExecutionProfiler implements TraceListener {
          if(localTimes[i] > 0) {
             long duration = TimeUnit.NANOSECONDS.toMillis(localTimes[i]);
             int visits = localVisits[i];
-            result.add(new ProfileResult(duration, visits, i));
+            results.add(new ProfileResult(resource, duration, visits, i));
          }
       }
-      return result;
    }
    
-   @Override
-   public void before(Scope scope, Trace trace) {
-      int line = trace.getLine();
+   public void enter(int line) {
       // thread local required, also recursion counter
       if(times.length < line) {
          counts = copyOf(counts, line + 50);
@@ -57,6 +50,18 @@ public class ExecutionProfiler implements TraceListener {
       }
       visits[line]++;
    }
+
+   public void exit(int line) {
+      int currentCount = --counts[line]; // exit instruction
+
+      if(currentCount == 0) {
+         times[line] += (System.nanoTime() - start[line]);
+         start[line] = 0L; // reset as we are now at zero
+      }
+      if(line > max) {
+         max=line;
+      }
+   }
    
    private int[] copyOf(int[] array, int newSize) {
       int[] copy = new int[newSize];
@@ -68,19 +73,5 @@ public class ExecutionProfiler implements TraceListener {
       long[] copy = new long[newSize];
       System.arraycopy(array, 0, copy, 0, Math.min(newSize, array.length));
       return copy;
-   }
-
-   @Override
-   public void after(Scope scope, Trace trace) {
-      int line = trace.getLine();
-      int currentCount = --counts[line]; // exit instruction
-
-      if(currentCount == 0) {
-         times[line] += (System.nanoTime() - start[line]);
-         start[line] = 0L; // reset as we are now at zero
-      }
-      if(line > max) {
-         max=line;
-      }
    }
 }

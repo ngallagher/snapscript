@@ -81,7 +81,7 @@ class SkyFrame with ChangeListener with ActionListener {
     /**
      * The initial mass of the sun (arbitrary units).
      */
-    static var massOfSun = 1000;
+    static var massOfSun = 1200;
     /**
      * The initial size of the frame in pixels.
      */
@@ -184,11 +184,7 @@ class SkyFrame with ChangeListener with ActionListener {
         frame.setSize(xPixels, yPixels);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        skyPanel = new SkyPanel(dt,
-        xPixels,
-        yPixels,
-        mNumberOfPlanets,
-        sun);
+        skyPanel = new SkyPanel(dt, xPixels, yPixels, mNumberOfPlanets, sun);
         skyPanel.panel.setBackground(Color.black);
 
         var masterPanelLayout = new BorderLayout();
@@ -272,10 +268,10 @@ class SkyFrame with ChangeListener with ActionListener {
             if (lengthScaleFactor == 1) {
                 zoomIn.setEnabled(false);
                 energyButton.setEnabled(true);
-            if (energyButton.getText().equals(hideEnergy))
-                skyPanel.displayEnergy(true);
+                if (energyButton.getText().equals(hideEnergy))
+                   skyPanel.displayEnergy(true);
             }
-        zoomOut.setEnabled(true);
+            zoomOut.setEnabled(true);
         }
         else if (command.equals(showAcc)) {
             skyPanel.displayAcc(true);
@@ -524,13 +520,12 @@ class SkyPanel with JPanelInterface {
     }
     
     /**
-     * Repaints the display.
+     * Repaints the display. This is the time critcal section.
      * 
      * @param comp A Graphics object.
      * @see Graphics
      */
     paint(panel, comp) {
-        var start = System.currentTimeMillis();
         var comp2D = comp;
 
         comp2D.setPaint(Color.black);      
@@ -554,7 +549,6 @@ class SkyPanel with JPanelInterface {
             if (displayEnergy)
                 drawEnergy(comp2D, i);
         }
-        println(System.currentTimeMillis()-start);
     }
 
     /**

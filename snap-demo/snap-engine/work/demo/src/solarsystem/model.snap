@@ -311,7 +311,7 @@ class Planet extends Satellite {
      * Indicates when we must loop back to the beginning of the previous
      * position array
      */
-    const looped = false;
+    var looped = false;
     /**
      * The maximum number of previous positions that are recorded.
      */
@@ -499,7 +499,8 @@ class Planet extends Satellite {
         //
         // Draw the day-time semi-circle of the planet.
         //
-        comp2D.setColor(color);
+        //comp2D.setColor(color);
+        comp2D.setColor(Color.white);
         comp2D.fill(semiCircle(getAbsPos(Coord.X),
             getAbsPos(Coord.Y),
             zoomedDiameter,

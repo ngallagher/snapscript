@@ -10,9 +10,9 @@ public class ProfileResultUpdater implements Runnable {
 
    private final AtomicReference<String> reference;
    private final ProcessEventChannel channel;
-   private final ExecutionProfiler profiler;
+   private final ProcessProfiler profiler;
 
-   public ProfileResultUpdater(ExecutionProfiler profiler, ProcessEventChannel channel) {
+   public ProfileResultUpdater(ProcessProfiler profiler, ProcessEventChannel channel) {
       this.reference = new AtomicReference<String>();
       this.profiler = profiler;
       this.channel = channel;

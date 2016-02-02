@@ -26,7 +26,7 @@ import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.socket.SocketEventClient;
-import org.snapscript.agent.profiler.ExecutionProfiler;
+import org.snapscript.agent.profiler.ProcessProfiler;
 import org.snapscript.agent.profiler.ProfileResult;
 import org.snapscript.agent.profiler.ProfileResultUpdater;
 import org.snapscript.compile.Executable;
@@ -65,7 +65,7 @@ public class ProcessAgent {
    private final ProcessAgentStore store;
    private final StoreContext context;
    private final ResourceCompiler compiler;
-   private final ExecutionProfiler profiler;
+   private final ProcessProfiler profiler;
    private final BreakpointMatcher matcher;
    private final RemoteStore remoteReader;
    private final Model model;
@@ -79,7 +79,7 @@ public class ProcessAgent {
       this.compiler = new ResourceCompiler(context);
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
-      this.profiler = new ExecutionProfiler();
+      this.profiler = new ProcessProfiler();
       this.model = new EmptyModel();
       this.process = process;
       this.port = port;
@@ -111,7 +111,7 @@ public class ProcessAgent {
          ProcessEventChannel channel = client.connect(port);
          SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, controller, process);
          
-         ///analyzer.register(profiler);
+         analyzer.register(profiler);
          analyzer.register(interceptor);
          channel.send(register); // send the initial register event
       } catch (Exception e) {

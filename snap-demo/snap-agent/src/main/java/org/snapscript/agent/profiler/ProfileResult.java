@@ -2,6 +2,7 @@ package org.snapscript.agent.profiler;
 
 public class ProfileResult implements Comparable<ProfileResult>{
    
+   private String resource;
    private long time;
    private int line;
    private int count;
@@ -10,7 +11,8 @@ public class ProfileResult implements Comparable<ProfileResult>{
       super();
    }
    
-   public ProfileResult(long time, int count, int line) {
+   public ProfileResult(String resource, long time, int count, int line) {
+      this.resource = resource;
       this.time = time;
       this.line = line;
       this.count = count;
@@ -26,6 +28,14 @@ public class ProfileResult implements Comparable<ProfileResult>{
       return compare;
    }
    
+   public String getResource() {
+      return resource;
+   }
+
+   public void setResource(String resource) {
+      this.resource = resource;
+   }
+
    public int getCount() {
       return count;
    }

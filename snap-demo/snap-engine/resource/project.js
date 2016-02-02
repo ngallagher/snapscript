@@ -367,12 +367,7 @@ function createLayout() {
          caption : 'Resource',
          size : '40%',
          sortable : false
-      }, {
-         field : 'duration',
-         caption : 'Duration',
-         size : '20%',
-         sortable : false
-      }, {
+      },  {
          field : 'line',
          caption : 'Line',
          size : '20%'
@@ -380,7 +375,12 @@ function createLayout() {
          field : 'count',
          caption : 'Count',
          size : '20%'
-      } ],
+      }, {
+         field : 'duration',
+         caption : 'Duration',
+         size : '20%',
+         sortable : false
+      }],
       onClick : function(event) {
          var grid = this;
          event.onComplete = function() {

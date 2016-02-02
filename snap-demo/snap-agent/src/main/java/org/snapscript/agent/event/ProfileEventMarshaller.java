@@ -27,10 +27,12 @@ public class ProfileEventMarshaller implements ProcessEventMarshaller<ProfileEve
       
       for(int i = 0; i < resultSize; i++) {
          ProfileResult result = new ProfileResult();
+         String resource = input.readUTF();
          long time = input.readLong();
          int count = input.readInt();
          int line = input.readInt();
  
+         result.setResource(resource);
          result.setCount(count);
          result.setLine(line);
          result.setTime(time);
@@ -51,10 +53,12 @@ public class ProfileEventMarshaller implements ProcessEventMarshaller<ProfileEve
       output.writeInt(resultSize);
       
       for(ProfileResult result : results) {
+         String resource = result.getResource();
          int line = result.getLine();
          int count = result.getCount();
          long time = result.getTime();
 
+         output.writeUTF(resource);
          output.writeLong(time);        
          output.writeInt(count);
          output.writeInt(line);
