@@ -165,6 +165,7 @@ function resetEditor() {
    editorResource = null;
    editorText = "// TODO write code";
    session.setValue(editorText, 1);
+   $("#currentFile").html("");
 }
 
 function clearEditor() {
@@ -180,6 +181,7 @@ function clearEditor() {
    for ( var breakpoint in breakpoints) {
       session.clearBreakpoint(breakpoint);
    }
+   $("#currentFile").html("");
 }
 
 function loadEditor() {
@@ -217,6 +219,7 @@ function updateEditor(text, resource) {
          }
       }
    }
+   $("#currentFile").html("File:&nbsp;"+editorResource.projectPath+"&nbsp;&nbsp;");
 }
 
 function isEditorChanged() {

@@ -18,12 +18,14 @@ public class MemberFunction implements TypePart {
    private final ParameterList parameters;
    private final ModifierChecker checker;
    private final NameExtractor extractor;
+   private final ModifierList list;
    
-   public MemberFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters, Statement statement){  
+   public MemberFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Statement statement){  
       this.builder = new MemberFunctionBuilder(statement);
       this.extractor = new NameExtractor(identifier);
-      this.checker = new ModifierChecker(modifiers);
+      this.checker = new ModifierChecker(list);
       this.parameters = parameters;
+      this.list = list;
    } 
 
    @Bug("This is rubbish and needs to be cleaned up")
@@ -31,17 +33,18 @@ public class MemberFunction implements TypePart {
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
       String name = extractor.extract(scope);
       Signature signature = parameters.create(scope);
+      int modifiers = list.getModifiers();
       
       if(checker.isStatic()) {
          Module module = scope.getModule();
-         Function functionStatic = builder.create(signature, statements, scope, type, name);// description is wrong here.....
+         Function functionStatic = builder.create(signature, statements, scope, type, name, modifiers);// description is wrong here.....
          
          type.getFunctions().add(functionStatic);
          module.getFunctions().add(functionStatic); // This is VERY STRANGE!!! NEEDED BUT SHOULD NOT BE HERE!!!
 
          return null;//new FunctionDefinition(function,name); // we cannot invoke with scope registry
       }
-      Function function = builder.create(signature, scope, type, name);// description is wrong here.....
+      Function function = builder.create(signature, scope, type, name, modifiers);// description is wrong here.....
       
       // add functions !!!!!!!!
       type.getFunctions().add(function);

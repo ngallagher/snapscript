@@ -2,44 +2,42 @@ package org.snapscript.core.index;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import org.snapscript.core.FieldAccessor;
 import org.snapscript.core.FinalFieldAccessor;
 import org.snapscript.core.MethodAccessor;
+import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
 public class PropertyGenerator {
-   
+  
    public PropertyGenerator(){
       super();
    }
    
-   public Property generate(Field field, Type type, String name) {
+   public Property generate(Field field, Type type, String name, int modifiers) {
       try {
-         int modifiers = field.getModifiers();
-         
-         if(Modifier.isFinal(modifiers)) {
+         if(ModifierType.isConstant(modifiers)) {
             FinalFieldAccessor accessor = new FinalFieldAccessor(field);
             
             if(!field.isAccessible()) {
                field.setAccessible(true);
             }
-            return new Property(name, type, accessor); 
+            return new Property(name, type, accessor, modifiers); 
          }
          FieldAccessor accessor = new FieldAccessor(field);
          
          if(!field.isAccessible()) {
             field.setAccessible(true);
          }
-         return new Property(name, type, accessor); 
+         return new Property(name, type, accessor, modifiers); 
       } catch(Exception e) {
          throw new IllegalStateException("Could not create property from " + field);
       }
    }
    
-   public Property generate(Method read, Method write, Type type, String name) {
+   public Property generate(Method read, Method write, Type type, String name, int modifiers) {
       try {
          MethodAccessor accessor = new MethodAccessor(type, read, write);
          
@@ -51,7 +49,7 @@ public class PropertyGenerator {
                write.setAccessible(true);
             }
          }
-         return new Property(name,type,accessor);  
+         return new Property(name, type, accessor, modifiers);  
       } catch(Exception e) {
          throw new IllegalStateException("Could not create property from " + read);
       }

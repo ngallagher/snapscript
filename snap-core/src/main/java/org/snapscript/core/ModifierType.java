@@ -7,7 +7,8 @@ public enum ModifierType {
    PUBLIC("public", 0x0008),
    CONSTANT("const", 0x0010),
    VARIABLE("var", 0x0020),
-   ABSTRACT("abstract", 0x040);
+   ABSTRACT("abstract", 0x040),
+   VARARGS("...", 0x080);
    
    public final String token;
    public final int mask;
@@ -39,6 +40,10 @@ public enum ModifierType {
    
    public static boolean isPrivate(int modifier) {
       return (PRIVATE.mask & modifier) != 0;
+   }
+   
+   public static boolean isVariableArgument(int modifier) {
+      return (VARARGS.mask & modifier) != 0;
    }
    
    public static ModifierType resolveModifier(String token) {

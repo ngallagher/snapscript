@@ -15,8 +15,9 @@
 }
 
 .breakpointEnabled {
-	font-family: "Lucida Console", sans-serif; 
-    font-size: 1.2em;  	
+    /*font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;*/
+    font-size: 1.1em;  	
 	background-image: url('/img/toolbar/thread_view.gif');	
 	background-position: left center;
 	background-repeat: no-repeat;

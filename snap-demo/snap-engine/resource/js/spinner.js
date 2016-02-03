@@ -10,17 +10,24 @@ function finishedLoading() {
    }
 
 }
-function hideSpinner(){
-   if(spinnerHiding == false) {
-      spinnerHiding = true;   
-      var func = function(){
-          document.getElementById("overlay").style.visibility = 'hidden';       
-       }
-       window.setTimeout(func, 1500);      
+
+function showSpinner(){
+   if(spinnerHiding == true) {  
+      spinnerHiding = false;
+      document.getElementById("overlay").style.visibility = 'visible';      
    }
 }
 
-function showSpinner() {
+function hideSpinner(){
+   if(spinnerHiding == false) {  
+      window.setTimeout(function(){
+         spinnerHiding = true;
+         document.getElementById("overlay").style.visibility = 'hidden'; 
+      }, 1000);      
+   }
+}
+
+function createSpinner() {
    var opts = {
          lines: 13, // The number of lines to draw
          length: 30, // The length of each line
@@ -43,4 +50,4 @@ function showSpinner() {
        spinner = new Spinner(opts).spin(target);
 }
 
-registerModule("spinner", "Spinner module: spinner.js", showSpinner, []);
+registerModule("spinner", "Spinner module: spinner.js", createSpinner, []);

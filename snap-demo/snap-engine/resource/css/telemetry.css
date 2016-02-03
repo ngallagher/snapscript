@@ -26,8 +26,8 @@
 }
 
 .telemetryRecord {
-	font-family: "Lucida Console", sans-serif; 
-    font-size: 1.2em;  	
+	/*font-family: "Lucida Console", sans-serif;*/
+    font-size: 1.1em;
 	background-image: url('/img/toolbar/read_obj.gif');	
 	background-position: left center;
 	background-repeat: no-repeat;

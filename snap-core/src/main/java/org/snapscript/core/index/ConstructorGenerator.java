@@ -21,6 +21,8 @@ public class ConstructorGenerator {
    }
    
    public Function generate(Constructor constructor, Class[] parameters, int modifiers) {
+      boolean variable = constructor.isVarArgs();
+      
       try {
          List<Type> types = new ArrayList<Type>();
          List<String> names = new ArrayList<String>();
@@ -31,13 +33,13 @@ public class ConstructorGenerator {
             types.add(type);
             names.add("a" + i);
          }
-         Signature signature = new Signature(names, types, modifiers);
+         Signature signature = new Signature(names, types, variable);
          Invocation invocation = new ConstructorInvocation(constructor);
          
          if(!constructor.isAccessible()) {
             constructor.setAccessible(true);
          }
-         return new Function(signature, invocation, TYPE_CONSTRUCTOR);
+         return new Function(signature, invocation, TYPE_CONSTRUCTOR, modifiers);
       } catch(Exception e) {
          throw new IllegalStateException("Could not create function for " + constructor, e);
       }

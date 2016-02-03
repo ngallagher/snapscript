@@ -14,10 +14,10 @@ public class TraitFunctionBuilder {
       this.statement = statement;
    }
    
-   public Function create(Signature signature, Scope scope, String name) throws Exception {
+   public Function create(Signature signature, Scope scope, String name, int modifiers) throws Exception {
       Invocation invocation = new InstanceInvocation(statement, signature);
       Invocation scopeCall = new BoundaryInvocation(invocation, scope); // ensure the static stuff is in scope
       
-      return new Function(signature, scopeCall, name);// description is wrong here.....
+      return new Function(signature, scopeCall, name, modifiers);// description is wrong here.....
    }
 }

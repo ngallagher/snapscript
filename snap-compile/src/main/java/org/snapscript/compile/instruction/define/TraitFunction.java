@@ -16,20 +16,20 @@ public class TraitFunction implements TypePart {
 
    private final TraitFunctionBuilder builder;
    private final ParameterList parameters;
-   private final ModifierList modifiers;
    private final NameExtractor extractor;
    private final Statement statement;
+   private final ModifierList list;
    
-   public TraitFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters) {
-      this(modifiers, identifier, parameters, null);
+   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters) {
+      this(list, identifier, parameters, null);
    }
    
-   public TraitFunction(ModifierList modifiers, Evaluation identifier, ParameterList parameters, Statement statement) {
+   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Statement statement) {
       this.builder = new TraitFunctionBuilder(statement);
       this.extractor = new NameExtractor(identifier);
       this.parameters = parameters;
       this.statement = statement;
-      this.modifiers = modifiers;
+      this.list = list;
    }
    
    @Override
@@ -37,7 +37,8 @@ public class TraitFunction implements TypePart {
       List<Function> functions = type.getFunctions();  
       String name = extractor.extract(scope);
       Signature signature = parameters.create(null);
-      Function function = builder.create(signature, scope, name);
+      int modifiers = list.getModifiers();
+      Function function = builder.create(signature, scope, name, modifiers);
       
       functions.add(function);
 

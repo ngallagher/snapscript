@@ -1,6 +1,8 @@
 package org.snapscript.agent;
 
 import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.util.Map;
 import java.util.Set;
@@ -53,13 +55,13 @@ public class ProcessAgent {
    "      this.x=ARR[index];\n"+
    "   }\n"+
    "   dump(){\n"+
-   "      System.err.println(x);\n"+
+   "      println(x);\n"+
    "   }\n"+
    "}\n"+
    "var privateVariableInScriptAgent = new InternalTypeForScriptAgent(1);\n"+
    "privateVariableInScriptAgent.dump();\n"+
-   "System.err.println(privateVariableInScriptAgent.x);\n"+
-   "System.err.println(InternalTypeForScriptAgent.ARR);";
+   "println(privateVariableInScriptAgent.x);\n"+
+   "println(InternalTypeForScriptAgent.ARR);";
 
    private final SuspendController controller;
    private final ProcessAgentStore store;
@@ -221,14 +223,15 @@ public class ProcessAgent {
                   System.out.flush();
                   Thread.sleep(200);
                   // should really be a heat map for the editor
-                  SortedSet<ProfileResult> lines = profiler.lines(100);
+                  SortedSet<ProfileResult> lines = profiler.lines(200);
                   System.err.flush();
+                  System.out.flush();
+                  ProfileEvent profileEvent = new ProfileEvent(process, lines);
+                  client.send(profileEvent);
                   Thread.sleep(2000);
                   System.err.close();
                   System.out.close();
-                  ProfileEvent profileEvent = new ProfileEvent(process, lines);
                   ExitEvent exitEvent = new ExitEvent(process, TimeUnit.NANOSECONDS.toMillis(stop-middle));
-                  client.send(profileEvent);
                   client.send(exitEvent);
                } catch(Exception e) {
                   e.printStackTrace();
@@ -251,6 +254,22 @@ public class ProcessAgent {
             // redirect all output to the streams
             System.setOut(new PrintStream(output, false, "UTF-8"));
             System.setErr(new PrintStream(error, false, "UTF-8"));
+            /*
+            Field errField = System.class.getField("err");
+            Field outField = System.class.getField("out");
+            
+            errField.setAccessible(true);
+            outField.setAccessible(true);
+            
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(errField, errField.getModifiers() & ~Modifier.FINAL);
+            modifiersField.setInt(outField, outField.getModifiers() & ~Modifier.FINAL);
+            
+            errField.set(null, error);
+            outField.set(null, output);
+            */
          }catch(Exception e) {
             System.err.println(ExceptionBuilder.build(e));
          }

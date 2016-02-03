@@ -27,15 +27,19 @@ public class ProfileResultUpdater implements Runnable {
 
    @Override
    public void run() {
+      long delay = 1000;
+      
       while(true) {
          String process = reference.get();
          try {
-            Thread.sleep(5000);
+            Thread.sleep(delay);
             Set<ProfileResult> results = profiler.lines(2000);
             ProfileEvent event = new ProfileEvent(process, results);
             channel.send(event);
          }catch(Exception e) {
             e.printStackTrace();
+         }finally{
+            delay = 5000;
          }
       }
    }

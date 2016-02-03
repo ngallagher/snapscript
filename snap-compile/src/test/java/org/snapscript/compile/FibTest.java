@@ -2,7 +2,7 @@ package org.snapscript.compile;
 
 import junit.framework.TestCase;
 
-public class RecursionTest extends TestCase {
+public class FibTest extends TestCase {
 
    private static final String SOURCE=
    "function fib(n) {\n"+
@@ -24,6 +24,6 @@ public class RecursionTest extends TestCase {
    }
    
    public static void main(String[] list) throws Exception {
-      new RecursionTest().testRecursion();
+      new FibTest().testRecursion();
    }
 }

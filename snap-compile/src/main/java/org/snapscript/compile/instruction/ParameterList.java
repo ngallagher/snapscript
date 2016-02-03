@@ -28,7 +28,7 @@ public class ParameterList {
       if(signature == null) {
          List<String> names = new ArrayList<String>();
          List<Type> constraints = new ArrayList<Type>();
-         Signature result = new Signature(names, constraints, 0);
+         Signature result = new Signature(names, constraints);
          
          if(prefix != null) {
             Module module = scope.getModule();

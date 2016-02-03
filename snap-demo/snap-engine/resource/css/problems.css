@@ -13,19 +13,23 @@
     bottom: 8px;
     left: 8px;
 }
+
 .problemHighlight {
   position:absolute;
   background:rgba(250,10,10,0.3);
   z-index:20
 }
+
 .errorDescription {
-	font-family: "Lucida Console", sans-serif; 
-    font-size: 1.2em;  	
-	background-image: url('/img/toolbar/rem_co.gif');	
+    /*font-family: "Lucida Console", sans-serif; 
+    font-size: 1.2em;*/
+    font-size: 1.1em;  
+	background-image: url('/img/toolbar/rem_co.gif');
 	background-position: left center;
 	background-repeat: no-repeat;
 	padding-left: 22px; /* Or size of icon + spacing */
 }
+
 .errorTab {	
 	background-image: url('/img/toolbar/errorwarning_tab.gif');	
 	background-position: left bottom;

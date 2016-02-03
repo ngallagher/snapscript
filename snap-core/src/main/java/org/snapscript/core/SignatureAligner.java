@@ -12,10 +12,8 @@ public class SignatureAligner {
    }
    
    public Object[] align(Object... list) throws Exception {
-      List<String> names = signature.getNames();
-      int modifiers = signature.getModifiers();
-      
-      if((modifiers & 0x00000080) != 0) {
+      if(signature.isVariable()) {
+         List<String> names = signature.getNames();
          int length = names.size();
          int start = length - 1;
          int remaining = list.length - start;

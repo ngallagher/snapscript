@@ -39,7 +39,6 @@ public class ArgumentMatcher {
    
    private ArgumentConverter resolve(Signature signature) throws Exception {
       List<Type> types = signature.getTypes();
-      int modifiers = signature.getModifiers();
       int size = types.size();
       
       if(size > 0) {
@@ -54,7 +53,7 @@ public class ArgumentMatcher {
          if(type != null) {
             Type entry = type.getEntry();
             
-            if((modifiers & 0x00000080) != 0) {
+            if(signature.isVariable()) {
                converters[size - 1] = matcher.match(entry);
             } else {
                converters[size - 1] = matcher.match(type);
@@ -62,7 +61,7 @@ public class ArgumentMatcher {
          } else {
             converters[size - 1] = matcher.match(type);
          }
-         if((modifiers & 0x00000080) != 0) {
+         if(signature.isVariable()) {
             return new VariableArgumentConverter(converters);
          }
          return new FixedArgumentConverter(converters);

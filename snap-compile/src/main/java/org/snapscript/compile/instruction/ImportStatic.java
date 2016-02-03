@@ -1,14 +1,13 @@
 package org.snapscript.compile.instruction;
 
-import java.lang.reflect.Modifier;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
@@ -30,10 +29,9 @@ public class ImportStatic extends Statement {
       List<Function> functions = module.getFunctions();
       
       for(Function method : methods){
-         Signature signature = method.getSignature();
-         int modifiers = signature.getModifiers();
+         int modifiers = method.getModifiers();
          
-         if(Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)){
+         if(ModifierType.isStatic(modifiers) && ModifierType.isPublic(modifiers)){
             String name = method.getName();
             
             if(target == null || target.equals(name)) {

@@ -6,6 +6,7 @@ import static org.snapscript.core.Reserved.METHOD_ARGUMENT;
 import static org.snapscript.core.Reserved.METHOD_EQUALS;
 import static org.snapscript.core.Reserved.METHOD_HASH_CODE;
 import static org.snapscript.core.Reserved.METHOD_TO_STRING;
+import static org.snapscript.core.ModifierType.PUBLIC;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,31 +56,31 @@ public class AnyDefinition extends Statement {
    private Function createHashCode() {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types, 1);
+      Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new HashCodeInvocation();
       
-      return new Function<Object>(signature, invocation, METHOD_HASH_CODE);
+      return new Function<Object>(signature, invocation, METHOD_HASH_CODE, PUBLIC.mask);
    }
    
    private Function createEquals() {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types, 1);
+      Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new EqualsInvocation();
       
       types.add(null);
       names.add(METHOD_ARGUMENT);
       
-      return new Function<Object>(signature, invocation, METHOD_EQUALS);
+      return new Function<Object>(signature, invocation, METHOD_EQUALS, PUBLIC.mask);
    }
    
    private Function createToString() {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types, 1);
+      Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new ToStringInvocation();
       
-      return new Function<Object>(signature, invocation, METHOD_TO_STRING);
+      return new Function<Object>(signature, invocation, METHOD_TO_STRING, PUBLIC.mask);
    }
    
    private static class HashCodeInvocation implements Invocation<Object> {

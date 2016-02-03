@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.ModifierType.CONSTANT;
+
 import java.util.List;
 
 import org.snapscript.core.Initializer;
@@ -24,7 +26,7 @@ public class PropertyInitializer extends Initializer {
       
       for(String name : names) {
          ScopeAccessor accessor = new ScopeAccessor(name);
-         Property property = new Property(name, type, accessor);
+         Property property = new Property(name, type, accessor, CONSTANT.mask);
          
          properties.add(property);
       }

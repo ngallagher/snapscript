@@ -19,6 +19,8 @@ public class FunctionGenerator {
    }
    
    public Function generate(Method method, Class[] parameters, String name, int modifiers) {
+      boolean variable = method.isVarArgs();
+      
       try {
          List<Type> types = new ArrayList<Type>();
          List<String> names = new ArrayList<String>();
@@ -29,13 +31,13 @@ public class FunctionGenerator {
             types.add(type);
             names.add("a" + i);
          }
-         Signature signature = new Signature(names, types, modifiers);
+         Signature signature = new Signature(names, types, variable);
          Invocation invocation = new MethodInvocation(method);
          
          if(!method.isAccessible()) {
             method.setAccessible(true);
          }
-         return new Function(signature, invocation, name);
+         return new Function(signature, invocation, name, modifiers);
       } catch(Exception e) {
          throw new IllegalStateException("Could not create function for " + method, e);
       }

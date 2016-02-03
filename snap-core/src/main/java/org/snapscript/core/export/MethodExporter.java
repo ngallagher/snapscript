@@ -51,13 +51,14 @@ public class MethodExporter {
       if(!parameters.isEmpty()) {
          Type start = parameters.get(0); 
          Class type = start.getType();
-         int modifiers = signature.getModifiers();
+         boolean variable = signature.isVariable();
+         int modifiers = function.getModifiers();
          int length = parameters.size();
       
          if(type == Scope.class) {
             List<String> names = new ArrayList<String>();
             List<Type> types = new ArrayList<Type>();
-            Signature reduced = new Signature(names, types, modifiers);
+            Signature reduced = new Signature(names, types, variable);
             Invocation adapter = new ExportInvocation(invocation, value);
          
             for(int i = 1; i < length; i++) {
@@ -66,7 +67,7 @@ public class MethodExporter {
                names.add("a" + 1);
                types.add(parameter);
             }
-            return new Function(reduced, adapter, name);
+            return new Function(reduced, adapter, name, modifiers);
          }
       }
       return null;

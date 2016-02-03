@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.ModifierType.CONSTANT;
 import static org.snapscript.core.Reserved.ENUM_NAME;
 import static org.snapscript.core.Reserved.ENUM_ORDINAL;
 import static org.snapscript.core.Reserved.ENUM_VALUES;
@@ -54,7 +55,7 @@ public class EnumInitializer extends Initializer {
       
       Initializer initializer = new CompoundInitializer();
       StaticAccessor accessor = new StaticAccessor(initializer, scope, type, name);
-      Property property = new Property(name, type, accessor);
+      Property property = new Property(name, type, accessor, CONSTANT.mask);
       
       // Add a static accessor to the enum type
       type.getProperties().add(property);

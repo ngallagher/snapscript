@@ -32,23 +32,26 @@ public class StatementInvocation implements Invocation<Object> {
    
    @Override
    public Result invoke(Scope scope, Object object, Object... list) throws Exception {
-      List<String> names = signature.getNames();
-      List<Type> types = signature.getTypes();
       Object[] arguments = aligner.align(list); 
       Scope outer = scope.getOuter(); 
       Scope inner = outer.getInner();
-      State state = inner.getState();
       
-      for(int i = 0; i < arguments.length; i++) {
-         Type require = types.get(i);
-         String name = names.get(i);
-         Object argument = arguments[i];
+      if(arguments.length > 0) {
+         List<String> names = signature.getNames();
+         List<Type> types = signature.getTypes();
+         State state = inner.getState();
          
-         if(!checker.compatible(scope, argument, require)) {
-            throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
+         for(int i = 0; i < arguments.length; i++) {
+            Type require = types.get(i);
+            String name = names.get(i);
+            Object argument = arguments[i];
+            
+            if(!checker.compatible(scope, argument, require)) {
+               throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
+            }
+            Value reference = ValueType.getReference(argument, require);         
+            state.addVariable(name, reference);
          }
-         Value reference = ValueType.getReference(argument, require);         
-         state.addVariable(name, reference);
       }
       if(compile.compareAndSet(false, true)) {
          statement.compile(inner);

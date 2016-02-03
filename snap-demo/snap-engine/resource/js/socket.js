@@ -69,10 +69,12 @@ function openSocket() {
    socket.onopen = function() {
       attempts = 1;
       connections++;
+      hideSpinner(); // on hide overlay
       console.log("Socket connected to '" + subscription.address + "'");
    };
 
    socket.onerror = function(message) {
+      showSpinner();
       console.log("Error connecting to '" + subscription.address + "'");
    };
 
@@ -85,6 +87,7 @@ function openSocket() {
          interval = 30 * 1000;
       }
       setTimeout(reference, interval);
+      showSpinner(); // on disconnect show spinner
       console.log("Connection closed to '" + subscription.address + "' reconnecting in " + interval + " ms");
    };
 
@@ -109,6 +112,7 @@ function openSocket() {
       } else {
          console.log("No route defined for '" + type+ "' with '" + value + "'");
       }
+      hideSpinner(); // hide the spinner
    };
 }
 

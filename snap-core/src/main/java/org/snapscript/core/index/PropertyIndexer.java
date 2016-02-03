@@ -1,25 +1,29 @@
 package org.snapscript.core.index;
 
+import static org.snapscript.core.ModifierType.CONSTANT;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.snapscript.core.ModifierType;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 
 public class PropertyIndexer {
    
+   private final ModifierConverter converter;
    private final PropertyGenerator generator;
    private final PrimitivePromoter promoter;
    private final TypeIndexer indexer;
    
    public PropertyIndexer(TypeIndexer indexer){
+      this.converter = new ModifierConverter();
       this.generator = new PropertyGenerator();
       this.promoter = new PrimitivePromoter();
       this.indexer = indexer;
@@ -34,21 +38,21 @@ public class PropertyIndexer {
          Set<String> done = new HashSet<String>();
          
          for(Field field : fields) {
-            int modifiers = field.getModifiers();
+            int modifiers = converter.convert(field);
             
-            if(Modifier.isPublic(modifiers)) {
+            if(ModifierType.isPublic(modifiers)) {
                String name = field.getName();
                Class declaration = field.getType();
                Type type = indexer.loadType(declaration);
-               Property property = generator.generate(field, type, name); 
+               Property property = generator.generate(field, type, name, modifiers); 
                
                properties.add(property);
             }
          }
          for(Method method : methods){
-            int modifiers = method.getModifiers();
+            int modifiers = converter.convert(method);
             
-            if(Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers)) {
+            if(ModifierType.isPublic(modifiers) && !ModifierType.isStatic(modifiers)) {
                Class[] parameters = method.getParameterTypes();
                
                if(parameters.length == 0) {
@@ -57,9 +61,13 @@ public class PropertyIndexer {
                   if(done.add(name)){
                      Class declaration = method.getReturnType();
                      Method write = match(methods, declaration, name);
+                     
+                     if(write == null) {
+                        modifiers |= CONSTANT.mask;
+                     }
                      Class normal = promoter.promote(declaration);
                      Type type = indexer.loadType(normal);
-                     Property property = generator.generate(method, write, type, name);                
+                     Property property = generator.generate(method, write, type, name, modifiers);                
                      
                      if(write != null){
                         write.setAccessible(true);
@@ -79,9 +87,9 @@ public class PropertyIndexer {
       PropertyType[] types = PropertyType.values();
 
       for(Method method : methods) {         
-         int modifiers = method.getModifiers();
+         int modifiers = converter.convert(method);
          
-         if(!Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
+         if(!ModifierType.isStatic(modifiers) && ModifierType.isPublic(modifiers)) {
             for(PropertyType type : types) {            
                if(type.isWrite(method)) {
                   Class[] parameters = method.getParameterTypes();

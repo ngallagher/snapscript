@@ -6,10 +6,14 @@ public class Signature {
    
    private final List<String> names;
    private final List<Type> types;
-   private final int modifiers;
+   private final boolean variable;
+
+   public Signature(List<String> names, List<Type> types){
+      this(names, types, false);
+   }
    
-   public Signature(List<String> names, List<Type> types, int modifiers){
-      this.modifiers = modifiers;
+   public Signature(List<String> names, List<Type> types, boolean variable){
+      this.variable = variable;
       this.types = types;
       this.names = names;
    }
@@ -22,7 +26,7 @@ public class Signature {
       return types;
    }
    
-   public int getModifiers() {
-      return modifiers;
+   public boolean isVariable() {
+      return variable;
    }
 }

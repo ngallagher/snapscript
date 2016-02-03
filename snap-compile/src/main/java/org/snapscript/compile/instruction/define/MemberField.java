@@ -21,24 +21,26 @@ public class MemberField implements TypePart {
    private final ConstraintExtractor extractor;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
-
-   public MemberField(ModifierList modifiers, TextLiteral identifier) {
-      this(modifiers, identifier, null, null);
+   private final ModifierList list;
+   
+   public MemberField(ModifierList list, TextLiteral identifier) {
+      this(list, identifier, null, null);
    }
 
-   public MemberField(ModifierList modifiers, TextLiteral identifier, Constraint constraint) {
-      this(modifiers, identifier, constraint, null);
+   public MemberField(ModifierList list, TextLiteral identifier, Constraint constraint) {
+      this(list, identifier, constraint, null);
    }
 
-   public MemberField(ModifierList modifiers, TextLiteral identifier, Evaluation value) {
-      this(modifiers, identifier, null, value);
+   public MemberField(ModifierList list, TextLiteral identifier, Evaluation value) {
+      this(list, identifier, null, value);
    }
 
-   public MemberField(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.declaration = new MemberFieldDeclaration(modifiers, identifier, constraint, value);
+   public MemberField(ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
+      this.declaration = new MemberFieldDeclaration(list, identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
-      this.checker = new ModifierChecker(modifiers);
+      this.checker = new ModifierChecker(list);
       this.identifier = identifier;
+      this.list = list;
    }
 
    @Override
@@ -48,15 +50,16 @@ public class MemberField implements TypePart {
       Value value = identifier.evaluate(scope, null);
       Type constraint = extractor.extract(scope);
       String name = value.getString();
+      int modifiers = list.getModifiers();
       
       if (checker.isStatic()) {
          Accessor accessor = new StaticAccessor(initializer, scope, type, name);
-         Property property = new Property(name, constraint, accessor);
+         Property property = new Property(name, constraint, accessor, modifiers);
          
          properties.add(property);
       } else {
          Accessor accessor = new ScopeAccessor(name);
-         Property property = new Property(name, constraint, accessor); // is this the correct type!!??
+         Property property = new Property(name, constraint, accessor, modifiers); // is this the correct type!!??
          
          properties.add(property);
       }

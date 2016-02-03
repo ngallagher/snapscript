@@ -17,17 +17,17 @@ public class MemberFunctionBuilder {
       this.statement = statement;
    }
    
-   public Function create(Signature signature, Initializer initializer, Scope scope, Type type, String name) throws Exception {
+   public Function create(Signature signature, Initializer initializer, Scope scope, Type type, String name, int modifiers) throws Exception {
       Statement init = new InitializerStatement(initializer, type); // initialize static scope first
       Statement compound = new CompoundStatement(init, statement); // this should call onlt the init stuff
       Invocation invocation = new StaticInvocation(compound, signature, scope);
       
-      return new Function(signature, invocation, name);// description is wrong here..... 
+      return new Function(signature, invocation, name, modifiers);// description is wrong here..... 
    }
    
-   public Function create(Signature signature, Scope scope, Type type, String name) throws Exception {
+   public Function create(Signature signature, Scope scope, Type type, String name, int modifiers) throws Exception {
       Invocation invocation = new InstanceInvocation(statement, signature);
       //Invocation scopeCall = new TypeInvocation(invocation, scope); // ensure the static stuff is in scope
-      return new Function(signature, invocation, name);// description is wrong here.....
+      return new Function(signature, invocation, name, modifiers);// description is wrong here.....
    }
 }

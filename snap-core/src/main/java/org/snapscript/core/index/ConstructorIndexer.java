@@ -1,19 +1,21 @@
 package org.snapscript.core.index;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.ModifierType;
 
 public class ConstructorIndexer {
 
    private final ConstructorGenerator generator;
+   private final ModifierConverter converter;
    
    public ConstructorIndexer(TypeIndexer indexer) {
       this.generator = new ConstructorGenerator(indexer);
+      this.converter = new ModifierConverter();
    }
 
    public List<Function> index(Class source) throws Exception {
@@ -23,9 +25,9 @@ public class ConstructorIndexer {
          List<Function> functions = new ArrayList<Function>();
    
          for(Constructor constructor : constructors){
-            int modifiers = constructor.getModifiers();
+            int modifiers = converter.convert(constructor);
             
-            if(Modifier.isPublic(modifiers)) {
+            if(ModifierType.isPublic(modifiers)) {
                Class[] parameters = constructor.getParameterTypes();
                Function function = generator.generate(constructor, parameters, modifiers);
                

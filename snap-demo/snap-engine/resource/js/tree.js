@@ -2,7 +2,7 @@ var FILE_TYPES = [".snap", ".html", ".xml", ".json", ".properties", ".txt", ".pn
 var treeVisible = false;
 
 function reloadTree(socket, type, text) {
-   createTree("explorer", "explorerTree", null, false, function(event, data) {
+   createTree("explorer", "explorerTree", "/src/.", false, function(event, data) {
       if (!data.node.isFolder()) {
          openTreeFile(data.node.tooltip, function(){});
       }
@@ -46,13 +46,12 @@ function createTree(element, id, expandPath, foldersOnly, clickCallback) { // #e
 //            menu: "#options",
             menu: [
                 {title: "&nbsp;New", uiIcon: "menu-new", children: [
-                   {title: "&nbsp;Script", cmd: "sub1", uiIcon: "menu-new"},
-                   {title: "&nbsp;Image", cmd: "sub1", uiIcon: "menu-new"}
+                   {title: "&nbsp;Script", cmd: "newScript", uiIcon: "menu-new"},
+                   {title: "&nbsp;Image", cmd: "newImage", uiIcon: "menu-new"}
                    ]},
-                {title: "&nbsp;Run", cmd: "cut", uiIcon: "menu-run"},
-                {title: "&nbsp;Stop", cmd: "cut", uiIcon: "menu-stop"},                
-                {title: "&nbsp;Save", cmd: "copy", uiIcon: "menu-save"},             
-                {title: "&nbsp;Delete", cmd: "paste", uiIcon: "menu-trash", disabled: false },
+                {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"},               
+                {title: "&nbsp;Save", cmd: "saveScript", uiIcon: "menu-save"},             
+                {title: "&nbsp;Delete", cmd: "deleteScript", uiIcon: "menu-trash", disabled: false },
                 {title: "----"},
                 {title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
                 {title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true }
@@ -71,7 +70,11 @@ function createTree(element, id, expandPath, foldersOnly, clickCallback) { // #e
             },
             select: function(event, ui) {
               var node = $.ui.fancytree.getNode(ui.target);
-              alert("select " + ui.cmd + " on " + node);
+              var resourcePath = createResourcePath(node.tooltip);
+              var commandName = ui.cmd;
+              var elementId = ui.key;
+              
+              handleTreeMenu(resourcePath, commandName, elementId);
             }
           });         
       }
@@ -79,23 +82,26 @@ function createTree(element, id, expandPath, foldersOnly, clickCallback) { // #e
    });
 }
 
-function bindTreeContextMenu(span) {
-   // Add context menu to this node:
-   $(span).contextMenu({menu: "myMenu"}, function(action, el, pos) {
-     // The event was bound to the <span> tag, but the node object
-     // is stored in the parent <li> tag
-     var node = $.ui.fancytree.getNode(el);
-     switch( action ) {
-     case "cut":
-     case "copy":
-     case "paste":
-       copyPaste(action, node);
-       break;
-     default:
-       alert("Todo: appply action '" + action + "' to node " + node);
-     }
-   });
- };
+function handleTreeMenu(resourcePath, commandName, elementId) {
+   if(commandName == "runScript") {
+      openTreeFile(resourcePath.resourcePath, function(){
+         runScript();
+      });
+   }else if(commandName == "newScript") {
+      openTreeFile(resourcePath.resourcePath, function(){
+         resetEditor();
+         //saveScript(); // pop open the dialog
+      });
+   }else if(commandName == "saveScript") {
+      openTreeFile(resourcePath.resourcePath, function(){
+         saveScript();
+      });
+   }else if(commandName == "deleteScript") {
+      openTreeFile(resourcePath.resourcePath, function(){
+         deleteScript();
+      });
+   }
+}
 
 function createResourcePath(path) { 
    var resourcePathPrefix = "/resource/" + document.title + "/src/";

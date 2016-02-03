@@ -172,10 +172,13 @@ function createLayout() {
          style : pstyle
       } , {
          type : 'bottom',
-         size : '20px',
+         size : '25px',
          resizable : false,
          style : pstyle,
-         content : "<div id='status'></div>"
+         content : "<table width='100%' height='100%'><tr>"+
+                   "<td width='50%' align='left'><p id='status'></p></td>"+
+                   "<td width='50%' align='right'><p id='currentFile'></p></td>"+
+                   "</tr></table>"
       } ]
    });
 
@@ -367,18 +370,22 @@ function createLayout() {
          caption : 'Resource',
          size : '40%',
          sortable : false
-      },  {
+      }, {
+         field : 'percentage',
+         caption : 'Percentage',
+         size : '15%'
+      },{
          field : 'line',
          caption : 'Line',
-         size : '20%'
+         size : '15%'
       }, {
          field : 'count',
          caption : 'Count',
-         size : '20%'
+         size : '15%'
       }, {
          field : 'duration',
          caption : 'Duration',
-         size : '20%',
+         size : '15%',
          sortable : false
       }],
       onClick : function(event) {

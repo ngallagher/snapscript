@@ -16,7 +16,7 @@
  */
 import solarsystem.display.SkyFrame;
 
-/**
+/** 
  * Main entry into program. Creates GUI and repaints it in infinite loop.
  */
 module SolarSystem {

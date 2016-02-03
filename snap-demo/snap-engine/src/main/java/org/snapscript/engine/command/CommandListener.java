@@ -3,7 +3,6 @@ package org.snapscript.engine.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Set;
 
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.engine.ProcessEngine;
@@ -33,18 +32,22 @@ public class CommandListener {
       try {
          String resource = command.getResource();
          String source = command.getSource();
-         int line = validator.parse(resource, source);
+         //int line = validator.parse(resource, source);
          
-         if(line == -1) {
+         //if(line == -1) {
             File file = new File(root, "/src/" + resource);
+            boolean exists = file.exists();
             FileOutputStream out = new FileOutputStream(file);
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
             encoder.write(source);
             encoder.close();
-            client.sendReloadTree();
-         } else {
-            client.sendSyntaxError(resource, line);
-         }
+            
+            if(!exists) {
+               client.sendReloadTree();
+            }
+         //} else {
+         //   client.sendSyntaxError(resource, line);
+         //}
       } catch(Exception e) {
          e.printStackTrace();
       }

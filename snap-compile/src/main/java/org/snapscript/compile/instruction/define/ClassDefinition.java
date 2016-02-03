@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.ModifierType.CONSTANT;
+import static org.snapscript.core.ModifierType.STATIC;
 import static org.snapscript.core.Reserved.TYPE_CLASS;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
@@ -56,7 +58,7 @@ public class ClassDefinition extends Statement {
       Type tt = module.getType(Type.class);
       Constant constant = new Constant(t);
       ConstantAccessor accessor = new ConstantAccessor(constant);
-      Property property = new Property(TYPE_CLASS, tt, accessor);
+      Property property = new Property(TYPE_CLASS, tt, accessor, CONSTANT.mask | STATIC.mask);
       
       t.getProperties().add(property);
       other.getState().addConstant(TYPE_CLASS, constant);
