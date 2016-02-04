@@ -32,7 +32,6 @@ public enum AssignmentOperator {
       this.symbol = symbol;
    }
    
-   @Bug("Better way to convert types???")
    public Value operate(Scope scope, Value left, Value right) throws Exception {
       Type type = left.getConstraint();
       Value result = operator.operate(left, right);

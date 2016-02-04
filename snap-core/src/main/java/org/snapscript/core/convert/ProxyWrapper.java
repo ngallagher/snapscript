@@ -4,30 +4,35 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.snapscript.core.Any;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Scope;
 
 public class ProxyWrapper {
 
-   private final ClassLoader loader;
+   private final ProxyFactory factory;
    
    public ProxyWrapper() {
-      this.loader = Any.class.getClassLoader();
+      this.factory = new ProxyFactory(this);
    }
    
-   @Bug("We need all the interfaces implemented by the object")
-   public Object toProxy(Object object, Class... interfaces) { 
+   public Object toProxy(Object object) { 
+      return toProxy(object, Any.class);
+   }
+   
+   public Object toProxy(Object object, Class require) { 
+      return toProxy(object, require, Any.class);
+   }
+   
+   public Object toProxy(Object object, Class... require) { 
       if(object != null) {
          if(Scope.class.isInstance(object)) {
-            ProxyHandler handler = new ProxyHandler(this, (Scope)object);
-            Class[] types = new Class[interfaces.length + 1];
+            Object proxy = factory.create(object);
             
-            for(int i = 0; i < interfaces.length; i++) {
-               types[i] = interfaces[i];
+            for(Class type : require) {
+               if(!type.isInstance(proxy)) {
+                  throw new IllegalStateException("Proxy does not implement " + require);
+               }
             }
-            types[interfaces.length] = Any.class;
-            
-            return Proxy.newProxyInstance(loader, types, handler);
+            return proxy;
          }
       }
       return object;
