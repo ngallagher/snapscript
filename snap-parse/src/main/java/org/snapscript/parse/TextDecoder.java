@@ -2,6 +2,7 @@ package org.snapscript.parse;
 
 public class TextDecoder {
    
+   private StringInterner interner;
    private char[] source;
    private int count;
    private int start;
@@ -11,6 +12,7 @@ public class TextDecoder {
    }
    
    public TextDecoder(char[] source, int off, int count) {
+      this.interner = new StringInterner(source);
       this.source = source;
       this.count = count;
       this.start = off;      
@@ -53,9 +55,9 @@ public class TextDecoder {
                result[write++] = source[read++];
             }
          }
-         return new String(result, 0, write);
+         return interner.intern(result, 0, write);
       }
-      return new String(source, off, length);
+      return interner.intern(source, off, length);
    }
    
    public char escape(int off, int length) {
