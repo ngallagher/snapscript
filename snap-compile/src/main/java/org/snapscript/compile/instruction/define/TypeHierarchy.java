@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.define;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Result;
@@ -12,31 +11,31 @@ public class TypeHierarchy {
    
    private final AnyDefinition definition;
    private final TraitName[] traits; 
-   private final TypeName type;
+   private final TypeName name;
 
    public TypeHierarchy(TraitName... traits) {
       this(null, traits);     
    }
    
-   public TypeHierarchy(TypeName type, TraitName... traits) {
+   public TypeHierarchy(TypeName name, TraitName... traits) {
       this.definition = new AnyDefinition();
       this.traits = traits;
-      this.type = type;
+      this.name = name;
    }
 
-   public List<Type> create(Scope scope) throws Exception {
-      List<Type> types = new ArrayList<Type>();
+   public void update(Scope scope, Type type) throws Exception {
+      List<Type> types = type.getTypes();
       
-      if(type != null) {
-         Value value = type.evaluate(scope, null);
+      if(name != null) {
+         Value value = name.evaluate(scope, null);
          Type base = value.getValue();
          
          types.add(base);
       }else {
          Result result = definition.compile(scope);
-         Type type = result.getValue();
+         Type base = result.getValue();
          
-         types.add(type);
+         types.add(base);
       }
       for(int i = 0; i < traits.length; i++) {
          Value value = traits[i].evaluate(scope, null);
@@ -44,7 +43,6 @@ public class TypeHierarchy {
          
          types.add(trait);
       }
-      return types;
    }
 
 }

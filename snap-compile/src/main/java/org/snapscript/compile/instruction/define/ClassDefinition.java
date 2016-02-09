@@ -1,38 +1,31 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.ModifierType.CONSTANT;
-import static org.snapscript.core.ModifierType.STATIC;
-import static org.snapscript.core.Reserved.TYPE_CLASS;
-import static org.snapscript.core.Reserved.TYPE_THIS;
+import static org.snapscript.core.Reserved.*;
 
 import java.util.List;
 
-import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Bug;
-import org.snapscript.core.Constant;
-import org.snapscript.core.ConstantAccessor;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ClassDefinition extends Statement {   
    
-   private final PropertyInitializer initializer;
    private final DefaultConstructor constructor;
-   private final TypeHierarchy hierarchy;
-   private final NameExtractor extractor;
+   private final ClassBuilder builder;
    private final TypePart[] parts;
    
    public ClassDefinition(TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
-      this.initializer = new PropertyInitializer(TYPE_THIS);
+      this.builder = new ClassBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor();
-      this.extractor = new NameExtractor(name);
-      this.hierarchy = hierarchy;
       this.parts = parts;
    }
 
@@ -41,32 +34,30 @@ public class ClassDefinition extends Statement {
    public Result compile(Scope scope) throws Exception {
       StaticScope other = new StaticScope(scope);
       InitializerCollector collector = new InitializerCollector();
+      PropertyBuilder updater = new PropertyBuilder();
       
-      // this should be passed in to the ClassHierarchy to define the type hierarchy!!!
-      String name=extractor.extract(scope);
+      Type type = builder.create(other);
+      Value value = ValueType.getConstant(type);
+      State state = other.getState();
       
-      Module module = other.getModule();
-      Type t = module.addType(name);
-      List<Type>types=t.getTypes();
-     
-      types.addAll(hierarchy.create(other)); // add in the type hierarchy!!
-
       for(TypePart part : parts) {
-         Initializer s=part.define(other, collector, t);
-         collector.update(s);
-      }  
-      Type tt = module.getType(Type.class);
-      Constant constant = new Constant(t);
-      ConstantAccessor accessor = new ConstantAccessor(constant);
-      Property property = new Property(TYPE_CLASS, tt, accessor, CONSTANT.mask | STATIC.mask);
+         Initializer initializer = part.define(other, collector, type);
+         collector.update(initializer);
+      } 
+      Module module = scope.getModule();
+      Type constraint = module.getType(Type.class);
+      List<Property> properties = type.getProperties();
+      Property thisProperty = updater.create(TYPE_THIS, type);
+      Property superProperty = updater.create(TYPE_SUPER, type);
+      Property classProperty = updater.createStatic(TYPE_CLASS, constraint, type);
       
-      t.getProperties().add(property);
-      other.getState().addConstant(TYPE_CLASS, constant);
-      initializer.execute(scope, t);
-      constructor.define(other, collector, t); // add the default no arg constructor!!
-
-      //collector.compile(other, t); // do all of the static initialization!! 
-      return ResultType.getNormal(t);
+      properties.add(classProperty);
+      properties.add(superProperty);
+      properties.add(thisProperty);
+      state.addConstant(TYPE_CLASS, value);
+      constructor.define(other, collector, type); 
+      
+      return ResultType.getNormal(type);
    }
 
 }

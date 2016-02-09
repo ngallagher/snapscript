@@ -42,7 +42,7 @@ public class ClassDefinitionTest extends TestCase {
       Type type = definer.compile(scope).getValue();
 
       assertEquals(type.getName(), "Test");
-      assertEquals(type.getProperties().size(), 4);//include 'this' and 'class'  
+      assertEquals(type.getProperties().size(), 5);//include 'this' and 'class' 'super'
       
       System.err.println(type.getProperties());
    }

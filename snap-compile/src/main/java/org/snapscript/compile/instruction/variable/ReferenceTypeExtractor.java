@@ -3,10 +3,12 @@ package org.snapscript.compile.instruction.variable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
+@Bug("This is a useful generic type")
 public class ReferenceTypeExtractor {
 
    private final ReferenceTypeConverter converter;
