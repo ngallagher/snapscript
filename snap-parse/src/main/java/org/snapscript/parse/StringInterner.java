@@ -19,7 +19,7 @@ public class StringInterner {
 
    public String intern(char[] source, int start, int length) {
       Range key = new Range(source, start, length);
-      
+
       if(length > 0) {
          String value = cache.get(key);
    
@@ -63,6 +63,9 @@ public class StringInterner {
          Range key = (Range)value;
          
          if(length != key.length) {
+            return false;
+         }
+         if(hash != key.hash) {
             return false;
          }
          for(int i = 0; i < length; i++) {

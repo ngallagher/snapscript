@@ -1,25 +1,22 @@
 package org.snapscript.parse;
 
 import java.util.List;
-import java.util.Set;
-
-import org.snapscript.common.LeastRecentlyUsedSet;
 
 public class MatchAllGrammar implements Grammar {
 
    private final List<Grammar> grammars;
-   private final Set<Long> success;
-   private final Set<Long> failure;
+   private final PositionSet success;
+   private final PositionSet failure;
    private final String name;
    private final int index;
    
    public MatchAllGrammar(List<Grammar> grammars, String name, int index) {
-      this(grammars, name, index, 1000);
+      this(grammars, name, index, 100);
    }
    
    public MatchAllGrammar(List<Grammar> grammars, String name, int index, int capacity) {
-      this.success = new LeastRecentlyUsedSet<Long>();
-      this.failure = new LeastRecentlyUsedSet<Long>();
+      this.success = new PositionSet(capacity);
+      this.failure = new PositionSet(capacity);
       this.grammars = grammars;
       this.index = index;
       this.name = name;

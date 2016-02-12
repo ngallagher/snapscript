@@ -38,7 +38,7 @@ public class SyntaxTree {
          throw new IllegalStateException("Tree has been created");
       }
       stack.push(index);
-      return new SyntaxCursor(nodes, index, index, 0, 0);
+      return new SyntaxCursor(nodes, index, index, 0);
    }
    
    public SyntaxNode commit() { 
@@ -76,7 +76,7 @@ public class SyntaxTree {
       }
       return node;
    }
- 
+
    private class SyntaxCursor implements SyntaxReader {
 
       private Series<SyntaxCursor> parent;
@@ -85,19 +85,17 @@ public class SyntaxTree {
       private int grammar;
       private int key;
       private int start;
-      private int depth;
 
-      public SyntaxCursor(Series<SyntaxCursor> parent, int grammar, int key, int start, int depth) {
+      public SyntaxCursor(Series<SyntaxCursor> parent, int grammar, int key, int start) {
          this.nodes = new Series<SyntaxCursor>();
          this.grammar = grammar;
          this.parent = parent;
          this.start = start;
-         this.depth = depth;
          this.key = key;
       }      
       
       public SyntaxNode create() {
-         return new SyntaxResult(nodes, value, grammar, start, depth);
+         return new SyntaxResult(nodes, value, grammar, start);
       }
 
       @Override
@@ -113,7 +111,7 @@ public class SyntaxTree {
 
          if (index <= 0) {
             stack.push(key);
-            return new SyntaxCursor(nodes, grammar, key, off, depth + 1);
+            return new SyntaxCursor(nodes, grammar, key, off);
          }
          return null;
       }    
@@ -246,13 +244,11 @@ public class SyntaxTree {
       private Token token;
       private int grammar;
       private int start;
-      private int depth;
 
-      public SyntaxResult(Series<SyntaxCursor> children, Token token, int grammar, int start, int depth) {
+      public SyntaxResult(Series<SyntaxCursor> children, Token token, int grammar, int start) {
          this.children = children;
          this.grammar = grammar;
          this.token = token;
-         this.depth = depth;
          this.start = start;
       }
 
@@ -292,11 +288,6 @@ public class SyntaxTree {
       @Override
       public Token getToken() {
          return token;
-      }
-
-      @Override
-      public int getDepth() {
-         return depth;
       }
 
       @Override

@@ -8,5 +8,4 @@ public interface SyntaxNode {
    Token getToken();
    Line getLine();
    int getStart();
-   int getDepth();
 }

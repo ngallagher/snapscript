@@ -1,27 +1,22 @@
 package org.snapscript.parse;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.snapscript.common.LeastRecentlyUsedMap;
-import org.snapscript.common.LeastRecentlyUsedSet;
 
 public class MatchOneGrammar implements Grammar {
    
-   private final Map<Long, Grammar> cache;
+   private final PositionCache<Grammar> cache;
    private final List<Grammar> grammars;
-   private final Set<Long> failure;
+   private final PositionSet failure;
    private final String name;
    private final int index;
    
    public MatchOneGrammar(List<Grammar> grammars, String name, int index) {
-      this(grammars, name, index, 1000);
+      this(grammars, name, index, 100);
    }
    
    public MatchOneGrammar(List<Grammar> grammars, String name, int index, int capacity) {
-      this.cache = new LeastRecentlyUsedMap<Long, Grammar>(capacity);
-      this.failure = new LeastRecentlyUsedSet<Long>(capacity);
+      this.cache = new PositionCache<Grammar>(capacity);
+      this.failure = new PositionSet(capacity);
       this.grammars = grammars;
       this.index = index;
       this.name = name;
@@ -32,7 +27,7 @@ public class MatchOneGrammar implements Grammar {
       long position = reader.position();
       
       if(!failure.contains(position)) {
-         Grammar best = cache.get(position);
+         Grammar best = cache.fetch(position);
          
          if(best == null) {
             int count = grammars.size();
@@ -56,7 +51,7 @@ public class MatchOneGrammar implements Grammar {
                }
             }                  
             if(best != null) {
-               cache.put(position, best);
+               cache.cache(position, best);
             } else {
                failure.add(position);
             }

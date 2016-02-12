@@ -18,15 +18,11 @@ public class SyntaxNodeComparator implements Comparator<SyntaxNode> {
    public int compare(SyntaxNode left, SyntaxNode right) {
       Integer leftMark = left.getStart();
       Integer rightMark = right.getStart();
-      int comparison = leftMark.compareTo(rightMark);  
       
-      if(comparison == 0) {
-         Integer leftFinish = left.getDepth();
-         Integer rightFinish = right.getDepth();
-         
-         return leftFinish.compareTo(rightFinish); 
+      if(reverse) {
+         return rightMark.compareTo(leftMark); 
       }
-      return comparison;
+      return leftMark.compareTo(rightMark);  
    }
 
 }
