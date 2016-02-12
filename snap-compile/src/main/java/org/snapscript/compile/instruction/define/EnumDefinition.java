@@ -54,8 +54,8 @@ public class EnumDefinition extends Statement {
       hierarchy.update(other, type); // add in the type hierarchy!!
 
       for(TypePart part : parts) {
-         Initializer s=part.define(other, collector, type);
-         collector.update(s);
+         Initializer initializer = part.define(other, collector, type);
+         collector.update(initializer);
       }  
       State state = other.getState();
       Value classValue = ValueType.getConstant(type);

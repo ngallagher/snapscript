@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SyntaxTree {
 
    private final Comparator<SyntaxNode> comparator;
-   private final List<SyntaxCursor> nodes;
+   private final Series<SyntaxCursor> nodes;
    private final LexicalAnalyzer analyzer;
    private final GrammarIndexer indexer;
    private final AtomicInteger commit;
@@ -21,7 +21,7 @@ public class SyntaxTree {
    public SyntaxTree(GrammarIndexer indexer, String resource, String grammar, char[] original, char[] source, short[] lines, short[] types, int serial) {
       this.analyzer = new TokenScanner(indexer, resource, original, source, lines, types);
       this.comparator = new SyntaxNodeComparator();
-      this.nodes = new ArrayList<SyntaxCursor>();
+      this.nodes = new Series<SyntaxCursor>();
       this.commit = new AtomicInteger();
       this.stack = new IntegerStack();
       this.resource = resource;
@@ -79,16 +79,16 @@ public class SyntaxTree {
  
    private class SyntaxCursor implements SyntaxReader {
 
-      private List<SyntaxCursor> parent;
-      private List<SyntaxCursor> nodes;
+      private Series<SyntaxCursor> parent;
+      private Series<SyntaxCursor> nodes;
       private Token value;
       private int grammar;
       private int key;
       private int start;
       private int depth;
 
-      public SyntaxCursor(List<SyntaxCursor> parent, int grammar, int key, int start, int depth) {
-         this.nodes = new ArrayList<SyntaxCursor>();
+      public SyntaxCursor(Series<SyntaxCursor> parent, int grammar, int key, int start, int depth) {
+         this.nodes = new Series<SyntaxCursor>();
          this.grammar = grammar;
          this.parent = parent;
          this.start = start;
@@ -242,13 +242,13 @@ public class SyntaxTree {
 
    private class SyntaxResult implements SyntaxNode {
 
-      private List<SyntaxCursor> children;
+      private Series<SyntaxCursor> children;
       private Token token;
       private int grammar;
       private int start;
       private int depth;
 
-      public SyntaxResult(List<SyntaxCursor> children, Token token, int grammar, int start, int depth) {
+      public SyntaxResult(Series<SyntaxCursor> children, Token token, int grammar, int start, int depth) {
          this.children = children;
          this.grammar = grammar;
          this.token = token;
@@ -261,9 +261,10 @@ public class SyntaxTree {
          int size = children.size();
          
          if(size > 0) {
-            List<SyntaxNode> result = new ArrayList<SyntaxNode>();
+            List<SyntaxNode> result = new ArrayList<SyntaxNode>(size);
             
-            for(SyntaxCursor child : children) {
+            for(int i = 0; i < size; i++) {
+               SyntaxCursor child = children.get(i);
                SyntaxNode node = child.create();
                
                if(node != null) {

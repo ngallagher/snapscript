@@ -1,13 +1,13 @@
 package org.snapscript.core;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import org.snapscript.common.HashDictionary;
 
 public class MapState implements State {
    
-   private final HashDictionary<String, Value> values;
+   private final Map<String, Value> values;
    private final Scope scope;
    private final Model model;
   
@@ -16,7 +16,7 @@ public class MapState implements State {
    }
    
    public MapState(Model model, Scope scope) {
-      this.values = new HashDictionary<String, Value>();
+      this.values = new HashMap<String, Value>();
       this.model = model;
       this.scope = scope;
    }

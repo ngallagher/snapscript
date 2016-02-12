@@ -12,7 +12,7 @@ public class TextDecoder {
    }
    
    public TextDecoder(char[] source, int off, int count) {
-      this.interner = new StringInterner(source);
+      this.interner = new StringInterner();
       this.source = source;
       this.count = count;
       this.start = off;      

@@ -7,12 +7,10 @@ public class StringInterner {
 
    private final Map<Range, String> cache;
    private final String empty;
-   private final char[] source;
    
-   public StringInterner(char[] source) {
+   public StringInterner() {
       this.cache = new HashMap<Range, String>();
       this.empty = new String();
-      this.source = source;
    }
 
    public String intern(char[] source) {
@@ -20,7 +18,7 @@ public class StringInterner {
    }
 
    public String intern(char[] source, int start, int length) {
-      Range key = new Range(start, length);
+      Range key = new Range(source, start, length);
       
       if(length > 0) {
          String value = cache.get(key);
@@ -39,11 +37,13 @@ public class StringInterner {
    
    private class Range{
       
+      private char[] source;
       private int start;
       private int length;
       private int hash;
       
-      public Range(int start, int length) {
+      public Range(char[] source, int start, int length) {
+         this.source = source;
          this.length = length;
          this.start = start;
       }
@@ -62,11 +62,11 @@ public class StringInterner {
       public boolean equals(Object value) {
          Range key = (Range)value;
          
-         if(key.length != length) {
+         if(length != key.length) {
             return false;
          }
          for(int i = 0; i < length; i++) {
-            if(source[i+start] != source[i+key.start]) {
+            if(source[i+start] != key.source[i+key.start]) {
                return false;
             }
          }

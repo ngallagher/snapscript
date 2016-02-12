@@ -1,7 +1,5 @@
 package org.snapscript.parse;
 
-// syntax -> name, grammar, structure ..... e.g module, "module {full-syntax}", "module {...}", // balance braces
-
 public enum Syntax {
    SIGN("sign", "{'-'|'+'}"),
    NUMBER("number", "?<sign>{[hexidecimal]|[decimal]|[integer]}"), 
