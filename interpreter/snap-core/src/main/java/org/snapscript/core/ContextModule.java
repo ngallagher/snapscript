@@ -1,31 +1,29 @@
 package org.snapscript.core;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 
-@Bug("This is rubbish")
 public class ContextModule implements Module {
 
    private final Map<String, Type> imports;
-   private final List<Function> functions;   
-   private final Set<String> modules;
+   private final List<Function> functions; 
+   private final List<Type> references;
+   private final ImportManager manager;
    private final Context context;
+   private final String resource;
    private final Scope scope;
-   private final String name;
    
-   public ContextModule(Context context, String name) {
+   public ContextModule(Context context, String resource) {
       this.functions = new CopyOnWriteArrayList<Function>();
       this.imports = new ConcurrentHashMap<String, Type>();
-      this.modules = new CopyOnWriteArraySet<String>();
+      this.references = new CopyOnWriteArrayList<Type>();
+      this.manager = new ImportManager(context, resource);
       this.scope = new ModuleScope(this);
+      this.resource = resource;
       this.context = context;
-      this.name = name;
    }
 
    @Override
@@ -40,42 +38,43 @@ public class ContextModule implements Module {
    
    @Override
    public List<Type> getTypes() {
-      List<Type> types = new ArrayList<Type>();
-      types.addAll(imports.values());
-      return types;
+      return references;
    }
    
    @Override
    public Type addType(String name) {
       try {
-         Type t = getType(name);
+         Type type = getType(name);
          
-         if(t == null) {
+         if(type == null) {
             TypeLoader loader = context.getLoader();
-            t= loader.defineType(this.name, name);
             
-            if(t!=null) {
-               imports.put(name, t);
+            if(loader != null) {
+               type = loader.defineType(resource, name);
+            }
+            if(type != null) {
+               imports.put(name, type);
+               references.add(type);
             }
          }
-         return t;
+         return type;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not define '" + resource + "." + name + "'", e);
       }
    }
    
    @Override
-   public Module addImport(String module) {
+   public Module addImport(String name) {
       try {
          ModuleBuilder builder = context.getBuilder();
-         Module result = builder.create(module);
+         Module module = builder.create(name);
          
-         if(result != null) {
-            modules.add(module); // add package "tetris.game."
+         if(module != null) {
+            manager.addImport(name); // add package "tetris.game."
          }
-         return result;
+         return module;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not import '" + name + "' in '" + resource + "'", e);
       }
    }
    
@@ -86,51 +85,32 @@ public class ContextModule implements Module {
          TypeLoader loader = context.getLoader();
          Type type = loader.defineType(module, name);
          
-         if(name != null && name.length() > 0) {
+         if(name != null) {
             imports.put(name, type);
+            references.add(type);
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
       }
    }
 
    @Override
-   public Type getType(String name) { // this needs to define the type also......
+   public Type getType(String name) {
       try {
          Type type = imports.get(name);
          
          if(type == null) {
-            TypeLoader loader = context.getLoader();
-            Type result = loader.resolveType(this.name, name);
+            type = manager.getType(name);
             
-            if(result == null) {
-               for(String prefix : modules) {
-                  result = loader.resolveType(prefix, name); // this is "tetris.game.*"
-               }
-               if(result == null) {
-                  result = loader.resolveType(null, name); // null is "java.*"
-               }
-               if(result == null) {
-                  ModuleBuilder builder= context.getBuilder();
-                  
-                  for(String prefix : modules) {
-                     Module module = builder.resolve(prefix);
-                     
-                     if(module != null) {
-                        result = module.getType(name); // get imports from the outer module if it exists
-                     }
-                  }
-               }
+            if(type != null) {
+               imports.put(name, type);
+               references.add(type);
             }
-            if(result != null) {
-               imports.put(name, result);
-            }
-            return result;
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not find '" + name + "' in '" + resource + "'", e);
       }
    }
    
@@ -138,9 +118,13 @@ public class ContextModule implements Module {
    public Type getType(Class type) {
       try {
          TypeLoader loader = context.getLoader();
-         return loader.loadType(type);
+         
+         if(loader != null) {
+            return loader.loadType(type);
+         }
+         return null;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not load " + type, e);
       }
    }   
    
@@ -148,9 +132,13 @@ public class ContextModule implements Module {
    public InputStream getResource(String path) {
       try {
          ResourceManager manager = context.getManager();
-         return manager.getInputStream(path);
+
+         if(manager != null) {
+            return manager.getInputStream(path);
+         }
+         return null;
       } catch(Exception e){
-         throw new IllegalStateException(e);
+         throw new IllegalStateException("Could not load file '" + path + "'", e);
       }
    }
 
@@ -161,11 +149,11 @@ public class ContextModule implements Module {
    
    @Override
    public String getName() {
-      return name;
+      return resource;
    }
 
    @Override
    public String toString() {
-      return name;
+      return resource;
    }
 }

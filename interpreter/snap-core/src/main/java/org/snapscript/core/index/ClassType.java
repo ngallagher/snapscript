@@ -3,7 +3,6 @@ package org.snapscript.core.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
@@ -23,7 +22,6 @@ public class ClassType implements Type {
       this(module, name, entry, null);
    }
    
-   @Bug("Needs some information regarding the type of type, for example enum, trait")
    public ClassType(Module module, String name, Type entry, Class type){
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
