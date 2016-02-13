@@ -1,2 +1,3 @@
-var x = 1 + 1;
-System.out.print(x);
+class X{
+}
+System.err.println(X.class.getModule());
