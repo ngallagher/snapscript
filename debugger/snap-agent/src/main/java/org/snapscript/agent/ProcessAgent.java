@@ -93,7 +93,7 @@ public class ProcessAgent {
          long start = System.currentTimeMillis();
          PackageLinker linker = context.getLinker();
          Package library = linker.link("moduleForTheScriptAgent", SOURCE, "script");
-         Module module = context.getBuilder().create("moduleForTheScriptAgent");
+         Module module = context.getRegistry().addModule("moduleForTheScriptAgent");
          Scope scope = new ModelScope(model, module);
          Statement script = library.compile(scope); 
          long middle = System.currentTimeMillis();

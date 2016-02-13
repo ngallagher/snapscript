@@ -4,21 +4,21 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.snapscript.core.ImportScanner;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Type;
 
 public class TypeIndexer {
 
    private final Map<Object, Type> types;
-   private final ModuleBuilder builder;
+   private final ModuleRegistry registry;
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
 
-   public TypeIndexer(ModuleBuilder builder, ImportScanner scanner) {
-      this.indexer = new ClassIndexer(this, builder, scanner);
+   public TypeIndexer(ModuleRegistry registry, ImportScanner scanner) {
+      this.indexer = new ClassIndexer(this, registry, scanner);
       this.types = new LinkedHashMap<Object, Type>();
       this.scanner = scanner;
-      this.builder = builder;
+      this.registry = registry;
    }
 
    public Type loadType(String module, String name) throws Exception {
@@ -78,7 +78,7 @@ public class TypeIndexer {
       Type type = types.get(alias);
       
       if(type == null) {
-         return new ScopeType(builder, module, name);
+         return new ScopeType(registry, module, name);
       }
       return type;
    }

@@ -1,8 +1,10 @@
 package org.snapscript.core.validate;
 
+import java.util.List;
+
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 
 public class ContextValidator {
 
@@ -13,9 +15,10 @@ public class ContextValidator {
    }
    
    public void validate(Context context) throws Exception {
-      ModuleBuilder builder = context.getBuilder();
+      ModuleRegistry registry = context.getRegistry();
+      List<Module> modules = registry.getModules();
       
-      for(Module module : builder) {
+      for(Module module : modules) {
          validator.validate(module);
       }
    }

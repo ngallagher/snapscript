@@ -32,10 +32,10 @@ public class ImportManager {
                type = loader.resolveType(null, name); // null is "java.*"
             }
             if(type == null) {
-               ModuleBuilder builder = context.getBuilder();
+               ModuleRegistry registry = context.getRegistry();
                
                for(String module : imports) {
-                  Module match = builder.resolve(module);
+                  Module match = registry.getModule(module);
                   
                   if(match != null) {
                      type = match.getType(name); // get imports from the outer module if it exists

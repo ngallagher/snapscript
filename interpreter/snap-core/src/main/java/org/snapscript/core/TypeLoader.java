@@ -9,9 +9,9 @@ public class TypeLoader {
    private final ImportScanner scanner;
    private final TypeIndexer indexer;
    
-   public TypeLoader(PackageLinker linker, ModuleBuilder builder, ResourceManager manager){
+   public TypeLoader(PackageLinker linker, ModuleRegistry registry, ResourceManager manager){
       this.scanner = new ImportScanner();
-      this.indexer = new TypeIndexer(builder, scanner);
+      this.indexer = new TypeIndexer(registry, scanner);
       this.loader = new PackageLoader(linker, manager);
       this.manager = new PackageManager(loader, scanner);
    }

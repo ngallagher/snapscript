@@ -21,8 +21,8 @@ public class StatementPackage implements Package {
          Context context = module.getContext();
          
          try {
-            ModuleBuilder builder = context.getBuilder();
-            Module library = builder.create(name);
+            ModuleRegistry registry = context.getRegistry();
+            Module library = registry.addModule(name);
             Scope inner = library.getScope();
            
             statement.compile(inner); 

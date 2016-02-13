@@ -4,7 +4,7 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
@@ -39,8 +39,8 @@ public class ModuleDefinition extends Statement {
       String name = value.getString();
       Module parent = scope.getModule();
       Context context = parent.getContext();
-      ModuleBuilder builder = context.getBuilder();
-      Module module = builder.create(name);
+      ModuleRegistry registry = context.getRegistry();
+      Module module = registry.addModule(name);
       String include = parent.getName();
       
       module.addImport(include);

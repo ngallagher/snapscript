@@ -5,7 +5,7 @@ import org.snapscript.core.convert.ConstraintMatcher;
 
 public interface Context{
    ResourceManager getManager();
-   ModuleBuilder getBuilder();
+   ModuleRegistry getRegistry();
    TraceAnalyzer getAnalyzer();
    ConstraintMatcher getMatcher();
    ExpressionExecutor getExecutor();

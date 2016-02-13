@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
@@ -48,8 +48,8 @@ public class LocalResolver implements ValueResolver<Object> {
       Type type = module.getType(name);
       
       if(type == null) {
-         ModuleBuilder builder = context.getBuilder();
-         Object result = builder.resolve(name);
+         ModuleRegistry registry = context.getRegistry();
+         Object result = registry.getModule(name);
          
          if(result != null) {
             return result;

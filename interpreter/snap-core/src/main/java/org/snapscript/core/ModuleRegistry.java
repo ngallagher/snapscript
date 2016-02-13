@@ -1,37 +1,39 @@
 package org.snapscript.core;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.snapscript.core.export.SystemExporter;
 
-@Bug("This is not ideal")
-public class ModuleBuilder implements Iterable<Module> {
+public class ModuleRegistry {
 
    private final Map<String, Module> modules;
+   private final List<Module> references;
    private final SystemExporter exporter;
    private final Context context;
 
-   public ModuleBuilder(Context context) {
+   public ModuleRegistry(Context context) {
       this.modules = new ConcurrentHashMap<String, Module>();
+      this.references = new CopyOnWriteArrayList<Module>();
       this.exporter = new SystemExporter(context);
       this.context = context;
    }
    
-   @Override
-   public Iterator<Module> iterator() {
-      return modules.values().iterator();
+   public List<Module> getModules() {
+      return references;
    }
 
-   public Module resolve(String name) {
+   public Module getModule(String name) {
       if (name == null) {
          throw new IllegalArgumentException("Module name was null");
       }
       return modules.get(name);
    }
 
-   public Module create(String name) {
+   public Module addModule(String name) {
       if (name == null) {
          throw new IllegalArgumentException("Module name was null");
       }

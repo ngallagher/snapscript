@@ -7,7 +7,7 @@ import java.util.List;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportScanner;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -19,16 +19,16 @@ public class ClassIndexer {
    private final PropertyIndexer properties;
    private final PrimitivePromoter promoter;
    private final ImportScanner scanner;
-   private final ModuleBuilder builder;
+   private final ModuleRegistry registry;
    private final TypeIndexer indexer;
 
-   public ClassIndexer(TypeIndexer indexer, ModuleBuilder builder, ImportScanner scanner) {
+   public ClassIndexer(TypeIndexer indexer, ModuleRegistry registry, ImportScanner scanner) {
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer);
       this.hierarchy = new HierarchyIndexer(indexer);
       this.promoter = new PrimitivePromoter();
       this.scanner = scanner;
-      this.builder = builder;
+      this.registry = registry;
       this.indexer = indexer;
    }
    
@@ -71,10 +71,10 @@ public class ClassIndexer {
          String name = scanner.importName(module);
          
          if(name != null) {
-            return builder.create(name);
+            return registry.addModule(name);
          }
       }
-      return builder.create(DEFAULT_PACKAGE);
+      return registry.addModule(DEFAULT_PACKAGE);
    }
    
    public Type indexEntry(Class source) throws Exception {

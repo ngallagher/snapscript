@@ -2,7 +2,7 @@ package org.snapscript.compile;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionExecutor;
-import org.snapscript.core.ModuleBuilder;
+import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.ResourceManager;
 import org.snapscript.core.StoreManager;
@@ -19,16 +19,16 @@ public class StoreContext implements Context {
    private final ResourceManager manager;
    private final TraceAnalyzer analyzer;
    private final FunctionBinder binder;
-   private final ModuleBuilder builder;
+   private final ModuleRegistry registry;
    private final PackageLinker linker;
    private final TypeLoader loader; 
 
    public StoreContext(Store store){
       this.analyzer = new TraceAnalyzer();
       this.manager = new StoreManager(store);
-      this.builder = new ModuleBuilder(this);
+      this.registry = new ModuleRegistry(this);
       this.linker = new ContextLinker(this);      
-      this.loader = new TypeLoader(linker, builder, manager);
+      this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader);
       this.binder = new FunctionBinder(matcher, loader);
       this.executor = new ContextExecutor(this);
@@ -55,8 +55,8 @@ public class StoreContext implements Context {
    }
 
    @Override
-   public ModuleBuilder getBuilder() {
-      return builder;
+   public ModuleRegistry getRegistry() {
+      return registry;
    }   
 
    @Override

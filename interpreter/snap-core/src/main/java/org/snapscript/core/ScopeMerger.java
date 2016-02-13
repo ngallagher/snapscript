@@ -11,8 +11,8 @@ public class ScopeMerger {
    }
    
    public Scope merge(Model model) {
-      ModuleBuilder builder = context.getBuilder();
-      Module module = builder.create(name);
+      ModuleRegistry registry = context.getRegistry();
+      Module module = registry.addModule(name);
       
       if(module == null) {
          throw new IllegalStateException("Module '" +name +"' not found");

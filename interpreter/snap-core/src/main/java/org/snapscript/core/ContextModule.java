@@ -66,8 +66,8 @@ public class ContextModule implements Module {
    @Override
    public Module addImport(String name) {
       try {
-         ModuleBuilder builder = context.getBuilder();
-         Module module = builder.create(name);
+         ModuleRegistry registry = context.getRegistry();
+         Module module = registry.addModule(name);
          
          if(module != null) {
             manager.addImport(name); // add package "tetris.game."
