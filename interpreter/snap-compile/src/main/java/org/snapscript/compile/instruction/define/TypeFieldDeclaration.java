@@ -8,14 +8,14 @@ import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
 
-public class MemberFieldDeclaration {
+public class TypeFieldDeclaration {
    
    private final ModifierChecker checker;
    private final TextLiteral identifier;
    private final Constraint constraint;
    private final Evaluation value;
 
-   public MemberFieldDeclaration(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
+   public TypeFieldDeclaration(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
       this.checker = new ModifierChecker(modifiers);
       this.constraint = constraint;
       this.identifier = identifier;

@@ -27,9 +27,9 @@ import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
 import org.snapscript.compile.instruction.define.EnumList;
 import org.snapscript.compile.instruction.define.EnumValue;
-import org.snapscript.compile.instruction.define.MemberConstructor;
-import org.snapscript.compile.instruction.define.MemberField;
-import org.snapscript.compile.instruction.define.MemberFunction;
+import org.snapscript.compile.instruction.define.ClassConstructor;
+import org.snapscript.compile.instruction.define.TypeField;
+import org.snapscript.compile.instruction.define.TypeFunction;
 import org.snapscript.compile.instruction.define.Modifier;
 import org.snapscript.compile.instruction.define.ModifierList;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
@@ -135,8 +135,8 @@ public enum Instruction {
    TRAIT_FUNCTION(TraitFunction.class, "trait-function", false),
    ENUM_KEY(EnumKey.class, "enum-key", false),
    ENUM_HIERARCHY(TypeHierarchy.class, "enum-hierarchy", false),
-   ENUM_FIELD(MemberField.class, "enum-field", false),
-   ENUM_FUNCTION(MemberFunction.class, "enum-function", false),   
+   ENUM_FIELD(TypeField.class, "enum-field", false),
+   ENUM_FUNCTION(TypeFunction.class, "enum-function", false),   
    ENUM_DEFINITION(EnumDefinition.class, "enum-definition", false), 
    ENUM_CONSTRUCTOR(EnumConstructor.class, "enum-constructor", false), 
    ENUM_VALUE(EnumValue.class, "enum-value", false),
@@ -145,9 +145,9 @@ public enum Instruction {
    CLASS_DEFINITION(ClassDefinition.class, "class-definition", false),   
    MODIFIER(Modifier.class, "modifier", false),
    MODIFIER_LIST(ModifierList.class, "modifier-list", false), 
-   MEMBER_FIELD(MemberField.class, "member-field", false),
-   MEMBER_FUNCTION(MemberFunction.class, "member-function", false),   
-   MEMBER_CONSTRUCTOR(MemberConstructor.class, "member-constructor", false),     
+   MEMBER_FIELD(TypeField.class, "member-field", false),
+   MEMBER_FUNCTION(TypeFunction.class, "member-function", false),   
+   MEMBER_CONSTRUCTOR(ClassConstructor.class, "member-constructor", false),     
    SUPER_CONSTRUCTOR(SuperConstructor.class, "super-constructor", false),
    THIS_CONSTRUCTOR(ThisConstructor.class, "this-constructor", false),
    EXPRESSION(Expression.class, "expression", false),

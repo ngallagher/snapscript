@@ -9,16 +9,16 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class MemberConstructor implements TypePart {
+public class ClassConstructor implements TypePart {
    
    private final ConstructorAssembler assembler;
    private final ModifierChecker checker;
 
-   public MemberConstructor(ModifierList modifiers, ParameterList parameters, Statement statement){  
+   public ClassConstructor(ModifierList modifiers, ParameterList parameters, Statement statement){  
       this(modifiers, parameters, null, statement);
    }  
    
-   public MemberConstructor(ModifierList modifiers, ParameterList parameters, TypePart part, Statement statement){  
+   public ClassConstructor(ModifierList modifiers, ParameterList parameters, TypePart part, Statement statement){  
       this.assembler = new ConstructorAssembler(parameters, part, statement);
       this.checker = new ModifierChecker(modifiers);
    } 

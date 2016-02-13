@@ -44,7 +44,7 @@ public class DefaultConstructor implements TypePart {
    
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean enumeration) throws Exception {
       Statement statement = new NoStatement();
-      MemberConstructor constructor = new MemberConstructor(modifiers, parameters, statement);
+      ClassConstructor constructor = new ClassConstructor(modifiers, parameters, statement);
       
       return constructor.define(scope, statements, type, enumeration);
    }

@@ -16,28 +16,28 @@ import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
-public class MemberField implements TypePart {
+public class TypeField implements TypePart {
 
-   private final MemberFieldDeclaration declaration;
+   private final TypeFieldDeclaration declaration;
    private final ConstraintExtractor extractor;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
    private final ModifierList list;
    
-   public MemberField(ModifierList list, TextLiteral identifier) {
+   public TypeField(ModifierList list, TextLiteral identifier) {
       this(list, identifier, null, null);
    }
 
-   public MemberField(ModifierList list, TextLiteral identifier, Constraint constraint) {
+   public TypeField(ModifierList list, TextLiteral identifier, Constraint constraint) {
       this(list, identifier, constraint, null);
    }
 
-   public MemberField(ModifierList list, TextLiteral identifier, Evaluation value) {
+   public TypeField(ModifierList list, TextLiteral identifier, Evaluation value) {
       this(list, identifier, null, value);
    }
 
-   public MemberField(ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.declaration = new MemberFieldDeclaration(list, identifier, constraint, value);
+   public TypeField(ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
+      this.declaration = new TypeFieldDeclaration(list, identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(list);
       this.identifier = identifier;
