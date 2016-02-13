@@ -8,7 +8,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class MemberFunctionBuilder implements FunctionBuilder {
+public class MemberFunctionBuilder implements TypeFunctionBuilder {
       
    private final Statement statement;
    private final Signature signature;

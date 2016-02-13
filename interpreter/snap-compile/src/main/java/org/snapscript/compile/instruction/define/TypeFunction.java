@@ -14,15 +14,15 @@ import org.snapscript.core.Type;
 
 public class TypeFunction implements TypePart {
    
-   private final FunctionAssembler assembler;
+   private final TypeFunctionAssembler assembler;
    
    public TypeFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Statement body){  
-      this.assembler = new FunctionAssembler(list, identifier, parameters, body);
+      this.assembler = new TypeFunctionAssembler(list, identifier, parameters, body);
    } 
 
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
-      FunctionBuilder builder = assembler.assemble(scope, type);
+      TypeFunctionBuilder builder = assembler.assemble(scope, type);
       Function function = builder.create(scope, statements, type);
       List<Function> functions = type.getFunctions();
       int modifiers = function.getModifiers();

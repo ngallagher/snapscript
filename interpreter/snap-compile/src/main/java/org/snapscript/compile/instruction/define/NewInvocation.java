@@ -1,18 +1,11 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.Reserved.TYPE_CLASS;
-import static org.snapscript.core.Reserved.TYPE_THIS;
-
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.Model;
 import org.snapscript.core.Result;
-import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
@@ -37,7 +30,6 @@ public class NewInvocation implements Invocation<Scope> {
       this.factory = factory;
    }
 
-   @Bug("This is rubbish and needs to be cleaned up")
    @Override
    public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
       Type real = (Type)list[0];

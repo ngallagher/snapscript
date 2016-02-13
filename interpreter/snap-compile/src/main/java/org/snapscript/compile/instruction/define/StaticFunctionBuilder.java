@@ -10,7 +10,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class StaticFunctionBuilder implements FunctionBuilder {
+public class StaticFunctionBuilder implements TypeFunctionBuilder {
    
    private final Statement statement;
    private final Signature signature;

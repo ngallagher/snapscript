@@ -29,21 +29,19 @@ public class InstanceInvocation implements Invocation<Scope> {
       this.signature = signature;
    }
    
-   @Bug("This needs to be cleaned up")
    @Override
-   public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
+   public Result invoke(Scope scope, Scope instance, Object... list) throws Exception {
       if(statement == null) {
          throw new IllegalStateException("Function is abstract");
       }
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
-      Object[] arguments = aligner.align(list); // combine variable arguments to a single array
+      Object[] arguments = aligner.align(list); 
 
-      // create a class scope from the passed in object!!!!!
-      if(object == null) {
-         object = scope; // XXX tihs is for super only!!!
+      if(instance == null) {
+         instance = scope; // this is for super
       }
-      Scope outer = object.getOuter();
+      Scope outer = instance.getOuter();
       Scope inner = outer.getInner(); // create a writable scope
       State state = inner.getState();
       

@@ -8,7 +8,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class FunctionAssembler {
+public class TypeFunctionAssembler {
    
    private final ParameterList parameters;
    private final ModifierChecker checker;
@@ -16,7 +16,7 @@ public class FunctionAssembler {
    private final ModifierList list;
    private final Statement body;
    
-   public FunctionAssembler(ModifierList list, Evaluation identifier, ParameterList parameters, Statement body){  
+   public TypeFunctionAssembler(ModifierList list, Evaluation identifier, ParameterList parameters, Statement body){  
       this.extractor = new NameExtractor(identifier);
       this.checker = new ModifierChecker(list);
       this.parameters = parameters;
@@ -24,7 +24,7 @@ public class FunctionAssembler {
       this.body = body;
    } 
 
-   public FunctionBuilder assemble(Scope scope, Type type) throws Exception {
+   public TypeFunctionBuilder assemble(Scope scope, Type type) throws Exception {
       String name = extractor.extract(scope);
       Signature signature = parameters.create(scope);
       int modifiers = list.getModifiers();
