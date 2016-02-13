@@ -2,12 +2,12 @@ package org.snapscript.core;
 
 public class PropertyValue extends Value {
 
-   private final Accessor accessor;
+   private final Property property;
    private final Object object;   
    private final String name;
 
-   public PropertyValue(Accessor accessor, Object object, String name) {
-      this.accessor = accessor;
+   public PropertyValue(Property property, Object object, String name) {
+      this.property = property;
       this.object = object;
       this.name = name;
    }
@@ -18,12 +18,12 @@ public class PropertyValue extends Value {
    
    @Override
    public <T> T getValue() {
-      return (T)accessor.getValue(object);
+      return (T)property.getValue(object);
    }
 
    @Override
    public void setValue(Object value) {
-      accessor.setValue(object, value);
+      property.setValue(object, value);
    }
    
    @Override

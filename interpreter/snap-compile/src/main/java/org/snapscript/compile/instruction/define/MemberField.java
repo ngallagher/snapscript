@@ -7,6 +7,7 @@ import org.snapscript.compile.instruction.ConstraintExtractor;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
+import org.snapscript.core.AccessorProperty;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
@@ -54,12 +55,12 @@ public class MemberField implements TypePart {
       
       if (checker.isStatic()) {
          Accessor accessor = new StaticAccessor(initializer, scope, type, name);
-         Property property = new Property(name, constraint, accessor, modifiers);
+         Property property = new AccessorProperty(name, constraint, accessor, modifiers);
          
          properties.add(property);
       } else {
          Accessor accessor = new ScopeAccessor(name);
-         Property property = new Property(name, constraint, accessor, modifiers); // is this the correct type!!??
+         Property property = new AccessorProperty(name, constraint, accessor, modifiers); // is this the correct type!!??
          
          properties.add(property);
       }

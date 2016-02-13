@@ -1,7 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.index;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.snapscript.core.Accessor;
 
 public class FinalFieldAccessor implements Accessor<Object>{
 

@@ -1,14 +1,14 @@
-package org.snapscript.compile.instruction.variable;
+package org.snapscript.core.handle;
 
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-public class ReferenceKeyBuilder {
+public class HandleBuilder {
    
-   private final ReferenceTypeExtractor extractor;
+   private final HandleTypeExtractor extractor;
    
-   public ReferenceKeyBuilder() {
-      this.extractor = new ReferenceTypeExtractor();
+   public HandleBuilder() {
+      this.extractor = new HandleTypeExtractor();
    }
 
    public Object create(Scope scope, Object left, String name) throws Exception {
@@ -16,7 +16,7 @@ public class ReferenceKeyBuilder {
          Type type = extractor.extract(scope, left);
          
          if(type != null) {
-            return new ReferenceKey(name, type);
+            return new Handle(name, type);
          }
       }
       return name;

@@ -1,6 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.core.index;
 
 import java.lang.reflect.Method;
+
+import org.snapscript.core.Accessor;
+import org.snapscript.core.Type;
 
 public class MethodAccessor implements Accessor<Object> {
 

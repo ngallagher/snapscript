@@ -16,7 +16,7 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 
-import org.snapscript.agent.debug.ScopeNodeTraverser;
+import org.snapscript.core.AccessorProperty;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
@@ -145,7 +145,7 @@ public class ScopeNodeTraverserTest extends TestCase {
       
       for(String key : keys) {
          Object value = values.get(key);
-         Property property = new Property(key, null, null, 0);
+         Property property = new AccessorProperty(key, null, null, 0);
          Reference reference = new Reference(value);
          properties.add(property);
          state.addVariable(key, reference);

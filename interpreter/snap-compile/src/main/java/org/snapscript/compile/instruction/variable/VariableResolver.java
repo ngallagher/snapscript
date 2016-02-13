@@ -5,16 +5,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.handle.HandleBuilder;
 
 public class VariableResolver {
    
    private final Map<Object, ValueResolver> resolvers;
-   private final ReferenceKeyBuilder builder;
+   private final HandleBuilder builder;
    private final VariableBinder binder;
    
    public VariableResolver() {
       this.resolvers = new ConcurrentHashMap<Object, ValueResolver>();
-      this.builder = new ReferenceKeyBuilder();
+      this.builder = new HandleBuilder();
       this.binder = new VariableBinder();
    }
    

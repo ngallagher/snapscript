@@ -3,9 +3,7 @@ package org.snapscript.core.index;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.snapscript.core.FieldAccessor;
-import org.snapscript.core.FinalFieldAccessor;
-import org.snapscript.core.MethodAccessor;
+import org.snapscript.core.AccessorProperty;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -24,14 +22,14 @@ public class PropertyGenerator {
             if(!field.isAccessible()) {
                field.setAccessible(true);
             }
-            return new Property(name, type, accessor, modifiers); 
+            return new AccessorProperty(name, type, accessor, modifiers); 
          }
          FieldAccessor accessor = new FieldAccessor(field);
          
          if(!field.isAccessible()) {
             field.setAccessible(true);
          }
-         return new Property(name, type, accessor, modifiers); 
+         return new AccessorProperty(name, type, accessor, modifiers); 
       } catch(Exception e) {
          throw new IllegalStateException("Could not create property from " + field);
       }
@@ -49,7 +47,7 @@ public class PropertyGenerator {
                write.setAccessible(true);
             }
          }
-         return new Property(name, type, accessor, modifiers);  
+         return new AccessorProperty(name, type, accessor, modifiers);  
       } catch(Exception e) {
          throw new IllegalStateException("Could not create property from " + read);
       }

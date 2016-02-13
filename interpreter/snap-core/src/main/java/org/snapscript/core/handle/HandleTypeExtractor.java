@@ -1,22 +1,20 @@
-package org.snapscript.compile.instruction.variable;
+package org.snapscript.core.handle;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-@Bug("This is a useful generic type")
-public class ReferenceTypeExtractor {
+public class HandleTypeExtractor {
 
-   private final ReferenceTypeConverter converter;
+   private final HandleTypeConverter converter;
    private final Map<Class, Type> types;
    
-   public ReferenceTypeExtractor() {
+   public HandleTypeExtractor() {
       this.types = new ConcurrentHashMap<Class, Type>();
-      this.converter = new ReferenceTypeConverter();
+      this.converter = new HandleTypeConverter();
    }
    
    public Type extract(Scope scope, Object left) throws Exception {

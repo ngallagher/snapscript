@@ -1,12 +1,12 @@
-package org.snapscript.compile.instruction.variable;
+package org.snapscript.core.handle;
 
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
 
-public class ReferenceTypeConverter {
+public class HandleTypeConverter {
    
-   public ReferenceTypeConverter() {
+   public HandleTypeConverter() {
       super();
    }
 

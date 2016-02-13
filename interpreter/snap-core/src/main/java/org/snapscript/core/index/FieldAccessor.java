@@ -1,6 +1,8 @@
-package org.snapscript.core;
+package org.snapscript.core.index;
 
 import java.lang.reflect.Field;
+
+import org.snapscript.core.Accessor;
 
 public class FieldAccessor implements Accessor<Object>{
 
