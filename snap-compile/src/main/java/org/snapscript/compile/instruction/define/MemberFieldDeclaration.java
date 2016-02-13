@@ -4,7 +4,7 @@ import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.DeclareConstant;
 import org.snapscript.compile.instruction.DeclareVariable;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
 

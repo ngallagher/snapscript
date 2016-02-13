@@ -36,16 +36,19 @@ public class ContextExecutor implements ExpressionExecutor {
    public <T> T execute(Scope scope, String module, String source) throws Exception{
       Evaluation evaluation = cache.fetch(source);
       
-      if(evaluation == null) {
-         SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(module, source, instruction.name);
-         
-         evaluation = assembler.assemble(node, source);
-         cache.cache(source, evaluation);      
-      }
-      Value reference = evaluation.evaluate(scope,null);
-      Object value = reference.getValue();
+      try {
+         if(evaluation == null) {
+            SyntaxParser parser = compiler.compile();
+            SyntaxNode node = parser.parse(module, source, instruction.name);
             
-      return (T)value;
+            evaluation = assembler.assemble(node, source);
+            cache.cache(source, evaluation);      
+         }
+         Value reference = evaluation.evaluate(scope,null);
+         
+         return (T)reference.getValue();
+      } catch(Exception e) {
+         throw new IllegalStateException("Could not evaluate '" + source + "'", e);
+      }
    }
 }

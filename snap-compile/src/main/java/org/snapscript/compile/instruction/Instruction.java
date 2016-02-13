@@ -41,6 +41,10 @@ import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
 import org.snapscript.compile.instruction.define.TypeHierarchy;
 import org.snapscript.compile.instruction.define.TypeName;
+import org.snapscript.compile.instruction.literal.BooleanLiteral;
+import org.snapscript.compile.instruction.literal.NullLiteral;
+import org.snapscript.compile.instruction.literal.NumberLiteral;
+import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.compile.instruction.operation.Assignment;
 import org.snapscript.compile.instruction.operation.AssignmentStatement;
 import org.snapscript.compile.instruction.operation.CalculationList;
@@ -52,6 +56,7 @@ import org.snapscript.compile.instruction.operation.PrefixDecrement;
 import org.snapscript.compile.instruction.operation.PrefixIncrement;
 import org.snapscript.compile.instruction.operation.PrefixOperation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
+import org.snapscript.compile.instruction.template.TextTemplate;
 import org.snapscript.compile.instruction.variable.Variable;
 
 public enum Instruction {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.collection.ArrayConverter;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -15,23 +15,22 @@ import org.snapscript.core.ValueType;
 public class ConstructArray implements Evaluation {
    
    private final ArrayConverter converter;
+   private final NameExtractor extractor;
    private final ArgumentList list;
-   private final TextLiteral type;
    
-   public ConstructArray(TextLiteral type) {
+   public ConstructArray(Evaluation type) {
       this(type, null);         
    }
    
-   public ConstructArray(TextLiteral type, ArgumentList list) {
+   public ConstructArray(Evaluation type, ArgumentList list) {
+      this.extractor = new NameExtractor(type);
       this.converter = new ArrayConverter();
-      this.type = type;
       this.list = list;
    }      
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-      Value value = type.evaluate(scope, null);
-      String name = value.getString();
+      String name = extractor.extract(scope);
       Module module = scope.getModule();
       Type type = module.getType(name);
       Class entry = type.getType();

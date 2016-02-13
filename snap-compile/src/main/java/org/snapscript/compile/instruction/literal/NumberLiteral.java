@@ -1,4 +1,4 @@
-package org.snapscript.compile.instruction;
+package org.snapscript.compile.instruction.literal;
 
 import org.snapscript.compile.instruction.operation.SignOperator;
 import org.snapscript.core.Scope;

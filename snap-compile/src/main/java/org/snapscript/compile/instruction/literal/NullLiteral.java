@@ -1,4 +1,4 @@
-package org.snapscript.compile.instruction;
+package org.snapscript.compile.instruction.literal;
 
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;

@@ -28,9 +28,9 @@ public class ArrayIndex implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       Value index = first.evaluate(scope, null);
       Value value = array.evaluate(scope, left);
-      List source = value.getValue();
       Integer number = index.getInteger();
-      
+      List source = value.getValue();
+
       for(int i = 0; i < list.length; i++) {
          Argument argument = list[i];
          Object entry = source.get(number);

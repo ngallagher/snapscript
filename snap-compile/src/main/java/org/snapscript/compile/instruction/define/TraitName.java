@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.TextLiteral;
+import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
