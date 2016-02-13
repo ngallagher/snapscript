@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.MethodInvocation;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 

@@ -1,26 +1,24 @@
-package org.snapscript.core.handle;
+package org.snapscript.core;
 
-import org.snapscript.core.Type;
-
-public class Handle {
+public class ReferenceKey {
 
    private final String name;
    private final Type type;
    
-   public Handle(String name, Type type) {
+   public ReferenceKey(String name, Type type) {
       this.name = name;
       this.type = type;
    }
    
    @Override
    public boolean equals(Object key) {
-      if(key instanceof Handle) {
-         return equals((Handle)key);
+      if(key instanceof ReferenceKey) {
+         return equals((ReferenceKey)key);
       }
       return false;
    }
    
-   public boolean equals(Handle key) {
+   public boolean equals(ReferenceKey key) {
       if(key.type != type) {
          return false;
       }

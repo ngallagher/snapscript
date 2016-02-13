@@ -1,11 +1,13 @@
 package org.snapscript.core;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.export.SystemExporter;
 
-public class ModuleBuilder {
+@Bug("This is not ideal")
+public class ModuleBuilder implements Iterable<Module> {
 
    private final Map<String, Module> modules;
    private final SystemExporter exporter;
@@ -15,6 +17,11 @@ public class ModuleBuilder {
       this.modules = new ConcurrentHashMap<String, Module>();
       this.exporter = new SystemExporter(context);
       this.context = context;
+   }
+   
+   @Override
+   public Iterator<Module> iterator() {
+      return modules.values().iterator();
    }
 
    public Module resolve(String name) {

@@ -1,12 +1,8 @@
-package org.snapscript.core.handle;
+package org.snapscript.core;
 
-import org.snapscript.core.Scope;
-import org.snapscript.core.SuperScope;
-import org.snapscript.core.Type;
-
-public class HandleTypeConverter {
+public class ReferenceTypeConverter {
    
-   public HandleTypeConverter() {
+   public ReferenceTypeConverter() {
       super();
    }
 

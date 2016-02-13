@@ -1,6 +1,7 @@
 package org.snapscript.core;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Bug("This is rubbish")
 public class ContextModule implements Module {
 
    private final Map<String, Type> imports;
@@ -34,6 +36,13 @@ public class ContextModule implements Module {
    @Override
    public List<Function> getFunctions() {
       return functions;
+   }
+   
+   @Override
+   public List<Type> getTypes() {
+      List<Type> types = new ArrayList<Type>();
+      types.addAll(imports.values());
+      return types;
    }
    
    @Override

@@ -35,7 +35,6 @@ import awt.geom.Rectangle2D;
 import awt.geom.Rectangle2D$Double;
 import util.Vector;
 
-import solarsystem.display.SolarSystem;
 import solarsystem.display.SkyPanel;
 import solarsystem.display.SkyFrame;
 import solarsystem.display.Coord;

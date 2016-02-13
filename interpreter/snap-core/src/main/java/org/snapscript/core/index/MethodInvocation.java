@@ -1,25 +1,33 @@
-package org.snapscript.core;
+package org.snapscript.core.index;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
-public class ConstructorInvocation implements Invocation<Object> {
+import org.snapscript.core.Invocation;
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
+import org.snapscript.core.Scope;
+import org.snapscript.core.convert.ProxyWrapper;
 
-   private final Constructor constructor;
+public class MethodInvocation implements Invocation<Object>{
+
+   private final ProxyWrapper wrapper;
+   private final Method method;
    
-   public ConstructorInvocation(Constructor constructor) {
-      this.constructor = constructor;
+   public MethodInvocation(Method method) {
+      this.wrapper = new ProxyWrapper();
+      this.method = method;
    }
    
    @Override
    public Result invoke(Scope scope, Object left, Object... list) throws Exception {
-      if(constructor.isVarArgs()) {
-         Class[] types = constructor.getParameterTypes();
+      if(method.isVarArgs()) {
+         Class[] types = method.getParameterTypes();
          int require = types.length;
          int actual = list.length;
          int start = require - 1;
          int remaining = actual - start;
-
+         
          if(remaining >= 0) {
             Class type = types[require - 1];
             Class component = type.getComponentType();
@@ -29,7 +37,7 @@ public class ConstructorInvocation implements Invocation<Object> {
                try {
                   Array.set(array, i, list[i + start]);
                } catch(Exception e){
-                  throw new IllegalStateException("Invalid argument at " + i + " for" + constructor, e);
+                  throw new IllegalStateException("Invalid argument at " + i + " for" + method, e);
                }
             }
             Object[] copy = new Object[require];
@@ -42,8 +50,10 @@ public class ConstructorInvocation implements Invocation<Object> {
             copy[start] = array;
             list = copy;
          }
-      }     
-      Object value = constructor.newInstance(list);
-      return ResultType.getNormal(value);
+      }
+      Object value = method.invoke(left, list);
+      Object result = wrapper.fromProxy(value);
+      
+      return ResultType.getNormal(result);
    }
 }

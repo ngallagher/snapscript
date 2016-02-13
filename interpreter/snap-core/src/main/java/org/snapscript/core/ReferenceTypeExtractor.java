@@ -1,20 +1,16 @@
-package org.snapscript.core.handle;
+package org.snapscript.core;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.Module;
-import org.snapscript.core.Scope;
-import org.snapscript.core.Type;
+public class ReferenceTypeExtractor {
 
-public class HandleTypeExtractor {
-
-   private final HandleTypeConverter converter;
+   private final ReferenceTypeConverter converter;
    private final Map<Class, Type> types;
    
-   public HandleTypeExtractor() {
+   public ReferenceTypeExtractor() {
       this.types = new ConcurrentHashMap<Class, Type>();
-      this.converter = new HandleTypeConverter();
+      this.converter = new ReferenceTypeConverter();
    }
    
    public Type extract(Scope scope, Object left) throws Exception {

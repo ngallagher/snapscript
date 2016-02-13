@@ -1,9 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.Reserved.TYPE_CLASS;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
@@ -41,15 +39,13 @@ public class ConstructInvocation implements Invocation<Scope> {
       Class type = instance.getClass();
       
       if(type != InstanceScope.class) {
-         InstanceScope wrapper = new InstanceScope(model, outer, instance, real);// we need to pass the base type up!!
+         InstanceScope result = new InstanceScope(model, outer, instance, real);// we need to pass the base type up!!
    
-         State state = wrapper.getState();
-         Value self = ValueType.getConstant(wrapper, real);
-         Value info = ValueType.getConstant(real); 
-   
-         state.addConstant(TYPE_CLASS, info);    
-         state.addConstant(TYPE_THIS, self);
-         instance = wrapper;
+         State state = result.getState();
+         Value constant = ValueType.getConstant(result, real);
+    
+         state.addConstant(TYPE_THIS, constant); // reference to 'this'
+         instance = result;
          
          if(initializer != null) {
             if(compile) {
