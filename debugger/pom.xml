@@ -28,8 +28,9 @@
 	</build>
 
    <modules>
-           <module>snap-gae</module>
-           <module>snap-ide</module>
+           <module>snap-agent</module>
+           <module>snap-engine</module>           
+           <module>snap-swing</module>
            <module>snap-test</module>         
            <module>snap-run</module>          
 	</modules>
