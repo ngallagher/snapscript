@@ -41,7 +41,7 @@ public class InstanceInvocation implements Invocation<Scope> {
 
       // create a class scope from the passed in object!!!!!
       if(object == null) {
-         object=scope; // XXX tihs is for super only!!!
+         object = scope; // XXX tihs is for super only!!!
       }
       Scope outer = object.getOuter();
       Scope inner = outer.getInner(); // create a writable scope
