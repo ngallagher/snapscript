@@ -1,11 +1,13 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.CompoundScope;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Model;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 
+@Bug("is this right??? boundry from global scope to type scope crossed")
 public class BoundaryInvocation implements Invocation<Object>{
    
    private final Invocation<Object> invocation;

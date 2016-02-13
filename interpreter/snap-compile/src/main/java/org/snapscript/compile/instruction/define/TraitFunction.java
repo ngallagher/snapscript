@@ -17,7 +17,6 @@ public class TraitFunction implements TypePart {
    private final TraitFunctionBuilder builder;
    private final ParameterList parameters;
    private final NameExtractor extractor;
-   private final Statement statement;
    private final ModifierList list;
    
    public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters) {
@@ -28,7 +27,6 @@ public class TraitFunction implements TypePart {
       this.builder = new TraitFunctionBuilder(statement);
       this.extractor = new NameExtractor(identifier);
       this.parameters = parameters;
-      this.statement = statement;
       this.list = list;
    }
    
