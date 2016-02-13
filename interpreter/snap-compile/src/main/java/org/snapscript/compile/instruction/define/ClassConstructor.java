@@ -25,12 +25,12 @@ public class ClassConstructor implements TypePart {
    
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
-      return define(scope, statements, type, false);
+      return define(scope, statements, type, true);
    }
    
-   protected Initializer define(Scope scope, Initializer statements, Type type, boolean enumeration) throws Exception {
+   protected Initializer define(Scope scope, Initializer statements, Type type, boolean compile) throws Exception {
       ConstructorBuilder builder = assembler.assemble(scope, type);
-      Function constructor = builder.create(scope, statements, type, enumeration);
+      Function constructor = builder.create(scope, statements, type, compile);
       List<Function> functions = type.getFunctions();
       
       functions.add(constructor);

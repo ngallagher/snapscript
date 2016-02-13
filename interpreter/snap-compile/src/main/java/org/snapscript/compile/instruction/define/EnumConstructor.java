@@ -14,6 +14,6 @@ public class EnumConstructor extends ClassConstructor {
 
    @Override
    public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
-      return define(scope, statements, type, true);
+      return define(scope, statements, type, false);
    }
 }

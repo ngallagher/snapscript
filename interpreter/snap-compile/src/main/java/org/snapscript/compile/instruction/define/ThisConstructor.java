@@ -24,12 +24,12 @@ public class ThisConstructor implements TypePart {
    @Override
    public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {  
       Evaluation name = new TypeReference(type);
-      ConstructObject evaluation= new ConstructObject(name, arguments);
+      ConstructObject evaluation = new ConstructObject(name, arguments);
       
       return new ThisInitializer(evaluation);
    }
    
-   public class TypeReference implements Evaluation {
+   private static class TypeReference implements Evaluation {
       
       private final Type type;
       
@@ -42,6 +42,5 @@ public class ThisConstructor implements TypePart {
          String name = type.getName();
          return ValueType.getTransient(name);
       }
-      
    }
 }

@@ -16,16 +16,16 @@ public class DefaultConstructor implements TypePart {
    
    private final ParameterList parameters;
    private final ModifierList modifiers;
-   private final boolean enumeration;
+   private final boolean compile;
 
    public DefaultConstructor(){
-      this(false);
+      this(true);
    }
    
-   public DefaultConstructor(boolean enumeration) {
+   public DefaultConstructor(boolean compile) {
       this.parameters = new ParameterList();
       this.modifiers = new ModifierList();
-      this.enumeration = enumeration;
+      this.compile = compile;
    } 
    
    @Override
@@ -39,13 +39,13 @@ public class DefaultConstructor implements TypePart {
             return null;
          }
       }
-      return define(scope, statements, type, enumeration);
+      return define(scope, statements, type, compile);
    }
    
-   protected Initializer define(Scope scope, Initializer statements, Type type, boolean enumeration) throws Exception {
+   protected Initializer define(Scope scope, Initializer statements, Type type, boolean compile) throws Exception {
       Statement statement = new NoStatement();
       ClassConstructor constructor = new ClassConstructor(modifiers, parameters, statement);
       
-      return constructor.define(scope, statements, type, enumeration);
+      return constructor.define(scope, statements, type, compile);
    }
 }

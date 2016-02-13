@@ -27,9 +27,9 @@ public class ConstructorBuilder {
       return create(scope, initializer, type);
    }
    
-   public Function create(Scope scope, Initializer initializer, Type type, boolean enumeration) {
+   public Function create(Scope scope, Initializer initializer, Type type, boolean compile) {
       Invocation body = new StatementInvocation(statement, signature);
-      Invocation construct = new ConstructInvocation(scope, initializer, body, enumeration);
+      Invocation construct = new ConstructInvocation(scope, initializer, body, compile);
       Invocation invocation = new NewInvocation(signature, delegate, construct); 
       Invocation reference = new TypeInvocation(invocation, scope);
       

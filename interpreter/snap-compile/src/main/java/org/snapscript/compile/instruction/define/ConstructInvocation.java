@@ -21,17 +21,16 @@ public class ConstructInvocation implements Invocation<Scope> {
    private final Initializer initializer;
    private final Invocation constructor;
    private final Scope outer;
-   private final boolean enumeration;
+   private final boolean compile;
    
    public ConstructInvocation(Scope outer, Initializer initializer, Invocation constructor) {
-      this(outer, initializer, constructor, false);
+      this(outer, initializer, constructor, true);
    }
    
-   @Bug("Find better way to pass enum bool")
-   public ConstructInvocation(Scope outer, Initializer initializer, Invocation constructor, boolean enumeration) {
+   public ConstructInvocation(Scope outer, Initializer initializer, Invocation constructor, boolean compile) {
       this.constructor = constructor;
       this.initializer = initializer;
-      this.enumeration = enumeration;
+      this.compile = compile;
       this.outer = outer;
    }
    
@@ -53,9 +52,7 @@ public class ConstructInvocation implements Invocation<Scope> {
          instance = wrapper;
          
          if(initializer != null) {
-            //body.compile(scope, real); // static stuff if needed
-            // This should be done only for non-enums!!
-            if(!enumeration) {
+            if(compile) {
                initializer.compile(scope, real); // static stuff if needed
             }
             initializer.execute(instance, real);
