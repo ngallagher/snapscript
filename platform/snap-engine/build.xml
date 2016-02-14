@@ -1,0 +1,63 @@
+<project default="build">
+
+  <target name="build" description="Build a JAR with everything">
+    <delete dir="output" />
+    <mkdir dir="output" />
+    <delete dir="jar" />
+    <mkdir dir="jar" />
+    <echo message="Deleted output directory" />
+    <copy todir="output">
+      <fileset dir="target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-agent/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-graphics/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-engine/target/classes">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../snap-console/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>    
+    <copy todir="output">
+      <fileset dir="../../main/snap-common/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../../main/snap-compile/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../../main/snap-core/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <copy todir="output">
+      <fileset dir="../../main/snap-parse/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <jar destfile="jar/snap-debug.jar">
+      <fileset dir="output" />
+      <manifest>
+        <attribute name="Main-Class" value="org.snapscript.engine.ProcessCommandLine" />
+      </manifest>
+    </jar>
+    <delete dir="output" />
+  </target>
+
+</project>

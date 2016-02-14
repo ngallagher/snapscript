@@ -3,25 +3,47 @@ package org.snapscript.engine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProcessCommandLine {
 
    private static enum CommandArgument {
-      CLIENT_PORT("client-port", "4457", "Port for HTTP connections"),
-      AGENT_PORT("agent-port", "4456", "Port for agent connections"),
-      AGENT_POOL("agent-pool", "4", "Number of agents in pool"),
-      SUSPEND("suspend", "false", "Suspend until HTTP connection established"),
-      DIRECTORY("directory", "work", "Directory used for sources"),
-      SCRIPT("script", null, "Script to execute");
+      CLIENT_PORT("client-port", "4457", "Port for HTTP connections", "\\d+"),
+      AGENT_PORT("agent-port", "4456", "Port for agent connections", "\\d+"),
+      AGENT_POOL("agent-pool", "4", "Number of agents in pool", "\\d+"),
+      SUSPEND("suspend", "false", "Suspend until HTTP connection established", "(true|false)"),
+      DIRECTORY("directory", "work", "Directory used for sources", ".*"),
+      SCRIPT("script", null, "Script to execute", ".*.snap"),
+      MODE("mode", "develop", "Mode to start with", "(develop|debug)");
       
       private final String description;
+      private final Pattern pattern;
       private final String command;
       private final String value;
       
-      private CommandArgument(String command, String value, String description) {
+      private CommandArgument(String command, String value, String description, String pattern) {
+         this.pattern = Pattern.compile(pattern);
          this.description = description;
          this.command = command;
          this.value = value;
+      }
+      
+      public String getValue() {
+         return System.getProperty(command);
+      }
+      
+      public static Pattern getPattern(String command) {
+         CommandArgument[] arguments = CommandArgument.values();
+         
+         for(CommandArgument argument : arguments) {
+            String name = argument.command;
+            
+            if(name.equals(command)) {
+               return argument.pattern;
+            }
+         }
+         return null;
       }
    }
    
@@ -50,6 +72,12 @@ public class ProcessCommandLine {
             int length = value.length();
             value = value.substring(1, length - 1);
          }
+         Pattern pattern = CommandArgument.getPattern(name);
+         Matcher matcher = pattern.matcher(value);
+         
+         if(!matcher.matches()) {
+            System.out.println("--"+name+"="+value+ " does not match pattern "+pattern);
+         }
          commands.put(name, value);
          System.setProperty(name, value);
       }
@@ -59,7 +87,12 @@ public class ProcessCommandLine {
          String value= commands.get(name);
          System.out.println("--" + name + "=" + value);
       }
-      ProcessEngineContext service = new ProcessEngineContext("/etc/spring.xml");
+      String mode = CommandArgument.MODE.getValue();
+      
+      if(mode == null) {
+         throw new IllegalArgumentException("Mode not configured");
+      }
+      ProcessEngineContext service = new ProcessEngineContext("/mode/" + mode + ".xml");
       service.start();
    }
 }

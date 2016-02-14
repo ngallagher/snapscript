@@ -12,22 +12,22 @@
       </fileset>
     </copy>
     <copy todir="output">
-            <fileset dir="../../snap-common/target/classes">
+            <fileset dir="../../main/snap-common/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-            <fileset dir="../../snap-compile/target/classes">
+            <fileset dir="../../main/snap-compile/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-            <fileset dir="../../snap-core/target/classes">
+            <fileset dir="../../main/snap-core/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
     <copy todir="output">
-            <fileset dir="../../snap-parse/target/classes">
+            <fileset dir="../../main/snap-parse/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>
