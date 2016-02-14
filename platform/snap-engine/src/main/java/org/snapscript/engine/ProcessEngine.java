@@ -18,9 +18,9 @@ public class ProcessEngine {
    private final Map<String, ProcessAgentConnection> connections;
    private final ProcessAgentPool pool;
 
-   public ProcessEngine(String root, int port, int capacity) throws Exception {
+   public ProcessEngine(int port, int capacity) throws Exception {
       this.connections = new ConcurrentHashMap<String, ProcessAgentConnection>();
-      this.pool = new ProcessAgentPool(root, port, capacity);
+      this.pool = new ProcessAgentPool(port, capacity);
    }
    
    public boolean execute(ProcessEventListener listener, ExecuteCommand command, String client) {
@@ -100,8 +100,8 @@ public class ProcessEngine {
       return true;
    }
    
-   public void start() {
-      pool.start();
+   public void start(String address) {
+      pool.start(address);
    }
 
 }

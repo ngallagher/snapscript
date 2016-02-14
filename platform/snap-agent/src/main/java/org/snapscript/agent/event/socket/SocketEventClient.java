@@ -117,6 +117,17 @@ public class SocketEventClient {
          }
       }
       
+      @Override
+      public int port() throws Exception {
+         try {
+            return socket.getLocalPort();
+         } catch(Exception e) {
+            e.printStackTrace();
+         }
+         return -1;
+      }
+      
+      @Override
       public void close() {
          try {
             if(open.compareAndSet(true, false)) {

@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.ExitEvent;
@@ -35,18 +36,18 @@ public class ProcessAgentPool {
    private final SocketEventServer server;
    private final int capacity;
    
-   public ProcessAgentPool(String root, int port, int capacity) throws IOException {
-      this(root, port, capacity, 5000);
+   public ProcessAgentPool(int port, int capacity) throws IOException {
+      this(port, capacity, 5000);
    }
    
-   public ProcessAgentPool(String root, int port, int capacity, long frequency) throws IOException {
+   public ProcessAgentPool(int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessAgentConnection>>();
       this.listeners = new LeastRecentlyUsedCache<String, ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessAgentConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
-      this.launcher = new ProcessAgentLauncher(root, port);
-      this.pinger = new ProcessAgentPinger(frequency);
       this.server = new SocketEventServer(interceptor, port);
+      this.launcher = new ProcessAgentLauncher(server);
+      this.pinger = new ProcessAgentPinger(frequency);
       this.capacity = capacity;
    }
    
@@ -73,10 +74,10 @@ public class ProcessAgentPool {
       return null;
    }
    
-   public void start() {
+   public void start(String address) {
       try {
          server.start();
-         pinger.start();
+         pinger.start(address);
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -233,12 +234,24 @@ public class ProcessAgentPool {
       }
    }
    
-   private class ProcessAgentPinger extends Thread {
+   private class ProcessAgentPinger implements Runnable {
    
+      private final AtomicReference<String> reference;
+      private final Thread thread;
       private final long frequency;
       
       public ProcessAgentPinger(long frequency) {
+         this.reference = new AtomicReference<String>();
+         this.thread = new Thread(this);
          this.frequency = frequency;
+      }
+      
+      public void start(String address) {
+         if(reference.compareAndSet(null, address)) {
+            System.out.println(address);
+            thread.start();
+            
+         }
       }
       
       @Override
@@ -280,11 +293,12 @@ public class ProcessAgentPool {
                      active.add(connection);
                   }
                }
+               String address = reference.get();
                int pool = active.size();
                int remaining = require - pool;
                
                for(int i = 0; i < remaining; i++) {
-                  launcher.launch();
+                  launcher.launch(address);
                }
                available.addAll(active);
             }

@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 public class ProcessEngineLauncher {
 
    private static enum ProcessEngineArgument {
-      CLIENT_PORT("client-port", "4457", "Port for HTTP connections", "\\d+"),
-      AGENT_PORT("agent-port", "4456", "Port for agent connections", "\\d+"),
+      HTTP_PORT("http-port", "0", "Port for HTTP connections", "\\d+"),
+      AGENT_PORT("agent-port", "0", "Port for agent connections", "\\d+"),
       AGENT_POOL("agent-pool", "4", "Number of agents in pool", "\\d+"),
       MODE("project-mode", "multiple", "Mode to start on", "(single|multiple)"),
       DIRECTORY("work-directory", "work", "Directory used for sources", ".*");

@@ -1,28 +1,26 @@
 package org.snapscript.agent;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.agent.ProcessAgent;
+import org.snapscript.agent.event.ProcessEventChannel;
 
 public class ProcessAgentLauncher {
    
+   private final ProcessEventChannel channel;
    private final AtomicLong counter;
-   private final String root;
-   private final int port;
    
-   public ProcessAgentLauncher(String root, int port) {
+   public ProcessAgentLauncher(ProcessEventChannel channel) {
       this.counter = new AtomicLong();
-      this.root = root;
-      this.port = port;
+      this.channel = channel;
    }
 
-   public void launch() throws IOException {
+   public void launch(String root) throws Exception {
       String home = System.getProperty("java.home");
       String path = System.getProperty("java.class.path");
       String type = ProcessAgent.class.getCanonicalName();
       long sequence = counter.getAndIncrement();
+      int port = channel.port();
       ProcessBuilder builder = new ProcessBuilder(
             String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar), 
             "-XX:+UnlockCommercialFeatures",

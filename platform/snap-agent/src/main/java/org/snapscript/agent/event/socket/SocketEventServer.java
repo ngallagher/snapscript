@@ -53,6 +53,11 @@ public class SocketEventServer implements ProcessEventChannel {
       return channel.send(event);
    }
    
+   @Override
+   public int port() throws Exception {
+      return acceptor.port();
+   }
+   
    public void start() throws Exception {
       acceptor.start();
    }
@@ -75,6 +80,10 @@ public class SocketEventServer implements ProcessEventChannel {
       @Override
       public void run() {
          try {
+            int port = server.getLocalPort();
+            
+            System.err.println("agent-port="+port);
+            
             while(true) {
                Socket socket = server.accept();
                InputStream input = socket.getInputStream();
@@ -92,6 +101,10 @@ public class SocketEventServer implements ProcessEventChannel {
          }catch(Exception e) {
             e.printStackTrace();
          }
+      }
+      
+      public int port() {
+         return server.getLocalPort();
       }
       
       public void start() {
@@ -187,6 +200,17 @@ public class SocketEventServer implements ProcessEventChannel {
          }
       }
       
+      @Override
+      public int port() throws Exception {
+         try {
+            return socket.getLocalPort();
+         } catch(Exception e) {
+            e.printStackTrace();
+         }
+         return -1;
+      }
+      
+      @Override
       public void close() {
          try {
             if(open.compareAndSet(true, false)) {
