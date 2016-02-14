@@ -1,5 +1,6 @@
 package org.snapscript.core.exception;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.InternalException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
@@ -59,6 +60,7 @@ public class StackTraceUpdater {
       return update(scope, cause, message);
    }
    
+   @Bug("Better way to format exceptions")
    private Result update(Scope scope, Throwable cause, String message) {
       String other = formatter.format(cause); // how do we use this
       Object original = cause;
@@ -93,6 +95,15 @@ public class StackTraceUpdater {
             throw new StackTraceException(previous, trace, stack + "\n\tat " + trace, chain);
          }
          cause = cause.getCause(); 
+      }
+      Type type = extractor.extract(scope, original);
+      
+      if(type != null) {
+         Module module = type.getModule();
+         String resource = module.getName();
+         String name = type.getName();
+         
+         throw new StackTraceException(original, trace, resource + "." + name + ": " + message + "\n\tat " + trace, other);
       }
       throw new StackTraceException(original, trace, message + "\n\tat " + trace, other);
    }
