@@ -103,5 +103,9 @@ public class ProcessEngine {
    public void start(String address) {
       pool.start(address);
    }
+   
+   public void launch() {
+      pool.launch();
+   }
 
 }

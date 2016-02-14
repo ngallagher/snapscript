@@ -10,15 +10,18 @@ import org.simpleframework.http.socket.Session;
 import org.simpleframework.http.socket.service.Service;
 import org.simpleframework.transport.Channel;
 import org.snapscript.engine.ProcessEngine;
+import org.snapscript.engine.ProcessEngineScript;
 import org.snapscript.engine.command.CommandController;
 import org.snapscript.engine.command.CommandListener;
 
 public class ProjectScriptService implements Service {
    
+   private final ProcessEngineScript script;
    private final ProjectBuilder builder;
    private final ProcessEngine engine;
    
-   public ProjectScriptService(ProcessEngine engine, ProjectBuilder builder) {
+   public ProjectScriptService(ProcessEngine engine, ProcessEngineScript script, ProjectBuilder builder) {
+      this.script = script;
       this.builder = builder;
       this.engine = engine;
    }  
@@ -41,6 +44,7 @@ public class ProjectScriptService implements Service {
             CommandController controller = new CommandController(listener);
             
             frameChannel.register(controller);
+            script.connect(listener, path); // if there is a script then execute it
          } catch(Exception e) {
             e.printStackTrace();
          }

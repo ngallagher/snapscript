@@ -15,6 +15,12 @@ public class ProcessEngineServer {
    public void start() {
       try {
          String address = server.start();
+         String script = ProcessEngineArgument.SCRIPT.getValue();
+            
+         if(script != null) {
+            engine.launch(); // start a new process
+         }
+         System.err.println(address);
          engine.start(address);
       } catch(Exception e) {
          e.printStackTrace();

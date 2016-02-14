@@ -83,6 +83,14 @@ public class ProcessAgentPool {
       }
    }
    
+   public void launch() { // launch a new process!!
+      try {
+         pinger.launch();
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
+   
    private class ProcessEventInterceptor extends ProcessEventAdapter {
       
       private final Cache<String, ProcessEventListener> listeners;
@@ -248,7 +256,6 @@ public class ProcessAgentPool {
       
       public void start(String address) {
          if(reference.compareAndSet(null, address)) {
-            System.out.println(address);
             thread.start();
             
          }
@@ -273,6 +280,20 @@ public class ProcessAgentPool {
          }
       }
       
+      public boolean launch() {
+         try {
+            String address = reference.get();
+            
+            if(address != null) {
+               launcher.launch(address);
+               return true;
+            }
+         }catch(Exception e) {
+            e.printStackTrace();
+         }
+         return false;
+      }
+      
       private void ping() {
          Set<String> systems = connections.keySet();
          
@@ -293,12 +314,11 @@ public class ProcessAgentPool {
                      active.add(connection);
                   }
                }
-               String address = reference.get();
                int pool = active.size();
                int remaining = require - pool;
                
                for(int i = 0; i < remaining; i++) {
-                  launcher.launch(address);
+                  launch(); // launch a new process
                }
                available.addAll(active);
             }

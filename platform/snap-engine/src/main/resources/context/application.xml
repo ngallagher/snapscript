@@ -6,10 +6,14 @@
     <constructor-arg value="${agent-port}" />
     <constructor-arg value="${agent-pool}" />
   </bean>
-    
-  <bean id="ProcessEngineServer" class="org.snapscript.engine.ProcessEngineServer"  init-method="start">
+
+  <bean id="ProcessEngineServer" class="org.snapscript.engine.ProcessEngineServer" init-method="start">
     <constructor-arg ref="ProcessEngine" />
     <constructor-arg ref="WebServer" />
+  </bean>
+
+  <bean id="ProcessEngineScript" class="org.snapscript.engine.ProcessEngineScript">
+    <constructor-arg ref="ProjectBuilder" />
   </bean>
 
   <bean id="ContentTypeResolver" class="org.snapscript.engine.http.resource.ContentTypeResolver">
@@ -59,7 +63,7 @@
 
   <bean id="ProjectBuilder" class="org.snapscript.engine.http.project.ProjectBuilder">
     <constructor-arg ref="ProjectMode" />
-    <constructor-arg value="${work-directory}" />
+    <constructor-arg value="${directory}" />
   </bean>
 
   <bean id="ProjectResource" class="org.snapscript.engine.http.project.ProjectResource">
@@ -78,9 +82,10 @@
 
   <bean id="ProjectScriptService" class="org.snapscript.engine.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
+    <constructor-arg ref="ProcessEngineScript"/>
     <constructor-arg ref="ProcessEngine" />
   </bean>
-  
+
   <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
