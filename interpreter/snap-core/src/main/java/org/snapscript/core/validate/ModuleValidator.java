@@ -2,6 +2,7 @@ package org.snapscript.core.validate;
 
 import java.util.List;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Type;
 
@@ -25,7 +26,7 @@ public class ModuleValidator {
          try {
             validator.validate(type);
          }catch(Exception e) {
-            throw new IllegalStateException("Invalid reference to '" + prefix + "." + name +"' in '" + resource + "'", e);
+            throw new InternalStateException("Invalid reference to '" + prefix + "." + name +"' in '" + resource + "'", e);
          }
       }
    }

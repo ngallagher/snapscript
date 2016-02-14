@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class ObjectList extends AbstractList<Object> implements RandomAccess {
 
    private final Object[] array;
@@ -52,12 +54,12 @@ public class ObjectList extends AbstractList<Object> implements RandomAccess {
    
    @Override
    public boolean add(Object element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
    
    @Override
    public void add(int index, Object element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
 
    @Override

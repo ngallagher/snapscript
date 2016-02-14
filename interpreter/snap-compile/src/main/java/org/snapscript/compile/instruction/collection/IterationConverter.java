@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -38,7 +39,7 @@ public class IterationConverter {
       if(Enumeration.class.isInstance(value)) {
          return new EnumerationIteration(value);
       }
-      throw new IllegalArgumentException("Iteration for " + type + " is not possible");
+      throw new InternalArgumentException("Iteration for " + type + " is not possible");
    }
    
    private class ArrayIteration implements Iteration {

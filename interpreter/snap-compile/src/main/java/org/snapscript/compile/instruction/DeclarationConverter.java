@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -28,7 +29,7 @@ public class DeclarationConverter {
          int score = converter.score(value);
          
          if(score == 0) {
-            throw new IllegalStateException("Variable '" + name + "' does not match constraint '" + type + "'");
+            throw new InternalStateException("Variable '" + name + "' does not match constraint '" + type + "'");
          }
          if(value != null) {
             value = converter.convert(value);

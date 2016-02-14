@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -30,13 +31,13 @@ public class ProxyHandler implements InvocationHandler {
       Callable<Result> call = binder.bind(scope, scope, name, convert); // here arguments can be null!!!
       
       if(call == null) {
-         throw new IllegalStateException("Method '" + name + "' not found");
+         throw new InternalStateException("Method '" + name + "' not found");
       }
       Result result = call.call();
       Object data = result.getValue();
       
       if(result.isThrow()) {
-         throw new IllegalStateException("Method '" + name + "' had an exception");
+         throw new InternalStateException("Method '" + name + "' had an exception");
       }
       return data;   
    }

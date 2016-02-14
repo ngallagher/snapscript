@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.snapscript.core.AccessorProperty;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -31,7 +32,7 @@ public class PropertyGenerator {
          }
          return new AccessorProperty(name, type, accessor, modifiers); 
       } catch(Exception e) {
-         throw new IllegalStateException("Could not create property from " + field);
+         throw new InternalStateException("Could not create property from " + field);
       }
    }
    
@@ -49,7 +50,7 @@ public class PropertyGenerator {
          }
          return new AccessorProperty(name, type, accessor, modifiers);  
       } catch(Exception e) {
-         throw new IllegalStateException("Could not create property from " + read);
+         throw new InternalStateException("Could not create property from " + read);
       }
    }
 }

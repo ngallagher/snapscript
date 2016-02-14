@@ -3,6 +3,7 @@ package org.snapscript.core.index;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
@@ -37,7 +38,7 @@ public class MethodInvocation implements Invocation<Object>{
                try {
                   Array.set(array, i, list[i + start]);
                } catch(Exception e){
-                  throw new IllegalStateException("Invalid argument at " + i + " for" + method, e);
+                  throw new InternalStateException("Invalid argument at " + i + " for" + method, e);
                }
             }
             Object[] copy = new Object[require];

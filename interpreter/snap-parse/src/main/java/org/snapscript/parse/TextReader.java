@@ -409,7 +409,7 @@ public class TextReader {
       int current = off;
       
       if(mark > count || mark < 0){
-         throw new IllegalStateException("Illegal reset for position " + mark);
+         throw new ParseException("Illegal reset for position " + mark);
       }
       off = mark; 
       return current;

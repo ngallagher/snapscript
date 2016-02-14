@@ -7,6 +7,7 @@ import org.snapscript.compile.instruction.InstructionBuilder;
 import org.snapscript.compile.instruction.Operation;
 import org.snapscript.compile.instruction.OperationResolver;
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
 import org.snapscript.parse.Line;
 import org.snapscript.parse.SyntaxNode;
@@ -69,13 +70,13 @@ public class ContextAssembler implements Assembler {
       int size = children.size();
       
       if (size > 1) {
-         throw new IllegalStateException("No type defined for " + grammar);
+         throw new InternalStateException("No type defined for " + grammar);
       }
       if (size > 0) {
          SyntaxNode child = children.get(0);
 
          if (child == null) {
-            throw new IllegalStateException("No child for " + grammar);
+            throw new InternalStateException("No child for " + grammar);
          }
          return create(child, name, depth);
       }

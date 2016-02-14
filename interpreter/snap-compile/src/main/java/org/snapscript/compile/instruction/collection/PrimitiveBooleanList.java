@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class PrimitiveBooleanList extends AbstractList<Boolean> implements RandomAccess {
 
    private final Object array;
@@ -48,7 +50,7 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
          } else if(type == Object[].class) {
             value = flag;
          } else {
-            throw new IllegalArgumentException("Incompatible array type");
+            throw new InternalArgumentException("Incompatible array type");
          }
          copy[i] = (T)value;
       }
@@ -62,12 +64,12 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
    
    @Override
    public boolean add(Boolean element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
    
    @Override
    public void add(int index, Boolean element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
 
    @Override

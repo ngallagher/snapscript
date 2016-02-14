@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.StringToken;
@@ -29,7 +30,7 @@ public class Assignment implements Evaluation {
             StringBuilder builder = new StringBuilder();
      
             if(operator != AssignmentOperator.PLUS_EQUAL) {
-               throw new IllegalStateException("Operator " + operator + " is illegal");         
+               throw new InternalStateException("Operator " + operator + " is illegal");         
             }
             Object rightValue = rightResult.getValue();
             

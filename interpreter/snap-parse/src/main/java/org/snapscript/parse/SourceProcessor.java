@@ -18,7 +18,7 @@ public class SourceProcessor {
       char[] text = source.toCharArray();
       
       if(text.length == 0) {
-         throw new IllegalStateException("Source text is empty");
+         throw new ParseException("Source text is empty");
       }
       SourceCompressor compressor = new SourceCompressor(text);
       

@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.dispatch;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -29,13 +30,13 @@ public class ObjectDispatcher implements InvocationDispatcher {
       Class type = object.getClass();
       
       if(call == null) {
-         throw new IllegalStateException("Method '" + name + "' not found for " + type);
+         throw new InternalStateException("Method '" + name + "' not found for " + type);
       }
       Result result = call.call();
       Object value = result.getValue();
       
       if(result.isThrow()) {
-         throw new IllegalStateException("Method '" + name + "' for " + type + " had an exception");
+         throw new InternalStateException("Method '" + name + "' for " + type + " had an exception");
       }
       return ValueType.getTransient(value);
    }

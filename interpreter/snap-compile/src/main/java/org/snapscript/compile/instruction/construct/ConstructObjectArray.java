@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.Argument;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.collection.ArrayConverter;
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -60,7 +61,7 @@ public class ConstructObjectArray implements Evaluation {
             
             return ValueType.getTransient(array);
          }
-         throw new IllegalArgumentException("Maximum or three dimensions exceeded");
+         throw new InternalArgumentException("Maximum or three dimensions exceeded");
       }
       Object array = converter.create(entry, 0);
       return ValueType.getTransient(array);

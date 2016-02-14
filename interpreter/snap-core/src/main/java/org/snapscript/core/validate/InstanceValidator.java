@@ -4,6 +4,7 @@ import static org.snapscript.core.Reserved.TYPE_CLASS;
 import static org.snapscript.core.Reserved.TYPE_SUPER;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
@@ -26,18 +27,18 @@ public class InstanceValidator {
       Model model = instance.getModel();
       
       if(model == null) {
-         throw new IllegalStateException("Instance of '" + type+ "' does not reference model");
+         throw new InternalStateException("Instance of '" + type+ "' does not reference model");
       }
       for(String constant : CONSTANTS) {
          Value value = state.getValue(constant);
          
          if(value == null) {
-            throw new IllegalStateException("Constant '" + constant + "' not defined for '" + type+ "'");
+            throw new InternalStateException("Constant '" + constant + "' not defined for '" + type+ "'");
          }
          Object object = value.getValue();
          
          if(object == null) {
-            throw new IllegalStateException("Constant '" + constant + "' not set for '" + type+ "'");
+            throw new InternalStateException("Constant '" + constant + "' not set for '" + type+ "'");
          }
       }
       validator.validate(type);

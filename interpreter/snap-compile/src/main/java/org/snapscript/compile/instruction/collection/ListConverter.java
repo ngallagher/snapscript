@@ -2,6 +2,8 @@ package org.snapscript.compile.instruction.collection;
 
 import java.util.List;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class ListConverter {
 
    private final ArrayConverter converter;
@@ -34,7 +36,7 @@ public class ListConverter {
          if(List.class.isAssignableFrom(type)) {
             return (List)value;
          }
-         throw new IllegalArgumentException("The " + type + " is not a list");
+         throw new InternalArgumentException("The " + type + " is not a list");
       }
       return null;
    }

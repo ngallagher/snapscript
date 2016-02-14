@@ -17,7 +17,7 @@ public class PackageManager {
          try {
             return loader.load(module);
          } catch(Exception e){
-            throw new IllegalStateException("Problem importing '" + module + "'", e);
+            throw new InternalStateException("Problem importing '" + module + "'", e);
          }
       }
       return new NoPackage();
@@ -30,7 +30,7 @@ public class PackageManager {
          try {
             return loader.load(module);
          } catch(Exception e){
-            throw new IllegalStateException("Problem importing '" + module + "'", e);
+            throw new InternalStateException("Problem importing '" + module + "'", e);
          }
       }
       return new NoPackage();

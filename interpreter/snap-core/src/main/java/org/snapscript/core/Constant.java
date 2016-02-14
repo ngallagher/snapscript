@@ -26,7 +26,7 @@ public class Constant extends Value {
    
    @Override
    public void setValue(Object value){
-      throw new IllegalStateException("Illegal modification of constant");
+      throw new InternalStateException("Illegal modification of constant");
    } 
    
    @Override

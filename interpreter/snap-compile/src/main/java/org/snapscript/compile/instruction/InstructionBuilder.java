@@ -5,6 +5,7 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.Type;
@@ -31,7 +32,7 @@ public class InstructionBuilder {
       Callable<Result> callable = binder.bind(null, type, TYPE_CONSTRUCTOR, arguments);
       
       if(callable == null) {
-         throw new IllegalStateException("No constructor for " + type + " at line " + line);
+         throw new InternalStateException("No constructor for " + type + " at line " + line);
       }
       Result result = callable.call();
       Object value = result.getValue();

@@ -1,5 +1,6 @@
 package org.snapscript.core.convert;
 
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Type;
 
 public class BooleanConverter extends ConstraintConverter {
@@ -50,10 +51,10 @@ public class BooleanConverter extends ConstraintConverter {
          if(actual == Boolean.class) {
             return value;
          }
-         throw new IllegalArgumentException("Conversion from " + actual + " to boolean is not possible");
+         throw new InternalArgumentException("Conversion from " + actual + " to boolean is not possible");
       }
       if(require.isPrimitive()) {
-         throw new IllegalArgumentException("Invalid conversion from null to primitive boolean");
+         throw new InternalArgumentException("Invalid conversion from null to primitive boolean");
       }
       return null;
    }

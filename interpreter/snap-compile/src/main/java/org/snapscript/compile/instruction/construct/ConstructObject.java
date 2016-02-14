@@ -8,6 +8,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -37,12 +38,12 @@ public class ConstructObject implements Evaluation {
       Type type = module.getType(name);
       
       if(type == null) {
-         throw new IllegalStateException("No type found for " + name + " in '" + module + "'"); // class not found
+         throw new InternalStateException("No type found for " + name + " in '" + module + "'"); // class not found
       }
       Callable<Result> call = bind(scope, type);
            
       if(call == null){
-         throw new IllegalStateException("No constructor for " + name);
+         throw new InternalStateException("No constructor for " + name);
       }
       Result result = call.call();
       Object instance = result.getValue();

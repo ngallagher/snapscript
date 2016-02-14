@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Type;
 
 public class NumberConverter extends ConstraintConverter {
@@ -91,10 +92,10 @@ public class NumberConverter extends ConstraintConverter {
          if(parent == Number.class) {
             return convert(require, (Number)value);
          }
-         throw new IllegalArgumentException("Conversion from " + actual + " to " + require + " is not possible");
+         throw new InternalArgumentException("Conversion from " + actual + " to " + require + " is not possible");
       }
       if(require.isPrimitive()) {
-         throw new IllegalArgumentException("Invalid conversion from null to primitive number");
+         throw new InternalArgumentException("Invalid conversion from null to primitive number");
       }
       return null;
    }

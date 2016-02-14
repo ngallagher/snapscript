@@ -3,6 +3,7 @@ package org.snapscript.core.index;
 import java.lang.reflect.Method;
 
 import org.snapscript.core.Accessor;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
 
 public class MethodAccessor implements Accessor<Object> {
@@ -26,7 +27,7 @@ public class MethodAccessor implements Accessor<Object> {
       try {
          return read.invoke(source);
       } catch(Exception e) {
-         throw new IllegalStateException("Illegal access to " + read, e);
+         throw new InternalStateException("Illegal access to " + read, e);
       }
    }
 
@@ -34,14 +35,14 @@ public class MethodAccessor implements Accessor<Object> {
    public void setValue(Object source, Object value) {
       try {
          if(write == null) {
-            throw new IllegalStateException("Illegal write for " + read);
+            throw new InternalStateException("Illegal write for " + read);
          }
          if(value != null){
             value = converter.convert(value);
          }
          write.invoke(source, value);
       } catch(Exception e) {
-         throw new IllegalStateException("Illegal access to " + write, e);
+         throw new InternalStateException("Illegal access to " + write, e);
       }
    }
    

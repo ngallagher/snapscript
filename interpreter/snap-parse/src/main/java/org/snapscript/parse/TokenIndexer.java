@@ -74,7 +74,7 @@ public class TokenIndexer {
             token = decimal(line);
          }
          if(token == null) {
-            throw new IllegalStateException("Could not parse token at line " + lines[mark]);
+            throw new ParseException("Could not parse token at line " + lines[mark]);
          } 
          tokens.add(token);
       }

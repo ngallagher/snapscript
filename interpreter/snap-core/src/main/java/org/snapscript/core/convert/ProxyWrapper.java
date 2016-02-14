@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.snapscript.core.Any;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 
 public class ProxyWrapper {
@@ -29,7 +30,7 @@ public class ProxyWrapper {
             
             for(Class type : require) {
                if(!type.isInstance(proxy)) {
-                  throw new IllegalStateException("Proxy does not implement " + require);
+                  throw new InternalStateException("Proxy does not implement " + require);
                }
             }
             return proxy;

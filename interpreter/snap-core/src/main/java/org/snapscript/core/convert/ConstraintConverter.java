@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.core.InternalArgumentException;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.PrimitivePromoter;
 
 public abstract class ConstraintConverter  {
@@ -67,9 +69,9 @@ public abstract class ConstraintConverter  {
             return adapter.createCharacter(text);
          }
       } catch(Exception e) {
-         throw new IllegalStateException("Could not convert '" + text + "' to " + actual, e);
+         throw new InternalStateException("Could not convert '" + text + "' to " + actual, e);
       }
-      throw new IllegalArgumentException("Could not convert '" + text + "' to " + actual);
+      throw new InternalArgumentException("Could not convert '" + text + "' to " + actual);
    }
    
    protected Object convert(Class type, Number number) {
@@ -113,9 +115,9 @@ public abstract class ConstraintConverter  {
             return adapter.createCharacter(number);
          }
       } catch(Exception e) {
-         throw new IllegalStateException("Could not convert '" + number + "' to " + type);
+         throw new InternalStateException("Could not convert '" + number + "' to " + type);
       }
-      throw new IllegalArgumentException("Could not convert '" + number + "' to " + actual);
+      throw new InternalArgumentException("Could not convert '" + number + "' to " + actual);
    }
    
    public abstract int score(Object type) throws Exception;

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import org.snapscript.core.InternalStateException;
+
 public class SourceLoader {
 
    public String load(String file) throws Exception {
@@ -34,7 +36,7 @@ public class SourceLoader {
          String location = file.getCanonicalPath();
          
          if(stream == null) {
-            throw new IllegalStateException("Could not find library '" + location + "'");
+            throw new InternalStateException("Could not find library '" + location + "'");
          }
          return stream;
       }

@@ -45,7 +45,7 @@ public class ImportManager {
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException("Could not find '" + name + "' in '" + resource + "'");
+         throw new InternalStateException("Could not find '" + name + "' in '" + resource + "'", e);
       }
    }
 

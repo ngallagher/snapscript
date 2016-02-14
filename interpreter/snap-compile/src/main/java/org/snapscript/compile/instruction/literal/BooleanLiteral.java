@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.literal;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -20,7 +21,7 @@ public class BooleanLiteral extends Literal {
          String text = token.getValue();
          
          if(text == null) {
-            throw new IllegalStateException("Boolean value is null");
+            throw new InternalStateException("Boolean value is null");
          }
          value = Boolean.parseBoolean(text);
       }

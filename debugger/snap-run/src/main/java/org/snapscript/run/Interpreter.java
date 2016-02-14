@@ -9,6 +9,7 @@ import org.snapscript.compile.Executable;
 import org.snapscript.compile.StoreContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.store.ClassPathStore;
@@ -35,7 +36,7 @@ public class Interpreter {
       try {
          source = loader.load(script);
       }catch(Exception e) {
-         throw new IllegalStateException("Could not load script '" + script+ "'", e);
+         throw new InternalStateException("Could not load script '" + script+ "'", e);
       }
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
@@ -55,7 +56,7 @@ public class Interpreter {
             System.err.println("Time taken " + time);
          }
       } catch(Exception e) {
-         throw new IllegalStateException("Could not execute script '" + script +"':\n" + source, e);
+         throw new InternalStateException("Could not execute script '" + script +"':\n" + source, e);
       }
    }
    

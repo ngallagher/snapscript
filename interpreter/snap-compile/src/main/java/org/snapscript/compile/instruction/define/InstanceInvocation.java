@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.define;
 import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
-import org.snapscript.core.Bug;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -32,7 +32,7 @@ public class InstanceInvocation implements Invocation<Scope> {
    @Override
    public Result invoke(Scope scope, Scope instance, Object... list) throws Exception {
       if(statement == null) {
-         throw new IllegalStateException("Function is abstract");
+         throw new InternalStateException("Function is abstract");
       }
       List<String> names = signature.getNames();
       List<Type> types = signature.getTypes();
@@ -51,7 +51,7 @@ public class InstanceInvocation implements Invocation<Scope> {
          Object argument = arguments[i];
          
          if(!checker.compatible(scope, argument, require)) {
-            throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
+            throw new InternalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Value reference = ValueType.getReference(argument);         
          state.addVariable(name, reference);

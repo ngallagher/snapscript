@@ -26,7 +26,7 @@ public class StaticAccessor implements Accessor {
             initializer.compile(scope, type);           
          }
       }catch(Exception e){
-         throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
+         throw new InternalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
       }
       return accessor.getValue(scope);
    }
@@ -41,7 +41,7 @@ public class StaticAccessor implements Accessor {
             initializer.compile(scope, type);           
          }    
       }catch(Exception e){
-         throw new IllegalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
+         throw new InternalStateException("Static reference of '" + name + "' in '" + type + "' failed", e);
       }   
       accessor.setValue(scope,value);
    }

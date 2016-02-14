@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.construct;
 import java.util.Map.Entry;
 
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Value;
@@ -63,7 +64,7 @@ public class MapEntry implements Evaluation {
 
       @Override
       public Object setValue(Object value) {
-         throw new IllegalStateException("Modification of constant entry '" + key + "'");
+         throw new InternalStateException("Modification of constant entry '" + key + "'");
       }
       
    }

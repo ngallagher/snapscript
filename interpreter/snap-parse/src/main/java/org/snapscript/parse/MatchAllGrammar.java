@@ -57,7 +57,7 @@ public class MatchAllGrammar implements Grammar {
          if(success.contains(position)) {
             for(Grammar grammar : grammars) {               
                if(!grammar.read(source, 0)) {
-                  throw new IllegalStateException("Could not read node in " + name);  
+                  throw new ParseException("Could not read node in " + name);  
                }
             }
             return true;

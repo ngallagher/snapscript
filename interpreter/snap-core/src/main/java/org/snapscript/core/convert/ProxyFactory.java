@@ -2,6 +2,7 @@ package org.snapscript.core.convert;
 
 import java.lang.reflect.Proxy;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 
 public class ProxyFactory {
@@ -26,7 +27,7 @@ public class ProxyFactory {
             ClassLoader context = thread.getContextClassLoader();
             
             if(context == null) {
-               throw new IllegalStateException("Thread context class loader was null");
+               throw new InternalStateException("Thread context class loader was null");
             }
             loader = context;
          }

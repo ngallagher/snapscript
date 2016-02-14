@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.variable;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.NameExtractor;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
@@ -21,7 +22,7 @@ public class Variable implements Evaluation {
       Value value = resolver.resolve(scope, left, name);
       
       if(value == null) {
-         throw new IllegalStateException("Could not resolve '" + name +"' in scope");
+         throw new InternalStateException("Could not resolve '" + name +"' in scope");
       }
       return value;
    }  

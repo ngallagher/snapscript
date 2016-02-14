@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.compile.instruction.literal.TextLiteral;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
@@ -62,7 +63,7 @@ public class DeclareVariable implements Evaluation {
          state.addVariable(name, reference);
          return reference;
       }catch(Exception e) {
-         throw new IllegalStateException("Declaration of variable '" + name +"' failed", e);
+         throw new InternalStateException("Declaration of variable '" + name +"' failed", e);
       }      
    }
 }

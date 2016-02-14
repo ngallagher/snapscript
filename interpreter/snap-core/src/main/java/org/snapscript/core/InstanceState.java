@@ -35,7 +35,7 @@ public class InstanceState implements State {
          State state = base.getState();
          
          if(state == null) {
-            throw new IllegalStateException("Scope for '" + name + "' does not exist");
+            throw new InternalStateException("Scope for '" + name + "' does not exist");
          }
          variable = state.getValue(name);
       }

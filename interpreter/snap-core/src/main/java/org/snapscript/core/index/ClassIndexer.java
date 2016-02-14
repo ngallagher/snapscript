@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportScanner;
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PrimitivePromoter;
@@ -36,7 +37,7 @@ public class ClassIndexer {
       Class type = promoter.promote(source);
       
       if(type == null) {
-         throw new IllegalArgumentException("Could not determine type for " + source);
+         throw new InternalArgumentException("Could not determine type for " + source);
       }
       return hierarchy.index(type);
    }
@@ -45,7 +46,7 @@ public class ClassIndexer {
       Class type = promoter.promote(source);
       
       if(type == null) {
-         throw new IllegalArgumentException("Could not determine type for " + source);
+         throw new InternalArgumentException("Could not determine type for " + source);
       }
       return properties.index(type);
    }
@@ -54,7 +55,7 @@ public class ClassIndexer {
       Class type = promoter.promote(source);
       
       if(type == null) {
-         throw new IllegalArgumentException("Could not determine type for " + source);
+         throw new InternalArgumentException("Could not determine type for " + source);
       }
       return functions.index(source);
    }
@@ -63,7 +64,7 @@ public class ClassIndexer {
       Class type = promoter.promote(source);
       
       if(type == null) {
-         throw new IllegalArgumentException("Could not determine type for " + source);
+         throw new InternalArgumentException("Could not determine type for " + source);
       }
       Package module = type.getPackage();
       
@@ -84,7 +85,7 @@ public class ClassIndexer {
          Class type = promoter.promote(entry);
          
          if(type == null) {
-            throw new IllegalArgumentException("Could not determine type for " + source);
+            throw new InternalArgumentException("Could not determine type for " + source);
          }
          if(entry != null) {
             return indexer.loadType(type);

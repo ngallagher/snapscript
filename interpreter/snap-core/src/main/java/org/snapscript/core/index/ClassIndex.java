@@ -1,9 +1,9 @@
 package org.snapscript.core.index;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -28,7 +28,7 @@ public class ClassIndex {
          try {
             properties = indexer.indexProperties(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not index " + require, e);
+            throw new InternalStateException("Could not index " + require, e);
          }
       }
       return properties;
@@ -39,7 +39,7 @@ public class ClassIndex {
          try {
             functions = indexer.indexFunctions(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not index " + require, e);
+            throw new InternalStateException("Could not index " + require, e);
          }
       }
       return functions;
@@ -50,7 +50,7 @@ public class ClassIndex {
          try {
             types = indexer.indexTypes(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not index " + require, e);
+            throw new InternalStateException("Could not index " + require, e);
          }
       }
       return types;
@@ -61,7 +61,7 @@ public class ClassIndex {
          try {
             module = indexer.indexModule(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not index " + require, e);
+            throw new InternalStateException("Could not index " + require, e);
          }
       }
       return module;
@@ -72,7 +72,7 @@ public class ClassIndex {
          try {
             entry = indexer.indexEntry(require);
          } catch(Exception e) {
-            throw new IllegalStateException("Could not index " + require, e);
+            throw new InternalStateException("Could not index " + require, e);
          }
       }
       return entry;

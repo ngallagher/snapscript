@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -45,7 +45,7 @@ public enum AssignmentOperator {
          int score = converter.score(value);
          
          if(score <= 0) {
-            throw new IllegalStateException("Illegal assignment to variable of type '" + type + "'");
+            throw new InternalStateException("Illegal assignment to variable of type '" + type + "'");
          }
          if(value != null) {
             value = converter.convert(value);

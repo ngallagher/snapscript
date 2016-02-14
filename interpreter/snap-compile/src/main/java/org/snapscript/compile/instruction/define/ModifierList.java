@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.ModifierType;
 
 public class ModifierList {
@@ -18,7 +19,7 @@ public class ModifierList {
          
          if(type != null) {
             if((mask & type.mask) == type.mask) {
-               throw new IllegalStateException("Modifier '" + type + "' declared twice");
+               throw new InternalStateException("Modifier '" + type + "' declared twice");
             }
             mask |= type.mask;
          }

@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -21,7 +22,7 @@ public class ConstraintExtractor {
          Type type = module.getType(name);
          
          if(type == null) {
-            throw new IllegalStateException("Constraint '" + name +"' has not been imported");
+            throw new InternalStateException("Constraint '" + name +"' has not been imported");
          }
          return type;
       }

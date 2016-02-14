@@ -42,7 +42,7 @@ public class MatchFirstGrammar implements Grammar {
          }
          if(best != null) {            
             if(!best.read(node, 0)) {
-               throw new IllegalStateException("Could not read node in " + name);  
+               throw new ParseException("Could not read node in " + name);  
             }     
             return true;
          }      

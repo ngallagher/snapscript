@@ -28,14 +28,14 @@ public class ModuleRegistry {
 
    public Module getModule(String name) {
       if (name == null) {
-         throw new IllegalArgumentException("Module name was null");
+         throw new InternalArgumentException("Module name was null");
       }
       return modules.get(name);
    }
 
    public Module addModule(String name) {
       if (name == null) {
-         throw new IllegalArgumentException("Module name was null");
+         throw new InternalArgumentException("Module name was null");
       }
       Module current = modules.get(name);
 

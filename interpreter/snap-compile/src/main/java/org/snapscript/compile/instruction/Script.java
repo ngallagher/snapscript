@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
@@ -20,7 +21,7 @@ public class Script extends Statement {
          Result result = statement.compile(scope);
          
          if(!result.isNormal()){
-            throw new IllegalStateException("Illegal statement");
+            throw new InternalStateException("Illegal statement");
          }
       }
       return last;
@@ -34,10 +35,10 @@ public class Script extends Statement {
          Result result = statement.execute(scope);
          
          if(result.isThrow()) {
-            throw new IllegalStateException("Exception not caught");
+            throw new InternalStateException("Exception not caught");
          }
          if(!result.isNormal()){
-            throw new IllegalStateException("Illegal statement");
+            throw new InternalStateException("Illegal statement");
          }
          last = result;
       }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -42,7 +43,7 @@ public class TypeValidator {
       Module module = type.getModule();
       
       if(module == null) {
-         throw new IllegalStateException("Type '" + type + "' has no module");
+         throw new InternalStateException("Type '" + type + "' has no module");
       }
    }
    
@@ -65,7 +66,7 @@ public class TypeValidator {
             String resource = module.getName();
             String name = type.getName();
             
-            throw new IllegalStateException("Type '" + resource + "." + name + "' not defined");
+            throw new InternalStateException("Type '" + resource + "." + name + "' not defined");
          }
       }
    }
@@ -89,7 +90,7 @@ public class TypeValidator {
             String resource = module.getName();
             String name = type.getName();
             
-            throw new IllegalStateException("Type '" + resource + "." + name + "' have property '" + require + "'");
+            throw new InternalStateException("Type '" + resource + "." + name + "' have property '" + require + "'");
          }
       }
    }
@@ -114,7 +115,7 @@ public class TypeValidator {
             String resource = module.getName();
             String name = type.getName();
             
-            throw new IllegalStateException("Type '" + resource + "." + name + "' have function '" + require + "'");
+            throw new InternalStateException("Type '" + resource + "." + name + "' have function '" + require + "'");
          }
       }
    }

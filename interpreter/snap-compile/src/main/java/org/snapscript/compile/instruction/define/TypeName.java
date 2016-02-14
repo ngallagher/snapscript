@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.TextLiteral;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -24,7 +25,7 @@ public class TypeName implements Evaluation {
       Type base = module.addType(name);
       
       if(base == null) {
-         throw new IllegalStateException("Type '" + name + "' could not be resolved");
+         throw new InternalStateException("Type '" + name + "' could not be resolved");
       }
       return ValueType.getTransient(base);
    }  

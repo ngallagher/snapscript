@@ -8,6 +8,7 @@ import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionExecutor;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.SyntaxCompiler;
@@ -48,7 +49,7 @@ public class ContextExecutor implements ExpressionExecutor {
          
          return (T)reference.getValue();
       } catch(Exception e) {
-         throw new IllegalStateException("Could not evaluate '" + source + "'", e);
+         throw new InternalStateException("Could not evaluate '" + source + "'", e);
       }
    }
 }

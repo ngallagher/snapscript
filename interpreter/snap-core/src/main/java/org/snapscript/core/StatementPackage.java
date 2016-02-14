@@ -28,9 +28,9 @@ public class StatementPackage implements Package {
             statement.compile(inner); 
          } catch(Exception e) {
             if(name != null) {
-               throw new IllegalStateException("Error occured in '" + name + "'", e);
+               throw new InternalStateException("Error occured in '" + name + "'", e);
             }
-            throw new IllegalStateException("Error occured in script", e);
+            throw new InternalStateException("Error occured in script", e);
          }
       }
       return statement;

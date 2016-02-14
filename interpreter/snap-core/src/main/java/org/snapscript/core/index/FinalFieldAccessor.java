@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.core.Accessor;
+import org.snapscript.core.InternalStateException;
 
 public class FinalFieldAccessor implements Accessor<Object>{
 
@@ -26,13 +27,13 @@ public class FinalFieldAccessor implements Accessor<Object>{
          }
          return value;
       } catch(Exception e) {
-         throw new IllegalStateException("Illegal access to " + field, e);
+         throw new InternalStateException("Illegal access to " + field, e);
       }
    }
 
    @Override
    public void setValue(Object source, Object value) {
-      throw new IllegalStateException("Illegal modification of final " + field);
+      throw new InternalStateException("Illegal modification of final " + field);
    }
 
 }

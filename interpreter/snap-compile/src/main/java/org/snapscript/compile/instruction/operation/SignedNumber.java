@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.StringToken;
@@ -27,7 +28,7 @@ public class SignedNumber implements Evaluation {
          Number number = value.getValue();
          
          if(number == null) {
-            throw new IllegalStateException("Number value was null");
+            throw new InternalStateException("Number value was null");
          }
          result = operator.operate(number);
       }

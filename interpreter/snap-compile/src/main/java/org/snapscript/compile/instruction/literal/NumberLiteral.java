@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.literal;
 
 import org.snapscript.compile.instruction.operation.SignOperator;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.NumberToken;
@@ -25,7 +26,7 @@ public class NumberLiteral extends Literal {
       Number number = token.getValue();
       
       if(number == null) {
-         throw new IllegalStateException("Number value was null");
+         throw new InternalStateException("Number value was null");
       }
       return operator.operate(number);
    }

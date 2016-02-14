@@ -72,7 +72,7 @@ public class RuleParser extends StringParser implements RuleIterator {
          } else if(skip("'")) {
             digest(RuleType.LITERAL);
          } else {
-            throw new IllegalStateException("Invalid syntax in " + name + " at " + off);
+            throw new ParseException("Invalid syntax in " + name + " at " + off);
          }
       } 
    }   
@@ -95,7 +95,7 @@ public class RuleParser extends StringParser implements RuleIterator {
 
    private void digest(RuleType type, int off, int length){
       if(length <= 0) {
-         throw new IllegalStateException("Invalid rule of type " + type + " in " + name + " at " + off);
+         throw new ParseException("Invalid rule of type " + type + " in " + name + " at " + off);
       }
       String text = new String(source, off, length);
       Rule token = new Rule(type, text, name);

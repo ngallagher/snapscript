@@ -36,4 +36,9 @@ public class LineTrace implements Trace {
    public int getKey() {
       return key;
    } 
+   
+   @Override
+   public String toString() {
+      return String.format("%s:%s", resource, line);
+   }
 }

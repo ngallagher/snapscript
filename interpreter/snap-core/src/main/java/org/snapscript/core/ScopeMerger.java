@@ -15,7 +15,7 @@ public class ScopeMerger {
       Module module = registry.addModule(name);
       
       if(module == null) {
-         throw new IllegalStateException("Module '" +name +"' not found");
+         throw new InternalStateException("Module '" +name +"' not found");
       }
       return new ModelScope(model, module);
    }

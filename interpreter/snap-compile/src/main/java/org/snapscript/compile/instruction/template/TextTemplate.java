@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -25,7 +26,7 @@ public class TextTemplate implements Evaluation {
       String text = template.getValue();
       
       if(text == null) {
-         throw new IllegalStateException("Text value was null");
+         throw new InternalStateException("Text value was null");
       }
       String result = interpolate(scope, text);
    

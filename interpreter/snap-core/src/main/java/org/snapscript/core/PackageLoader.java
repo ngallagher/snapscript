@@ -33,7 +33,7 @@ public class PackageLoader {
             try {
                return linker.link(qualifier, source);
             } catch(Exception e) {
-               throw new IllegalStateException("Could not load library '" + path + suffix + "'", e);
+               throw new InternalStateException("Could not load library '" + path + suffix + "'", e);
             }
          } finally {
             libraries.add(qualifier);         

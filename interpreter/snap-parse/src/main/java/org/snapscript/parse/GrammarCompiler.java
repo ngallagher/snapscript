@@ -16,12 +16,12 @@ public class GrammarCompiler {
       RuleIterator iterator = new RuleParser(name, syntax);
       
       if(!iterator.hasNext()) {
-         throw new IllegalStateException("Grammar contains no rules");
+         throw new ParseException("Grammar contains no rules");
       }        
       Grammar result = sequence(iterator, RuleType.OPEN_GROUP);
       
       if(result == null) {
-         throw new IllegalStateException("Could not consume node for " + name);
+         throw new ParseException("Could not consume node for " + name);
       }
       return result;
    }  
@@ -31,7 +31,7 @@ public class GrammarCompiler {
       RuleType open = start.getType();
       
       if(!open.isOptional()) {
-         throw new IllegalStateException("Optional does not begin with " + open);
+         throw new ParseException("Optional does not begin with " + open);
       } 
       Rule rule = iterator.peek();
       RuleType type = rule.getType();
@@ -47,11 +47,11 @@ public class GrammarCompiler {
          Grammar node = consume(iterator, type);
       
          if(node == null) {
-            throw new IllegalStateException("Could not create optional with type " + type);
+            throw new ParseException("Could not create optional with type " + type);
          }
          return builder.createOptional(node, origin);
       }
-      throw new IllegalStateException("Unable to create optional with " + type);      
+      throw new ParseException("Unable to create optional with " + type);      
    }   
    
    private Grammar repeat(RuleIterator iterator, RuleType previous) {
@@ -59,7 +59,7 @@ public class GrammarCompiler {
       RuleType open = start.getType();
       
       if(!open.isRepeat() && !open.isRepeatOnce()) {
-         throw new IllegalStateException("Repeat does not begin with " + open);
+         throw new ParseException("Repeat does not begin with " + open);
       } 
       Rule rule = iterator.peek();
       RuleType type = rule.getType();
@@ -79,27 +79,27 @@ public class GrammarCompiler {
          Grammar node = consume(iterator, type);
       
          if(node == null) {
-            throw new IllegalStateException("Could not create repeat with type " + type);
+            throw new ParseException("Could not create repeat with type " + type);
          }
          if(open.isRepeatOnce()) {
             return builder.createRepeatOnce(node, origin);
          }
          return builder.createRepeat(node, origin);
       }
-      throw new IllegalStateException("Unable to create repeat with " + type);      
+      throw new ParseException("Unable to create repeat with " + type);      
    }   
    
    private Grammar group(RuleIterator iterator, RuleType previous) {      
       List<Grammar> nodes = new ArrayList<Grammar>();
       
       if(!iterator.hasNext()) {
-         throw new IllegalStateException("Rules have been exhausted");
+         throw new ParseException("Rules have been exhausted");
       }
       Rule start = iterator.next();
       RuleType open = start.getType();
       
       if(!open.isOpenGroup() && !open.isOpenChoice()) {
-         throw new IllegalStateException("Group does not begin with " + open);
+         throw new ParseException("Group does not begin with " + open);
       }         
       while(iterator.hasNext()) {
          Rule rule = iterator.peek();
@@ -116,19 +116,19 @@ public class GrammarCompiler {
             Grammar result = consume(iterator, type);
          
             if(result == null) {
-               throw new IllegalStateException("Could not consume node of type " + type);
+               throw new ParseException("Could not consume node of type " + type);
             }
             nodes.add(result);
          } else {
             Grammar result = consume(iterator, previous);
             
             if(result == null) {
-               throw new IllegalStateException("Could not consume node of type " + type);
+               throw new ParseException("Could not consume node of type " + type);
             }
             nodes.add(result);
          }
       }
-      throw new IllegalStateException("Group did not terminate");         
+      throw new ParseException("Group did not terminate");         
    }  
    
    private Grammar sequence(RuleIterator iterator, RuleType previous) {
@@ -137,7 +137,7 @@ public class GrammarCompiler {
       List<Grammar> sequence = new ArrayList<Grammar>();      
       
       if(!iterator.hasNext()) {
-         throw new IllegalStateException("Rules have been exhausted");
+         throw new ParseException("Rules have been exhausted");
       }
       while(iterator.hasNext()) {
          Rule rule = iterator.peek();

@@ -16,7 +16,7 @@ public class ScopeAccessor implements Accessor<Scope> {
       Value field = state.getValue(name);
       
       if(field == null){
-         throw new IllegalStateException("Field '" + name + "' does not exist");
+         throw new InternalStateException("Field '" + name + "' does not exist");
       }
       return field.getValue();
    }
@@ -27,7 +27,7 @@ public class ScopeAccessor implements Accessor<Scope> {
       Value field = state.getValue(name);
       
       if(field == null){
-         throw new IllegalStateException("Field '" + name + "' does not exist");
+         throw new InternalStateException("Field '" + name + "' does not exist");
       }
       field.setValue(value);
    }

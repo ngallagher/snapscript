@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction;
 
 import org.snapscript.compile.instruction.literal.TextLiteral;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
@@ -36,7 +37,7 @@ public class DeclareConstant extends DeclareVariable {
          state.addVariable(name, constant);
          return constant;
       }catch(Exception e) {
-         throw new IllegalStateException("Declaration of constant '" + name +"' failed", e);
+         throw new InternalStateException("Declaration of constant '" + name +"' failed", e);
       }      
    }  
 }

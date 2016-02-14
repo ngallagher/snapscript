@@ -1,5 +1,6 @@
 package org.snapscript.core.convert;
 
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Type;
 
 public class CharacterConverter extends ConstraintConverter {
@@ -50,10 +51,10 @@ public class CharacterConverter extends ConstraintConverter {
          if(type == Character.class) {
             return value;
          }
-         throw new IllegalArgumentException("Conversion from " + type + " to character is not possible");
+         throw new InternalArgumentException("Conversion from " + type + " to character is not possible");
       }
       if(require.isPrimitive()) {
-         throw new IllegalArgumentException("Invalid conversion from null to primitive character");
+         throw new InternalArgumentException("Invalid conversion from null to primitive character");
       }
       return null;
    }

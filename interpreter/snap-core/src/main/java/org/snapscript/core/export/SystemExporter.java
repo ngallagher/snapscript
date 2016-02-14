@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 
 public class SystemExporter {
@@ -30,7 +31,7 @@ public class SystemExporter {
                functions.add(function);
             }
          } catch(Exception e) {
-            throw new IllegalStateException("Could not export runtime", e);
+            throw new InternalStateException("Could not export runtime", e);
          }
       }
       available.addAll(functions);

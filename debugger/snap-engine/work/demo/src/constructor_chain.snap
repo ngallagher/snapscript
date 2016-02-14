@@ -18,4 +18,12 @@ class D extends C {
       System.err.println("D.new("+x+")->"+class);
    }
 }
-var d = new D(11);
+var d = blah();
+
+function blah() {
+   foo(11);
+}
+
+function foo(x) {
+   return new D(x);
+}

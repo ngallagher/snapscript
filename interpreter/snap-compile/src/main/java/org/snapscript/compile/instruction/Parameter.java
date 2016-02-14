@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -39,10 +40,10 @@ public class Parameter implements Evaluation {
          Type type = module.getType(alias);
          
          if(type == null) {
-            throw new IllegalStateException("Constraint '" + alias + "' for '" +name + "' was not imported");
+            throw new InternalStateException("Constraint '" + alias + "' for '" +name + "' was not imported");
          }
          return ValueType.getTransient(name, type);
       }
       return ValueType.getTransient(name);
    }
-}
+}  

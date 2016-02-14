@@ -29,7 +29,7 @@ public class MapState implements State {
          State state = scope.getState();
          
          if(state == null) {
-            throw new IllegalStateException("Scope for does not exist");
+            throw new InternalStateException("Scope for does not exist");
          }
          Set<String> inner = state.getNames();
          
@@ -53,7 +53,7 @@ public class MapState implements State {
          State state = scope.getState();
          
          if(state == null) {
-            throw new IllegalStateException("Scope for '" + name + "' does not exist");
+            throw new InternalStateException("Scope for '" + name + "' does not exist");
          }
          value = state.getValue(name);
          values.put(name, value); // TODO will caching the variable here cause problems??
@@ -76,14 +76,14 @@ public class MapState implements State {
          State state = scope.getState();
          
          if(state == null) {
-            throw new IllegalStateException("Scope for '" + name + "' does not exist");
+            throw new InternalStateException("Scope for '" + name + "' does not exist");
          }
          variable = state.getValue(name);
       }
       Object data = value.getValue();
 
       if(variable == null) {
-         throw new IllegalStateException("Variable '" + name + "' does not exist");
+         throw new InternalStateException("Variable '" + name + "' does not exist");
       }
       variable.setValue(data);      
    }
@@ -93,7 +93,7 @@ public class MapState implements State {
       Value variable = values.get(name);
 
       if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
+         throw new InternalStateException("Variable '" + name + "' already exists");
       }
       values.put(name, value);      
    }
@@ -103,7 +103,7 @@ public class MapState implements State {
       Value variable = values.get(name);
 
       if(variable != null) {
-         throw new IllegalStateException("Variable '" + name + "' already exists");
+         throw new InternalStateException("Variable '" + name + "' already exists");
       }
       values.put(name, value);     
    }

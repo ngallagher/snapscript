@@ -3,6 +3,8 @@ package org.snapscript.core.store;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class ClassPathStore implements Store {
 
    public ClassPathStore() {
@@ -16,7 +18,7 @@ public class ClassPathStore implements Store {
       InputStream source = loader.getResourceAsStream(path);
       
       if(source == null) {
-         throw new IllegalArgumentException("Could not find '" + path + "'");
+         throw new InternalArgumentException("Could not find '" + path + "'");
       }  
       return source;
    }

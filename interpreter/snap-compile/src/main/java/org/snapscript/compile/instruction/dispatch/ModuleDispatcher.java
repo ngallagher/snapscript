@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction.dispatch;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -36,7 +37,7 @@ public class ModuleDispatcher implements InvocationDispatcher {
       Object data = result.getValue();
       
       if(result.isThrow()) {
-         throw new IllegalStateException("Method '" + name + "' for module '" + module + "' had an exception");
+         throw new InternalStateException("Method '" + name + "' for module '" + module + "' had an exception");
       }
       return ValueType.getTransient(data);           
    }

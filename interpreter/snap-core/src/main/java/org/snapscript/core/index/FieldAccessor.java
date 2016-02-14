@@ -3,6 +3,7 @@ package org.snapscript.core.index;
 import java.lang.reflect.Field;
 
 import org.snapscript.core.Accessor;
+import org.snapscript.core.InternalStateException;
 
 public class FieldAccessor implements Accessor<Object>{
 
@@ -17,7 +18,7 @@ public class FieldAccessor implements Accessor<Object>{
       try {
          return field.get(source);
       } catch(Exception e) {
-         throw new IllegalStateException("Illegal access to " + field, e);
+         throw new InternalStateException("Illegal access to " + field, e);
       }
    }
 
@@ -26,7 +27,7 @@ public class FieldAccessor implements Accessor<Object>{
       try {
          field.set(source, value);
       } catch(Exception e) {
-         throw new IllegalStateException("Illegal access to " + field, e);
+         throw new InternalStateException("Illegal access to " + field, e);
       }
    }
 

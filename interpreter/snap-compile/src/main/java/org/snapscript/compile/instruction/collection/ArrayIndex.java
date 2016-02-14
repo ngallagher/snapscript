@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.Argument;
 import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyWrapper;
@@ -37,7 +38,7 @@ public class ArrayIndex implements Evaluation {
          int length = i + 1;
          
          if(!converter.accept(entry)) {
-            throw new IllegalArgumentException("Array contains only " + length + " dimensions");
+            throw new InternalArgumentException("Array contains only " + length + " dimensions");
          }
          Class type = entry.getClass();
          

@@ -31,7 +31,7 @@ public class ModuleDefinition extends Statement {
       
       state.addConstant(TYPE_THIS, value);
       
-      return body.execute(inner);
+      return body.execute(inner); // is this executing stuff
    }
    
    protected Value create(Scope scope) throws Exception {

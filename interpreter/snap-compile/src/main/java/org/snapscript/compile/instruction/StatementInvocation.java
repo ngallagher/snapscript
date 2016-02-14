@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -47,7 +48,7 @@ public class StatementInvocation implements Invocation<Object> {
             Object argument = arguments[i];
             
             if(!checker.compatible(scope, argument, require)) {
-               throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
+               throw new InternalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
             }
             Value reference = ValueType.getReference(argument, require);         
             state.addVariable(name, reference);

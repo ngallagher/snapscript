@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class PrimitiveNumberList extends AbstractList<Object> implements RandomAccess {
 
    private final Object array;
@@ -58,7 +60,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Object[].class) {
             value = number;
          } else {
-            throw new IllegalArgumentException("Incompatible array type");
+            throw new InternalArgumentException("Incompatible array type");
          }
          copy[i] = (T)value;
       }
@@ -72,12 +74,12 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
   
    @Override
    public boolean add(Object element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
    
    @Override
    public void add(int index, Object element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
 
    @Override
@@ -101,7 +103,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Float.class) {
             value = Float.parseFloat(text);
          } else {
-            throw new IllegalArgumentException("Incompatible value type");
+            throw new InternalArgumentException("Incompatible value type");
          }
          Array.set(array, index, value);
       } else {
@@ -120,7 +122,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Float.class) {
             value = number.shortValue();
          } else {
-            throw new IllegalArgumentException("Incompatible value type");
+            throw new InternalArgumentException("Incompatible value type");
          }
          Array.set(array, index, value);
       }
@@ -150,7 +152,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == String.class) {
             value = number.toString();
          } else {
-            throw new IllegalArgumentException("Incompatible value type");
+            throw new InternalArgumentException("Incompatible value type");
          }
          if (object.equals(value)) {
             return i;

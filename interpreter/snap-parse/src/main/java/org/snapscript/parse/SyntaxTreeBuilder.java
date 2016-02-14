@@ -19,7 +19,7 @@ public class SyntaxTreeBuilder {
       char[] array = text.toCharArray();
       
       if(array.length == 0) {
-         throw new IllegalStateException("Source text is empty for '" + grammar + "'");
+         throw new ParseException("Source text is empty for '" + grammar + "'");
       }
       SourceCode source = processor.process(text);
       char[] original = source.getOriginal();

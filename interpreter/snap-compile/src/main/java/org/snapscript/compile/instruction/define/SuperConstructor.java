@@ -6,6 +6,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
@@ -30,7 +31,7 @@ public class SuperConstructor implements TypePart {
       Type base = extractor.extractor(type);
       
       if(base == null) {
-         throw new IllegalStateException("No super type for '" + type + "'");
+         throw new InternalStateException("No super type for '" + type + "'");
       }     
       StringToken name = new StringToken(TYPE_CONSTRUCTOR);
       Evaluation literal = new TextLiteral(name);

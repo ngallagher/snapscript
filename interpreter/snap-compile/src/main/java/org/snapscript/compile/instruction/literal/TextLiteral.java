@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.literal;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -18,7 +19,7 @@ public class TextLiteral extends Literal {
       String text = token.getValue();
       
       if(text == null) {
-         throw new IllegalStateException("Text value was null");
+         throw new InternalStateException("Text value was null");
       }
       return ValueType.getTransient(text);
    }

@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Value;
 
 public class BooleanValue extends Value {   
@@ -25,7 +26,7 @@ public class BooleanValue extends Value {
    
    @Override
    public void setValue(Object value){
-      throw new IllegalStateException("Illegal modification of value");
+      throw new InternalStateException("Illegal modification of value");
    }
    
    @Override

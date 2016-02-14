@@ -59,7 +59,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException("Could not define '" + resource + "." + name + "'", e);
+         throw new ModuleException("Could not define '" + resource + "." + name + "'", e);
       }
    }
    
@@ -74,7 +74,7 @@ public class ContextModule implements Module {
          }
          return module;
       } catch(Exception e){
-         throw new IllegalStateException("Could not import '" + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not import '" + name + "' in '" + resource + "'", e);
       }
    }
    
@@ -91,7 +91,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
       }
    }
 
@@ -110,7 +110,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new IllegalStateException("Could not find '" + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not find '" + name + "' in '" + resource + "'", e);
       }
    }
    
@@ -124,7 +124,7 @@ public class ContextModule implements Module {
          }
          return null;
       } catch(Exception e){
-         throw new IllegalStateException("Could not load " + type, e);
+         throw new ModuleException("Could not load " + type, e);
       }
    }   
    
@@ -138,7 +138,7 @@ public class ContextModule implements Module {
          }
          return null;
       } catch(Exception e){
-         throw new IllegalStateException("Could not load file '" + path + "'", e);
+         throw new ModuleException("Could not load file '" + path + "'", e);
       }
    }
 

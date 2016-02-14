@@ -25,7 +25,7 @@ public class SignatureAligner {
                try {
                   Array.set(array, i, list[i + start]);
                } catch(Exception e){
-                  throw new IllegalStateException("Invalid argument at " + i + " for" + signature, e);
+                  throw new InternalStateException("Invalid argument at " + i + " for" + signature, e);
                }
             }
             list[start] = array;

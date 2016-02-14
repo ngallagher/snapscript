@@ -7,6 +7,7 @@ import java.util.concurrent.FutureTask;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.EmptyModel;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Model;
 
 public class ExcecutorCompiler implements Compiler {
@@ -66,7 +67,7 @@ public class ExcecutorCompiler implements Compiler {
          Executable executable = result.get();
          
          if(executable == null) {
-            throw new IllegalStateException("Could not compile script");
+            throw new InternalStateException("Could not compile script");
          }
          executable.execute(model);
       }      
@@ -108,12 +109,12 @@ public class ExcecutorCompiler implements Compiler {
 
       @Override
       public void execute() throws Exception {
-         throw new IllegalStateException(message, cause);
+         throw new InternalStateException(message, cause);
       } 
       
       @Override
       public void execute(Model model) throws Exception {
-         throw new IllegalStateException(message, cause);
+         throw new InternalStateException(message, cause);
       }             
    }  
 }

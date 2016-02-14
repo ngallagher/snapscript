@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.ConstraintChecker;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -45,7 +46,7 @@ public class NewInvocation implements Invocation<Scope> {
          Object argument = arguments[i];
          
          if(!checker.compatible(scope, argument, require)) {
-            throw new IllegalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
+            throw new InternalStateException("Parameter '" + name + "' does not match constraint '" + require + "'");
          }
          Value reference = ValueType.getReference(argument, require);         
          state.addVariable(name, reference);
@@ -54,7 +55,7 @@ public class NewInvocation implements Invocation<Scope> {
       Scope instance = result.getValue();
       
       if(instance == null) {
-         throw new IllegalStateException("Instance could not be created");
+         throw new InternalStateException("Instance could not be created");
       }
       return constructor.invoke(scope, instance, list);
    }

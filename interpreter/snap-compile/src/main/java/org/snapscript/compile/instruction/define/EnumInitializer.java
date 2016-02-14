@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -37,12 +38,12 @@ public class EnumInitializer extends Initializer {
       State state = scope.getState();
       
       if(type == null) {
-         throw new IllegalStateException("No type found for enum " + name); // class not found
+         throw new InternalStateException("No type found for enum " + name); // class not found
       }
       Callable<Result> call = binder.bind(scope, type);
            
       if(call == null){
-         throw new IllegalStateException("No constructor for enum " + name);
+         throw new InternalStateException("No constructor for enum " + name);
       }
 
       Result result = call.call();

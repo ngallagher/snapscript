@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperScope;
@@ -18,7 +19,7 @@ public class SuperScopeBuilder {
       Type real = (Type)left;
       
       if(left == null) {
-         throw new IllegalArgumentException("Type required for super function call");
+         throw new InternalArgumentException("Type required for super function call");
       }
       return new SuperScope(model, instance, real, type);
    }

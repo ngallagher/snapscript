@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -46,7 +47,7 @@ public class Range implements Evaluation {
       @Override
       public Iterator<Number> iterator() {
          if(first > last) {
-            throw new IllegalStateException("Range " + first + ".." + last + " is invalid");
+            throw new InternalStateException("Range " + first + ".." + last + " is invalid");
          }
          return new RangeIterator(first, last);
       }

@@ -35,7 +35,7 @@ public class SyntaxTree {
       int depth = stack.depth(index);
 
       if (depth >= 0) {
-         throw new IllegalStateException("Tree has been created");
+         throw new ParseException("Tree has been created");
       }
       stack.push(index);
       return new SyntaxCursor(nodes, index, index, 0);
@@ -45,7 +45,7 @@ public class SyntaxTree {
       int size = nodes.size();
       
       if(size > 2) {
-         throw new IllegalStateException("Tree has more than one root");
+         throw new ParseException("Tree has more than one root");
       }
       int mark = analyzer.mark();
       int count = analyzer.count();
@@ -55,9 +55,9 @@ public class SyntaxTree {
          Line line = analyzer.line(error);
          
          if(resource != null) {
-            throw new IllegalStateException("Syntax error in '" + resource + "' at line " + line);
+            throw new ParseException("Syntax error in '" + resource + "' at line " + line);
          }  
-         throw new IllegalStateException("Syntax error at line " + line);
+         throw new ParseException("Syntax error at line " + line);
       }
       return create();
    }
@@ -66,13 +66,13 @@ public class SyntaxTree {
       int size = nodes.size();
       
       if(size > 2) {
-         throw new IllegalStateException("Tree has more than one root");
+         throw new ParseException("Tree has more than one root");
       }
       SyntaxCursor cursor = nodes.get(0);
       SyntaxNode node = cursor.create();
       
       if(node == null) {
-         throw new IllegalStateException("Tree has no root");
+         throw new ParseException("Tree has no root");
       }
       return node;
    }

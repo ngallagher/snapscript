@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
+import org.snapscript.core.InternalArgumentException;
+
 public class PrimitiveCharacterList extends AbstractList<Character> implements RandomAccess {
 
    private final Object array;
@@ -48,7 +50,7 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
          } else if(type == Object[].class) {
             value = character;
          } else {
-            throw new IllegalArgumentException("Incompatible array type");
+            throw new InternalArgumentException("Incompatible array type");
          }
          copy[i] = (T)value;
       }
@@ -62,12 +64,12 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    @Override
    public boolean add(Character element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
    
    @Override
    public void add(int index, Character element) {
-      throw new IllegalArgumentException("Array cannot be resized");
+      throw new InternalArgumentException("Array cannot be resized");
    }
    
    @Override
