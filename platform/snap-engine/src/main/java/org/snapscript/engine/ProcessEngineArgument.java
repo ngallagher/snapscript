@@ -8,7 +8,7 @@ public enum ProcessEngineArgument {
    AGENT_POOL("agent-pool", "4", "Number of agents in pool", "\\d+"),
    MODE("project-mode", "single", "Mode to start on", "(single|multiple)"),
    DIRECTORY("directory", "work/demo", "Directory used for sources", ".*"),
-   SCRIPT("script", "/key.snap", "Script to launch", ".*.snap");
+   SCRIPT("script", "/solarsystem/run.snap", "Script to launch", ".*.snap");
    
    public final String description;
    public final Pattern pattern;

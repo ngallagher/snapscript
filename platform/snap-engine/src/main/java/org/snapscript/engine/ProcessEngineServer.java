@@ -14,14 +14,16 @@ public class ProcessEngineServer {
    
    public void start() {
       try {
-         String address = server.start();
+         int port = server.start();
+         String resource = String.format("http://localhost:%s/resource", port);
+         String project = String.format("http://localhost:%s/project/default", port);
          String script = ProcessEngineArgument.SCRIPT.getValue();
             
          if(script != null) {
             engine.launch(); // start a new process
          }
-         System.err.println(address);
-         engine.start(address);
+         System.err.println(project);
+         engine.start(resource);
       } catch(Exception e) {
          e.printStackTrace();
       }

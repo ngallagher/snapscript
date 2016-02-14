@@ -22,12 +22,10 @@ public class WebServer {
       this.address = new InetSocketAddress(port);
    }
 
-   public String start() throws IOException {
+   public int start() throws IOException {
 	   try {
 		   InetSocketAddress local = (InetSocketAddress)connection.connect(address);
-		   int port = local.getPort();
-
-		   return String.format("http://localhost:%s/resource", port);
+		   return local.getPort();
 	   } catch (IOException ex) {
 		   System.err.println("Failed to connect to: " + address);
 		   throw ex;
