@@ -1,11 +1,11 @@
 package org.snapscript.core;
 
-public class ReferenceKeyBuilder {
+public class ValueKeyBuilder {
    
-   private final ReferenceTypeExtractor extractor;
+   private final ValueTypeExtractor extractor;
    
-   public ReferenceKeyBuilder() {
-      this.extractor = new ReferenceTypeExtractor();
+   public ValueKeyBuilder() {
+      this.extractor = new ValueTypeExtractor();
    }
 
    public Object create(Scope scope, Object left, String name) throws Exception {
@@ -13,7 +13,7 @@ public class ReferenceKeyBuilder {
          Type type = extractor.extract(scope, left);
          
          if(type != null) {
-            return new ReferenceKey(name, type);
+            return new ValueKey(name, type);
          }
       }
       return name;

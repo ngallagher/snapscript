@@ -3,14 +3,14 @@ package org.snapscript.core;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ReferenceTypeExtractor {
+public class ValueTypeExtractor {
 
-   private final ReferenceTypeConverter converter;
+   private final ValueTypeConverter converter;
    private final Map<Class, Type> types;
    
-   public ReferenceTypeExtractor() {
+   public ValueTypeExtractor() {
       this.types = new ConcurrentHashMap<Class, Type>();
-      this.converter = new ReferenceTypeConverter();
+      this.converter = new ValueTypeConverter();
    }
    
    public Type extract(Scope scope, Object left) throws Exception {

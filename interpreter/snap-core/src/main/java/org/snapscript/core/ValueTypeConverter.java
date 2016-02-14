@@ -1,8 +1,8 @@
 package org.snapscript.core;
 
-public class ReferenceTypeConverter {
+public class ValueTypeConverter {
    
-   public ReferenceTypeConverter() {
+   public ValueTypeConverter() {
       super();
    }
 

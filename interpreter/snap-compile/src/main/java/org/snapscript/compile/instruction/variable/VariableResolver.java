@@ -3,19 +3,19 @@ package org.snapscript.compile.instruction.variable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.ReferenceKeyBuilder;
+import org.snapscript.core.ValueKeyBuilder;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 
 public class VariableResolver {
    
    private final Map<Object, ValueResolver> resolvers;
-   private final ReferenceKeyBuilder builder;
+   private final ValueKeyBuilder builder;
    private final VariableBinder binder;
    
    public VariableResolver() {
       this.resolvers = new ConcurrentHashMap<Object, ValueResolver>();
-      this.builder = new ReferenceKeyBuilder();
+      this.builder = new ValueKeyBuilder();
       this.binder = new VariableBinder();
    }
    

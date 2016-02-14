@@ -1,8 +1,8 @@
-package org.snapscript.core.exception;
+package org.snapscript.core.error;
 
 import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 
-public class CauseFormatter {
+public class StackTraceFormatter {
 
    public String format(Throwable original) {
       StackTraceElement[] list = original.getStackTrace();

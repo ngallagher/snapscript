@@ -41,7 +41,7 @@ import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceAnalyzer;
-import org.snapscript.core.exception.StackTraceException;
+import org.snapscript.core.error.InternalError;
 import org.snapscript.core.store.RemoteStore;
 
 public class ProcessAgent {
@@ -101,8 +101,8 @@ public class ProcessAgent {
          System.err.println("Compile time="+(middle-start));
          System.err.println("Execute time="+(finish-middle));
       }catch(Exception e) {
-         if(e instanceof StackTraceException) {
-            StackTraceException ex = (StackTraceException)e;
+         if(e instanceof InternalError) {
+            InternalError ex = (InternalError)e;
             System.err.println(ex.getDescription());
          } else {
             e.printStackTrace();
@@ -219,8 +219,8 @@ public class ProcessAgent {
                middle = System.nanoTime();
                executable.execute(); // execute the script
             } catch(Exception e) {
-               if(e instanceof StackTraceException) {
-                  StackTraceException ex = (StackTraceException)e;
+               if(e instanceof InternalError) {
+                  InternalError ex = (InternalError)e;
                   System.err.println(ex.getDescription());
                } else {
                   e.printStackTrace();

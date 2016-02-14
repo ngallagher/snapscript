@@ -5,21 +5,21 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceAnalyzer;
-import org.snapscript.core.exception.StackTraceUpdater;
+import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.parse.Line;
 
 public class TraceStatement extends Statement {
    
    private final TraceAnalyzer analyzer;
-   private final StackTraceUpdater appender;
+   private final ErrorHandler handler;
    private final Statement statement;
    private final Trace trace;
    
-   public TraceStatement(TraceAnalyzer analyzer, Statement statement, Line line, int key) {
+   public TraceStatement(TraceAnalyzer analyzer, ErrorHandler handler, Statement statement, Line line, int key) {
       this.trace = new LineTrace(statement, line, key);
-      this.appender = new StackTraceUpdater(trace);
       this.statement = statement;
       this.analyzer = analyzer;
+      this.handler = handler;
    }
    
    @Override
@@ -35,11 +35,11 @@ public class TraceStatement extends Statement {
          Result result = statement.execute(scope);
          
          if(result.isThrow()) {
-            return appender.update(scope, result);
+            return handler.throwError(scope, trace, result);
          }
          return result;
       } catch(Throwable cause) {
-         return appender.update(scope, cause);
+         return handler.throwError(scope, trace, cause);
       } finally {
          analyzer.after(scope, trace);
       }

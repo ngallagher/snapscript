@@ -1,25 +1,26 @@
-package org.snapscript.core.exception;
+package org.snapscript.core.error;
 
 import org.snapscript.core.Trace;
 
-public class StackTraceException extends RuntimeException {
+public class InternalError extends RuntimeError {
    
    private final Object original;
    private final String stack;
    private final String chain;
    private final Trace origin;
    
-   public StackTraceException(Object original, Trace origin, String stack) {
+   public InternalError(Object original, Trace origin, String stack) {
       this(original, origin, stack, null);
    }
    
-   public StackTraceException(Object original, Trace origin, String stack, String chain) {
+   public InternalError(Object original, Trace origin, String stack, String chain) {
       this.original = original;
       this.origin = origin;
       this.stack = stack;
       this.chain = chain;
    }
    
+   @Override
    public String getDescription() {
       String stack = getStack();
       
@@ -29,18 +30,22 @@ public class StackTraceException extends RuntimeException {
       return stack;
    }
 
+   @Override
    public String getStack() {
       return stack;
    }
    
+   @Override
    public Object getOriginal() {
       return original;
    }
    
+   @Override
    public String getChain() {
       return chain;
    }
    
+   @Override
    public Trace getOrigin() {
       return origin;
    }

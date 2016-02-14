@@ -1,24 +1,24 @@
 package org.snapscript.core;
 
-public class ReferenceKey {
+public class ValueKey {
 
    private final String name;
    private final Type type;
    
-   public ReferenceKey(String name, Type type) {
+   public ValueKey(String name, Type type) {
       this.name = name;
       this.type = type;
    }
    
    @Override
    public boolean equals(Object key) {
-      if(key instanceof ReferenceKey) {
-         return equals((ReferenceKey)key);
+      if(key instanceof ValueKey) {
+         return equals((ValueKey)key);
       }
       return false;
    }
    
-   public boolean equals(ReferenceKey key) {
+   public boolean equals(ValueKey key) {
       if(key.type != type) {
          return false;
       }
