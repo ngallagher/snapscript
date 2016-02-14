@@ -121,7 +121,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.snapscript.engine.ProcessCommandLine</mainClass>
+              <mainClass>org.snapscript.engine.ProcessEngineLauncher</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
