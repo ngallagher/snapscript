@@ -10,10 +10,10 @@ import org.snapscript.engine.http.resource.Resource;
 
 public class ProjectTreeResource implements Resource {
    
-   private final File rootPath;
+   private final ProjectBuilder builder;
    
-   public ProjectTreeResource(File rootPath) {
-      this.rootPath = rootPath;
+   public ProjectTreeResource(ProjectBuilder builder) {
+      this.builder = builder;
    }
 
    @Override
@@ -22,14 +22,14 @@ public class ProjectTreeResource implements Resource {
       String expand = request.getParameter("expand");
       String folders = request.getParameter("folders");
       Path path = request.getPath(); // /tree/<project-name>
-      String treePrefix = path.getPath(1, 2); // /<project-name>
-      String projectName = treePrefix.substring(1); // <project-name>
-      File project = new File(rootPath, projectName);
+      Project project = builder.createProject(path);
+      String projectName = project.getProjectName();
+      File projectPath = project.getProjectPath();
       StringBuilder builder = new StringBuilder();
       builder.append("<div id=\""+name+"\">\n");
       builder.append("<ul id=\"treeData\" style=\"display: none;\">\n");
       DirectoryTree tree = new DirectoryTree(
-               project, 
+               projectPath, 
                projectName, 
                expand,
                folders);

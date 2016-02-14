@@ -1,23 +1,19 @@
 package org.snapscript.engine.command;
 
-import java.io.File;
-
 import org.simpleframework.http.socket.Frame;
-import org.simpleframework.http.socket.FrameChannel;
 import org.simpleframework.http.socket.FrameListener;
 import org.simpleframework.http.socket.FrameType;
 import org.simpleframework.http.socket.Reason;
 import org.simpleframework.http.socket.Session;
-import org.snapscript.engine.ProcessEngine;
 
 public class CommandController implements FrameListener {
 
    private final CommandListener listener;
    private final CommandReader reader;
    
-   public CommandController(ProcessEngine engine, FrameChannel channel, File root, String project, String name) {
-      this.listener = new CommandListener(engine, channel, root, project, name);
+   public CommandController(CommandListener listener) {
       this.reader = new CommandReader();
+      this.listener = listener;
    }
 
    @Override

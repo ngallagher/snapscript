@@ -49,25 +49,34 @@
     <constructor-arg value=".vm" />
   </bean>
 
+  <bean id="ProjectMode" class="org.snapscript.engine.http.project.ProjectMode">
+    <constructor-arg value="${project-mode}" />
+  </bean>
+
+  <bean id="ProjectBuilder" class="org.snapscript.engine.http.project.ProjectBuilder">
+    <constructor-arg ref="ProjectMode" />
+    <constructor-arg value="${work-directory}" />
+  </bean>
+
   <bean id="ProjectResource" class="org.snapscript.engine.http.project.ProjectResource">
-    <constructor-arg ref="TemplateEngine" />         
+    <constructor-arg ref="TemplateEngine" />
     <constructor-arg value="project.vm" />
   </bean>
-  
+
   <bean id="ProjectFileResource" class="org.snapscript.engine.http.project.ProjectFileResource">
-    <constructor-arg ref="ContentTypeResolver" />         
-    <constructor-arg value="${directory}" />
+    <constructor-arg ref="ProjectBuilder" />
+    <constructor-arg ref="ContentTypeResolver" />
   </bean>
-  
-  <bean id="ProjectTreeResource" class="org.snapscript.engine.http.project.ProjectTreeResource"> 
-    <constructor-arg value="${directory}" />
+
+  <bean id="ProjectTreeResource" class="org.snapscript.engine.http.project.ProjectTreeResource">
+    <constructor-arg ref="ProjectBuilder" />
   </bean>
-  
+
   <bean id="ProjectScriptService" class="org.snapscript.engine.http.project.ProjectScriptService">
+    <constructor-arg ref="ProjectBuilder" />
     <constructor-arg ref="ProcessEngine" />
-    <constructor-arg value="${directory}" />
   </bean>
-  
+
   <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
@@ -78,9 +87,9 @@
   <bean id="ResourceMatcher" class="org.snapscript.engine.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/project/.*" value-ref="ProjectResource" />          
+        <entry key="/project/.*" value-ref="ProjectResource" />
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
-        <entry key="/tree/.*" value-ref="ProjectTreeResource" />        
+        <entry key="/tree/.*" value-ref="ProjectTreeResource" />
       </map>
     </constructor-arg>
   </bean>
@@ -103,7 +112,7 @@
   <bean id="ResourceContainer" class="org.snapscript.engine.http.resource.ResourceContainer">
     <constructor-arg ref="CombinationMatcher" />
   </bean>
-  
+
   <bean id="WebSocketRouter" class="org.simpleframework.http.socket.service.DirectRouter">
     <constructor-arg ref="ProjectScriptService" />
   </bean>

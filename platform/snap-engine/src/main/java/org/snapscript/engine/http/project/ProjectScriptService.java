@@ -11,14 +11,15 @@ import org.simpleframework.http.socket.service.Service;
 import org.simpleframework.transport.Channel;
 import org.snapscript.engine.ProcessEngine;
 import org.snapscript.engine.command.CommandController;
+import org.snapscript.engine.command.CommandListener;
 
 public class ProjectScriptService implements Service {
    
+   private final ProjectBuilder builder;
    private final ProcessEngine engine;
-   private final File rootPath;
    
-   public ProjectScriptService(ProcessEngine engine, File rootPath) {
-      this.rootPath = rootPath;
+   public ProjectScriptService(ProcessEngine engine, ProjectBuilder builder) {
+      this.builder = builder;
       this.engine = engine;
    }  
   
@@ -27,16 +28,17 @@ public class ProjectScriptService implements Service {
          FrameChannel frameChannel = connection.getChannel();
          Request request = connection.getRequest();    
          Path path = request.getPath(); // /connect/<project-name>
-         String projectPrefix = path.getPath(1, 2); // /<project-name>
-         String projectName = projectPrefix.substring(1); // <project-name>
+         Project project = builder.createProject(path);
+         File projectPath = project.getProjectPath();
+         String projectName = project.getProjectName();
          Channel channel = request.getChannel();
          Socket socket = channel.getSocket().socket();
          int port = socket.getLocalPort();
          String name = String.valueOf(port);
          
          try {
-            File projectPath = new File(rootPath, projectName);
-            CommandController controller = new CommandController(engine, frameChannel, projectPath, projectName, name);
+            CommandListener listener = new CommandListener(engine, frameChannel, projectPath, projectName, name);
+            CommandController controller = new CommandController(listener);
             
             frameChannel.register(controller);
          } catch(Exception e) {

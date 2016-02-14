@@ -1,9 +1,6 @@
 package org.snapscript.engine.http.project;
 
-import java.io.File;
 import java.io.OutputStream;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
@@ -13,28 +10,19 @@ import org.snapscript.engine.http.resource.Resource;
 
 public class ProjectFileResource implements Resource {
    
-   private final Map<String, Project> projects;
    private final ContentTypeResolver resolver;
-   private final File workPath;
+   private final ProjectBuilder builder;
    
-   public ProjectFileResource(ContentTypeResolver resolver, File workPath){
-      this.projects = new ConcurrentHashMap<String, Project>();
+   public ProjectFileResource(ProjectBuilder builder, ContentTypeResolver resolver){
       this.resolver = resolver;
-      this.workPath = workPath;
+      this.builder = builder;
    }
 
    @Override
    public void handle(Request request, Response response) throws Throwable {
-      Path path = request.getPath(); // /project/<project-name>/<project-path>
-      String projectPath = path.getPath(2); // /<project-name>/<project-path>
-      String projectPrefix = path.getPath(1, 1); // /<project-name>
-      String projectName = projectPrefix.substring(1); // <project-name>
-      Project project = projects.get(projectName);
-      
-      if(project == null) {
-         project = new Project(workPath, projectName);
-         projects.put(projectName, project);
-      }
+      Path path = request.getPath(); 
+      String projectPath = path.getPath(2); // /<project-name>/<project-path> or /default/blah.snap
+      Project project = builder.createProject(path);
       ProjectFileSystem fileSystem = project.getFileSystem();
       byte[] resource = fileSystem.readAsByteArray(projectPath);
       String type = resolver.resolveType(projectPath);
