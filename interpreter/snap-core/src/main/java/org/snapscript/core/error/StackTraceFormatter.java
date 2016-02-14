@@ -3,9 +3,13 @@ package org.snapscript.core.error;
 import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 
 public class StackTraceFormatter {
+   
+   public StackTraceFormatter() {
+      super();
+   }
 
-   public String format(Throwable original) {
-      StackTraceElement[] list = original.getStackTrace();
+   public String format(Throwable cause) {
+      StackTraceElement[] list = cause.getStackTrace();
       
       if(list.length > 0) {
          StringBuilder builder = new StringBuilder();
