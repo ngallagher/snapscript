@@ -9,9 +9,9 @@ import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
 import org.snapscript.compile.instruction.condition.ForInLoop;
-import org.snapscript.compile.instruction.condition.InfiniteLoop;
 import org.snapscript.compile.instruction.condition.ForLoop;
 import org.snapscript.compile.instruction.condition.IfBranch;
+import org.snapscript.compile.instruction.condition.InfiniteLoop;
 import org.snapscript.compile.instruction.condition.WhileLoop;
 import org.snapscript.compile.instruction.construct.ConstructArray;
 import org.snapscript.compile.instruction.construct.ConstructList;
@@ -21,15 +21,13 @@ import org.snapscript.compile.instruction.construct.ConstructObjectArray;
 import org.snapscript.compile.instruction.construct.ConstructSet;
 import org.snapscript.compile.instruction.construct.MapEntry;
 import org.snapscript.compile.instruction.construct.MapEntryList;
+import org.snapscript.compile.instruction.define.ClassConstructor;
 import org.snapscript.compile.instruction.define.ClassDefinition;
 import org.snapscript.compile.instruction.define.EnumConstructor;
 import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
 import org.snapscript.compile.instruction.define.EnumList;
 import org.snapscript.compile.instruction.define.EnumValue;
-import org.snapscript.compile.instruction.define.ClassConstructor;
-import org.snapscript.compile.instruction.define.TypeField;
-import org.snapscript.compile.instruction.define.TypeFunction;
 import org.snapscript.compile.instruction.define.Modifier;
 import org.snapscript.compile.instruction.define.ModifierList;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
@@ -39,14 +37,16 @@ import org.snapscript.compile.instruction.define.ThisConstructor;
 import org.snapscript.compile.instruction.define.TraitDefinition;
 import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
+import org.snapscript.compile.instruction.define.TypeField;
+import org.snapscript.compile.instruction.define.TypeFunction;
 import org.snapscript.compile.instruction.define.TypeHierarchy;
 import org.snapscript.compile.instruction.define.TypeName;
 import org.snapscript.compile.instruction.literal.BooleanLiteral;
 import org.snapscript.compile.instruction.literal.NullLiteral;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
 import org.snapscript.compile.instruction.literal.TextLiteral;
-import org.snapscript.compile.instruction.operation.Assignment;
 import org.snapscript.compile.instruction.operation.AssignValue;
+import org.snapscript.compile.instruction.operation.Assignment;
 import org.snapscript.compile.instruction.operation.CalculationList;
 import org.snapscript.compile.instruction.operation.CalculationOperand;
 import org.snapscript.compile.instruction.operation.CalculationOperator;
@@ -58,7 +58,9 @@ import org.snapscript.compile.instruction.operation.PrefixOperation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
 import org.snapscript.compile.instruction.template.TextTemplate;
 import org.snapscript.compile.instruction.variable.Variable;
+import org.snapscript.core.Bug;
 
+@Bug("Grammar of -statement needs to be changed")
 public enum Instruction {
    DECIMAL(NumberLiteral.class, "decimal", false),
    HEXIDECIMAL(NumberLiteral.class, "hexidecimal", false),    

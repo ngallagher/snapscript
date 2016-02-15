@@ -1,10 +1,10 @@
 package org.snapscript.core;
 
-public class StatementGroup extends Statement {
+public class CompoundStatement extends Statement {
    
    private final Statement[] statements;
 
-   public StatementGroup(Statement... statements) {
+   public CompoundStatement(Statement... statements) {
       this.statements = statements;
    }
    

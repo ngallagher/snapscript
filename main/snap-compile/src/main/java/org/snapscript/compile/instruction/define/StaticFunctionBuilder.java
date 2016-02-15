@@ -6,7 +6,7 @@ import org.snapscript.core.Invocation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
-import org.snapscript.core.StatementGroup;
+import org.snapscript.core.CompoundStatement;
 import org.snapscript.core.Type;
 
 public class StaticFunctionBuilder implements TypeFunctionBuilder {
@@ -26,7 +26,7 @@ public class StaticFunctionBuilder implements TypeFunctionBuilder {
    @Override
    public Function create(Scope scope, Initializer initializer, Type type){
       Statement initialize = new StaticBody(initializer, type); 
-      Statement statement = new StatementGroup(initialize, body); 
+      Statement statement = new CompoundStatement(initialize, body); 
       Invocation invocation = new StaticInvocation(statement, signature, scope);
       
       return new Function(signature, invocation, name, modifiers);

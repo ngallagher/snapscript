@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction;
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Statement;
-import org.snapscript.core.StatementGroup;
+import org.snapscript.core.CompoundStatement;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TraceStatement;
@@ -19,7 +19,7 @@ public class Compound implements Compilation {
    }
    
    public Compound(Statement... statements) {
-      this.body = new StatementGroup(statements);
+      this.body = new CompoundStatement(statements);
    }
    
    @Override

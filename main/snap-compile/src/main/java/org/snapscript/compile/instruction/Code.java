@@ -1,7 +1,9 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
+@Bug("pair")
 public class Code {
    
    private final Instruction instruction;
