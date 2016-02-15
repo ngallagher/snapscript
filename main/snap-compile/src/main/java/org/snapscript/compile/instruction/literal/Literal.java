@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.literal;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 

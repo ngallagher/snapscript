@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ArgumentList;
-import org.snapscript.compile.instruction.Evaluation;
-import org.snapscript.compile.instruction.construct.ConstructObject;
+import org.snapscript.compile.instruction.construct.CreateObject;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -24,7 +24,7 @@ public class ThisConstructor implements TypePart {
    @Override
    public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {  
       Evaluation name = new TypeReference(type);
-      ConstructObject evaluation = new ConstructObject(name, arguments);
+      CreateObject evaluation = new CreateObject(name, arguments);
       
       return new ThisInitializer(evaluation);
    }

@@ -7,35 +7,35 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
-public class OperationResolver {
+public class CodeResolver {
    
-   private final Map<String, Operation> operations;
+   private final Map<String, Code> registry;
    private final Context context;
 
-   public OperationResolver(Context context) {
-      this.operations = new HashMap<String, Operation>();
+   public CodeResolver(Context context) {
+      this.registry = new HashMap<String, Code>();
       this.context = context;
    }
 
-   public Operation resolve(String name) throws Exception {
-      if(operations.isEmpty()) {
+   public Code resolve(String name) throws Exception {
+      if(registry.isEmpty()) {
          Instruction[] list = Instruction.values();       
       
          for(Instruction instruction :list){
-            Operation operation = create(instruction);
+            Code operation = create(instruction);
             String grammar = instruction.getName();
             
-            operations.put(grammar, operation);
+            registry.put(grammar, operation);
          }  
       } 
-      return operations.get(name);
+      return registry.get(name);
    }
    
-   private Operation create(Instruction instruction) throws Exception{
+   private Code create(Instruction instruction) throws Exception{
       TypeLoader loader = context.getLoader();
       Class value = instruction.getType();
       Type type = loader.loadType(value);
       
-      return new Operation(instruction, type);
+      return new Code(instruction, type);
    }
 }

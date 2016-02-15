@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.operation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 
 public class Calculator {
    

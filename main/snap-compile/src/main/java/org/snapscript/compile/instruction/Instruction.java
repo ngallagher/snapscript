@@ -8,11 +8,11 @@ import org.snapscript.compile.instruction.condition.Comparison;
 import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
-import org.snapscript.compile.instruction.condition.ForInStatement;
-import org.snapscript.compile.instruction.condition.ForInfiniteStatement;
-import org.snapscript.compile.instruction.condition.ForStatement;
-import org.snapscript.compile.instruction.condition.IfStatement;
-import org.snapscript.compile.instruction.condition.WhileStatement;
+import org.snapscript.compile.instruction.condition.ForInLoop;
+import org.snapscript.compile.instruction.condition.InfiniteLoop;
+import org.snapscript.compile.instruction.condition.ForLoop;
+import org.snapscript.compile.instruction.condition.IfBranch;
+import org.snapscript.compile.instruction.condition.WhileLoop;
 import org.snapscript.compile.instruction.construct.ConstructArray;
 import org.snapscript.compile.instruction.construct.ConstructList;
 import org.snapscript.compile.instruction.construct.ConstructMap;
@@ -46,7 +46,7 @@ import org.snapscript.compile.instruction.literal.NullLiteral;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.compile.instruction.operation.Assignment;
-import org.snapscript.compile.instruction.operation.AssignmentStatement;
+import org.snapscript.compile.instruction.operation.AssignValue;
 import org.snapscript.compile.instruction.operation.CalculationList;
 import org.snapscript.compile.instruction.operation.CalculationOperand;
 import org.snapscript.compile.instruction.operation.CalculationOperator;
@@ -108,26 +108,26 @@ public enum Instruction {
    MAP_ENTRY(MapEntry.class, "map-entry", false),
    DECLARE_VARIABLE(DeclareVariable.class, "declare-variable", false),
    DECLARE_CONSTANT(DeclareConstant.class, "declare-constant", false),      
-   DECLARATION_STATEMENT(DeclarationStatement.class, "declaration-statement", true),
-   ASSIGNMENT_STATEMENT(AssignmentStatement.class, "assignment-statement", true),      
-   EXPRESSION_STATEMENT(ExpressionStatement.class, "expression-statement", true),
+   DECLARATION_STATEMENT(Declaration.class, "declaration-statement", true),
+   ASSIGNMENT_STATEMENT(AssignValue.class, "assignment-statement", true),      
+   EXPRESSION_STATEMENT(Operation.class, "expression-statement", true),
    TERMINAL_STATEMENT(NoOperation.class, "terminal-statement", false),   
    BLANK_STATEMENT(NoOperation.class, "empty-statement", false),
-   COMPOUND_STATEMENT(CompoundStatement.class, "compound-statement", false),   
-   IF_STATEMENT(IfStatement.class, "if-statement", true),
-   BREAK_STATEMENT(BreakStatement.class, "break-statement", true),
-   CONTINUE_STATEMENT(ContinueStatement.class, "continue-statement", true),
-   RETURN_STATEMENT(ReturnStatement.class, "return-statement", true),      
-   WHILE_STATEMENT(WhileStatement.class, "while-statement", true),
-   FOR_STATEMENT(ForStatement.class, "for-statement", true),
-   FOR_INFINITE_STATEMENT(ForInfiniteStatement.class, "for-infinite-statement", true),
-   FOR_IN_STATEMENT(ForInStatement.class, "for-in-statement", true),
+   COMPOUND_STATEMENT(Compound.class, "compound-statement", false),   
+   IF_STATEMENT(IfBranch.class, "if-statement", true),
+   BREAK_STATEMENT(Break.class, "break-statement", true),
+   CONTINUE_STATEMENT(Continue.class, "continue-statement", true),
+   RETURN_STATEMENT(Return.class, "return-statement", true),      
+   WHILE_STATEMENT(WhileLoop.class, "while-statement", true),
+   FOR_STATEMENT(ForLoop.class, "for-statement", true),
+   FOR_INFINITE_STATEMENT(InfiniteLoop.class, "for-infinite-statement", true),
+   FOR_IN_STATEMENT(ForInLoop.class, "for-in-statement", true),
    TYPE_CONSTRAINT(Constraint.class, "type-constraint", false),
    PARAMETER(Parameter.class, "parameter", false),
    PARAMETER_LIST(ParameterList.class, "parameter-list", false),
-   THROW(ThrowStatement.class, "throw-statement", true),    
-   TRY_CATCH(TryCatchStatement.class, "try-catch-statement", true),
-   TRY_FINALLY(TryFinallyStatement.class, "try-finally-statement", true),      
+   THROW(Throw.class, "throw-statement", true),    
+   TRY_CATCH(TryCatch.class, "try-catch-statement", true),
+   TRY_FINALLY(TryFinally.class, "try-finally-statement", true),      
    TYPE_NAME(TypeName.class, "type-name", false),
    TRAIT_NAME(TraitName.class, "trait-name", false),     
    TRAIT_HIERARCHY(TypeHierarchy.class, "trait-hierarchy", false),

@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.parse.StringToken;
 
 public class CalculationOperator implements CalculationPart {   

@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;

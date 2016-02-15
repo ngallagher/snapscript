@@ -4,7 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;

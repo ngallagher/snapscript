@@ -8,6 +8,7 @@ import org.snapscript.agent.event.ScopeEvent;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceListener;
+import org.snapscript.core.TraceType;
 
 public class SuspendInterceptor implements TraceListener {
 
@@ -30,7 +31,7 @@ public class SuspendInterceptor implements TraceListener {
    @Override
    public void before(Scope scope, Trace trace) {
       ThreadProgress progress = monitor.get();
-      Class type = trace.getInstruction();
+      TraceType type = trace.getType();
       String resource = trace.getResource();
       int line = trace.getLine();
       
@@ -41,7 +42,7 @@ public class SuspendInterceptor implements TraceListener {
             int depth = progress.currentDepth();
             String path = ResourceExtractor.extractResource(resource);
             ScopeExtractor extractor = new ScopeExtractor(scope);
-            ScopeEventBuilder builder = new ScopeEventBuilder(extractor, process, thread, type, path, line, depth, count);
+            ScopeEventBuilder builder = new ScopeEventBuilder(extractor, type, process, thread, path, line, depth, count);
             ScopeNotifier notifier = new ScopeNotifier(builder);
             ScopeEvent suspend = builder.suspendEvent();
             ScopeEvent resume = builder.resumeEvent();
@@ -61,7 +62,7 @@ public class SuspendInterceptor implements TraceListener {
    @Override
    public void after(Scope scope, Trace trace) {
       ThreadProgress progress = monitor.get();
-      Class type = trace.getInstruction();
+      TraceType type = trace.getType();
       
       progress.afterInstruction(type);
    }

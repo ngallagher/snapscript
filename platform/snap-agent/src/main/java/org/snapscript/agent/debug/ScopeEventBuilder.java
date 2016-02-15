@@ -7,11 +7,12 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.snapscript.agent.event.ScopeEvent;
+import org.snapscript.core.TraceType;
 
 public class ScopeEventBuilder {
 
    private final ScopeExtractor extractor;
-   private final Class instruction;
+   private final TraceType type;
    private final String process;
    private final String resource;
    private final String thread;
@@ -19,8 +20,7 @@ public class ScopeEventBuilder {
    private final int depth;
    private final int count;
    
-   public ScopeEventBuilder(ScopeExtractor extractor, String process, String thread, Class instruction, String resource, int line, int depth, int count) {
-      this.instruction = instruction;
+   public ScopeEventBuilder(ScopeExtractor extractor, TraceType type, String process, String thread, String resource, int line, int depth, int count) {
       this.extractor = extractor;
       this.process = process;
       this.thread = thread;
@@ -28,18 +28,19 @@ public class ScopeEventBuilder {
       this.line = line;
       this.depth = depth;
       this.count = count;
+      this.type = type;
    }
    
    public ScopeEvent suspendEvent() {
       Map<String, Map<String, String>> variables = extractor.build();
-      String name = instruction.getSimpleName();
+      String name = type.name();
       
       return new ScopeEvent(process, thread, name, SUSPENDED, resource, line, depth, count, variables);
    }
    
    public ScopeEvent resumeEvent() {
       Map<String, Map<String, String>> variables = Collections.emptyMap();
-      String name = instruction.getSimpleName();
+      String name = type.name();
       
       return new ScopeEvent(process, thread, name, RUNNING, resource, line, depth, count, variables);
    }

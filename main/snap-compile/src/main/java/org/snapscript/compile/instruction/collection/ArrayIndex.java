@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.collection;
 import java.util.List;
 
 import org.snapscript.compile.instruction.Argument;
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;

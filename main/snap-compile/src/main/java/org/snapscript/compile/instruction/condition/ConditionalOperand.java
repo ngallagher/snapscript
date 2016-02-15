@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.condition;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 
 public class ConditionalOperand implements ConditionalPart {
    

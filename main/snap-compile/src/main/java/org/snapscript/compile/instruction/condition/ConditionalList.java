@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.BooleanValue;
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 

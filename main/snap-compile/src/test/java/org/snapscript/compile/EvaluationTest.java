@@ -11,8 +11,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.core.Context;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultType;

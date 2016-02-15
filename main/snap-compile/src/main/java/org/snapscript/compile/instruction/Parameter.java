@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;

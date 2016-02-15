@@ -2,8 +2,8 @@ package org.snapscript.compile.instruction.collection;
 
 import java.util.Iterator;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.operation.SignedNumber;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;

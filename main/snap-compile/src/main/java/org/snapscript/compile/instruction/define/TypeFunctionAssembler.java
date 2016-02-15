@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.ParameterList;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;

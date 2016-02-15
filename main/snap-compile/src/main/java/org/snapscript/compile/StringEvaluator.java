@@ -5,10 +5,10 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeMerger;

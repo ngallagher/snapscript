@@ -1,9 +1,9 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ArgumentList;
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.dispatch.InvocationBinder;
 import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;

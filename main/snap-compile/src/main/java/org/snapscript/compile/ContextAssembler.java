@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.compile.instruction.InstructionBuilder;
-import org.snapscript.compile.instruction.Operation;
-import org.snapscript.compile.instruction.OperationResolver;
+import org.snapscript.compile.instruction.Code;
+import org.snapscript.compile.instruction.CodeResolver;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
@@ -16,12 +16,12 @@ import org.snapscript.parse.Token;
 public class ContextAssembler implements Assembler {
    
    private final InstructionBuilder builder;
-   private final OperationResolver resolver;
+   private final CodeResolver resolver;
    private final Object[] empty;
 
    public ContextAssembler(Context context) {
       this.builder = new InstructionBuilder(context);
-      this.resolver = new OperationResolver(context);
+      this.resolver = new CodeResolver(context);
       this.empty = new Object[]{};
    }
    
@@ -33,7 +33,7 @@ public class ContextAssembler implements Assembler {
    private Object create(SyntaxNode node, String name, int depth) throws Exception {
       List<SyntaxNode> children = node.getNodes();
       String grammar = node.getGrammar();
-      Operation type = resolver.resolve(grammar);
+      Code type = resolver.resolve(grammar);
       int size = children.size();
       
       if (type == null) {
@@ -45,9 +45,9 @@ public class ContextAssembler implements Assembler {
       return createLeaf(node, name, children, type,depth);
    }
    
-   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
-      Instruction instruction = operation.getInstruction();
-      Type type = operation.getType();
+   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Code code, int depth) throws Exception {
+      Instruction instruction = code.getInstruction();
+      Type type = code.getType();
       Line line = node.getLine();
       int size = children.size();
       
@@ -65,7 +65,7 @@ public class ContextAssembler implements Assembler {
       return builder.create(type, empty, line, instruction.trace);
    }
 
-   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
+   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Code code, int depth) throws Exception {
       String grammar = node.getGrammar();
       int size = children.size();
       
@@ -81,18 +81,18 @@ public class ContextAssembler implements Assembler {
          return create(child, name, depth);
       }
       if (size > 0) {
-         return createBranch(node, name, children, operation, depth);
+         return createBranch(node, name, children, code, depth);
       }
-      return createLeaf(node, name, children, operation, depth);
+      return createLeaf(node, name, children, code, depth);
    }
    
-   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
+   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Code code, int depth) throws Exception {
       Token token = node.getToken();     
       Line line = node.getLine();
       
-      if (operation != null) {
-         Instruction instruction = operation.getInstruction();
-         Type type = operation.getType();
+      if (code != null) {
+         Instruction instruction = code.getInstruction();
+         Type type = code.getType();
          
          if (token == null) {
             return builder.create(type, empty, line, instruction.trace); // no line number????

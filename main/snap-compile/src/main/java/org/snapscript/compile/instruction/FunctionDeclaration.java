@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;

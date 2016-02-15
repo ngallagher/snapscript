@@ -1,20 +1,10 @@
-package org.snapscript.compile.instruction;
+package org.snapscript.core;
 
-import org.snapscript.core.Result;
-import org.snapscript.core.ResultType;
-import org.snapscript.core.Scope;
-import org.snapscript.core.Statement;
-import org.snapscript.parse.StringToken;
-
-public class CompoundStatement extends Statement {
+public class StatementGroup extends Statement {
    
    private final Statement[] statements;
 
-   public CompoundStatement(StringToken token) {
-      this();
-   }
-   
-   public CompoundStatement(Statement... statements) {
+   public StatementGroup(Statement... statements) {
       this.statements = statements;
    }
    

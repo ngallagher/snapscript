@@ -4,9 +4,9 @@ import static org.snapscript.compile.instruction.Instruction.EXPRESSION;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.ExpressionExecutor;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;

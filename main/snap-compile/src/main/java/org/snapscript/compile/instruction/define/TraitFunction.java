@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.ParameterList;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Statement;
 
 public class TraitFunction extends TypeFunction {

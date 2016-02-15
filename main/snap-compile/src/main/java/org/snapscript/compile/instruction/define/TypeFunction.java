@@ -2,8 +2,8 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.ParameterList;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.ModifierType;

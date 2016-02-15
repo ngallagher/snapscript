@@ -3,8 +3,7 @@ package org.snapscript.agent.debug;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.compile.instruction.FunctionInvocation;
-import org.snapscript.compile.instruction.construct.ConstructObject;
+import org.snapscript.core.TraceType;
 
 public class ThreadProgress {
 
@@ -22,18 +21,18 @@ public class ThreadProgress {
       return depth.get();
    }
    
-   public void beforeInstruction(Class type) {
-      if(type == ConstructObject.class) {
+   public void beforeInstruction(TraceType type) {
+      if(type == TraceType.CONSTRUCT) {
          depth.getAndIncrement();
-      } else if(type == FunctionInvocation.class) {
+      } else if(type == TraceType.INVOKE) {
          depth.getAndIncrement();
       }
    }
    
-   public void afterInstruction(Class type) {
-      if(type == ConstructObject.class) {
+   public void afterInstruction(TraceType type) {
+      if(type == TraceType.CONSTRUCT) {
          depth.getAndDecrement();
-      } else if(type == FunctionInvocation.class) {
+      } else if(type == TraceType.INVOKE) {
          depth.getAndDecrement();
       }
    }

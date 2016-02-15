@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.ConstraintExtractor;
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.AccessorProperty;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;

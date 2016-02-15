@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.Evaluation;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;

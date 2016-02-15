@@ -3,8 +3,8 @@ package org.snapscript.compile.instruction.define;
 import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import org.snapscript.compile.instruction.ArgumentList;
-import org.snapscript.compile.instruction.Evaluation;
 import org.snapscript.compile.instruction.literal.TextLiteral;
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;

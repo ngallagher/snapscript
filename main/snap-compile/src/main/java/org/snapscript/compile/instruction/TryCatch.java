@@ -10,7 +10,7 @@ import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.core.error.ErrorCauseExtractor;
 
-public class TryCatchStatement extends Statement {
+public class TryCatch extends Statement {
    
    private final ErrorCauseExtractor extractor;
    private final ConstraintChecker checker;
@@ -19,15 +19,15 @@ public class TryCatchStatement extends Statement {
    private final Statement handle;
    private final Statement finish;
    
-   public TryCatchStatement(Statement statement, Statement finish) {
+   public TryCatch(Statement statement, Statement finish) {
       this(statement, null, null, finish);
    }   
    
-   public TryCatchStatement(Statement statement, Parameter parameter, Statement handle) {
+   public TryCatch(Statement statement, Parameter parameter, Statement handle) {
       this(statement, parameter, handle, null);
    }   
    
-   public TryCatchStatement(Statement statement, Parameter parameter, Statement handle, Statement finish) {
+   public TryCatch(Statement statement, Parameter parameter, Statement handle, Statement finish) {
       this.extractor = new ErrorCauseExtractor();
       this.checker = new ConstraintChecker();
       this.statement = statement;
