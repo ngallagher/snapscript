@@ -3,14 +3,12 @@ package org.snapscript.core;
 public class ScopeMerger {
 
    private final Context context;
-   private final String name;
    
-   public ScopeMerger(Context context, String name) {
+   public ScopeMerger(Context context) {
       this.context = context;
-      this.name = name;
    }
    
-   public Scope merge(Model model) {
+   public Scope merge(Model model, String name) {
       ModuleRegistry registry = context.getRegistry();
       Module module = registry.addModule(name);
       

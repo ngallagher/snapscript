@@ -1,4 +1,9 @@
-package org.snapscript.core;
+package org.snapscript.compile.instruction;
+
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
+import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 
 public class CompoundStatement extends Statement {
    

@@ -11,12 +11,12 @@ import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 
-public class InfiniteLoop implements Compilation {
+public class ForInfiniteStatement implements Compilation {
    
    private final Statement loop;
    
-   public InfiniteLoop(Statement statement) {
-      this.loop = new ForStatement(statement);
+   public ForInfiniteStatement(Statement statement) {
+      this.loop = new Delegate(statement);
    }
    
    @Override
@@ -27,11 +27,11 @@ public class InfiniteLoop implements Compilation {
       return new TraceStatement(analyzer, loop, trace);
    }
    
-   private static class ForStatement extends Statement {
+   private static class Delegate extends Statement {
       
       private final Statement body;
       
-      public ForStatement(Statement body) {
+      public Delegate(Statement body) {
          this.body = body;
       }
    

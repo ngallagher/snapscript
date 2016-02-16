@@ -18,12 +18,12 @@ import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 
-public class ForInLoop implements Compilation {
+public class ForInStatement implements Compilation {
    
    private final Statement loop;
    
-   public ForInLoop(Evaluation identifier, Evaluation collection, Statement body) {
-      this.loop = new ForInStatement(identifier, collection, body);
+   public ForInStatement(Evaluation identifier, Evaluation collection, Statement body) {
+      this.loop = new Delegate(identifier, collection, body);
    }
    
    @Override
@@ -34,14 +34,14 @@ public class ForInLoop implements Compilation {
       return new TraceStatement(analyzer, loop, trace);
    }
    
-   private static class ForInStatement extends Statement {
+   private static class Delegate extends Statement {
    
       private final IterationConverter converter;
       private final NameExtractor extractor;
       private final Evaluation collection;
       private final Statement body;
    
-      public ForInStatement(Evaluation identifier, Evaluation collection, Statement body) {
+      public Delegate(Evaluation identifier, Evaluation collection, Statement body) {
          this.extractor = new NameExtractor(identifier);
          this.converter = new IterationConverter();
          this.collection = collection;

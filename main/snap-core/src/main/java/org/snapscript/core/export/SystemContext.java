@@ -1,7 +1,7 @@
 package org.snapscript.core.export;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.ExpressionExecutor;
+import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 
@@ -14,11 +14,11 @@ public class SystemContext {
    }
 
    public <T> T eval(Scope scope, String source) throws Exception {
-      ExpressionExecutor executor = context.getExecutor();
+      ExpressionEvaluator executor = context.getEvaluator();
       Module module = scope.getModule();
       String name = module.getName();
       
-      return executor.execute(scope, name, source);
+      return executor.evaluate(scope, source, name);
    }
    
    public void print(Scope scope, Object value)  throws Exception{

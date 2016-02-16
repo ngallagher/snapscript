@@ -6,6 +6,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.store.ClassPathStore;
@@ -18,8 +19,8 @@ public class EvaluatorTest extends TestCase {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
-      Evaluator evaluator = new StringEvaluator(context);
-      Object result = evaluator.evaluate("1+2", model);
+      ExpressionEvaluator evaluator = context.getEvaluator();
+      Object result = evaluator.evaluate(model, "1+2");
       assertEquals(result, 3);
    }
 
@@ -28,10 +29,10 @@ public class EvaluatorTest extends TestCase {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
-      Evaluator evaluator = new StringEvaluator(context);
+      ExpressionEvaluator evaluator = context.getEvaluator();
 
       map.put("x", "blah");
-      Object result = evaluator.evaluate("x.substring(1)", model);
+      Object result = evaluator.evaluate(model,"x.substring(1)");
       assertEquals(result, "lah");
    }
 
@@ -40,8 +41,8 @@ public class EvaluatorTest extends TestCase {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
-      Evaluator evaluator = new StringEvaluator(context);
-      Object result = evaluator.evaluate("-1", model);
+      ExpressionEvaluator evaluator = context.getEvaluator();
+      Object result = evaluator.evaluate(model,"-1");
       assertEquals(result, -1);
    }
 
@@ -51,8 +52,8 @@ public class EvaluatorTest extends TestCase {
       map.put("m", 10);
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
-      Evaluator evaluator = new StringEvaluator(context);
-      Object result = evaluator.evaluate("m * -1", model);
+      ExpressionEvaluator evaluator = context.getEvaluator();
+      Object result = evaluator.evaluate(model,"m * -1");
       assertEquals(result, -10);
    }
 

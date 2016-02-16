@@ -12,38 +12,49 @@ import org.snapscript.core.TraceAnalyzer;
 import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
+import org.snapscript.parse.StringToken;
 
-public class Throw implements Compilation {
+public class ReturnStatement implements Compilation {
    
    private final Statement control;
    
-   public Throw(Evaluation evaluation) {
-      this.control = new ThrowStatement(evaluation);
+   public ReturnStatement(StringToken token){
+      this(null, token);
+   }
+   
+   public ReturnStatement(Evaluation evaluation){
+      this(evaluation, null);
+   }
+   
+   public ReturnStatement(Evaluation evaluation, StringToken token){
+      this.control = new Delegate(evaluation);
    }
    
    @Override
    public Statement compile(Context context, String resource, int line) throws Exception {
       TraceAnalyzer analyzer = context.getAnalyzer();
-      Trace trace = TraceType.getConstruct(resource, line);
+      Trace trace = TraceType.getNormal(resource, line);
       
       return new TraceStatement(analyzer, control, trace);
    }
    
-   private static class ThrowStatement extends Statement {
+   private static class Delegate extends Statement {
    
       private final Evaluation evaluation;
+
+      public Delegate(Evaluation evaluation){
+         this.evaluation = evaluation;
+      }
       
-      public ThrowStatement(Evaluation evaluation) {
-         this.evaluation = evaluation; 
-      }   
-   
       @Override
       public Result execute(Scope scope) throws Exception {
-         Value reference = evaluation.evaluate(scope, null);
-         Object value = reference.getValue();
-         
-         return ResultType.getThrow(value);  
+         if(evaluation != null) {
+            Value value = evaluation.evaluate(scope, null);
+            Object object = value.getValue();
+            
+            return ResultType.getReturn(object);
+         }
+         return ResultType.getReturn();
       }
    }
-
 }

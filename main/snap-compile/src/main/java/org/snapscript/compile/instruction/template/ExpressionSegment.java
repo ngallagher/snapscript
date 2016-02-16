@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.template;
 import java.io.Writer;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.ExpressionExecutor;
+import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 
@@ -26,8 +26,8 @@ public class ExpressionSegment implements Segment {
       Module module = scope.getModule();
       String name = module.getName();
       Context context = module.getContext();
-      ExpressionExecutor executor = context.getExecutor();
-      Object value = executor.execute(scope, name, expression);
+      ExpressionEvaluator executor = context.getEvaluator();
+      Object value = executor.evaluate(scope, name, expression);
       
       if(value == null) {
          writer.write(source, off, length);

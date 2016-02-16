@@ -30,7 +30,7 @@ public class ConstructSet implements Compilation {
    }
    
    public ConstructSet(ArgumentList arguments, StringToken token) {
-      this.construct = new CreateSet(arguments);
+      this.construct = new Delegate(arguments);
    }
    
    @Override
@@ -41,12 +41,12 @@ public class ConstructSet implements Compilation {
       return new TraceEvaluation(analyzer, construct, trace);
    }
    
-   private static class CreateSet implements Evaluation {
+   private static class Delegate implements Evaluation {
 
       private final ArgumentList arguments;
       private final ProxyWrapper wrapper;
       
-      public CreateSet(ArgumentList arguments) {
+      public Delegate(ArgumentList arguments) {
          this.wrapper = new ProxyWrapper();
          this.arguments = arguments;
       }   

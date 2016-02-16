@@ -1,7 +1,7 @@
 package org.snapscript.compile;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.ExpressionExecutor;
+import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.ResourceManager;
@@ -14,7 +14,7 @@ import org.snapscript.core.store.Store;
 
 public class StoreContext implements Context {
 
-   private final ExpressionExecutor executor;
+   private final ExpressionEvaluator executor;
    private final ConstraintMatcher matcher;
    private final ResourceManager manager;
    private final TraceAnalyzer analyzer;
@@ -31,7 +31,7 @@ public class StoreContext implements Context {
       this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader);
       this.binder = new FunctionBinder(matcher, loader);
-      this.executor = new ContextExecutor(this);
+      this.executor = new ContextEvaluator(this);
    }
    
    @Override
@@ -50,7 +50,7 @@ public class StoreContext implements Context {
    }
    
    @Override
-   public ExpressionExecutor getExecutor() {
+   public ExpressionEvaluator getEvaluator() {
       return executor;
    }
 

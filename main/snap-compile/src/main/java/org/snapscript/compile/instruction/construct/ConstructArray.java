@@ -27,7 +27,7 @@ public class ConstructArray implements Compilation {
    }
    
    public ConstructArray(Evaluation type, ArgumentList list) {
-      this.construct = new CreateArray(type, list);
+      this.construct = new Delegate(type, list);
    }
    
    @Override
@@ -38,13 +38,13 @@ public class ConstructArray implements Compilation {
       return new TraceEvaluation(analyzer, construct, trace);
    }
    
-   private static class CreateArray implements Evaluation {
+   private static class Delegate implements Evaluation {
    
       private final ArrayConverter converter;
       private final NameExtractor extractor;
       private final ArgumentList list;
       
-      public CreateArray(Evaluation type, ArgumentList list) {
+      public Delegate(Evaluation type, ArgumentList list) {
          this.extractor = new NameExtractor(type);
          this.converter = new ArrayConverter();
          this.list = list;

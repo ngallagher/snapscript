@@ -12,12 +12,12 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.parse.StringToken;
 
-public class Break implements Compilation {
+public class BreakStatement implements Compilation {
    
    private final Statement control;
    
-   public Break(StringToken token) {
-      this.control = new BreakStatement();
+   public BreakStatement(StringToken token) {
+      this.control = new Delegate();
    }
    
    @Override
@@ -28,11 +28,11 @@ public class Break implements Compilation {
       return new TraceStatement(analyzer, control, trace);
    }
    
-   private static class BreakStatement extends Statement {
+   private static class Delegate extends Statement {
       
       private final Result result;
       
-      public BreakStatement(){
+      public Delegate(){
          this.result = ResultType.getBreak();
       }
       

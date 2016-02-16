@@ -15,12 +15,12 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 
-public class AssignValue implements Compilation {
+public class AssignmentStatement implements Compilation {
    
    private final Statement assignment;
    
-   public AssignValue(Evaluation identifier, Evaluation value) {
-      this.assignment = new AssignValueStatement(identifier, value);
+   public AssignmentStatement(Evaluation identifier, Evaluation value) {
+      this.assignment = new Delegate(identifier, value);
    }
    
    @Override
@@ -31,12 +31,12 @@ public class AssignValue implements Compilation {
       return new TraceStatement(analyzer, assignment, trace);
    }
 
-   private static class AssignValueStatement extends Statement {
+   private static class Delegate extends Statement {
       
       private final NameExtractor extractor;
       private final Evaluation value;
       
-      public AssignValueStatement(Evaluation identifier, Evaluation value) {
+      public Delegate(Evaluation identifier, Evaluation value) {
          this.extractor = new NameExtractor(identifier);
          this.value = value;
       }

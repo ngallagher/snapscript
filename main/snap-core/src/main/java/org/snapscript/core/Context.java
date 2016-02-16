@@ -8,7 +8,7 @@ public interface Context{
    ModuleRegistry getRegistry();
    TraceAnalyzer getAnalyzer();
    ConstraintMatcher getMatcher();
-   ExpressionExecutor getExecutor();
+   ExpressionEvaluator getEvaluator();
    FunctionBinder getBinder();
    PackageLinker getLinker();
    TypeLoader getLoader();  

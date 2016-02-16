@@ -13,12 +13,12 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 
-public class Declaration implements Compilation {
+public class DeclarationStatement implements Compilation {
    
    private final Statement declaration;   
    
-   public Declaration(Evaluation declaration) {
-      this.declaration = new DeclarationStatement(declaration);     
+   public DeclarationStatement(Evaluation declaration) {
+      this.declaration = new Delegate(declaration);     
    }
    
    @Override
@@ -29,11 +29,11 @@ public class Declaration implements Compilation {
       return new TraceStatement(analyzer, declaration, trace);
    }
    
-   private static class DeclarationStatement extends Statement {
+   private static class Delegate extends Statement {
 
       private final Evaluation declaration;   
       
-      public DeclarationStatement(Evaluation declaration) {
+      public Delegate(Evaluation declaration) {
          this.declaration = declaration;     
       }
       

@@ -13,16 +13,16 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 
-public class ForLoop implements Compilation {
+public class ForStatement implements Compilation {
    
    private final Statement loop;
    
-   public ForLoop(Statement declaration, Evaluation evaluation, Statement statement) {
+   public ForStatement(Statement declaration, Evaluation evaluation, Statement statement) {
       this(declaration, evaluation, null, statement);
    }
    
-   public ForLoop(Statement declaration, Evaluation evaluation, Evaluation assignment, Statement statement) {
-      this.loop = new ForStatement(declaration, evaluation, assignment, statement);
+   public ForStatement(Statement declaration, Evaluation evaluation, Evaluation assignment, Statement statement) {
+      this.loop = new Delegate(declaration, evaluation, assignment, statement);
    }
    
    @Override
@@ -33,14 +33,14 @@ public class ForLoop implements Compilation {
       return new TraceStatement(analyzer, loop, trace);
    }
    
-   private static class ForStatement extends Statement {
+   private static class Delegate extends Statement {
 
       private final Evaluation condition;
       private final Statement declaration;
       private final Evaluation assignment;
       private final Statement body;
 
-      public ForStatement(Statement declaration, Evaluation condition, Evaluation assignment, Statement body) {
+      public Delegate(Statement declaration, Evaluation condition, Evaluation assignment, Statement body) {
          this.declaration = declaration;
          this.assignment = assignment;
          this.condition = condition;

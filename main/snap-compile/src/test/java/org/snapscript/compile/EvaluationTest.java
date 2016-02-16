@@ -1,8 +1,5 @@
 package org.snapscript.compile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,8 +8,11 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.snapscript.compile.instruction.Assembler;
+import org.snapscript.compile.instruction.InstructionAssembler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultType;
@@ -87,7 +87,7 @@ public class EvaluationTest extends TestCase {
       assertEquals(evaluate("list[1]", "expression", model), "index-1");
       assertEquals(evaluate("list[2]", "expression", model), "index-2");
       assertEquals(evaluate("list[0]", "expression", model), "index-0");
-      assertEquals(evaluate("array[0].concat(array[1].substring(2))", "expression", model, 1000000), "index-0dex-1");
+      assertEquals(evaluate("array[0].concat(array[1].substring(2))", "expression", model), "index-0dex-1");
       assertEquals(evaluate("x+y", "expression", model), 17d);
       assertEquals(evaluate("x+y*2", "expression", model), 22d);
       assertEquals(evaluate("(x+y)*2", "expression", model), 34d);
@@ -95,9 +95,9 @@ public class EvaluationTest extends TestCase {
       assertEquals(evaluate("x+(y*str.length())", "expression", model), 112d);
       assertEquals(evaluate("x+(y*str.length())+1", "expression", model), 113d);
       assertEquals(evaluate("x+(y*str.length()+1)", "expression", model), 113d);
-      assertEquals(evaluate("x+(y*str.length()+1)", "expression", model, 1000000), 113d);
-      assertEquals(evaluate("(x+y)*2", "expression", model, 1000000), 34d);
-      assertEquals(evaluate("(x+y)*2", "expression", model, 1000000), 34d);
+      assertEquals(evaluate("x+(y*str.length()+1)", "expression", model), 113d);
+      assertEquals(evaluate("(x+y)*2", "expression", model), 34d);
+      assertEquals(evaluate("(x+y)*2", "expression", model), 34d);
       assertEquals(evaluate("x>y", "expression", model), true);
       assertEquals(evaluate("x>=y", "expression", model), true);
       assertEquals(evaluate("x==y", "expression", model), false);
@@ -193,50 +193,29 @@ public class EvaluationTest extends TestCase {
       return statement(script, "script", model);
    }
 
-   public static Object evaluate(String source, String grammar, Map<String, Object> model) throws Exception {
-      return evaluate(source, grammar, model, 0);
-   }
-
    public static ResultType statement(String source, String grammar, Map<String, Object> map) throws Exception {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
-      Context cc = new StoreContext(store);
-      Assembler builder = new ContextAssembler(cc);
-      SyntaxCompiler bb = new SyntaxCompiler();
-      ScopeMerger b = new ScopeMerger(cc, "default");
-      Scope s = b.merge(model);
-      SyntaxParser analyzer = bb.compile();
+      Context context = new StoreContext(store);
+      Assembler builder = new InstructionAssembler(context);
+      SyntaxCompiler compiler = new SyntaxCompiler();
+      ScopeMerger merger = new ScopeMerger(context);
+      Scope scope = merger.merge(model, "default");
+      SyntaxParser analyzer = compiler.compile();
       SyntaxNode token = analyzer.parse(null, source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the
                                                       // following
       Statement statement = (Statement) builder.assemble(token, "xx");
-      statement.compile(s);
-      return statement.execute(s).getType();
+      statement.compile(scope);
+      return statement.execute(scope).getType();
    }
 
-   public static Object evaluate(String source, String grammar, Map<String, Object> map, int repeat) throws Exception {
+   public static Object evaluate(String source, String grammar, Map<String, Object> map) throws Exception {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
-      Context cc = new StoreContext(store);
-      Assembler builder = new ContextAssembler(cc);
-      SyntaxCompiler bb = new SyntaxCompiler();
-      ScopeMerger b = new ScopeMerger(cc, "default");
-      Scope s = b.merge(model);
-      SyntaxParser analyzer = bb.compile();
-      SyntaxNode token = analyzer.parse(null, source, grammar);
-      SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the
-                                                      // following
-      Evaluation evaluation = (Evaluation) builder.assemble(token, "xx");
-
-      if (repeat > 0) {
-         long start = System.currentTimeMillis();
-         for (int i = 0; i < repeat; i++) {
-            evaluation.evaluate(s, null);
-         }
-         long finish = System.currentTimeMillis();
-         long duration = finish - start;
-         System.err.println("Time taken for " + repeat + " iterations was " + duration);
-      }
-      return evaluation.evaluate(s, null).getValue();
+      Context context = new StoreContext(store);
+      ExpressionEvaluator evaluator = context.getEvaluator();
+      
+      return evaluator.evaluate(model, source);
    }
 }

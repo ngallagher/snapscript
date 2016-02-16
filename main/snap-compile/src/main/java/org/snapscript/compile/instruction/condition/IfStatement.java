@@ -13,16 +13,16 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 
-public class IfBranch implements Compilation {
+public class IfStatement implements Compilation {
    
    private final Statement branch;
    
-   public IfBranch(Evaluation evaluation, Statement positive) {
+   public IfStatement(Evaluation evaluation, Statement positive) {
       this(evaluation, positive, null);
    }
    
-   public IfBranch(Evaluation evaluation, Statement positive, Statement negative) {
-      this.branch = new IfStatement(evaluation, positive, negative);
+   public IfStatement(Evaluation evaluation, Statement positive, Statement negative) {
+      this.branch = new Delegate(evaluation, positive, negative);
    }
    
    @Override
@@ -33,13 +33,13 @@ public class IfBranch implements Compilation {
       return new TraceStatement(analyzer, branch, trace);
    }
    
-   private static class IfStatement extends Statement {
+   private static class Delegate extends Statement {
    
       private final Evaluation condition;
       private final Statement positive;
       private final Statement negative;
       
-      public IfStatement(Evaluation evaluation, Statement positive, Statement negative) {
+      public Delegate(Evaluation evaluation, Statement positive, Statement negative) {
          this.condition = evaluation;
          this.positive = positive;
          this.negative = negative;

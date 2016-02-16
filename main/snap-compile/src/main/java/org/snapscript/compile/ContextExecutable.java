@@ -16,13 +16,15 @@ public class ContextExecutable implements Executable{
    private final Package library;
    private final Context context;
    private final Model model;
+   private final String name;
    
    public ContextExecutable(Context context, Package library, String name){
-      this.merger = new ScopeMerger(context, name);
       this.validator = new ContextValidator();
+      this.merger = new ScopeMerger(context);
       this.model = new EmptyModel();
       this.library = library;
       this.context = context;
+      this.name = name;
    }
    
    @Override
@@ -32,7 +34,7 @@ public class ContextExecutable implements Executable{
    
    @Override
    public void execute(Model model) throws Exception{ 
-      Scope scope = merger.merge(model);
+      Scope scope = merger.merge(model, name);
       Statement script = library.compile(scope);
       
       validator.validate(context);

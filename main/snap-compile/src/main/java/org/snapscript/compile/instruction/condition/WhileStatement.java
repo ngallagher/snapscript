@@ -13,12 +13,12 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 
-public class WhileLoop implements Compilation {
+public class WhileStatement implements Compilation {
    
    private final Statement loop;
    
-   public WhileLoop(Evaluation evaluation, Statement body) {
-      this.loop = new WhileStatement(evaluation, body);
+   public WhileStatement(Evaluation evaluation, Statement body) {
+      this.loop = new Delegate(evaluation, body);
    }
    
    @Override
@@ -29,12 +29,12 @@ public class WhileLoop implements Compilation {
       return new TraceStatement(analyzer, loop, trace);
    }
    
-   private static class WhileStatement extends Statement {
+   private static class Delegate extends Statement {
    
       private final Evaluation condition;
       private final Statement body;
       
-      public WhileStatement(Evaluation evaluation, Statement body) {
+      public Delegate(Evaluation evaluation, Statement body) {
          this.condition = evaluation;
          this.body = body;
       }

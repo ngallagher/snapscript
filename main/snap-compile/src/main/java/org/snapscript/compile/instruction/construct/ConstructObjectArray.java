@@ -22,7 +22,7 @@ public class ConstructObjectArray implements Compilation {
    private final Evaluation construct;
    
    public ConstructObjectArray(Evaluation type, Argument... arguments) {
-      this.construct = new CreateObjectArray(type, arguments);
+      this.construct = new Delegate(type, arguments);
    }  
    
    @Override
@@ -33,13 +33,13 @@ public class ConstructObjectArray implements Compilation {
       return new TraceEvaluation(analyzer, construct, trace);
    }
    
-   private static class CreateObjectArray implements Evaluation {
+   private static class Delegate implements Evaluation {
    
       private final ArrayConverter converter;
       private final NameExtractor extractor;
       private final Argument[] arguments;
    
-      public CreateObjectArray(Evaluation type, Argument... arguments) {
+      public Delegate(Evaluation type, Argument... arguments) {
          this.extractor = new NameExtractor(type);
          this.converter = new ArrayConverter();
          this.arguments = arguments;
