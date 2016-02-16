@@ -26,8 +26,8 @@ public class ExpressionSegment implements Segment {
       Module module = scope.getModule();
       String name = module.getName();
       Context context = module.getContext();
-      ExpressionEvaluator executor = context.getEvaluator();
-      Object value = executor.evaluate(scope, expression, name);
+      ExpressionEvaluator evaluator = context.getEvaluator();
+      Object value = evaluator.evaluate(scope, expression, name);
       
       if(value == null) {
          writer.write(source, off, length);
