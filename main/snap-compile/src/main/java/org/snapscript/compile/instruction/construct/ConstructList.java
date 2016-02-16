@@ -1,7 +1,5 @@
 package org.snapscript.compile.instruction.construct;
 
-import static org.snapscript.core.TraceType.CONSTRUCT;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.core.convert.ProxyWrapper;
-import org.snapscript.parse.Line;
 import org.snapscript.parse.StringToken;
 
 public class ConstructList implements Compilation {
@@ -39,7 +36,7 @@ public class ConstructList implements Compilation {
    @Override
    public Evaluation compile(Context context, String resource, int line) throws Exception {
       TraceAnalyzer analyzer = context.getAnalyzer();
-      Trace trace = TraceType.getNormal(resource, line);
+      Trace trace = TraceType.getConstruct(resource, line);
       
       return new TraceEvaluation(analyzer, construct, trace);
    }

@@ -1,7 +1,7 @@
 package org.snapscript.core;
 
 public interface Property<T> {
-   Type getType();
+   Type getType(); // declaring type
    String getName();
    int getModifiers();
    Object getValue(T source);

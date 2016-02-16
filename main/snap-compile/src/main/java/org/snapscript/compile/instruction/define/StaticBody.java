@@ -1,13 +1,11 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-@Bug("name is wrong")
 public class StaticBody extends Statement {
 
    private final Initializer initializer;
