@@ -27,7 +27,7 @@
       </fileset>
     </copy>
     <copy todir="output">
-      <fileset dir="../snap-console/target/classes">
+      <fileset dir="../snap-service/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>    

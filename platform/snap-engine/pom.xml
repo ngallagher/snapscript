@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.snapscript</groupId>
-      <artifactId>snap-console</artifactId>
+      <artifactId>snap-service</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
