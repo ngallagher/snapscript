@@ -18,7 +18,7 @@ public class FunctionGenerator {
       this.indexer = indexer;
    }
    
-   public Function generate(Method method, Class[] parameters, String name, int modifiers) {
+   public Function generate(Type type, Method method, Class[] parameters, String name, int modifiers) {
       boolean variable = method.isVarArgs();
       
       try {
@@ -26,9 +26,9 @@ public class FunctionGenerator {
          List<String> names = new ArrayList<String>();
    
          for(int i = 0; i < parameters.length; i++){
-            Type type = indexer.loadType(parameters[i]);
+            Type parameter = indexer.loadType(parameters[i]);
    
-            types.add(type);
+            types.add(parameter);
             names.add("a" + i);
          }
          Signature signature = new Signature(names, types, variable);
@@ -37,7 +37,7 @@ public class FunctionGenerator {
          if(!method.isAccessible()) {
             method.setAccessible(true);
          }
-         return new Function(signature, invocation, name, modifiers);
+         return new Function(signature, invocation, type, name, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + method, e);
       }

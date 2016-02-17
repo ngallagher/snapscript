@@ -14,11 +14,11 @@ public class ClassIndex {
    private List<Function> functions;
    private ClassIndexer indexer;
    private List<Type> types;
+   private ClassType require;
    private Module module;
-   private Class require;
    private Type entry;
    
-   public ClassIndex(ClassIndexer indexer, Class require) {      
+   public ClassIndex(ClassIndexer indexer, ClassType require) {      
       this.indexer = indexer;
       this.require = require;
    }

@@ -33,40 +33,44 @@ public class ClassIndexer {
       this.indexer = indexer;
    }
    
-   public List<Type> indexTypes(Class source) throws Exception {
-      Class type = promoter.promote(source);
+   public List<Type> indexTypes(ClassType type) throws Exception {
+      Class source = type.getType();
+      Class actual = promoter.promote(source);
       
-      if(type == null) {
+      if(actual == null) {
          throw new InternalArgumentException("Could not determine type for " + source);
       }
-      return hierarchy.index(type);
+      return hierarchy.index(actual);
    }
    
-   public List<Property> indexProperties(Class source) throws Exception {
-      Class type = promoter.promote(source);
+   public List<Property> indexProperties(ClassType type) throws Exception {
+      Class source = type.getType();
+      Class actual = promoter.promote(source);
       
-      if(type == null) {
+      if(actual == null) {
          throw new InternalArgumentException("Could not determine type for " + source);
       }
-      return properties.index(type);
+      return properties.index(actual);
    }
    
-   public List<Function> indexFunctions(Class source) throws Exception {
-      Class type = promoter.promote(source);
+   public List<Function> indexFunctions(ClassType type) throws Exception {
+      Class source = type.getType();
+      Class actual = promoter.promote(source);
       
-      if(type == null) {
+      if(actual == null) {
          throw new InternalArgumentException("Could not determine type for " + source);
       }
-      return functions.index(source);
+      return functions.index(type);
    }
    
-   public Module indexModule(Class source) throws Exception {
-      Class type = promoter.promote(source);
+   public Module indexModule(ClassType type) throws Exception {
+      Class source = type.getType();
+      Class actual = promoter.promote(source);
       
-      if(type == null) {
+      if(actual == null) {
          throw new InternalArgumentException("Could not determine type for " + source);
       }
-      Package module = type.getPackage();
+      Package module = actual.getPackage();
       
       if(module != null) {
          String name = scanner.importName(module);
@@ -78,18 +82,17 @@ public class ClassIndexer {
       return registry.addModule(DEFAULT_PACKAGE);
    }
    
-   public Type indexEntry(Class source) throws Exception {
+   public Type indexEntry(ClassType type) throws Exception {
+      Class source = type.getType();
       Class entry = source.getComponentType();
       
       if(entry != null) {
-         Class type = promoter.promote(entry);
+         Class actual = promoter.promote(entry);
          
-         if(type == null) {
+         if(actual == null) {
             throw new InternalArgumentException("Could not determine type for " + source);
          }
-         if(entry != null) {
-            return indexer.loadType(type);
-         }
+         return indexer.loadType(actual);
       }
       return null;
    }

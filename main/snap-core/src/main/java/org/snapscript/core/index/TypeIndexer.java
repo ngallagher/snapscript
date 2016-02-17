@@ -89,7 +89,7 @@ public class TypeIndexer {
       Type type = types.get(alias);
       
       if(type == null) {
-         return new ClassReference(indexer, source, name);
+         return new ClassType(indexer, source, name);
       }
       return type;
    }

@@ -33,6 +33,6 @@ public class ConstructorBuilder {
       Invocation invocation = new NewInvocation(signature, delegate, construct); 
       Invocation reference = new TypeInvocation(invocation, scope);
       
-      return new Function(signature, reference, TYPE_CONSTRUCTOR, 1);
+      return new Function(signature, reference, type, TYPE_CONSTRUCTOR, 1);
    }
 }

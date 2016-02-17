@@ -41,9 +41,9 @@ public class AnyDefinition extends Statement {
       
       if(functions.isEmpty()) {
          Scope value = module.getScope();
-         Function hashCode = createHashCode();
-         Function toString = createToString();
-         Function equals = createEquals();
+         Function hashCode = createHashCode(type);
+         Function toString = createToString(type);
+         Function equals = createEquals(type);
          
          functions.add(hashCode);
          functions.add(equals);
@@ -53,16 +53,16 @@ public class AnyDefinition extends Statement {
       return ResultType.getNormal(type);
    }
    
-   private Function createHashCode() {
+   private Function createHashCode(Type type) {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
       Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new HashCodeInvocation();
       
-      return new Function<Object>(signature, invocation, METHOD_HASH_CODE, PUBLIC.mask);
+      return new Function<Object>(signature, invocation, type, METHOD_HASH_CODE, PUBLIC.mask);
    }
    
-   private Function createEquals() {
+   private Function createEquals(Type type) {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
       Signature signature = new Signature(names, types);
@@ -71,16 +71,16 @@ public class AnyDefinition extends Statement {
       types.add(null);
       names.add(METHOD_ARGUMENT);
       
-      return new Function<Object>(signature, invocation, METHOD_EQUALS, PUBLIC.mask);
+      return new Function<Object>(signature, invocation, type, METHOD_EQUALS, PUBLIC.mask);
    }
    
-   private Function createToString() {
+   private Function createToString(Type type) {
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();
       Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new ToStringInvocation();
       
-      return new Function<Object>(signature, invocation, METHOD_TO_STRING, PUBLIC.mask);
+      return new Function<Object>(signature, invocation, type, METHOD_TO_STRING, PUBLIC.mask);
    }
    
    private static class HashCodeInvocation implements Invocation<Object> {

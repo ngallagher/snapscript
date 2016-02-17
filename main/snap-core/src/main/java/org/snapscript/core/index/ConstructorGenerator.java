@@ -20,7 +20,7 @@ public class ConstructorGenerator {
       this.indexer = indexer;
    }
    
-   public Function generate(Constructor constructor, Class[] parameters, int modifiers) {
+   public Function generate(Type type, Constructor constructor, Class[] parameters, int modifiers) {
       boolean variable = constructor.isVarArgs();
       
       try {
@@ -28,9 +28,9 @@ public class ConstructorGenerator {
          List<String> names = new ArrayList<String>();
    
          for(int i = 0; i < parameters.length; i++){
-            Type type = indexer.loadType(parameters[i]);
+            Type parameter = indexer.loadType(parameters[i]);
    
-            types.add(type);
+            types.add(parameter);
             names.add("a" + i);
          }
          Signature signature = new Signature(names, types, variable);
@@ -39,7 +39,7 @@ public class ConstructorGenerator {
          if(!constructor.isAccessible()) {
             constructor.setAccessible(true);
          }
-         return new Function(signature, invocation, TYPE_CONSTRUCTOR, modifiers);
+         return new Function(signature, invocation, type, TYPE_CONSTRUCTOR, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + constructor, e);
       }

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Type;
 
 public class ConstructorIndexer {
 
@@ -17,7 +18,8 @@ public class ConstructorIndexer {
       this.converter = new ModifierConverter();
    }
 
-   public List<Function> index(Class source) throws Exception {
+   public List<Function> index(Type type) throws Exception {
+      Class source = type.getType();
       Constructor[] constructors = source.getDeclaredConstructors();
       
       if(constructors.length > 0) {
@@ -26,7 +28,7 @@ public class ConstructorIndexer {
          for(Constructor constructor : constructors){
             int modifiers = converter.convert(constructor); // accept all consructors public/private
             Class[] parameters = constructor.getParameterTypes();
-            Function function = generator.generate(constructor, parameters, modifiers);
+            Function function = generator.generate(type, constructor, parameters, modifiers);
             
             functions.add(function);
          }

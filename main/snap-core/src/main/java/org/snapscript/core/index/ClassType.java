@@ -1,6 +1,5 @@
 package org.snapscript.core.index;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Function;
@@ -10,58 +9,54 @@ import org.snapscript.core.Type;
 
 public class ClassType implements Type {
 
-   private final List<Property> properties;
-   private final List<Function> functions;
-   private final List<Type> types;
-   private final Module module;
+   private final ClassIndex index;
    private final Class type;
-   private final Type entry;
    private final String name;
    
-   public ClassType(Module module, String name, Type entry){
-      this(module, name, entry, null);
-   }
-   
-   public ClassType(Module module, String name, Type entry, Class type){
-      this.properties = new ArrayList<Property>();
-      this.functions = new ArrayList<Function>();
-      this.types = new ArrayList<Type>();
-      this.module = module;
-      this.entry = entry;
-      this.type = type;
+   public ClassType(ClassIndexer indexer, Class type, String name) {
+      this.index = new ClassIndex(indexer, this);
       this.name = name;
+      this.type = type;
    }
    
+   @Override
    public List<Property> getProperties() {
-      return properties;
+      return index.getProperties();
    }
-   
-   public List<Function> getFunctions(){
-      return functions;
+
+   @Override
+   public List<Function> getFunctions() {
+      return index.getFunctions();
    }
-   
-   public List<Type> getTypes(){
-      return types;
+
+   @Override
+   public List<Type> getTypes() {
+      return index.getTypes();
    }
-   
-   public Module getModule(){
-      return module;
+
+   @Override
+   public Module getModule() {
+      return index.getModule();
    }
-   
+
+   @Override
+   public Type getEntry() {
+      return index.getEntry();
+   }
+
+   @Override
+   public String getName() {
+      return name;
+   }
+
+   @Override
    public Class getType() {
       return type;
-   }
-   
-   public Type getEntry(){
-      return entry;
-   }
-   
-   public String getName(){
-      return name;
    }
    
    @Override
    public String toString() {
       return name;
    }
+
 }

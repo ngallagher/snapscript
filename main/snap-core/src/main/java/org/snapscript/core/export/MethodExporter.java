@@ -67,7 +67,7 @@ public class MethodExporter {
                names.add("a" + 1);
                types.add(parameter);
             }
-            return new Function(reduced, adapter, name, modifiers);
+            return new Function(reduced, adapter, null, name, modifiers);
          }
       }
       return null;

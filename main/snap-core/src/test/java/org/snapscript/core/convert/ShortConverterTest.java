@@ -6,13 +6,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.TestCase;
 
+import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
-import org.snapscript.core.index.ClassType;
 
 public class ShortConverterTest extends TestCase {
 
    public void testByte() throws Exception {
-      Type type = new ClassType(null, null, null, Short.class);
+      Type type = new TestType(null, null, null, Short.class);
       ShortConverter converter = new ShortConverter(type);
       
       assertEquals(converter.score((short)11), ConstraintConverter.EXACT);
@@ -35,7 +35,7 @@ public class ShortConverterTest extends TestCase {
    }
    
    public void testPrimitiveDouble() throws Exception {
-      Type type = new ClassType(null, null, null, short.class);
+      Type type = new TestType(null, null, null, short.class);
       ShortConverter converter = new ShortConverter(type);
       
       assertEquals(converter.score((short)11), ConstraintConverter.EXACT);

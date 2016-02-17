@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
+import org.snapscript.core.Type;
 
 public class FunctionIndexer {
    
@@ -19,8 +20,9 @@ public class FunctionIndexer {
       this.converter = new ModifierConverter();
    }
 
-   public List<Function> index(Class source) throws Exception {
-      List<Function> constructors = indexer.index(source);
+   public List<Function> index(Type type) throws Exception {
+      Class source = type.getType();
+      List<Function> constructors = indexer.index(type);
       Method[] methods = source.getDeclaredMethods();
       
       if(methods.length > 0) {
@@ -32,7 +34,7 @@ public class FunctionIndexer {
             if(ModifierType.isPublic(modifiers)) {
                String name = method.getName();
                Class[] parameters = method.getParameterTypes();
-               Function function = generator.generate(method, parameters, name, modifiers);
+               Function function = generator.generate(type, method, parameters, name, modifiers);
                
                functions.add(function);
             }

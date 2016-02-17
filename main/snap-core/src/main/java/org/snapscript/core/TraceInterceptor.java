@@ -3,16 +3,20 @@ package org.snapscript.core;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class TraceAnalyzer implements TraceListener {
+public class TraceInterceptor implements TraceListener {
    
    private final Set<TraceListener> listeners;
+   private final ThreadStack stack;
    
-   public TraceAnalyzer() {
+   public TraceInterceptor(ThreadStack stack) {
       this.listeners = new CopyOnWriteArraySet<TraceListener>();
+      this.stack = stack;
    }
    
    @Override
    public void before(Scope scope, Trace trace) {
+      stack.before(trace);
+      
       if(!listeners.isEmpty()) {
          for(TraceListener listener : listeners) {
             listener.before(scope, trace);
@@ -22,6 +26,8 @@ public class TraceAnalyzer implements TraceListener {
    
    @Override
    public void after(Scope scope, Trace trace) {
+      stack.after(trace);
+      
       if(!listeners.isEmpty()) {
          for(TraceListener listener : listeners) {
             listener.after(scope, trace);

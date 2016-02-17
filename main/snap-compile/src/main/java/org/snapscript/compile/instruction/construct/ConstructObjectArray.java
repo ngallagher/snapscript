@@ -10,7 +10,7 @@ import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
-import org.snapscript.core.TraceAnalyzer;
+import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceEvaluation;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Type;
@@ -27,10 +27,10 @@ public class ConstructObjectArray implements Compilation {
    
    @Override
    public Evaluation compile(Context context, String resource, int line) throws Exception {
-      TraceAnalyzer analyzer = context.getAnalyzer();
+      TraceInterceptor interceptor = context.getInterceptor();
       Trace trace = TraceType.getConstruct(resource, line);
       
-      return new TraceEvaluation(analyzer, construct, trace);
+      return new TraceEvaluation(interceptor, construct, trace);
    }
    
    private static class Delegate implements Evaluation {

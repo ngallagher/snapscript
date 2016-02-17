@@ -25,6 +25,6 @@ public class MemberFunctionBuilder implements TypeFunctionBuilder {
    @Override
    public Function create(Scope scope, Initializer initializer, Type type){
       Invocation invocation = new InstanceInvocation(statement, signature);
-      return new Function(signature, invocation, name, modifiers);
+      return new Function(signature, invocation, type, name, modifiers);
    }
 }

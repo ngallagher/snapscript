@@ -40,7 +40,7 @@ import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
-import org.snapscript.core.TraceAnalyzer;
+import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.error.InternalError;
 import org.snapscript.core.store.RemoteStore;
 
@@ -108,17 +108,17 @@ public class ProcessAgent {
             e.printStackTrace();
          }
       }
-      TraceAnalyzer analyzer = context.getAnalyzer();
+      TraceInterceptor interceptor = context.getInterceptor();
       try {
          String system = System.getProperty("os.name");
          RegisterEvent register = new RegisterEvent(process, system);
          ClientListener listener = new ClientListener(process);
          SocketEventClient client = new SocketEventClient(listener);
          ProcessEventChannel channel = client.connect(port);
-         SuspendInterceptor interceptor = new SuspendInterceptor(channel, matcher, controller, process);
+         SuspendInterceptor suspender = new SuspendInterceptor(channel, matcher, controller, process);
          
-         analyzer.register(profiler);
-         analyzer.register(interceptor);
+         interceptor.register(profiler);
+         interceptor.register(suspender);
          channel.send(register); // send the initial register event
       } catch (Exception e) {
          e.printStackTrace();

@@ -4,8 +4,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
-import org.snapscript.core.index.ClassType;
 
 public class SearchPathFinderTest extends TestCase {
    
@@ -25,16 +25,16 @@ public class SearchPathFinderTest extends TestCase {
     */
    public void testSearchPath() throws Exception {
       TypePathBuilder finder = new TypePathBuilder();
-      Type a = new ClassType(null, "A", null);
-      Type b = new ClassType(null, "B", null);
-      Type c = new ClassType(null, "C", null);
-      Type d = new ClassType(null, "D", null);
-      Type x = new ClassType(null, "X", null);
-      Type y = new ClassType(null, "Y", null);
-      Type z = new ClassType(null, "Z", null);
-      Type i = new ClassType(null, "I", null);
-      Type j = new ClassType(null, "J", null);
-      Type k = new ClassType(null, "K", null);
+      Type a = new TestType(null, "A", null, null);
+      Type b = new TestType(null, "B", null, null);
+      Type c = new TestType(null, "C", null, null);
+      Type d = new TestType(null, "D", null, null);
+      Type x = new TestType(null, "X", null, null);
+      Type y = new TestType(null, "Y", null, null);
+      Type z = new TestType(null, "Z", null, null);
+      Type i = new TestType(null, "I", null, null);
+      Type j = new TestType(null, "J", null, null);
+      Type k = new TestType(null, "K", null, null);
       
       List<Type> typesA = a.getTypes();
       List<Type> typesB = b.getTypes();

@@ -9,7 +9,7 @@ import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
-import org.snapscript.core.TraceAnalyzer;
+import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceEvaluation;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
@@ -35,10 +35,10 @@ public class ConstructSet implements Compilation {
    
    @Override
    public Evaluation compile(Context context, String resource, int line) throws Exception {
-      TraceAnalyzer analyzer = context.getAnalyzer();
+      TraceInterceptor interceptor = context.getInterceptor();
       Trace trace = TraceType.getConstruct(resource, line);
       
-      return new TraceEvaluation(analyzer, construct, trace);
+      return new TraceEvaluation(interceptor, construct, trace);
    }
    
    private static class Delegate implements Evaluation {

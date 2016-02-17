@@ -2,13 +2,13 @@ package org.snapscript.core;
 
 public class TraceStatement extends Statement {
    
-   private final TraceAnalyzer analyzer;
+   private final TraceInterceptor interceptor;
    private final Statement statement;
    private final Trace trace;
    
-   public TraceStatement(TraceAnalyzer analyzer, Statement statement, Trace trace) {
+   public TraceStatement(TraceInterceptor interceptor, Statement statement, Trace trace) {
+      this.interceptor = interceptor;
       this.statement = statement;
-      this.analyzer = analyzer;
       this.trace = trace;
    }
    
@@ -20,12 +20,11 @@ public class TraceStatement extends Statement {
    @Bug("must catch and throw InternalError with stack trace")
    @Override
    public Result execute(Scope scope) throws Exception {
-      analyzer.before(scope, trace);
-      
       try {
+         interceptor.before(scope, trace);
          return statement.execute(scope); 
       } finally {
-         analyzer.after(scope, trace);
+         interceptor.after(scope, trace);
       }
    }
 }
