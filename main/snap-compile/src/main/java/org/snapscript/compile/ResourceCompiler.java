@@ -47,7 +47,7 @@ public class ResourceCompiler implements Compiler {
          String source = manager.getString(resource);
          PackageLinker linker = context.getLinker();
          Package library = linker.link(resource, source, instruction.name);
-         String module = converter.convert(resource);
+         String module = converter.createModule(resource);
          
          return new ContextExecutable(context, library, module);
       }

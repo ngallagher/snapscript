@@ -8,7 +8,21 @@ public class PathConverter {
       this.suffix = suffix;
    }
    
-   public String convert(String path) {
+   public String createPath(String resource) {
+      int index = resource.indexOf(suffix);
+      
+      if(index == -1) {
+         int slash = resource.indexOf('.');
+      
+         if(slash != -1) {
+            resource = resource.replace('.', '/');
+         }
+         return "/" + resource + suffix;
+      }
+      return resource;
+   }
+   
+   public String createModule(String path) {
       int index = path.indexOf(suffix);
 
       if(index != -1) {

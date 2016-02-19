@@ -51,7 +51,7 @@ public class ContextLinker implements PackageLinker {
          SyntaxParser parser = compiler.compile();
          SyntaxNode node = parser.parse(resource, source, grammar);
          Statement statement = assembler.assemble(node, resource);
-         String module = converter.convert(resource);
+         String module = converter.createModule(resource);
          
          cache.cache(resource, statement); 
          return new StatementPackage(statement, module);

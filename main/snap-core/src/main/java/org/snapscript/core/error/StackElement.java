@@ -28,13 +28,14 @@ public class StackElement {
    
    public StackTraceElement build() {
       String resource = trace.getResource();
-      String module = converter.convert(resource);
+      String module = converter.createModule(resource);
+      String path = converter.createPath(resource);
       int line = trace.getLine();
       
-      return create(resource, module, line);
+      return create(path, module, line);
    }
    
-   private StackTraceElement create(String resource, String module, int line) {
+   private StackTraceElement create(String path, String module, int line) {
       if(function != null) {
          String name = function.getName();
          Type type = function.getType();
@@ -44,10 +45,10 @@ public class StackElement {
             String prefix = parent.getName();
             String suffix = type.getName();
             
-            return new StackTraceElement(prefix + "." + suffix, name, resource, line);
+            return new StackTraceElement(prefix + "." + suffix, name, path, line);
          }
-         return new StackTraceElement(module, name, resource, line);
+         return new StackTraceElement(module, name, path, line);
       }
-      return new StackTraceElement(module, MAIN_FUNCTION, resource, line);
+      return new StackTraceElement(module, MAIN_FUNCTION, path, line);
    }
 }

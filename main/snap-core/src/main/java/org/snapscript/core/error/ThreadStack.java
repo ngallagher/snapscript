@@ -50,5 +50,9 @@ public class ThreadStack {
       }
    }
    
+   public void clear() {
+      Stack stack = local.get();
+      stack.clear();
+   }
 
 }
