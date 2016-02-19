@@ -5,6 +5,7 @@ import java.util.List;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
+import org.snapscript.core.error.ThreadStack;
 import org.snapscript.parse.Line;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.Token;
@@ -13,17 +14,23 @@ public class InstructionAssembler implements Assembler {
    
    private final InstructionBuilder builder;
    private final OperationResolver resolver;
+   private final Context context;
    private final Object[] empty;
 
    public InstructionAssembler(Context context) {
       this.builder = new InstructionBuilder(context);
       this.resolver = new OperationResolver(context);
       this.empty = new Object[]{};
+      this.context = context;
    }
    
    @Override
    public <T> T assemble(SyntaxNode token, String name) throws Exception {
-      return (T)create(token, name, 0);
+      ThreadStack stack = context.getStack();
+      Object value = create(token, name, 0);
+      
+      stack.clear();
+      return (T)value;
    }
    
    private Object create(SyntaxNode node, String name, int depth) throws Exception {
