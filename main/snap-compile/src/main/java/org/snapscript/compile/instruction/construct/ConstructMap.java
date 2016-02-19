@@ -28,7 +28,7 @@ public class ConstructMap implements Compilation {
    }
    
    public ConstructMap(MapEntryList list, StringToken token) {
-      this.construct = new Delegate(list);
+      this.construct = new CompileResult(list);
    }
    
    @Override
@@ -39,11 +39,11 @@ public class ConstructMap implements Compilation {
       return new TraceEvaluation(interceptor, construct, trace);
    }
    
-   private static class Delegate implements Evaluation {
+   private static class CompileResult implements Evaluation {
 
       private final MapEntryList list;
       
-      public Delegate(MapEntryList list) {
+      public CompileResult(MapEntryList list) {
          this.list = list;
       }   
       

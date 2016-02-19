@@ -17,7 +17,7 @@ public class ForInfiniteStatement implements Compilation {
    private final Statement loop;
    
    public ForInfiniteStatement(Statement statement) {
-      this.loop = new Delegate(statement);
+      this.loop = new CompileResult(statement);
    }
    
    @Override
@@ -29,11 +29,11 @@ public class ForInfiniteStatement implements Compilation {
       return new TraceStatement(interceptor, handler, loop, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
       
       private final Statement body;
       
-      public Delegate(Statement body) {
+      public CompileResult(Statement body) {
          this.body = body;
       }
    
@@ -44,7 +44,7 @@ public class ForInfiniteStatement implements Compilation {
          while(true) {
             Result result = body.execute(compound);
             
-            if(result.isReturn() || result.isThrow()) {
+            if(result.isReturn()) {
                return result;
             }
             if(result.isBreak()) {

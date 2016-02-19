@@ -23,7 +23,7 @@ public class IfStatement implements Compilation {
    }
    
    public IfStatement(Evaluation evaluation, Statement positive, Statement negative) {
-      this.branch = new Delegate(evaluation, positive, negative);
+      this.branch = new CompileResult(evaluation, positive, negative);
    }
    
    @Override
@@ -35,13 +35,13 @@ public class IfStatement implements Compilation {
       return new TraceStatement(interceptor, handler, branch, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
    
       private final Evaluation condition;
       private final Statement positive;
       private final Statement negative;
       
-      public Delegate(Evaluation evaluation, Statement positive, Statement negative) {
+      public CompileResult(Evaluation evaluation, Statement positive, Statement negative) {
          this.condition = evaluation;
          this.positive = positive;
          this.negative = negative;

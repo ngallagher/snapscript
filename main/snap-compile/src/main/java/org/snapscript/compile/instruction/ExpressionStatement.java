@@ -19,7 +19,7 @@ public class ExpressionStatement implements Compilation {
    private final Statement expression;
    
    public ExpressionStatement(Evaluation expression) {
-      this.expression = new Delegate(expression);
+      this.expression = new CompileResult(expression);
    }
    
    @Override
@@ -31,11 +31,11 @@ public class ExpressionStatement implements Compilation {
       return new TraceStatement(interceptor, handler, expression, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
       
       private final Evaluation expression;
    
-      public Delegate(Evaluation expression) {
+      public CompileResult(Evaluation expression) {
          this.expression = expression;
       }
    

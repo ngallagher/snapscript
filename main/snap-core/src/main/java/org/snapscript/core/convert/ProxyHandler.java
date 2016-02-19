@@ -36,9 +36,6 @@ public class ProxyHandler implements InvocationHandler {
       Result result = call.call();
       Object data = result.getValue();
       
-      if(result.isThrow()) {
-         throw new InternalStateException("Method '" + name + "' had an exception");
-      }
       return data;   
    }
    

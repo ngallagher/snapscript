@@ -19,7 +19,7 @@ public class ThrowStatement implements Compilation {
    private final Statement control;
    
    public ThrowStatement(Evaluation evaluation) {
-      this.control = new Delegate(evaluation);
+      this.control = new CompileResult(evaluation);
    }
    
    @Override
@@ -31,11 +31,11 @@ public class ThrowStatement implements Compilation {
       return new TraceStatement(interceptor, handler, control, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
    
       private final Evaluation evaluation;
       
-      public Delegate(Evaluation evaluation) {
+      public CompileResult(Evaluation evaluation) {
          this.evaluation = evaluation; 
       }   
    

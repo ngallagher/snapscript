@@ -19,7 +19,7 @@ public class WhileStatement implements Compilation {
    private final Statement loop;
    
    public WhileStatement(Evaluation evaluation, Statement body) {
-      this.loop = new Delegate(evaluation, body);
+      this.loop = new CompileResult(evaluation, body);
    }
    
    @Override
@@ -31,12 +31,12 @@ public class WhileStatement implements Compilation {
       return new TraceStatement(interceptor, handler, loop, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
    
       private final Evaluation condition;
       private final Statement body;
       
-      public Delegate(Evaluation evaluation, Statement body) {
+      public CompileResult(Evaluation evaluation, Statement body) {
          this.condition = evaluation;
          this.body = body;
       }

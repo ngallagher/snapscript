@@ -21,7 +21,7 @@ public class AssignmentStatement implements Compilation {
    private final Statement assignment;
    
    public AssignmentStatement(Evaluation identifier, Evaluation value) {
-      this.assignment = new Delegate(identifier, value);
+      this.assignment = new CompileResult(identifier, value);
    }
    
    @Override
@@ -33,12 +33,12 @@ public class AssignmentStatement implements Compilation {
       return new TraceStatement(interceptor, handler, assignment, trace);
    }
 
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
       
       private final NameExtractor extractor;
       private final Evaluation value;
       
-      public Delegate(Evaluation identifier, Evaluation value) {
+      public CompileResult(Evaluation identifier, Evaluation value) {
          this.extractor = new NameExtractor(identifier);
          this.value = value;
       }

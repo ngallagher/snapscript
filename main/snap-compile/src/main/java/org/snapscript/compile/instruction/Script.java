@@ -34,9 +34,6 @@ public class Script extends Statement {
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
          
-         if(result.isThrow()) {
-            throw new InternalStateException("Exception not caught");
-         }
          if(!result.isNormal()){
             throw new InternalStateException("Illegal statement");
          }

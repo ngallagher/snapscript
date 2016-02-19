@@ -30,7 +30,7 @@ public class ConstructList implements Compilation {
    }
    
    public ConstructList(ArgumentList arguments, StringToken token) {
-      this.construct = new Delegate(arguments);
+      this.construct = new CompileResult(arguments);
    }
    
    @Override
@@ -41,12 +41,12 @@ public class ConstructList implements Compilation {
       return new TraceEvaluation(interceptor, construct, trace);
    }
    
-   private static class Delegate implements Evaluation {
+   private static class CompileResult implements Evaluation {
       
       private final ArgumentList arguments;
       private final ProxyWrapper wrapper;
       
-      public Delegate(ArgumentList arguments) {
+      public CompileResult(ArgumentList arguments) {
          this.wrapper = new ProxyWrapper();
          this.arguments = arguments;
       }

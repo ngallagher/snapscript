@@ -29,7 +29,7 @@ public class AssignmentTest extends TestCase{
       
       try {
          executable.execute();
-      }catch(Exception e){
+      }catch(Throwable e){
          failure=true;
          e.printStackTrace();
       }

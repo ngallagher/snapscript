@@ -22,7 +22,7 @@ public class FunctionInvocation implements Compilation {
    }
    
    public FunctionInvocation(TextLiteral function, ArgumentList list) {
-      this.invocation = new Delegate(function, list);
+      this.invocation = new CompileResult(function, list);
    }
    
    @Override
@@ -33,13 +33,13 @@ public class FunctionInvocation implements Compilation {
       return new TraceEvaluation(interceptor, invocation, trace);
    }
    
-   private static class Delegate implements Evaluation {
+   private static class CompileResult implements Evaluation {
    
       private final InvocationBinder dispatcher;
       private final ArgumentList list;
       private final Evaluation function;
       
-      public Delegate(TextLiteral function, ArgumentList list) {
+      public CompileResult(TextLiteral function, ArgumentList list) {
          this.dispatcher = new InvocationBinder();
          this.function = function;
          this.list = list;

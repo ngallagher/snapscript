@@ -18,7 +18,7 @@ public class ContinueStatement implements Compilation {
    private final Statement control;
    
    public ContinueStatement(StringToken token){
-      this.control = new Delegate();
+      this.control = new CompileResult();
    }   
    
    @Override
@@ -30,11 +30,11 @@ public class ContinueStatement implements Compilation {
       return new TraceStatement(interceptor, handler, control, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
   
       private final Result result;
       
-      public Delegate(){
+      public CompileResult(){
          this.result = ResultType.getContinue();
       }      
       

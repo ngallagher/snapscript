@@ -23,7 +23,7 @@ public class ForStatement implements Compilation {
    }
    
    public ForStatement(Statement declaration, Evaluation evaluation, Evaluation assignment, Statement statement) {
-      this.loop = new Delegate(declaration, evaluation, assignment, statement);
+      this.loop = new CompileResult(declaration, evaluation, assignment, statement);
    }
    
    @Override
@@ -35,14 +35,14 @@ public class ForStatement implements Compilation {
       return new TraceStatement(interceptor, handler, loop, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
 
       private final Evaluation condition;
       private final Statement declaration;
       private final Evaluation assignment;
       private final Statement body;
 
-      public Delegate(Statement declaration, Evaluation condition, Evaluation assignment, Statement body) {
+      public CompileResult(Statement declaration, Evaluation condition, Evaluation assignment, Statement body) {
          this.declaration = declaration;
          this.assignment = assignment;
          this.condition = condition;
@@ -62,7 +62,7 @@ public class ForStatement implements Compilation {
             if(value.booleanValue()) {
                Result next = body.execute(compound);
                
-               if(next.isReturn() || next.isThrow()) {
+               if(next.isReturn()) {
                   return next;
                }
                if(next.isBreak()) {

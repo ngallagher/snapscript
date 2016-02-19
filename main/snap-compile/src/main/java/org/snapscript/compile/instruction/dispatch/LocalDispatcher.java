@@ -32,9 +32,6 @@ public class LocalDispatcher implements InvocationDispatcher {
       Result result = call.call();
       Object value = result.getValue();
       
-      if(result.isThrow()) {
-         throw new InternalStateException("Method '" + name + "' had an exception");
-      }
       return ValueType.getTransient(value);  
    }
    

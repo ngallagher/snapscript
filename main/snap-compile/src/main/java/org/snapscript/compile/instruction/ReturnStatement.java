@@ -28,7 +28,7 @@ public class ReturnStatement implements Compilation {
    }
    
    public ReturnStatement(Evaluation evaluation, StringToken token){
-      this.control = new Delegate(evaluation);
+      this.control = new CompileResult(evaluation);
    }
    
    @Override
@@ -40,11 +40,11 @@ public class ReturnStatement implements Compilation {
       return new TraceStatement(interceptor, handler, control, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
    
       private final Evaluation evaluation;
 
-      public Delegate(Evaluation evaluation){
+      public CompileResult(Evaluation evaluation){
          this.evaluation = evaluation;
       }
       

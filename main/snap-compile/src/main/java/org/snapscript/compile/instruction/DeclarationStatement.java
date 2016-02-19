@@ -19,7 +19,7 @@ public class DeclarationStatement implements Compilation {
    private final Statement declaration;   
    
    public DeclarationStatement(Evaluation declaration) {
-      this.declaration = new Delegate(declaration);     
+      this.declaration = new CompileResult(declaration);     
    }
    
    @Override
@@ -31,11 +31,11 @@ public class DeclarationStatement implements Compilation {
       return new TraceStatement(interceptor, handler, declaration, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
 
       private final Evaluation declaration;   
       
-      public Delegate(Evaluation declaration) {
+      public CompileResult(Evaluation declaration) {
          this.declaration = declaration;     
       }
       

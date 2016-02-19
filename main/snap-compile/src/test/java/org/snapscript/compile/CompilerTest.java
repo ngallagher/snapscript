@@ -101,7 +101,7 @@ public class CompilerTest extends TestCase {
       boolean failure = false;
       try {
          executable.execute(model);
-      } catch (Exception e) {
+      } catch (Throwable e) {
          failure = true;
          e.printStackTrace();
       }
@@ -128,7 +128,7 @@ public class CompilerTest extends TestCase {
       boolean failure = false;
       try {
          executable.execute(model);
-      } catch (Exception e) {
+      } catch (Throwable e) {
          e.printStackTrace();
          failure = true;
       }

@@ -24,7 +24,7 @@ public class ForInStatement implements Compilation {
    private final Statement loop;
    
    public ForInStatement(Evaluation identifier, Evaluation collection, Statement body) {
-      this.loop = new Delegate(identifier, collection, body);
+      this.loop = new CompileResult(identifier, collection, body);
    }
    
    @Override
@@ -36,14 +36,14 @@ public class ForInStatement implements Compilation {
       return new TraceStatement(interceptor, handler, loop, trace);
    }
    
-   private static class Delegate extends Statement {
+   private static class CompileResult extends Statement {
    
       private final IterationConverter converter;
       private final NameExtractor extractor;
       private final Evaluation collection;
       private final Statement body;
    
-      public Delegate(Evaluation identifier, Evaluation collection, Statement body) {
+      public CompileResult(Evaluation identifier, Evaluation collection, Statement body) {
          this.extractor = new NameExtractor(identifier);
          this.converter = new IterationConverter();
          this.collection = collection;
@@ -70,7 +70,7 @@ public class ForInStatement implements Compilation {
             }
             Result result = body.execute(scope);   
    
-            if (result.isReturn() || result.isThrow()) {
+            if (result.isReturn()) {
                return result;
             }
             if (result.isBreak()) {
