@@ -9,9 +9,9 @@ public class ErrorCauseExtractor {
    }
    
    public Object extract(Scope scope, Object cause) {
-      if(Error.class.isInstance(cause)) {
-         Error error = (Error)cause;
-         return error.getOriginal();
+      if(InternalError.class.isInstance(cause)) {
+         InternalError error = (InternalError)cause;
+         return error.getValue();
       }
       return cause;
    }

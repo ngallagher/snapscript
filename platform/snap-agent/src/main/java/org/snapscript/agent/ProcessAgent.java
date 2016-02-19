@@ -100,13 +100,8 @@ public class ProcessAgent {
          long finish = System.currentTimeMillis();
          System.err.println("Compile time="+(middle-start));
          System.err.println("Execute time="+(finish-middle));
-      }catch(Exception e) {
-         if(e instanceof InternalError) {
-            InternalError ex = (InternalError)e;
-            System.err.println(ex.getDescription());
-         } else {
-            e.printStackTrace();
-         }
+      }catch(Throwable e) {
+         e.printStackTrace();
       }
       TraceInterceptor interceptor = context.getInterceptor();
       try {
@@ -218,13 +213,8 @@ public class ProcessAgent {
                updater.start(process); // start sending profile events!!!
                middle = System.nanoTime();
                executable.execute(); // execute the script
-            } catch(Exception e) {
-               if(e instanceof InternalError) {
-                  InternalError ex = (InternalError)e;
-                  System.err.println(ex.getDescription());
-               } else {
-                  e.printStackTrace();
-               }
+            } catch(Throwable e) {
+               e.printStackTrace();
             }finally {
                try {
                   long stop = System.nanoTime();

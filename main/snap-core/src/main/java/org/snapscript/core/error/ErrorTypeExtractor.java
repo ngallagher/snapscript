@@ -14,9 +14,9 @@ public class ErrorTypeExtractor {
    
    public Type extract(Scope scope, Object cause) {
       try {
-         if(Error.class.isInstance(cause)) {
-            Error error = (Error)cause;
-            Object value = error.getOriginal();
+         if(InternalError.class.isInstance(cause)) {
+            InternalError error = (InternalError)cause;
+            Object value = error.getValue();
             
             return extractor.extract(scope, value);
          }

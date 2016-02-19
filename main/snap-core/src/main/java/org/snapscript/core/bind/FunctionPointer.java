@@ -5,7 +5,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
-import org.snapscript.core.ThreadStack;
+import org.snapscript.core.error.ThreadStack;
 
 public class FunctionPointer {
    

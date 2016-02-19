@@ -12,6 +12,7 @@ import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
+import org.snapscript.core.error.ErrorHandler;
 
 public class DeclarationStatement implements Compilation {
    
@@ -23,10 +24,11 @@ public class DeclarationStatement implements Compilation {
    
    @Override
    public Statement compile(Context context, String resource, int line) throws Exception {
+      ErrorHandler handler = context.getHandler();
       TraceInterceptor interceptor = context.getInterceptor();
       Trace trace = TraceType.getNormal(resource, line);
       
-      return new TraceStatement(interceptor, declaration, trace);
+      return new TraceStatement(interceptor, handler, declaration, trace);
    }
    
    private static class Delegate extends Statement {

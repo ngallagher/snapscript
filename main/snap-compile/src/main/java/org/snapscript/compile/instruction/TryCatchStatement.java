@@ -55,7 +55,7 @@ public class TryCatchStatement extends Statement {
    private Result handle(Scope scope) throws Exception {
       try {
          return statement.execute(scope);
-      } catch(Exception cause) {
+      } catch(Throwable cause) {
          return ResultType.getThrow(cause);
       }
    }

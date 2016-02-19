@@ -2,7 +2,7 @@ package org.snapscript.common;
 
 import java.util.Iterator;
 
-public interface Stack<T> {
+public interface Stack<T> extends Iterable<T>{
    T pop();
    T peek();
    T get(int index);

@@ -6,11 +6,12 @@ import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PackageLinker;
 import org.snapscript.core.ResourceManager;
 import org.snapscript.core.StoreManager;
-import org.snapscript.core.ThreadStack;
 import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.error.ErrorHandler;
+import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.store.Store;
 
 public class StoreContext implements Context {
@@ -21,12 +22,14 @@ public class StoreContext implements Context {
    private final ResourceManager manager;
    private final FunctionBinder binder;
    private final ModuleRegistry registry;
+   private final ErrorHandler handler;
    private final PackageLinker linker;
    private final ThreadStack stack;
    private final TypeLoader loader; 
    
    public StoreContext(Store store){
       this.stack = new ThreadStack();
+      this.handler = new ErrorHandler(stack);
       this.interceptor = new TraceInterceptor(stack);
       this.manager = new StoreManager(store);
       this.registry = new ModuleRegistry(this);
@@ -40,6 +43,11 @@ public class StoreContext implements Context {
    @Override
    public ThreadStack getStack() {
       return stack;
+   }
+   
+   @Override
+   public ErrorHandler getHandler() {
+      return handler;
    }
    
    @Override

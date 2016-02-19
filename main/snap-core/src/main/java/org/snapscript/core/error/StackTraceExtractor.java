@@ -2,9 +2,9 @@ package org.snapscript.core.error;
 
 import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 
-public class StackTraceFormatter {
+public class StackTraceExtractor {
    
-   public StackTraceFormatter() {
+   public StackTraceExtractor() {
       super();
    }
 

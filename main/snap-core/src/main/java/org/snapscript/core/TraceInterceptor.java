@@ -3,6 +3,8 @@ package org.snapscript.core;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.snapscript.core.error.ThreadStack;
+
 public class TraceInterceptor implements TraceListener {
    
    private final Set<TraceListener> listeners;

@@ -10,6 +10,7 @@ import org.snapscript.core.Trace;
 import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
+import org.snapscript.core.error.ErrorHandler;
 
 public class ForInfiniteStatement implements Compilation {
    
@@ -21,10 +22,11 @@ public class ForInfiniteStatement implements Compilation {
    
    @Override
    public  Statement compile(Context context, String resource, int line) throws Exception {
+      ErrorHandler handler = context.getHandler();
       TraceInterceptor interceptor = context.getInterceptor();
       Trace trace = TraceType.getNormal(resource, line);
       
-      return new TraceStatement(interceptor, loop, trace);
+      return new TraceStatement(interceptor, handler, loop, trace);
    }
    
    private static class Delegate extends Statement {

@@ -10,6 +10,7 @@ import org.snapscript.core.Trace;
 import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
+import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.parse.StringToken;
 
 public class ContinueStatement implements Compilation {
@@ -22,10 +23,11 @@ public class ContinueStatement implements Compilation {
    
    @Override
    public Statement compile(Context context, String resource, int line) throws Exception {
-      TraceInterceptor interceptor = context.getInterceptor();
       Trace trace = TraceType.getNormal(resource, line);
+      TraceInterceptor interceptor = context.getInterceptor();
+      ErrorHandler handler = context.getHandler();
       
-      return new TraceStatement(interceptor, control, trace);
+      return new TraceStatement(interceptor, handler, control, trace);
    }
    
    private static class Delegate extends Statement {

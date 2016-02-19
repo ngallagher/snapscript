@@ -22,7 +22,7 @@ public class ArrayStack<T> implements Stack<T>{
    
    @Override
    public Iterator<T> iterator() {
-      return new ArrayIterator(count);
+      return new ArrayIterator(count-1);
    }
    
    @Override
