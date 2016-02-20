@@ -27,7 +27,7 @@ public class StaticFunctionBuilder implements TypeFunctionBuilder {
    public Function create(Scope scope, Initializer initializer, Type type){
       Statement initialize = new StaticBody(initializer, type); 
       Statement statement = new CompoundStatement(initialize, body); 
-      Invocation invocation = new StaticInvocation(statement, signature, scope);
+      Invocation invocation = new StaticInvocation(signature, statement, scope);
       
       return new Function(signature, invocation, type, name, modifiers);
    }

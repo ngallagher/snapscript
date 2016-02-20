@@ -6,7 +6,6 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
-import org.snapscript.core.ValueType;
 
 public class ParameterDeclaration {
    
@@ -43,7 +42,7 @@ public class ParameterDeclaration {
    private Parameter create(Scope scope) throws Exception {
       String name = extractor.extract(scope);
       
-      if(constraint != null && modifier == null) { // no constraint on variable arguments
+      if(constraint != null && name != null) { 
          Value value = constraint.evaluate(scope, null);  
          String alias = value.getString();
          Module module = scope.getModule();

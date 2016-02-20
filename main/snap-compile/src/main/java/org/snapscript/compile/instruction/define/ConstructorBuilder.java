@@ -6,7 +6,6 @@ import org.snapscript.compile.instruction.StatementInvocation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.ModifierType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -29,7 +28,7 @@ public class ConstructorBuilder {
    }
    
    public Function create(Scope scope, Initializer initializer, Type type, int modifiers, boolean compile) {
-      Invocation body = new StatementInvocation(statement, signature);
+      Invocation body = new StatementInvocation(signature, statement);
       Invocation construct = new ConstructInvocation(scope, initializer, body, compile);
       Invocation invocation = new NewInvocation(signature, delegate, construct); 
       Invocation reference = new TypeInvocation(invocation, scope);

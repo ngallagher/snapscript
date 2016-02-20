@@ -14,7 +14,7 @@ public class FunctionBuilder {
    }
 
    public Function create(Signature signature, String name) {
-      Invocation invocation = new StatementInvocation(statement, signature);
+      Invocation invocation = new StatementInvocation(signature, statement);
       return new Function(signature, invocation, null, name, 0);
    }
 }
