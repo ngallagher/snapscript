@@ -36,3 +36,17 @@ function do(g) {
    var t =(a) -> {println(g+"."+a);};
    t(33);
 }
+class Z{
+   var r="rr";
+}
+
+class X extends Z{
+   var y = 12.3;
+   var x = (a,b)->println("a=${a} b=${b} y=${y} r=${r}");
+   
+   dump(){
+      x(55,66);
+   }
+}
+var v = new X();
+v.dump();
