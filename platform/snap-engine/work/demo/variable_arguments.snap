@@ -1,7 +1,7 @@
 
-function bad(a, b..., c...){
-}
-function fun(a, b...) {
+//function bad(a, b..., c...){
+//}
+function fun(a, b...: Integer) {
    println(a);
    println(b[0]);
    println(b.size());
