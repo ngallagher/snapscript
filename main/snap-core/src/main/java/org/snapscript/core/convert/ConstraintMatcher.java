@@ -21,13 +21,15 @@ public class ConstraintMatcher {
    private final TypeExtractor extractor;
    private final TypeVerifier comparator;
    private final HierarchyChecker checker;
+   private final ProxyWrapper wrapper;
    
-   public ConstraintMatcher(TypeLoader loader) {
+   public ConstraintMatcher(TypeLoader loader, ProxyWrapper wrapper) {
       this.converters = new HashMap<Type, ConstraintConverter>();
       this.checker = new HierarchyChecker();
       this.comparator = new TypeVerifier(loader, checker);
       this.extractor = new TypeExtractor(loader);
       this.converter = new NullConverter();
+      this.wrapper = wrapper;
    }
    
    public ConstraintConverter match(Type type) throws Exception { // type declared in signature
@@ -45,7 +47,7 @@ public class ConstraintMatcher {
    
    private ConstraintConverter resolve(Type type) throws Exception {
       if(comparator.same(Object.class, type)) {
-         return new AnyConverter();
+         return new AnyConverter(wrapper);
       }
       if(comparator.same(double.class, type)) {
          return new DoubleConverter(type);
@@ -119,6 +121,6 @@ public class ConstraintMatcher {
       if(comparator.like(Enum.class, type)) {
          return new EnumConverter(type);
       }      
-      return new ObjectConverter(extractor, checker, type);
+      return new ObjectConverter(extractor, wrapper, checker, type);
    }
 }

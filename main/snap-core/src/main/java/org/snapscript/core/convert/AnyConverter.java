@@ -4,8 +4,8 @@ public class AnyConverter extends ConstraintConverter {
    
    private final ProxyWrapper wrapper;
    
-   public AnyConverter() {
-      this.wrapper = new ProxyWrapper();
+   public AnyConverter(ProxyWrapper wrapper) {
+      this.wrapper = wrapper;
    }
    
    @Override

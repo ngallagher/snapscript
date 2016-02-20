@@ -3,6 +3,7 @@ package org.snapscript.core.index;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
@@ -12,11 +13,9 @@ import org.snapscript.core.convert.ProxyWrapper;
 
 public class MethodInvocation implements Invocation<Object>{
 
-   private final ProxyWrapper wrapper;
    private final Method method;
    
    public MethodInvocation(Method method) {
-      this.wrapper = new ProxyWrapper();
       this.method = method;
    }
    
@@ -52,6 +51,8 @@ public class MethodInvocation implements Invocation<Object>{
             list = copy;
          }
       }
+      Context context = scope.getContext();
+      ProxyWrapper wrapper = context.getWrapper();
       Object value = method.invoke(left, list);
       Object result = wrapper.fromProxy(value);
       

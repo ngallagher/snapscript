@@ -1,7 +1,26 @@
+/*
+1) Closures properly i.e as fields
+2) Closures converted to interfaces
+3) Closure parameter count validated for count
+4) Enusre ' strings are not templates
+5) Perhaps switch statement
+6) TypeExtractor available to convert objects
+7) Connections swap on websocket connect for processes
+8) Development autocompletion
+9) Setup simple website
+10) Add --evaluation --script --suspend
+11) Add extension methods for file and streams
+12) Add extension methods for URL using RequestBuilder
+13) Better validation of execution tree
+14) Compilation of identifiers
+15) Create ArrayTable, ArrayQueue, ArrayCache
+16) Check 'static' and 'private' and 'protected' 
+27) Add variable arguments '...'
+*/
 function call(fun){
    fun(22,33);
 }
-call((a,b)->{
+call((a:String,b:String,c:Number)->{ // XXX number of parameters not validated
    println("a=${a}");
    println("b=${b}");
 });

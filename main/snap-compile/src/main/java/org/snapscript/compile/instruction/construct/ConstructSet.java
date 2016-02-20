@@ -44,19 +44,19 @@ public class ConstructSet implements Compilation {
    private static class CompileResult implements Evaluation {
 
       private final ArgumentList arguments;
-      private final ProxyWrapper wrapper;
       
       public CompileResult(ArgumentList arguments) {
-         this.wrapper = new ProxyWrapper();
          this.arguments = arguments;
       }   
       
       @Override
-      public Value evaluate(Scope scope, Object context) throws Exception { // this is rubbish
+      public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
          Set result = new LinkedHashSet();
          
          if(arguments != null) {
-            Value reference = arguments.evaluate(scope, context);
+            Value reference = arguments.evaluate(scope, left);
+            Context context = scope.getContext();
+            ProxyWrapper wrapper = context.getWrapper();
             Object[] array = reference.getValue();
             
             for(Object value : array) {

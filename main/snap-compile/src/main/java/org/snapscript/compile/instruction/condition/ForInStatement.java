@@ -55,7 +55,7 @@ public class ForInStatement implements Compilation {
          Value list = collection.evaluate(scope, null);
          String name = extractor.extract(scope);
          Object object = list.getValue();
-         Iteration iteration = converter.convert(object);
+         Iteration iteration = converter.convert(scope, object);
          Iterable iterable = iteration.getIterable(scope);
          State state = scope.getState();
          

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -17,36 +18,38 @@ import org.snapscript.core.convert.ProxyWrapper;
 public class IterationConverter {
 
    private final ArrayConverter converter;
-   private final ProxyWrapper wrapper;
    
    public IterationConverter() {
       this.converter = new ArrayConverter();
-      this.wrapper = new ProxyWrapper();
    }
    
-   public Iteration convert(Object value) throws Exception {
+   public Iteration convert(Scope scope, Object value) throws Exception {
+      Context context = scope.getContext();
+      ProxyWrapper wrapper = context.getWrapper();
       Class type = value.getClass();
    
       if(type.isArray()) {
-         return new ArrayIteration(value);
+         return new ArrayIteration(wrapper, value);
       } 
       if(Iterable.class.isInstance(value)) {
-         return new IterableIteration(value);
+         return new IterableIteration(wrapper, value);
       } 
       if(Map.class.isInstance(value)) {
-         return new MapIteration(value);
+         return new MapIteration(wrapper, value);
       }
       if(Enumeration.class.isInstance(value)) {
-         return new EnumerationIteration(value);
+         return new EnumerationIteration(wrapper, value);
       }
       throw new InternalArgumentException("Iteration for " + type + " is not possible");
    }
    
    private class ArrayIteration implements Iteration {
       
+      private final ProxyWrapper wrapper;
       private final Object value;
       
-      public ArrayIteration(Object value) {
+      public ArrayIteration(ProxyWrapper wrapper, Object value) {
+         this.wrapper = wrapper;
          this.value = value;
       }
       
@@ -70,9 +73,11 @@ public class IterationConverter {
    
    private class MapIteration implements Iteration {
       
+      private final ProxyWrapper wrapper;
       private final Object value;
       
-      public MapIteration(Object value) {
+      public MapIteration(ProxyWrapper wrapper, Object value) {
+         this.wrapper = wrapper;
          this.value = value;
       }
       
@@ -96,9 +101,11 @@ public class IterationConverter {
    
    private class IterableIteration implements Iteration {
       
+      private final ProxyWrapper wrapper;
       private final Object value;
       
-      public IterableIteration(Object value) {
+      public IterableIteration(ProxyWrapper wrapper, Object value) {
+         this.wrapper = wrapper;
          this.value = value;
       }
       
@@ -119,9 +126,11 @@ public class IterationConverter {
    
    private class EnumerationIteration implements Iteration {
       
+      private final ProxyWrapper wrapper;
       private final Object value;
       
-      public EnumerationIteration(Object value) {
+      public EnumerationIteration(ProxyWrapper wrapper, Object value) {
+         this.wrapper = wrapper;
          this.value = value;
       }
       

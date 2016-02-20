@@ -11,9 +11,9 @@ public class ObjectConverter extends ConstraintConverter {
    private final ProxyWrapper wrapper;
    private final Type type;
    
-   public ObjectConverter(TypeExtractor extractor, HierarchyChecker checker, Type type) {
-      this.wrapper = new ProxyWrapper();
+   public ObjectConverter(TypeExtractor extractor, ProxyWrapper wrapper, HierarchyChecker checker, Type type) {
       this.extractor = extractor;
+      this.wrapper = wrapper;
       this.checker = checker;
       this.type = type;
    }

@@ -21,15 +21,7 @@ public class ThreadStack {
       cause.setStackTrace(trace);
    }
    
-   public void invoke(Function function) {
-      Stack stack = local.get();
-      
-      if(function != null) {
-         stack.push(function);
-      }
-   }
-   
-   public void before(Trace trace) {
+   public void before(Object trace) {
       Stack stack = local.get();
       
       if(trace != null) {
@@ -37,7 +29,7 @@ public class ThreadStack {
       }
    }
    
-   public void after(Trace trace) { // remove from stack
+   public void after(Object trace) { // remove from stack
       Stack stack = local.get();
       int size = stack.size();
       

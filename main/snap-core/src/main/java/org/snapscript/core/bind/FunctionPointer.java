@@ -25,7 +25,11 @@ public class FunctionPointer {
       Invocation invocation = function.getInvocation();
       ThreadStack stack = context.getStack();
       
-      stack.invoke(function);
-      return invocation.invoke(scope, object, list);
+      try {
+         stack.before(function);
+         return invocation.invoke(scope, object, list);
+      } finally {
+         stack.after(function);
+      }
    }
 }
