@@ -1,7 +1,5 @@
 package org.snapscript.compile.instruction;
 
-import static org.snapscript.core.Reserved.METHOD_CLOSURE;
-
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Scope;
@@ -13,12 +11,11 @@ import org.snapscript.core.ValueType;
 public class Closure implements Evaluation {
    
    private ParameterList parameters;
-   private FunctionBuilder builder;
+   private ClosureBuilder builder;
    private Statement closure;
-   private Function function;
    
    public Closure(ParameterList parameters, Statement statement){  
-      this.builder = new FunctionBuilder(statement);
+      this.builder = new ClosureBuilder(statement);
       this.parameters = parameters;
    }  
    
@@ -28,17 +25,15 @@ public class Closure implements Evaluation {
    
    public Closure(ParameterList parameters, Statement statement, Expression expression){
       this.closure = new ClosureStatement(statement, expression);
-      this.builder = new FunctionBuilder(closure);
+      this.builder = new ClosureBuilder(closure);
       this.parameters = parameters;
    }
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
-      if(function == null) {
-         Signature signature = parameters.create(scope);
-         
-         function = builder.create(signature, METHOD_CLOSURE);
-      }
+      Signature signature = parameters.create(scope);
+      Function function = builder.create(signature, scope);
+      
       return ValueType.getTransient(function);
    }
 }

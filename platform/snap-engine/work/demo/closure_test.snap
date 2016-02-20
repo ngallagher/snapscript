@@ -30,3 +30,9 @@ var x=(a)  ->println(a);
 var y="hello";
 
 x(y);
+do(6677);
+
+function do(g) {
+   var t =(a) -> {println(g+"."+a);};
+   t(33);
+}
