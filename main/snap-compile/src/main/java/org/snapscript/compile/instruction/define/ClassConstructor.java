@@ -12,15 +12,15 @@ import org.snapscript.core.Type;
 public class ClassConstructor implements TypePart {
    
    private final ConstructorAssembler assembler;
-   private final ModifierChecker checker;
+   private final ModifierList list;
 
-   public ClassConstructor(ModifierList modifiers, ParameterList parameters, Statement statement){  
-      this(modifiers, parameters, null, statement);
+   public ClassConstructor(ModifierList list, ParameterList parameters, Statement statement){  
+      this(list, parameters, null, statement);
    }  
    
-   public ClassConstructor(ModifierList modifiers, ParameterList parameters, TypePart part, Statement statement){  
+   public ClassConstructor(ModifierList list, ParameterList parameters, TypePart part, Statement statement){  
       this.assembler = new ConstructorAssembler(parameters, part, statement);
-      this.checker = new ModifierChecker(modifiers);
+      this.list = list;
    } 
    
    @Override
@@ -29,8 +29,9 @@ public class ClassConstructor implements TypePart {
    }
    
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean compile) throws Exception {
+      int modifiers = list.getModifiers();
       ConstructorBuilder builder = assembler.assemble(scope, type);
-      Function constructor = builder.create(scope, statements, type, compile);
+      Function constructor = builder.create(scope, statements, type, modifiers, compile);
       List<Function> functions = type.getFunctions();
       
       functions.add(constructor);

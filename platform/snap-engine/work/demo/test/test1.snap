@@ -7,10 +7,12 @@ module Empty{
 
 class TestCase {
    function runTests(){
-      for(var f in this.class.functions){
-         if(f.name.startsWith("test")){   
-            System.out.println("Running.. "+f.name+"()");
-            f.invocation.invoke(this,this);
+      println(this.class);
+      println(this.class.getFunctions());
+      for(var func in this.class.functions){
+         if(func.name.startsWith("test")){   
+            System.out.println("Running.. "+func.name+"()");
+            func();
          }
       }
    }
@@ -49,6 +51,7 @@ class TestCase {
 class SimpleTest extends TestCase{
    
    function testNumbers(){
+      println("testNumbers()");
       var x=0;
       assertNotEquals(1d,21f);
       assertEquals(1d,1d);

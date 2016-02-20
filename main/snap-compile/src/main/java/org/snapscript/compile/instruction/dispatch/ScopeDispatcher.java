@@ -3,10 +3,13 @@ package org.snapscript.compile.instruction.dispatch;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.Invocation;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
+import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -41,12 +44,13 @@ public class ScopeDispatcher implements InvocationDispatcher {
             
             return ValueType.getTransient(data);   
          }
+         local = binder.bind(scope, name, arguments); // function variable
       }
       if(local == null) {
          Type type = extractor.extract(scope, object);
          Module module = type.getModule();
          
-         throw new InternalStateException("Method '" + name + "' not found for " + module + "." + type);
+         throw new InternalStateException("Method '" + name + "' not found for " + module + "." + type);   
       }
       Result result = local.call();
       Object data = result.getValue();

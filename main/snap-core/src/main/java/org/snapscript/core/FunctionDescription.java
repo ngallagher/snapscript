@@ -69,6 +69,6 @@ public class FunctionDescription {
       String description = getDescription();
       String parameters = getParameters();
       
-      return String.format("%s.%s", description, parameters);
+      return description + parameters;
    }
 }

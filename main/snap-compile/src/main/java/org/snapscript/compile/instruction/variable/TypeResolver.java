@@ -43,7 +43,7 @@ public class TypeResolver implements ValueResolver<Type> {
          
          if(match != null) {
             reference.set(match);
-            return new PropertyValue(property, left, name);
+            return new PropertyValue(match, left, name);
          }
          return null;
       } 

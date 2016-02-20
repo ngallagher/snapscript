@@ -5,10 +5,16 @@ import java.util.Map;
 
 import org.snapscript.common.LeastRecentlyUsedMap;
 import org.snapscript.core.Function;
+import org.snapscript.core.Invocation;
 import org.snapscript.core.Module;
+import org.snapscript.core.Result;
+import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
+import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 import org.snapscript.core.convert.ConstraintMatcher;
 
 public class FunctionMatcher {
@@ -27,6 +33,24 @@ public class FunctionMatcher {
       this.matcher = new ArgumentMatcher(matcher, loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
       this.finder = new TypePathBuilder();
+   }
+   
+   public FunctionPointer match(Scope scope, String name, Object... values) throws Exception { // match function variable
+      State state = scope.getState();
+      Value value = state.getValue(name);
+      
+      if(value != null) {
+         Object object = value.getValue();
+         
+         if(Function.class.isInstance(object)) {
+            Function function = (Function)object;
+            Signature signature = function.getSignature();
+            ArgumentConverter converter = matcher.match(signature);
+            
+            return new FunctionPointer(function, converter, values); 
+         }
+      }
+      return null;
    }
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {

@@ -48,9 +48,8 @@ public class InstructionAssembler implements Assembler {
       return createLeaf(node, name, children, type,depth);
    }
    
-   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Operation code, int depth) throws Exception {
-      Instruction instruction = code.getInstruction();
-      Type type = code.getType();
+   private Object createBranch(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
+      Type type = operation.getType();
       Line line = node.getLine();
       int size = children.size();
       
@@ -63,12 +62,12 @@ public class InstructionAssembler implements Assembler {
             
             arguments[i] = argument;
          }
-         return builder.create(type, arguments, line, instruction.trace);
+         return builder.create(type, arguments, line);
       }
-      return builder.create(type, empty, line, instruction.trace);
+      return builder.create(type, empty, line);
    }
 
-   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Operation code, int depth) throws Exception {
+   private Object createChild(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
       String grammar = node.getGrammar();
       int size = children.size();
       
@@ -84,23 +83,22 @@ public class InstructionAssembler implements Assembler {
          return create(child, name, depth);
       }
       if (size > 0) {
-         return createBranch(node, name, children, code, depth);
+         return createBranch(node, name, children, operation, depth);
       }
-      return createLeaf(node, name, children, code, depth);
+      return createLeaf(node, name, children, operation, depth);
    }
    
-   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Operation code, int depth) throws Exception {
+   private Object createLeaf(SyntaxNode node, String name, List<SyntaxNode> children, Operation operation, int depth) throws Exception {
       Token token = node.getToken();     
       Line line = node.getLine();
       
-      if (code != null) {
-         Instruction instruction = code.getInstruction();
-         Type type = code.getType();
+      if (operation != null) {
+         Type type = operation.getType();
          
          if (token == null) {
-            return builder.create(type, empty, line, instruction.trace); // no line number????
+            return builder.create(type, empty, line); // no line number????
          }      
-         return builder.create(type, new Object[]{token}, line, instruction.trace);
+         return builder.create(type, new Object[]{token}, line);
       }
       return token;
    }

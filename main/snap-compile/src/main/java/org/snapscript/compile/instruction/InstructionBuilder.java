@@ -26,10 +26,6 @@ public class InstructionBuilder {
    }
    
    public Object create(Type type, Object[] arguments, Line line) throws Exception {
-      return create(type, arguments, line, false);
-   }
-
-   public Object create(Type type, Object[] arguments, Line line, boolean trace) throws Exception {
       FunctionBinder binder = context.getBinder();
       Callable<Result> callable = binder.bind(scope, type, TYPE_CONSTRUCTOR, arguments);
       

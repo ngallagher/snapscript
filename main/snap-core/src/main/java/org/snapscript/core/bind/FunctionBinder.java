@@ -20,6 +20,15 @@ public class FunctionBinder {
       this.extractor = new TypeExtractor(loader);
    }
    
+   public Callable<Result> bind(Scope scope, String name, Object... list) throws Exception { // function variable
+      FunctionPointer call = matcher.match(scope, name, list);
+      
+      if(call != null) {
+         return new FunctionCall(call, scope, scope);
+      }
+      return null;
+   }
+   
    public Callable<Result> bind(Scope scope, Module module, String name, Object... list) throws Exception {
       FunctionPointer call = matcher.match(module, name, list);
       
