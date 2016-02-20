@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.ConstraintExtractor;
+import org.snapscript.compile.instruction.ModifierChecker;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.AccessorProperty;

@@ -1,0 +1,18 @@
+
+function bad(a, b..., c...){
+}
+function fun(a, b...) {
+   println(a);
+   println(b[0]);
+   println(b.size());
+}
+
+fun(1,2,3,4,5);
+
+var closure = (a, b...)->{
+   for(var x in b){
+      println("${x}");
+   }
+};
+
+closure("a=1","b=2","c=3","d=4","e=5","f=6","g=7","h=8");

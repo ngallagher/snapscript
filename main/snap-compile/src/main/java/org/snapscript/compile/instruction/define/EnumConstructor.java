@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;

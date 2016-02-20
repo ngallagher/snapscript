@@ -13,10 +13,12 @@ import org.snapscript.core.Value;
 
 public class ParameterList {
    
+   private VariableArgumentChecker checker;
+   private ParameterDeclaration[] list;
    private Signature signature;
-   private Parameter[] list;
    
-   public ParameterList(Parameter... list) {
+   public ParameterList(ParameterDeclaration... list) {
+      this.checker = new VariableArgumentChecker(list);
       this.list = list;
    }
    
@@ -28,7 +30,6 @@ public class ParameterList {
       if(signature == null) {
          List<String> names = new ArrayList<String>();
          List<Type> constraints = new ArrayList<Type>();
-         Signature result = new Signature(names, constraints);
          
          if(prefix != null) {
             Module module = scope.getModule();
@@ -39,19 +40,21 @@ public class ParameterList {
             names.add(prefix);
             constraints.add(constraint);
          }
+         boolean variable = checker.isVariable(scope);
+         
          for(int i = 0; i < list.length; i++) {
-            Value value = list[i].evaluate(scope, null);
-            Type constraint = value.getConstraint();
-            String name = value.getString();
-            
-            if(constraint != null) {
-               constraints.add(constraint);
+            Parameter parameter = list[i].get(scope);
+            Type type = parameter.getType();
+            String name = parameter.getName();
+
+            if(type != null) {
+               constraints.add(type);
             } else {
                constraints.add(null);
             }
             names.add(name);
          }
-         return signature = result;
+         signature = new Signature(names, constraints, variable);
       }
       return signature;
    }

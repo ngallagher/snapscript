@@ -3,6 +3,8 @@ package org.snapscript.compile.instruction.define;
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.DeclareConstant;
 import org.snapscript.compile.instruction.DeclareVariable;
+import org.snapscript.compile.instruction.ModifierChecker;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;

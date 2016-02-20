@@ -52,9 +52,10 @@ public class ContextLinker implements PackageLinker {
          SyntaxNode node = parser.parse(resource, source, grammar);
          Statement statement = assembler.assemble(node, resource);
          String module = converter.createModule(resource);
+         String path = converter.createPath(resource);
          
          cache.cache(resource, statement); 
-         return new StatementPackage(statement, module);
+         return new StatementPackage(statement, module, path);
       }
       return new NoPackage(); 
    } 

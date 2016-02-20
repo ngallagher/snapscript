@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Evaluation;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -12,10 +13,10 @@ import org.snapscript.core.error.ErrorCauseExtractor;
 
 public class TryCatchStatement extends Statement {
    
+   private final ParameterDeclaration declaration;
    private final ErrorCauseExtractor extractor;
    private final ConstraintChecker checker;
    private final Statement statement;
-   private final Parameter parameter;
    private final Statement handle;
    private final Statement finish;
    
@@ -23,15 +24,15 @@ public class TryCatchStatement extends Statement {
       this(statement, null, null, finish);
    }   
    
-   public TryCatchStatement(Statement statement, Parameter parameter, Statement handle) {
-      this(statement, parameter, handle, null);
+   public TryCatchStatement(Statement statement, ParameterDeclaration declaration, Statement handle) {
+      this(statement, declaration, handle, null);
    }   
    
-   public TryCatchStatement(Statement statement, Parameter parameter, Statement handle, Statement finish) {
+   public TryCatchStatement(Statement statement, ParameterDeclaration declaration, Statement handle, Statement finish) {
       this.extractor = new ErrorCauseExtractor();
       this.checker = new ConstraintChecker();
+      this.declaration = declaration;  
       this.statement = statement;
-      this.parameter = parameter;  
       this.handle = handle;
       this.finish = finish;
    }    
@@ -61,24 +62,24 @@ public class TryCatchStatement extends Statement {
    }
 
    private Result handle(Scope scope, Result result) throws Exception {
-      Object value = result.getValue();
+      Object data = result.getValue();
       
-      if(parameter != null) {
-         Value reference = parameter.evaluate(scope, null);
-         Type constraint = reference.getConstraint();
-         String name = reference.getString();
+      if(declaration != null) {
+         Parameter parameter = declaration.get(scope);
+         Type type = parameter.getType();
+         String name = parameter.getName();
 
-         if(value != null) {
-            if(constraint != null) {
-               Object cause = extractor.extract(scope, value);
+         if(data != null) {
+            if(type != null) {
+               Object cause = extractor.extract(scope, data);
                
-               if(!checker.compatible(scope, cause, constraint)) {
+               if(!checker.compatible(scope, cause, type)) {
                   return result;
                }
             }
             Scope compound = scope.getInner();
             State state = compound.getState();
-            Value constant = ValueType.getConstant(value);
+            Value constant = ValueType.getConstant(data);
             
             state.addConstant(name, constant);
                

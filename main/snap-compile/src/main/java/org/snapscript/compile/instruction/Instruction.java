@@ -28,8 +28,6 @@ import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
 import org.snapscript.compile.instruction.define.EnumList;
 import org.snapscript.compile.instruction.define.EnumValue;
-import org.snapscript.compile.instruction.define.Modifier;
-import org.snapscript.compile.instruction.define.ModifierList;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
 import org.snapscript.compile.instruction.define.ModuleName;
 import org.snapscript.compile.instruction.define.SuperConstructor;
@@ -123,7 +121,8 @@ public enum Instruction {
    FOR_INFINITE_STATEMENT(ForInfiniteStatement.class, "for-infinite-statement"),
    FOR_IN_STATEMENT(ForInStatement.class, "for-in-statement"),
    TYPE_CONSTRAINT(Constraint.class, "type-constraint"),
-   PARAMETER(Parameter.class, "parameter"),
+   VARIABLE_ARGUMENT(Modifier.class, "variable-argument"),
+   PARAMETER(ParameterDeclaration.class, "parameter-declaration"),
    PARAMETER_LIST(ParameterList.class, "parameter-list"),
    CLOSURE(Closure.class, "closure"),
    THROW(ThrowStatement.class, "throw-statement"),    

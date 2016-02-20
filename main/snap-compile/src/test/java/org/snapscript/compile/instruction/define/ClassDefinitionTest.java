@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 import junit.framework.TestCase;
 
 import org.snapscript.compile.StoreContext;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.BooleanLiteral;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
 import org.snapscript.compile.instruction.literal.TextLiteral;

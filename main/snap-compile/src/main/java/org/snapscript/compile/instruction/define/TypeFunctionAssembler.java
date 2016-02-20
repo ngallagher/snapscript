@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.compile.instruction.ModifierChecker;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Evaluation;

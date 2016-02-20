@@ -7,11 +7,13 @@ public class StatementPackage implements Package {
    private final AtomicBoolean compile;
    private final Statement statement;
    private final String name;
+   private final String path;
    
-   public StatementPackage(Statement statement, String name) {
+   public StatementPackage(Statement statement, String name, String path) {
       this.compile = new AtomicBoolean(true);
       this.statement = statement;
       this.name = name;
+      this.path = path;
    }
 
    @Override
@@ -27,8 +29,8 @@ public class StatementPackage implements Package {
            
             statement.compile(inner); 
          } catch(Exception e) {
-            if(name != null) {
-               throw new InternalStateException("Error occured in '" + name + "'", e);
+            if(path != null) {
+               throw new InternalStateException("Error occured in '" + path + "'", e);
             }
             throw new InternalStateException("Error occured in script", e);
          }
