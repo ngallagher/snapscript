@@ -11,13 +11,13 @@ import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.bind.FunctionBinder;
 
-public class ProxyHandler implements InvocationHandler {
+public class ScopeProxyHandler implements InvocationHandler {
    
    private final ProxyArgumentExtractor extractor;
    private final Scope scope;
    
-   public ProxyHandler(ProxyWrapper builder, Scope scope) {
-      this.extractor = new ProxyArgumentExtractor(builder);
+   public ScopeProxyHandler(ProxyWrapper wrapper, Scope scope) {
+      this.extractor = new ProxyArgumentExtractor(wrapper);
       this.scope = scope;
    }
    

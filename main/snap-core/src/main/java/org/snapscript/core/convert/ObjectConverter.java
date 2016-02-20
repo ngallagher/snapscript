@@ -1,42 +1,50 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.HierarchyChecker;
+import org.snapscript.core.TypeCastChecker;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends ConstraintConverter {
    
-   private final HierarchyChecker checker;
+   private final TypeCastChecker checker;
    private final TypeExtractor extractor;
    private final ProxyWrapper wrapper;
-   private final Type type;
+   private final Type constraint;
    
-   public ObjectConverter(TypeExtractor extractor, ProxyWrapper wrapper, HierarchyChecker checker, Type type) {
+   public ObjectConverter(TypeExtractor extractor, TypeCastChecker checker, ProxyWrapper wrapper, Type constraint) {
+      this.constraint = constraint;
       this.extractor = extractor;
       this.wrapper = wrapper;
       this.checker = checker;
-      this.type = type;
+   }
+   
+   @Override
+   public int score(Type actual) throws Exception {
+      Class real = actual.getType();
+      Class require = constraint.getType();
+      
+      if(require == real) {
+         return EXACT;
+      }
+      return checker.cast(actual, constraint);
    }
 
    @Override
-   public int score(Object value) throws Exception {
+   public int score(Object value) throws Exception { // argument type
       Type match = extractor.extract(value);
       
       if(match != null) {
-         if(match.equals(type)) {
+         if(match.equals(constraint)) {
             return EXACT;
          }
-         if(checker.check(match, type)) {
-            return SIMILAR;
-         }
-         return INVALID;
+         return checker.cast(value, constraint);
       }
       return EXACT;
    }
    
    @Override
    public Object convert(Object object) {
-      Class require = type.getType();
+      Class require = constraint.getType();
       
       if(require != null) {
          return wrapper.toProxy(object, require);

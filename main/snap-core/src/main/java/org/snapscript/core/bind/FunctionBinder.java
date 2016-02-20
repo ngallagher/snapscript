@@ -8,16 +8,27 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.Value;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.error.ThreadStack;
 
 public class FunctionBinder {
    
    private final FunctionMatcher matcher;
    private final TypeExtractor extractor;
    
-   public FunctionBinder(ConstraintMatcher matcher, TypeLoader loader) {
-      this.matcher = new FunctionMatcher(matcher, loader);
+   public FunctionBinder(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
+      this.matcher = new FunctionMatcher(matcher, loader, stack);
       this.extractor = new TypeExtractor(loader);
+   }
+   
+   public Callable<Result> bind(Value value, Object... list) throws Exception { // closures
+      FunctionPointer call = matcher.match(value, list);
+      
+      if(call != null) {
+         return new FunctionCall(call, null, null);
+      }
+      return null;
    }
    
    public Callable<Result> bind(Scope scope, String name, Object... list) throws Exception { // function variable

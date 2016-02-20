@@ -1,15 +1,13 @@
 package org.snapscript.core.bind;
 
-import org.snapscript.core.Type;
-
 public class FunctionKey {      
 
-   private final Type[] types;
+   private final Object[] types;
    private final Object type;
    private final String name;
    private final int length;
    
-   public FunctionKey(Object type, String name, Type[] types) {
+   public FunctionKey(Object type, String name, Object[] types) {
       this.length = name.length();
       this.types = types;
       this.name = name;

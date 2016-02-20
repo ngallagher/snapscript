@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.PrimitivePromoter;
+import org.snapscript.core.Type;
 
 public abstract class ConstraintConverter  {
    
@@ -120,6 +121,7 @@ public abstract class ConstraintConverter  {
       throw new InternalArgumentException("Could not convert '" + number + "' to " + actual);
    }
    
+   public abstract int score(Type type) throws Exception;
    public abstract int score(Object type) throws Exception;
    public abstract Object convert(Object value) throws Exception;
 }

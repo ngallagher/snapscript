@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction;
 
+import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -31,7 +33,7 @@ public class ConstraintChecker {
          ConstraintConverter converter = matcher.match(type);
          int score = converter.score(value);
          
-         return score > 0;
+         return score > INVALID;
       }
       return true;
    }

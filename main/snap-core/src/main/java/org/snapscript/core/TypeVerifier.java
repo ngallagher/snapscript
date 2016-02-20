@@ -1,11 +1,13 @@
 package org.snapscript.core;
 
+import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+
 public class TypeVerifier {
    
-   private final HierarchyChecker checker;
+   private final TypeCastChecker checker;
    private final TypeLoader loader;
    
-   public TypeVerifier(TypeLoader loader, HierarchyChecker checker) {
+   public TypeVerifier(TypeLoader loader, TypeCastChecker checker) {
       this.checker = checker;
       this.loader = loader;
    }
@@ -21,10 +23,8 @@ public class TypeVerifier {
    
    public boolean like(Class require, Type type) throws Exception {
       Type actual = loader.loadType(require);
+      int score = checker.cast(type, actual);
       
-      if(checker.check(actual, type)) {
-         return true;
-      }
-      return false;
+      return score > INVALID;
    }
 }

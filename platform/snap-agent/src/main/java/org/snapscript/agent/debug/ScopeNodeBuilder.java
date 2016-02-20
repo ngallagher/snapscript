@@ -10,8 +10,10 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.InstanceScope;
 import org.snapscript.core.PrimitivePromoter;
+import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.convert.ProxyWrapper;
 
@@ -20,19 +22,22 @@ public class ScopeNodeBuilder {
    private final Map<String, Map<String, String>> variables;
    private final PrimitivePromoter promoter;
    private final ScopeNodeChecker checker;
-   private final ProxyWrapper converter;
+   private final Scope scope;
    
-   public ScopeNodeBuilder(Map<String, Map<String, String>> variables) {
+   public ScopeNodeBuilder(Map<String, Map<String, String>> variables, Scope scope) {
       this.promoter = new PrimitivePromoter();
       this.checker = new ScopeNodeChecker();
-      this.converter = new ProxyWrapper();
       this.variables = variables;
+      this.scope = scope;
    }
 
    public ScopeNode createNode(String path, String name, Object object, int depth) {
       if(object != null) {
+         Context context = scope.getContext();
+         ProxyWrapper wrapper = context.getWrapper();
+         
          if(object instanceof Proxy) {
-            object = converter.fromProxy(object);
+            object = wrapper.fromProxy(object);
          }
          if(object instanceof InstanceScope) {
             InstanceScope instance = (InstanceScope)object;

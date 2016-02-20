@@ -14,6 +14,21 @@ public class BooleanConverter extends ConstraintConverter {
    }
    
    @Override
+   public int score(Type actual) throws Exception {
+      Class real = actual.getType();
+      
+      if(real != null) {
+         if(real == Boolean.class) {
+            return EXACT;
+         }
+         if(real == String.class) {
+            return POSSIBLE;
+         }
+      }
+      return INVALID;
+   }
+   
+   @Override
    public int score(Object value) throws Exception {
       Class require = type.getType();
       

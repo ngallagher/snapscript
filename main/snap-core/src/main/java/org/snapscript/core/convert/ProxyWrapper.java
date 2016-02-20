@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.snapscript.core.Any;
+import org.snapscript.core.Context;
+import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 
@@ -11,8 +13,8 @@ public class ProxyWrapper {
 
    private final ProxyFactory factory;
    
-   public ProxyWrapper() {
-      this.factory = new ProxyFactory(this);
+   public ProxyWrapper(Context context) {
+      this.factory = new ProxyFactory(this, context);
    }
    
    public Object toProxy(Object object) { 
@@ -26,7 +28,17 @@ public class ProxyWrapper {
    public Object toProxy(Object object, Class... require) { 
       if(object != null) {
          if(Scope.class.isInstance(object)) {
-            Object proxy = factory.create(object);
+            Object proxy = factory.create((Scope)object, require);
+            
+            for(Class type : require) {
+               if(!type.isInstance(proxy)) {
+                  throw new InternalStateException("Proxy does not implement " + require);
+               }
+            }
+            return proxy;
+         }
+         if(Function.class.isInstance(object)) {
+            Object proxy = factory.create((Function)object, require);
             
             for(Class type : require) {
                if(!type.isInstance(proxy)) {
@@ -44,8 +56,14 @@ public class ProxyWrapper {
          if(Proxy.class.isInstance(object)) {
             InvocationHandler handler = Proxy.getInvocationHandler(object);
            
-            if(ProxyHandler.class.isInstance(handler)) {
-               ProxyHandler proxy = (ProxyHandler)handler;
+            if(ScopeProxyHandler.class.isInstance(handler)) {
+               ScopeProxyHandler proxy = (ScopeProxyHandler)handler;
+               Object value = proxy.extract();
+               
+               return value;
+            }
+            if(FunctionProxyHandler.class.isInstance(handler)) {
+               FunctionProxyHandler proxy = (FunctionProxyHandler)handler;
                Object value = proxy.extract();
                
                return value;

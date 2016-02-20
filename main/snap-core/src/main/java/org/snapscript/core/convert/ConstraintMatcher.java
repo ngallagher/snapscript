@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.HierarchyChecker;
+import org.snapscript.core.TypeCastChecker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeExtractor;
@@ -20,14 +20,14 @@ public class ConstraintMatcher {
    private final ConstraintConverter converter;
    private final TypeExtractor extractor;
    private final TypeVerifier comparator;
-   private final HierarchyChecker checker;
    private final ProxyWrapper wrapper;
+   private final TypeCastChecker checker;
    
    public ConstraintMatcher(TypeLoader loader, ProxyWrapper wrapper) {
       this.converters = new HashMap<Type, ConstraintConverter>();
-      this.checker = new HierarchyChecker();
-      this.comparator = new TypeVerifier(loader, checker);
       this.extractor = new TypeExtractor(loader);
+      this.checker = new TypeCastChecker(this, extractor, loader);
+      this.comparator = new TypeVerifier(loader, checker);
       this.converter = new NullConverter();
       this.wrapper = wrapper;
    }
@@ -121,6 +121,6 @@ public class ConstraintMatcher {
       if(comparator.like(Enum.class, type)) {
          return new EnumConverter(type);
       }      
-      return new ObjectConverter(extractor, wrapper, checker, type);
+      return new ObjectConverter(extractor, checker, wrapper, type);
    }
 }

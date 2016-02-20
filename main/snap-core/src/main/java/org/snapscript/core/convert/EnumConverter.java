@@ -9,6 +9,25 @@ public class EnumConverter extends ConstraintConverter {
    public EnumConverter(Type type) {
       this.type = type;
    }
+   
+   @Override
+   public int score(Type actual) throws Exception {
+      Class real = actual.getType();
+      Class require = type.getType();
+      
+      if(real != require) {
+         Class parent = real.getSuperclass();
+            
+         if(parent == require) {
+            return EXACT;
+         }
+         if(real == String.class) {
+            return SIMILAR;
+         }
+         return INVALID;
+      }
+      return EXACT;
+   }
 
    @Override
    public int score(Object value) throws Exception {

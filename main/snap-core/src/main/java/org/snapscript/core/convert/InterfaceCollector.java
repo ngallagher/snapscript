@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Any;
 import org.snapscript.core.Scope;
-import org.snapscript.core.SuperScope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
 
@@ -24,8 +23,8 @@ public class InterfaceCollector {
       this.empty = new Class[]{};
    }
    
-   public Class[] collect(Object value) {
-      Type type = extract(value);
+   public Class[] collect(Scope scope) {
+      Type type = scope.getType();
       
       if(type != null) {
          Class[] interfaces = cache.get(type);
@@ -61,17 +60,5 @@ public class InterfaceCollector {
          return interfaces;
       }
       return Collections.<Class>singleton(Any.class);
-   }
-   
-   private Type extract(Object value) {
-      if(SuperScope.class.isInstance(value)) {
-         SuperScope scope = (SuperScope)value;
-         return scope.getSuper();
-      }
-      if(Scope.class.isInstance(value)) {
-         Scope scope = (Scope)value;
-         return scope.getType();
-      } 
-      return null;
    }
 }

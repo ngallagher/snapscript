@@ -31,7 +31,7 @@ public class StoreContext implements Context {
    
    public StoreContext(Store store){
       this.stack = new ThreadStack();
-      this.wrapper = new ProxyWrapper();
+      this.wrapper = new ProxyWrapper(this);
       this.handler = new ErrorHandler(stack);
       this.interceptor = new TraceInterceptor(stack);
       this.manager = new StoreManager(store);
@@ -39,7 +39,7 @@ public class StoreContext implements Context {
       this.linker = new ContextLinker(this);      
       this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader, wrapper);
-      this.binder = new FunctionBinder(matcher, loader);
+      this.binder = new FunctionBinder(matcher, loader, stack);
       this.executor = new ContextEvaluator(this);
 
    }

@@ -2,12 +2,12 @@ package org.snapscript.core.convert;
 
 public class ProxyArgumentExtractor {
 
-   private final ProxyWrapper builder;
+   private final ProxyWrapper wrapper;
    private final Object[] empty;
    
-   public ProxyArgumentExtractor(ProxyWrapper builder) {
+   public ProxyArgumentExtractor(ProxyWrapper wrapper) {
       this.empty = new Object[]{};
-      this.builder = builder;
+      this.wrapper = wrapper;
    }
    
    public Object[] extract(Object[] arguments) {
@@ -16,7 +16,7 @@ public class ProxyArgumentExtractor {
          
          for(int i = 0; i < arguments.length; i++) {
             Object argument = arguments[i];
-            Object value = builder.fromProxy(argument);
+            Object value = wrapper.fromProxy(argument);
             
             convert[i] = value;
          }

@@ -22,11 +22,15 @@ public class ParameterExtractor {
       State state = scope.getState();
       
       for(int i = 0; i < arguments.length; i++) {
+         try {
          String name = names.get(i);
          Object argument = arguments[i];
          Value value = builder.create(scope, argument, i);
          
          state.addVariable(name, value);
+         }catch(Exception e){
+            e.printStackTrace();
+         }
       }
    }
 }
