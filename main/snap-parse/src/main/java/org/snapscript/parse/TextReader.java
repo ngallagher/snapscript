@@ -1,5 +1,6 @@
 package org.snapscript.parse;
 
+import static org.snapscript.parse.TextCategory.BINARY;
 import static org.snapscript.parse.TextCategory.CAPITAL;
 import static org.snapscript.parse.TextCategory.DIGIT;
 import static org.snapscript.parse.TextCategory.DOLLAR;
@@ -123,6 +124,47 @@ public class TextReader {
       return null;
    }
    
+   public Number binary() {  
+      if(off + 3 < count) {
+         char first = source[off];
+         char second = source[off+1];
+ 
+         if(first != '0') { 
+            return null;
+         } 
+         if(second != 'b' && second != 'B') {
+            return null;
+         }
+         Class type = int.class;
+         int pos = off + 2;
+         int mark = off;
+         int value = 0;
+         
+         while(pos < count) {
+            short mask = types[pos];
+            
+            if((mask & BINARY) == BINARY) {
+               char next = source[pos];
+               
+               value <<= 1;
+               value |= decoder.binary(next);
+            } else {
+               if((mask & LONG) == LONG) {
+                  type = long.class;
+                  off++;
+               } 
+               break;
+            }
+            pos++;
+         }
+         if(pos > mark + 2) {                  
+            off = pos;
+            return converter.convert(type, value);
+         }
+      }
+      return null;      
+   } 
+   
    public Number hexidecimal() {  
       if(off + 3 < count) {
          char first = source[off];
@@ -134,26 +176,31 @@ public class TextReader {
          if(second != 'x' && second != 'X') {
             return null;
          }
+         Class type = int.class;
          int pos = off + 2;
          int mark = off;
          int value = 0;
          
          while(pos < count) {
-            short type = types[pos];
+            short mask = types[pos];
             
-            if((type & HEXIDECIMAL) == HEXIDECIMAL) {
+            if((mask & HEXIDECIMAL) == HEXIDECIMAL) {
                char next = source[pos];
                
                value <<= 4;
-               value |= decoder.convert(next);
+               value |= decoder.hexidecimal(next);
             } else {
+               if((mask & LONG) == LONG) {
+                  type = long.class;
+                  off++;
+               } 
                break;
             }
             pos++;
          }
          if(pos > mark + 2) {                  
             off = pos;
-            return converter.convert(int.class, value);
+            return converter.convert(type, value);
          }
       }
       return null;      
@@ -279,7 +326,7 @@ public class TextReader {
          short mask = types[off];
          char next = start;
          
-         if((mask & QUOTE) == QUOTE) {
+         if(next == '"') {
             int escape = 0;
             int length = 0;
             int variable = 0;

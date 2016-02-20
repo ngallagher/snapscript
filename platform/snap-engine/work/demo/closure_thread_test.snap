@@ -1,0 +1,8 @@
+var prefix = "i=";
+var t = new Thread(() ->{
+   for(var i in 0..9){
+      println(prefix+i);
+   }
+});
+t.start();
+t.join();

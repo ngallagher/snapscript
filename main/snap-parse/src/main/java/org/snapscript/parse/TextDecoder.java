@@ -67,12 +67,22 @@ public class TextDecoder {
          char next = source[off + i];
          
          value <<= 4;
-         value |= convert(next);
+         value |= hexidecimal(next);
       }
       return (char)value;
    }
    
-   public int convert(char value) {
+   public int binary(char value) {
+      if(value == '0') {
+         return 0; 
+      }
+      if(value == '1') {
+         return 1; 
+      }
+      throw new IllegalArgumentException("Character '" + value + "' is not binary");
+   }
+   
+   public int hexidecimal(char value) {
       if(value >= '0' && value <= '9') {
          return value - '0'; 
       }

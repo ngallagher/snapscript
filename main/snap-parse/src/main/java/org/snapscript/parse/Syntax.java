@@ -2,7 +2,7 @@ package org.snapscript.parse;
 
 public enum Syntax {
    SIGN("sign", "{'-'|'+'}"),
-   NUMBER("number", "?<sign>{[hexidecimal]|[decimal]|[integer]}"), 
+   NUMBER("number", "?<sign>{[hexidecimal]|[binary]|[decimal]|[integer]}"), 
    BOOLEAN("boolean", "{'true'|'false'}"),
    NULL("null", "'null'"),
    LITERAL("literal", "{<null>|<boolean>|<number>|[template]|[text]}"),

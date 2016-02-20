@@ -1,5 +1,6 @@
 package org.snapscript.parse;
 
+import static org.snapscript.parse.TokenType.BINARY;
 import static org.snapscript.parse.TokenType.DECIMAL;
 import static org.snapscript.parse.TokenType.HEXIDECIMAL;
 import static org.snapscript.parse.TokenType.IDENTIFIER;
@@ -105,6 +106,19 @@ public class TokenScanner implements LexicalAnalyzer {
                mark++;
                return token;
             }
+         }
+      }
+      return null;
+   }
+   
+   @Override
+   public Token<Number> binary() {
+      if (masks == null) {
+         masks = indexer.index(tokens);
+      }
+      if (mark < masks.length) {
+         if ((masks[mark] & BINARY.mask) != 0) {
+            return tokens.get(mark++);
          }
       }
       return null;

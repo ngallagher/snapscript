@@ -59,7 +59,8 @@ import org.snapscript.compile.instruction.variable.Variable;
 
 public enum Instruction {
    DECIMAL(NumberLiteral.class, "decimal"),
-   HEXIDECIMAL(NumberLiteral.class, "hexidecimal"),    
+   HEXIDECIMAL(NumberLiteral.class, "hexidecimal"),   
+   BINARY(NumberLiteral.class, "binary"),  
    BOOLEAN(BooleanLiteral.class, "boolean"),
    IDENTIFIER(TextLiteral.class, "identifier"), 
    TEMPLATE(TextTemplate.class, "template"),

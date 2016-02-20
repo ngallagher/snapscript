@@ -4,6 +4,7 @@ public interface SyntaxReader {
    SyntaxReader mark(int index); 
    boolean literal(String value);   
    boolean decimal();
+   boolean binary();
    boolean hexidecimal();
    boolean identifier();
    boolean qualifier();

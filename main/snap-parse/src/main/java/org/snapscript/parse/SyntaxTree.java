@@ -170,6 +170,17 @@ public class SyntaxTree {
          }
          return false;
       }
+      
+      @Override
+      public boolean binary() {
+         Token token = analyzer.binary();
+
+         if (token != null) {
+            value = token;
+            return true;
+         }
+         return false;
+      }
 
       @Override
       public boolean hexidecimal() {

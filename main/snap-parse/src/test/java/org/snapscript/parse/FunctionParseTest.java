@@ -20,6 +20,9 @@ public class FunctionParseTest extends TestCase {
 
       //analyze(tree, "try{out.println();}catch(e){out.println(e);}", "try-catch-statement");
       //analyzeScript(tree, 1);
+      
+      //analyze(tree, "0x01", "number");
+      analyze(tree, "0b01", "number");
       analyze(tree, "(a,b)->{return a+b;}", "closure");
       analyze(tree, "var infinity=Float.POSITIVE_INFINITY;", "statement");
       analyze(tree, "class.functions", "reference");

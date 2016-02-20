@@ -8,6 +8,7 @@ public interface LexicalAnalyzer {
    Token<String> qualifier();
    Token<String> literal(String text);
    Token<Number> hexidecimal();
+   Token<Number> binary();
    Token<Number> decimal();
    Line line(int mark);
    int reset(int mark);

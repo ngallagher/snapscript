@@ -1,5 +1,6 @@
 package org.snapscript.parse;
 
+import static org.snapscript.parse.TokenType.BINARY;
 import static org.snapscript.parse.TokenType.DECIMAL;
 import static org.snapscript.parse.TokenType.HEXIDECIMAL;
 import static org.snapscript.parse.TokenType.IDENTIFIER;
@@ -68,6 +69,9 @@ public class TokenIndexer {
             token = identifier(line);
          }
          if(token == null) {
+            token = binary(line);
+         }
+         if(token == null) {
             token = hexidecimal(line);
          }
          if(token == null) {
@@ -124,6 +128,16 @@ public class TokenIndexer {
 
       if (token != null) {
          return new NumberToken(token, line, DECIMAL.mask);
+      }
+      return null;
+   }
+   
+   private Token binary(int number) {
+      Line line = extractor.extract(number);
+      Number token = reader.binary();
+      
+      if (token != null) {
+         return new NumberToken(token, line, BINARY.mask | DECIMAL.mask);
       }
       return null;
    }

@@ -25,6 +25,12 @@ public enum Symbol {
          return node.hexidecimal();
       }
    },   
+   BINARY("binary") {
+      @Override
+      public boolean read(SyntaxReader node) {
+         return node.binary();
+      }
+   },
    DECIMAL("decimal") {
       @Override
       public boolean read(SyntaxReader node) {

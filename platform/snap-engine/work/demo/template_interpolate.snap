@@ -5,3 +5,5 @@ System.err.println("x==${x} ${tty t!");
 for(var i = 0; i < 10; i++){
    System.err.println("i=${i}");
 }
+println("template=${x}");
+println('literal=${x}');
