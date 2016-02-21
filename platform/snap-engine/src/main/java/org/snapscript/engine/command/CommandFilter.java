@@ -3,8 +3,9 @@ package org.snapscript.engine.command;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.agent.event.ProcessEvent;
+import org.snapscript.agent.event.ProcessEventFilter;
 
-public class CommandFilter {
+public class CommandFilter implements ProcessEventFilter {
 
    private final AtomicReference<String> attachment;
    
@@ -14,6 +15,11 @@ public class CommandFilter {
    
    public String get(){
       return attachment.get();
+   }
+
+   @Override
+   public void update(String process) {
+      attachment.set(process);
    }
    
    public void attach(String process) {
@@ -33,4 +39,5 @@ public class CommandFilter {
    public void clear() {
       attachment.set(null);
    }
+
 }

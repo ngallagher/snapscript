@@ -6,11 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.agent.ProcessAgentConnection;
 import org.snapscript.agent.ProcessAgentPool;
+import org.snapscript.agent.event.ProcessEventFilter;
 import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.engine.command.BreakpointsCommand;
 import org.snapscript.engine.command.BrowseCommand;
-import org.snapscript.engine.command.CommandFilter;
 import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.command.StepCommand;
 
@@ -32,7 +32,11 @@ public class ProcessEngine {
       pool.remove(listener);
    }
    
-   public boolean execute(ExecuteCommand command, CommandFilter filter) { // XXX hack
+   public boolean execute(ExecuteCommand command) {
+      return execute(command, null);
+   }
+   
+   public boolean execute(ExecuteCommand command, ProcessEventFilter filter) { 
       String system = System.getProperty("os.name");
       ProcessAgentConnection connection = pool.acquire(system);
       
@@ -42,7 +46,9 @@ public class ProcessEngine {
          String resource = command.getResource();
          String process = connection.toString();
          
-         filter.attach(process);
+         if(filter != null) {
+            filter.update(process);
+         }
          connections.put(process, connection);
          
          return connection.execute(project, resource, breakpoints);
