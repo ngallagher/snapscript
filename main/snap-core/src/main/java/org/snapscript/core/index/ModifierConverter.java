@@ -63,9 +63,7 @@ public class ModifierConverter {
          if(Modifier.isPublic(modifiers)) {
             result |= PUBLIC.mask;
          }
-         if(Modifier.isStatic(modifiers)) {
-            result |= STATIC.mask;
-         }
+         result |= STATIC.mask;
       }
       return result;
    }

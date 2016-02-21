@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.ModifierType.STATIC;
 import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import org.snapscript.compile.instruction.StatementInvocation;
@@ -33,6 +34,6 @@ public class ConstructorBuilder {
       Invocation invocation = new NewInvocation(signature, delegate, construct); 
       Invocation reference = new TypeInvocation(invocation, scope);
       
-      return new Function(signature, reference, type, TYPE_CONSTRUCTOR, modifiers, 1);
+      return new Function(signature, reference, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
    }
 }
