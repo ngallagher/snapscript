@@ -47,7 +47,8 @@ public class ThreadStackTest extends TestCase {
       createFunction(stack, "getDimensions", "PanelLayout", "run.layout");
       createTrace(stack, "/layout.snap", 33);
       
-      stack.update(cause);
+      StackTraceElement[] list =stack.build();
+      cause.setStackTrace(list);
       cause.printStackTrace();
    }
    

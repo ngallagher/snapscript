@@ -1,8 +1,6 @@
 package org.snapscript.core.error;
 
 import org.snapscript.common.Stack;
-import org.snapscript.core.Function;
-import org.snapscript.core.Trace;
 
 public class ThreadStack {
    
@@ -14,11 +12,17 @@ public class ThreadStack {
       this.local = new ThreadLocalStack();
    }
    
-   public void update(Throwable cause) {
+   public StackTraceElement[] build() {
+      return build(null);
+   }
+   
+   public StackTraceElement[] build(Throwable cause) {
       Stack stack = local.get();
-      StackTraceElement[] trace = builder.create(stack);
       
-      cause.setStackTrace(trace);
+      if(cause != null) {
+         return builder.create(stack, cause);   
+      }
+      return builder.create(stack);
    }
    
    public void before(Object trace) {

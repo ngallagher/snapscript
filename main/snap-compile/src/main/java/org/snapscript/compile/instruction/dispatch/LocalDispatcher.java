@@ -27,7 +27,14 @@ public class LocalDispatcher implements InvocationDispatcher {
       Callable<Result> local = binder.bind(scope, module, name, arguments);
       
       if(local == null) {
-         local = binder.bind(scope, name, arguments); // function variable
+         Callable<Result> closure = binder.bind(scope, name, arguments); // function variable
+         
+         if(closure != null) {
+            Result result = closure.call();
+            Object data = result.getValue();
+            
+            return ValueType.getTransient(data);   
+         }
       }
       if(local == null) {
          throw new InternalStateException("Method '" + name + "' not found in scope");

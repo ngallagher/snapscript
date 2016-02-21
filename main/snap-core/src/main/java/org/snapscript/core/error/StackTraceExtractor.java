@@ -1,30 +1,44 @@
 package org.snapscript.core.error;
 
+import static org.snapscript.core.Reserved.IMPORT_JAVA;
 import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StackTraceExtractor {
    
+   private static final int DEBUG_DEPTH = 0; // set to two to debug
+   
+   private final int depth;
+   
    public StackTraceExtractor() {
-      super();
+      this(DEBUG_DEPTH);
+   }
+   
+   public StackTraceExtractor(int depth) {
+      this.depth = depth;
    }
 
-   public String format(Throwable cause) {
-      StackTraceElement[] list = cause.getStackTrace();
-      
-      if(list.length > 0) {
-         StringBuilder builder = new StringBuilder();
+   public List<StackTraceElement> extract(Throwable cause) {
+      List<StackTraceElement> list = new ArrayList<StackTraceElement>();
+   
+      if(cause != null) {
+         StackTraceElement[] elements = cause.getStackTrace();
          
-         for(StackTraceElement trace : list) {
-            String source = trace.getClassName();
+         for(int i = 0; i < depth; i++) {
+            StackTraceElement element = elements[i];
+            String source = element.getClassName();
             
-            if(!source.startsWith(IMPORT_SNAPSCRIPT)) { // not really correct, stripping required elements!
-               builder.append("\tat ");
-               builder.append(trace);
-               builder.append("\n");
+            if(source.startsWith(IMPORT_SNAPSCRIPT)) { 
+               list.add(element);
+            } else if(source.startsWith(IMPORT_JAVA)) {
+               list.add(element);
+            } else {
+               return list;
             }
          } 
-         return builder.toString();
       }
-      return null;
+      return list;
    }
 }

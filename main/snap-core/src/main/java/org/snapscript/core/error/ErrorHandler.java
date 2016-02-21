@@ -18,14 +18,23 @@ public class ErrorHandler {
    }
    
    public Result throwError(Scope scope, Object value) {
+      if(InternalError.class.isInstance(value)) {
+         throw (InternalError)value;
+      }
       InternalError error = new InternalError(value);
       
       if(replace) {
+         StackTraceElement[] list = stack.build();
+         
          if(Throwable.class.isInstance(value)) {
             Throwable cause = (Throwable)value;
-            stack.update(cause);
+            StackTraceElement[] trace = stack.build(cause);
+            
+            cause.setStackTrace(trace);
+            error.setStackTrace(trace);
+         } else {
+            error.setStackTrace(list); // when there is no cause
          }
-         stack.update(error);
       }
       throw error;
    }

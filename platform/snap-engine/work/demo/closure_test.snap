@@ -49,3 +49,6 @@ class X extends Z{
 }
 var v = new X();
 v.dump();
+
+v.x(11,22);
+v.x("blah blah", "foo");
