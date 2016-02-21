@@ -1,9 +1,9 @@
 package org.snapscript.core.bind;
 
 import java.util.List;
-import java.util.Map;
 
-import org.snapscript.common.LeastRecentlyUsedMap;
+import org.snapscript.common.Cache;
+import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -15,7 +15,7 @@ import org.snapscript.core.convert.VariableArgumentConverter;
 
 public class ArgumentMatcher {
 
-   private final Map<Signature, ArgumentConverter> converters;
+   private final Cache<Signature, ArgumentConverter> converters;
    private final ConstraintMatcher matcher;
    
    public ArgumentMatcher(ConstraintMatcher matcher, TypeLoader loader) {
@@ -23,16 +23,16 @@ public class ArgumentMatcher {
    }
    
    public ArgumentMatcher(ConstraintMatcher matcher, TypeLoader loader, int capacity) {
-      this.converters = new LeastRecentlyUsedMap<Signature, ArgumentConverter>(capacity);
+      this.converters = new LeastRecentlyUsedCache<Signature, ArgumentConverter>(capacity);
       this.matcher = matcher;
    }
    
    public ArgumentConverter match(Signature signature) throws Exception {
-      ArgumentConverter converter = converters.get(signature);
+      ArgumentConverter converter = converters.fetch(signature);
       
       if(converter == null) {
          converter = resolve(signature);
-         converters.put(signature, converter);
+         converters.cache(signature, converter);
       }
       return converter;
    }
