@@ -70,7 +70,7 @@ public class CommandListener {
             //client.sendReloadTree();
             
             engine.register(forwarder); // make sure we are registered
-            engine.execute(command); 
+            engine.execute(command, filter); 
          } else {
             client.sendSyntaxError(resource, line);
          }

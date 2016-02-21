@@ -10,6 +10,7 @@ import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.engine.command.BreakpointsCommand;
 import org.snapscript.engine.command.BrowseCommand;
+import org.snapscript.engine.command.CommandFilter;
 import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.command.StepCommand;
 
@@ -31,7 +32,7 @@ public class ProcessEngine {
       pool.remove(listener);
    }
    
-   public boolean execute(ExecuteCommand command) {
+   public boolean execute(ExecuteCommand command, CommandFilter filter) { // XXX hack
       String system = System.getProperty("os.name");
       ProcessAgentConnection connection = pool.acquire(system);
       
@@ -41,6 +42,7 @@ public class ProcessEngine {
          String resource = command.getResource();
          String process = connection.toString();
          
+         filter.attach(process);
          connections.put(process, connection);
          
          return connection.execute(project, resource, breakpoints);
