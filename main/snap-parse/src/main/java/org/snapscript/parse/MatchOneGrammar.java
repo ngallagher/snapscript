@@ -24,7 +24,7 @@ public class MatchOneGrammar implements Grammar {
    
    @Override
    public boolean read(SyntaxReader reader, int depth) {
-      long position = reader.position();
+      Long position = reader.position();
       
       if(!failure.contains(position)) {
          Grammar best = cache.fetch(position);

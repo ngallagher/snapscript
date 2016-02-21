@@ -24,7 +24,7 @@ public class MatchAllGrammar implements Grammar {
    
    @Override
    public boolean read(SyntaxReader source, int depth) {
-      long position = source.position();
+      Long position = source.position();
       
       if(depth == 0) {
          for(Grammar grammar : grammars) {               

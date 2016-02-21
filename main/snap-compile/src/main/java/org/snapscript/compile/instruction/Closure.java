@@ -32,7 +32,7 @@ public class Closure implements Evaluation {
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       Signature signature = parameters.create(scope);
-      Function function = builder.create(signature, scope);
+      Function function = builder.create(signature, scope); // creating new function each time
       
       return ValueType.getTransient(function);
    }

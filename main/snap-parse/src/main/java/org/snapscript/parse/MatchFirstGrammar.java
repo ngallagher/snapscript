@@ -22,7 +22,7 @@ public class MatchFirstGrammar implements Grammar {
    
    @Override
    public boolean read(SyntaxReader node, int depth) {
-      long position = node.position();
+      Long position = node.position();
       
       if(!failure.contains(position)) {
          Grammar best = cache.fetch(position);

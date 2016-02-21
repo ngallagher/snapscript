@@ -19,8 +19,8 @@ public class ObjectDispatcher implements InvocationDispatcher {
    private final Object object;
    private final Scope scope;      
    
-   public ObjectDispatcher(Scope scope, Object object) {
-      this.extractor = new ValueTypeExtractor();
+   public ObjectDispatcher(ValueTypeExtractor extractor, Scope scope, Object object) {
+      this.extractor = extractor;
       this.object = object;
       this.scope = scope;
    }

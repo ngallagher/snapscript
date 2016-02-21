@@ -17,7 +17,7 @@ public class PositionSet {
       this.capacity = capacity;
    }
    
-   public boolean add(long key) {
+   public boolean add(Long key) {
       if(table.add(key)) {
          int size = queue.size();
          
@@ -34,7 +34,7 @@ public class PositionSet {
       return false;
    }
    
-   public boolean contains(long value) {
+   public boolean contains(Long value) {
       return table.contains(value);
    }
    

@@ -17,7 +17,7 @@ public class PositionSetTest extends TestCase {
    public void testPerformance() throws Exception {
       ThreadMXBean bean = (ThreadMXBean)ManagementFactory.getThreadMXBean();
       Random random = new SecureRandom();
-      long[] values = new long[ONE_MILLION];
+      Long[] values = new Long[ONE_MILLION];
       
       for(int i = 0; i < values.length; i++) {
          values[i] = random.nextLong();
@@ -57,7 +57,7 @@ public class PositionSetTest extends TestCase {
       Random random = new SecureRandom();
       
       for(int i = 0; i < 10000; i++) {
-         long value = random.nextLong();
+         Long value = random.nextLong();
          cache.add(value);
          set.add(value);
       }
@@ -72,11 +72,11 @@ public class PositionSetTest extends TestCase {
    public void testSimpleCache() throws Exception {
       PositionSet cache = new PositionSet(10);
       
-      assertTrue(cache.add(11));
-      assertTrue(cache.add(12));
-      assertTrue(cache.add(13));
-      assertTrue(cache.add(14));
-      assertTrue(cache.add(15));
+      assertTrue(cache.add(11L));
+      assertTrue(cache.add(12L));
+      assertTrue(cache.add(13L));
+      assertTrue(cache.add(14L));
+      assertTrue(cache.add(15L));
       assertEquals(cache.size(), 5);
    }
 }

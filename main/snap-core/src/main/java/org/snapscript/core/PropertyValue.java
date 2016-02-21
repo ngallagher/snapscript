@@ -7,9 +7,6 @@ public class PropertyValue extends Value {
    private final String name;
 
    public PropertyValue(Property property, Object object, String name) {
-      if(property==null){
-         new Exception(name).printStackTrace();
-      }
       this.property = property;
       this.object = object;
       this.name = name;

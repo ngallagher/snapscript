@@ -22,9 +22,9 @@ public class ArrayDispatcher implements InvocationDispatcher {
    private final Object object;
    private final Scope scope;      
    
-   public ArrayDispatcher(Scope scope, Object object) {
-      this.extractor = new ValueTypeExtractor();
+   public ArrayDispatcher(ValueTypeExtractor extractor, Scope scope, Object object) {
       this.converter = new ArrayConverter();
+      this.extractor = extractor;
       this.object = object;
       this.scope = scope;
    }
