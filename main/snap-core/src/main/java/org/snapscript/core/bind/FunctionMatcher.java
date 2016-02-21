@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
@@ -105,8 +106,9 @@ public class FunctionMatcher {
       return null;
    }
    
+   @Bug("We should remember that keys are static")
    public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
-      Object key = builder.create(type, name, values);
+      Object key = builder.create(type, name, values); // this key should indicate static
       Function function = cache.fetch(key);
       
       if(!cache.contains(key)) {
