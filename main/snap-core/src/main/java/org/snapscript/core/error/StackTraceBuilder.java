@@ -8,12 +8,12 @@ import org.snapscript.common.Stack;
 
 public class StackTraceBuilder {
    
-   private final StackTraceExtractor extractor;
+   private final OriginTraceExtractor extractor;
    private final StackElementConverter builder;
    private final StackTraceElement[] empty;
    
    public StackTraceBuilder() {
-      this.extractor = new StackTraceExtractor();
+      this.extractor = new OriginTraceExtractor();
       this.builder = new StackElementConverter();
       this.empty = new StackTraceElement[]{};
    }
@@ -22,9 +22,9 @@ public class StackTraceBuilder {
       return create(stack, null);
    }
    
-   public StackTraceElement[] create(Stack stack, Throwable cause) {
+   public StackTraceElement[] create(Stack stack, Throwable origin) {
       Thread thread = Thread.currentThread();
-      List<StackTraceElement> list = extractor.extract(cause); // debug cause
+      List<StackTraceElement> list = extractor.extract(origin); // debug cause
       List<StackTraceElement> context = builder.create(stack); // script stack
       StackTraceElement[] actual = thread.getStackTrace(); // native stack
       

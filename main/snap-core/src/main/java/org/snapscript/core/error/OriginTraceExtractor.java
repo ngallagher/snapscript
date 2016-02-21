@@ -6,18 +6,18 @@ import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StackTraceExtractor {
+public class OriginTraceExtractor {
    
-   private static final int DEFAULT_DEPTH = 0;
-   private static final int DEBUG_DEPTH = 2; 
+   public static final int DEFAULT_DEPTH = 0;
+   public static final int DEBUG_DEPTH = 2; 
 
    private final int depth;
    
-   public StackTraceExtractor() {
+   public OriginTraceExtractor() {
       this(DEFAULT_DEPTH);
    }
    
-   public StackTraceExtractor(int depth) {
+   public OriginTraceExtractor(int depth) {
       this.depth = depth;
    }
 
