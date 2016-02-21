@@ -1,8 +1,8 @@
 package org.snapscript.common;
 
-public class LongQueue {
+public class ArrayQueue {
 
-   private long[] queue;
+   private Object[] queue;
    private int length;
    private int start;
    private int head; // add at head
@@ -10,7 +10,7 @@ public class LongQueue {
    private int size;
    private int end;
    
-   public LongQueue(long[] queue, int start, int length) {
+   public ArrayQueue(Object[] queue, int start, int length) {
       this.end = start + length;
       this.length = length;
       this.start = start;
@@ -19,7 +19,7 @@ public class LongQueue {
       this.tail = start;
    }
    
-   public void offer(long value) {
+   public void offer(Object value) {
       if(head >= end) {
          head = start; // wrap around
       }
@@ -37,9 +37,9 @@ public class LongQueue {
       queue[head++] = value;
    }
    
-   public long poll() {
+   public Object poll() {
       if(size > 0) {
-         long value = queue[tail++];
+         Object value = queue[tail++];
          
          if(tail >= end) {
             tail = start;
@@ -47,7 +47,7 @@ public class LongQueue {
          size--;
          return value;
       }
-      return 0;
+      return null;
    }
    
    public int size() {

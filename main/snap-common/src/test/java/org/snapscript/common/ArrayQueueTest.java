@@ -5,11 +5,11 @@ import java.util.Random;
 
 import junit.framework.TestCase;
 
-public class LongQueueTest extends TestCase {
+public class ArrayQueueTest extends TestCase {
    
    public void testQueueScroll() throws Exception {
-      long[] array = new long[100];
-      LongQueue queue = new LongQueue(array, 50, 20);
+      Object[] array = new Object[100];
+      ArrayQueue queue = new ArrayQueue(array, 50, 20);
       
       for(int i = 0; i < 10000; i++) {
          queue.offer(i+1);
@@ -20,8 +20,8 @@ public class LongQueueTest extends TestCase {
    }
    
    public void testTailFollowsHead() throws Exception {
-      long[] array = new long[10];
-      LongQueue queue = new LongQueue(array, 5, 5);
+      Object[] array = new Object[10];
+      ArrayQueue queue = new ArrayQueue(array, 5, 5);
       
       for(int i = 0; i < 1000; i++) {
          queue.offer(i+1);
@@ -32,8 +32,8 @@ public class LongQueueTest extends TestCase {
    }
    
    public void testQueueOverflow() throws Exception {
-      long[] array = new long[10];
-      LongQueue queue = new LongQueue(array, 5, 5);
+      Object[] array = new Object[10];
+      ArrayQueue queue = new ArrayQueue(array, 5, 5);
       
       for(int i = 0; i < 10; i++) {
          queue.offer(i+1);
@@ -54,16 +54,16 @@ public class LongQueueTest extends TestCase {
       assertEquals(queue.poll(), 10);
    
       assertEquals(queue.size(), 0);
-      assertEquals(queue.poll(), 0);
+      assertEquals(queue.poll(), null);
       assertEquals(queue.size(), 0);
-      assertEquals(queue.poll(), 0);
+      assertEquals(queue.poll(), null);
       assertEquals(queue.size(), 0);
-      assertEquals(queue.poll(), 0); 
+      assertEquals(queue.poll(), null); 
    }
    
    public void testSmallQueue() throws Exception {
-      long[] array = new long[5];
-      LongQueue queue = new LongQueue(array, 3, 2);
+      Object[] array = new Object[5];
+      ArrayQueue queue = new ArrayQueue(array, 3, 2);
       
       for(int i = 0; i < 2; i++) {
          queue.offer(i+1);
@@ -73,14 +73,14 @@ public class LongQueueTest extends TestCase {
       assertEquals(queue.size(), 1);
       assertEquals(queue.poll(), 2);
       assertEquals(queue.size(), 0);
-      assertEquals(queue.poll(), 0);
+      assertEquals(queue.poll(), null);
       assertEquals(queue.size(), 0);
-      assertEquals(queue.poll(), 0); 
+      assertEquals(queue.poll(), null); 
    }
    
    public void testTinyQueue() throws Exception {
-      long[] array = new long[5];
-      LongQueue queue = new LongQueue(array, 3, 1);
+      Object[] array = new Object[5];
+      ArrayQueue queue = new ArrayQueue(array, 3, 1);
       
       for(int i = 0; i < 10000; i++) {
          queue.offer(i+1);

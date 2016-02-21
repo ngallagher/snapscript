@@ -1,72 +1,75 @@
 package org.snapscript.common;
 
-public class LongSet {
+public class ArraySet {
 
-   private long[] table;
+   private Object[] table;
    private int length;
    private int start;
    private int size;
    
-   public LongSet(long[] table, int start, int length) {
+   public ArraySet(Object[] table, int start, int length) {
       this.length = length;
       this.start = start;
       this.table = table;
    }
    
-   public boolean add(long value) {
-      if(value == 0) {
-         throw new IllegalArgumentException("Value must not be zero");
+   public boolean add(Object value) {
+      if(value == null) {
+         throw new IllegalArgumentException("Value must not be null");
       }
       int begin = index(value);
       
       for(int i = 0; i < length; i++) {
          int index = (begin + i) % length; // wrap around table
-         long current = table[start + index];
+         Object current = table[start + index];
       
-         if(current == value) {
-            return false; // already there
-         }
-         if(current == 0) {
+         if(current == null) {
             table[start + index] = value; // slot was empty
             size++;
             return true;
+         }
+         if(current == value || value.equals(current)) {
+            return false; // already there
          }
       }
       return false;
    }
    
-   public boolean contains(long value) {
-      if(value == 0) {
-         throw new IllegalArgumentException("Value must not be zero");
+   public boolean contains(Object value) {
+      if(value == null) {
+         throw new IllegalArgumentException("Value must not be null");
       }
       int begin = index(value);
       
       for(int i = 0; i < length; i++) {
          int index = (begin + i) % length; 
-         long current = table[start + index];
+         Object current = table[start + index];
       
-         if(current == value) {
-            return true;
-         }
-         if(current == 0) {
+         if(current == null) {
             return false;
+         }
+         if(current == value || value.equals(current)) {
+            return true;
          }
       }
       return false;
    }
    
-   public boolean remove(long value) {
-      if(value == 0) {
-         throw new IllegalArgumentException("Value must not be zero");
+   public boolean remove(Object value) {
+      if(value == null) {
+         throw new IllegalArgumentException("Value must not be null");
       }
       int begin = index(value);
       
       for(int i = 0; i < length; i++) {
          int index = (begin + i) % length; // next slot and wrap around
-         long current = table[start + index];
+         Object current = table[start + index];
       
-         if(current == value) {
-            table[start + index] = 0; // clear the slot
+         if(current == null) {
+            return false;
+         }
+         if(current == value || value.equals(current)) {
+            table[start + index] = null; // clear the slot
             begin = index + 1;
             size--;
             
@@ -74,24 +77,21 @@ public class LongSet {
                index = (begin + j) % length; // slot after match
                current = table[start + index];
 
-               if(current == 0) {
+               if(current == null) {
                   break;
                }
-               table[start + index] = 0; // clear slot
+               table[start + index] = null; // clear slot
                size--; // decrease size
                add(current); // add to fill up space
             }
             return true;
          }
-         if(current == 0) {
-            return false;
-         }
       }
       return false;
    }
    
-   private int index(long value) {
-      int hash = (int)(value ^ (value >>> 32));
+   private int index(Object value) {
+      int hash = value.hashCode();
       
       hash ^= hash >> 16; // murmur hash 3 integer finalizer 
       hash *= 0x85ebca6b;

@@ -2,7 +2,6 @@
 1) Closures properly i.e as fields
 2) Closures converted to interfaces
 3) Closure parameter count validated for count
-4) Enusre ' strings are not templates
 5) Perhaps switch statement
 6) TypeExtractor available to convert objects
 7) Connections swap on websocket connect for processes
@@ -15,7 +14,7 @@
 14) Compilation of identifiers
 15) Create ArrayTable, ArrayQueue, ArrayCache
 16) Check 'static' and 'private' and 'protected' 
-27) Add variable arguments '...'
+
 */
 function call(fun){
    fun(22,33);

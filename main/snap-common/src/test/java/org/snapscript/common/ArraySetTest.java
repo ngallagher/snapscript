@@ -2,11 +2,11 @@ package org.snapscript.common;
 
 import junit.framework.TestCase;
 
-public class LongSetTest extends TestCase {
+public class ArraySetTest extends TestCase {
 
    public void testLongSet() throws Exception {
-      long[] table = new long[10];
-      LongSet set = new LongSet(table, 5, 5);
+      Object[] table = new Object[10];
+      ArraySet set = new ArraySet(table, 5, 5);
       
       assertTrue(set.add(3));
       assertTrue(set.add(55));

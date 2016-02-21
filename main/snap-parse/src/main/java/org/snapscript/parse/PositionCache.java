@@ -1,19 +1,19 @@
 package org.snapscript.parse;
 
-import org.snapscript.common.LongQueue;
-import org.snapscript.common.LongTable;
+import org.snapscript.common.ArrayQueue;
+import org.snapscript.common.ArrayTable;
 
 public class PositionCache<T> {
    
-   private final LongTable<T> table;
-   private final LongQueue queue;
-   private final long[] cache;
+   private final ArrayTable<T> table;
+   private final ArrayQueue queue;
+   private final Object[] cache;
    private final int capacity;
    
    public PositionCache(int capacity) {
-      this.cache = new long[capacity * 20];
-      this.queue = new LongQueue(cache, capacity * 19, capacity);
-      this.table = new LongTable<T>(cache, 0, capacity * 19);
+      this.cache = new Object[capacity * 20];
+      this.queue = new ArrayQueue(cache, capacity * 19, capacity);
+      this.table = new ArrayTable<T>(cache, 0, capacity * 19);
       this.capacity = capacity;
    }
    
@@ -28,9 +28,9 @@ public class PositionCache<T> {
          int size = queue.size();
          
          if(size >= capacity) {
-            long last = queue.poll();
+            Object last = queue.poll();
             
-            if(last != 0) {
+            if(last != null) {
                table.remove(last);
             }
          }

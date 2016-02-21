@@ -16,9 +16,7 @@ public class EnumConverter extends ConstraintConverter {
       Class require = type.getType();
       
       if(real != require) {
-         Class parent = real.getSuperclass();
-            
-         if(parent == require) {
+         if(require.isAssignableFrom(real)) {
             return EXACT;
          }
          if(real == String.class) {
@@ -32,13 +30,13 @@ public class EnumConverter extends ConstraintConverter {
    @Override
    public int score(Object value) throws Exception {
       if(value != null) {
-         Class type = value.getClass();
-         Class parent = type.getSuperclass();
+         Class real = value.getClass();
+         Class require = type.getType();
          
-         if(parent == Enum.class) {
+         if(require.isAssignableFrom(real)) {
             return EXACT;
          }
-         if(type == String.class) {
+         if(real == String.class) {
             return SIMILAR;
          }
          return INVALID;
@@ -46,18 +44,16 @@ public class EnumConverter extends ConstraintConverter {
       return POSSIBLE;
    }
    
+   @Override
    public Object convert(Object value) throws Exception {
       if(value != null) {
-         Class actual = value.getClass();
-         Class parent = actual.getSuperclass();
+         Class require = type.getType();
          
-         if(parent == Enum.class) {
+         if(require.isInstance(value)) {
             return value;
          }
          String text = String.valueOf(value);
-         String name = type.getName();
-         Class require = Class.forName(name);
-       
+         
          return Enum.valueOf(require, text);
       }
       return null;

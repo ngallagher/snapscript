@@ -2,15 +2,11 @@ package org.snapscript.common;
 
 import junit.framework.TestCase;
 
-public class LongTableTest extends TestCase {
-   
-   public void testComparison() throws Exception {
-      
-   }
+public class ArrayTableTest extends TestCase {
    
    public void testTable() throws Exception {
-      long[] array = new long[200];
-      LongTable<String> table = new LongTable<String>(array, 50, 100);
+      Object[] array = new Object[200];
+      ArrayTable<String> table = new ArrayTable<String>(array, 50, 100);
       
       table.put(1, "ONE");
       table.put(2, "TWO");
