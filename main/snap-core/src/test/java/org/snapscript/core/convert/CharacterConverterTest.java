@@ -14,11 +14,11 @@ public class CharacterConverterTest extends TestCase {
       assertEquals(converter.score('s'), ConstraintConverter.EXACT);
       assertEquals(converter.score("s"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("ss"), ConstraintConverter.INVALID);
-      assertEquals(converter.score(null), ConstraintConverter.POSSIBLE);
+      assertEquals(converter.score((Object)null), ConstraintConverter.POSSIBLE);
       
       assertEquals(converter.convert('s'), 's');
       assertEquals(converter.convert("s"), 's');
-      assertEquals(converter.convert(null), null);
+      assertEquals(converter.convert((Object)null), null);
    }
    
    public void testPrimitiveCharacter() throws Exception {
@@ -28,7 +28,7 @@ public class CharacterConverterTest extends TestCase {
       assertEquals(converter.score('s'), ConstraintConverter.EXACT);
       assertEquals(converter.score("s"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("ss"), ConstraintConverter.INVALID);
-      assertEquals(converter.score(null), ConstraintConverter.INVALID);
+      assertEquals(converter.score((Object)null), ConstraintConverter.INVALID);
       
       assertEquals(converter.convert('s'), 's');
       assertEquals(converter.convert("s"), 's');

@@ -2,24 +2,30 @@ trait Transport {
    transport(destination);
 }
 class Vehicle with Transport{
+   
    var wheels;
+   
    new(wheels){
       System.err.println("Vehicle(${wheels})");
       this.wheels = wheels;
    }
+   
    getWheels(){
       return wheels;
    }
 }
 
 class Car extends Vehicle{
+   
    var name;
    var doors;
+   
    new(name) : this(name, 2){
-      System.err.println("Car(${name})");
+      println("Car(${name})");
    }
+   
    new(name, doors) : super(4) {
-      System.err.println("Car(${name}, ${doors})");
+      println("Car(${name}, ${doors})");
       this.name = name;
       this.doors = doors;
    }
@@ -29,20 +35,24 @@ class Car extends Vehicle{
 }
 
 class Bus extends Vehicle{
+   
    var capacity;
    var name;
    var doors;
+   
    new(name, capacity) : this(name, capacity, 1){
-      System.err.println("Bus(${name}, ${capacity})");
+      println("Bus(${name}, ${capacity})");
    }
+   
    new(name, capacity, doors) : super(6) {
       System.err.println("Bus(${name}, ${capacity}, ${doors})");
       this.capacity = capacity;
       this.name = name;
       this.doors = doors;
    }
+   
    override transport(destination){
-      System.err.println("Bus(name=${name} doors=${doors} wheels=${wheels} capacity=${capacity} destination=${destination})");
+      println("Bus(name=${name} doors=${doors} wheels=${wheels} capacity=${capacity} destination=${destination})");
    }
 }
 var c = new Car("ford");

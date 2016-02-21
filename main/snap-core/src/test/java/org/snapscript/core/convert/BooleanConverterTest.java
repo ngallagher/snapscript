@@ -19,7 +19,7 @@ public class BooleanConverterTest extends TestCase {
       assertEquals(converter.score("TRUE"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("FALSE"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("yes"), ConstraintConverter.INVALID);
-      assertEquals(converter.score(null), ConstraintConverter.POSSIBLE);
+      assertEquals(converter.score((Object)null), ConstraintConverter.POSSIBLE);
       
       assertEquals(converter.convert(true), Boolean.TRUE);
       assertEquals(converter.convert(false), Boolean.FALSE);
@@ -27,7 +27,7 @@ public class BooleanConverterTest extends TestCase {
       assertEquals(converter.convert("false"), Boolean.FALSE);
       assertEquals(converter.convert("TRUE"), Boolean.TRUE);
       assertEquals(converter.convert("FALSE"), Boolean.FALSE);
-      assertEquals(converter.convert(null), null);
+      assertEquals(converter.convert((Object)null), null);
    }
    
    public void testPrimitiveBoolean() throws Exception {
@@ -42,6 +42,6 @@ public class BooleanConverterTest extends TestCase {
       assertEquals(converter.score("TRUE"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("FALSE"), ConstraintConverter.POSSIBLE);
       assertEquals(converter.score("yes"), ConstraintConverter.INVALID);
-      assertEquals(converter.score(null), ConstraintConverter.INVALID);
+      assertEquals(converter.score((Object)null), ConstraintConverter.INVALID);
    }
 }
