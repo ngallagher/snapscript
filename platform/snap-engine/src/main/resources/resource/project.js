@@ -145,6 +145,15 @@ function browseScriptVariables(variables) {
    }
 }
 
+function attachProcess(process) {
+   var statusFocus = currentStatusFocus(); // what is the current focus
+   var message = JSON.stringify({
+      process: process,
+      focus: statusFocus != process // toggle the focus
+   });
+   socket.send("ATTACH:" + message); // attach to process
+}
+
 function createLayout() {
 
    // $('#topLayer').spin({ lines: 10, length: 30, width: 20, radius: 40 });
@@ -176,7 +185,7 @@ function createLayout() {
          resizable : false,
          style : pstyle,
          content : "<table width='100%' height='100%'><tr>"+
-                   "<td width='50%' align='left'><p id='status'></p></td>"+
+                   "<td width='50%' align='left'><p id='process'></p></td>"+
                    "<td width='50%' align='right'><p id='currentFile'></p></td>"+
                    "</tr></table>"
       } ]
@@ -264,6 +273,9 @@ function createLayout() {
             }, {
                id : 'tab6',
                caption : '<div class="telemetryTab">Telemetry</div>'
+            }, {
+               id : 'tab7',
+               caption : '<div class="statusTab">Status</div>'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
@@ -290,11 +302,16 @@ function createLayout() {
                   w2ui['tabLayout'].refresh();
                   $('#variables').w2render('variables');
                   showVariables();
-               } else {
+               } else if(event.target == 'tab6'){
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='telemetry'></div>");
                   w2ui['tabLayout'].refresh();
                   $('#telemetry').w2render('telemetry');
                   showVariables();
+               } else {
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='status'></div>");
+                  w2ui['tabLayout'].refresh();
+                  $('#status').w2render('status');
+                  showStatus();
                }
             }
          }
@@ -427,6 +444,36 @@ function createLayout() {
                openTreeFile(record.script, function() {
                   showEditorLine(record.line);  
                }); 
+            }
+         }
+      }
+   });
+   
+   $().w2grid({
+      name : 'status',
+      columns : [ 
+       {
+         field : 'name',
+         caption : 'Process',
+         size : '50%',
+         sortable : true,
+         resizable : true
+      },{
+         field : 'resource',
+         caption : 'Resource',
+         size : '50%',
+         sortable : true,
+         resizable : true
+      } ],
+      onClick : function(event) {
+         var grid = this;
+         event.onComplete = function() {
+            var sel = grid.getSelection();
+            if (sel.length == 1) {
+               var record = grid.get(sel[0]);
+               openTreeFile(record.script, function() {
+                  attachProcess(record.process);
+               });
             }
          }
       }

@@ -52,9 +52,10 @@ function showVariables() {
    for(var i = 0; i < sortedNames.length; i++) {
       var variableName = sortedNames[i];
       var variable = threadVariables[variableName];
+      var variableExpandable = "" + variable.expandable;
       var displayStyle = "variableLeaf";
-      
-      if(variable.expandable == "true") {
+
+      if(variableExpandable == "true") {
          displayStyle = "variableNode";
       }
       var displayValue = "<div class='variableData'>"+variable.value+"</div>";
@@ -69,7 +70,7 @@ function showVariables() {
          name: displayName,
          value: variable.value,
          type: variable.type,
-         expandable: variable.expandable
+         expandable: variableExpandable == "true"
          //depth: variable.depth // seems to cause issues?
       });
    }

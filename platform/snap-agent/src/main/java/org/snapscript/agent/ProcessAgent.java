@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.agent.common.ExceptionBuilder;
 import org.snapscript.agent.debug.BreakpointMatcher;
@@ -41,7 +43,6 @@ import org.snapscript.core.PackageLinker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TraceInterceptor;
-import org.snapscript.core.error.InternalError;
 import org.snapscript.core.store.RemoteStore;
 
 public class ProcessAgent {
@@ -123,22 +124,27 @@ public class ProcessAgent {
 
    private class ClientListener extends ProcessEventAdapter {
       
+      private final AtomicReference<String> reference;
       private final String process;
       
       public ClientListener(String process) throws Exception {
+         this.reference = new AtomicReference<String>();
          this.process = process;
       }
 
       @Override
       public void onExecute(ProcessEventChannel channel, ExecuteEvent event) throws Exception {
-         Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
          String resource = event.getResource();
-         String process = event.getProcess();
-         String project = event.getProject();
-         matcher.update(breakpoints);
-         store.update(project); // XXX rubbish
-         ExecuteTask task = new ExecuteTask(channel, process, project, resource);
-         task.start();
+         
+         if(reference.compareAndSet(null, resource)) { // execute only once
+            Map<String, Map<Integer, Boolean>> breakpoints = event.getBreakpoints();
+            String process = event.getProcess();
+            String project = event.getProject();
+            matcher.update(breakpoints);
+            store.update(project); // XXX rubbish
+            ExecuteTask task = new ExecuteTask(channel, process, project, resource);
+            task.start();
+         }
       }
       
       @Override
@@ -173,7 +179,8 @@ public class ProcessAgent {
 
       @Override
       public void onPing(ProcessEventChannel channel, PingEvent event) throws Exception {
-         PongEvent pong = new PongEvent(process);
+         String resource = reference.get();
+         PongEvent pong = new PongEvent(process, resource, resource != null);
          channel.send(pong);
       }
 

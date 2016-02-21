@@ -15,7 +15,7 @@ import org.snapscript.engine.command.StepCommand;
 
 public class ProcessEngine {
    
-   private final Map<String, ProcessAgentConnection> connections;
+   private final Map<String, ProcessAgentConnection> connections; // active processes
    private final ProcessAgentPool pool;
 
    public ProcessEngine(int port, int capacity) throws Exception {
@@ -23,27 +23,33 @@ public class ProcessEngine {
       this.pool = new ProcessAgentPool(port, capacity);
    }
    
-   public boolean execute(ProcessEventListener listener, ExecuteCommand command, String client) {
+   public void register(ProcessEventListener listener) {
+      pool.register(listener);
+   }
+   
+   public void remove(ProcessEventListener listener) {
+      pool.remove(listener);
+   }
+   
+   public boolean execute(ExecuteCommand command) {
       String system = System.getProperty("os.name");
-      ProcessAgentConnection connection = pool.acquire(listener, system);
-      ProcessAgentConnection current = connections.remove(client);
+      ProcessAgentConnection connection = pool.acquire(system);
       
-      if(current != null) {
-         current.close();
-      }
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
          String project = command.getProject();
          String resource = command.getResource();
+         String process = connection.toString();
          
-         connections.put(client, connection);
+         connections.put(process, connection);
+         
          return connection.execute(project, resource, breakpoints);
       }
       return true;
    }
    
-   public boolean breakpoints(BreakpointsCommand command, String client) {
-      ProcessAgentConnection connection = connections.get(client);
+   public boolean breakpoints(BreakpointsCommand command, String process) {
+      ProcessAgentConnection connection = connections.get(process);
       
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
@@ -52,8 +58,8 @@ public class ProcessEngine {
       return true;
    }
    
-   public boolean browse(BrowseCommand command, String client) {
-      ProcessAgentConnection connection = connections.get(client);
+   public boolean browse(BrowseCommand command, String process) {
+      ProcessAgentConnection connection = connections.get(process);
       
       if(connection != null) {
          Set<String> expand = command.getExpand();
@@ -63,8 +69,8 @@ public class ProcessEngine {
       return true;
    }
    
-   public boolean step(StepCommand command, String client) {
-      ProcessAgentConnection connection = connections.get(client);
+   public boolean step(StepCommand command, String process) {
+      ProcessAgentConnection connection = connections.get(process);
       
       if(connection != null) {
          String thread = command.getThread();
@@ -82,8 +88,8 @@ public class ProcessEngine {
       return true;
    }
    
-   public boolean stop(String client) {
-      ProcessAgentConnection connection = connections.remove(client);
+   public boolean stop(String process) {
+      ProcessAgentConnection connection = connections.remove(process);
       
       if(connection != null) {
          connection.close();
@@ -91,8 +97,8 @@ public class ProcessEngine {
       return true;
    }
    
-   public boolean ping(String client) {
-      ProcessAgentConnection connection = connections.get(client);
+   public boolean ping(String process) {
+      ProcessAgentConnection connection = connections.get(process);
       
       if(connection != null) {
          return connection.ping();

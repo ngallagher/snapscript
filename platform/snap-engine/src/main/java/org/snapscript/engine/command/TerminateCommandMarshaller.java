@@ -3,12 +3,16 @@ package org.snapscript.engine.command;
 public class TerminateCommandMarshaller implements CommandMarshaller<TerminateCommand>{
 
    @Override
-   public TerminateCommand toCommand(String text) {
-      return new TerminateCommand();
+   public TerminateCommand toCommand(String value) {
+      int offset = value.indexOf(':');
+      String process = value.substring(offset + 1);
+      
+      return new TerminateCommand(process);
    }
 
    @Override
    public String fromCommand(TerminateCommand command) {
-      return CommandType.TERMINATE.name();
+      String process = command.getProcess();
+      return CommandType.TERMINATE + ":" + process;
    }
 }

@@ -1,6 +1,6 @@
 
 function startTelemetry() {
-   createRoute("PROFILE", updateTelemetry)
+   createRoute("PROFILE", updateTelemetry, clearTelemetry);
 }
 
 function updateTelemetry(socket, type, text) {

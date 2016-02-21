@@ -1,6 +1,7 @@
 var consoleWindow = [];
 var consoleUpdate = false;
 var consoleCapacity = 1000;
+var consoleProcess = null;
 
 function registerConsole() {
 	createRoute('PRINT_ERROR', updateConsole);
@@ -14,7 +15,8 @@ function clearConsole() {
 	if(consoleElement != null) {
        document.getElementById("console").innerHTML = "";
 	}
-    consoleWindow = [];
+	consoleProcess = null;
+   consoleWindow = [];
 }
 
 function showConsole() {
@@ -59,16 +61,29 @@ function showConsole() {
 	}
 }
 
+function updateConsoleFocus(updateProcess) {
+   if(updateProcess != consoleProcess) { // focus has changed
+      clearConsole();
+   }
+   consoleProcess = updateProcess;
+}
+
 function updateConsole(socket, type, value) {
-	var node = {
+   var offset = value.indexOf(':');
+   var updateProcess = value.substring(0, offset)
+   var updateText = value.substring(offset+1);
+   var node = {
 		error: type == 'PRINT_ERROR',
-		text: value,
+		process: updateProcess,
+		text: updateText
 	};
+   updateConsoleFocus(updateProcess); // focus on only one process
 	consoleWindow.push(node); // put at the end, i.e index consoleWindow.length - 1
 	
 	if(consoleWindow.length > consoleCapacity) {	
 		consoleWindow.shift(); // remove from the start, i.e index 0
 	}
+	consoleProcess = updateProcess;
 	consoleUpdate = true;
 }
 

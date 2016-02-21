@@ -1,5 +1,6 @@
 var subscription = {};
 var routes = {};
+var disconnect = [];
 var socket = null;
 var connections = 0;
 var attempts = 0;
@@ -74,6 +75,15 @@ function openSocket() {
    };
 
    socket.onerror = function(message) {
+      var length = disconnect.length;
+      
+      for(var i = 0; i < length; i++) {
+         var callback = disconnect[i];
+         
+         if(callback != null) {
+            callback(); // disconnected
+         }
+      }
       showSpinner();
       console.log("Error connecting to '" + subscription.address + "'");
    };
@@ -81,12 +91,21 @@ function openSocket() {
    socket.onclose = function(message) {
       var exponent = Math.pow(2, attempts++);
       var interval = (exponent - 1) * 1000;
+      var length = disconnect.length;
       var reference = openSocket();
 
       if (interval > 30 * 1000) {
          interval = 30 * 1000;
       }
       setTimeout(reference, interval);
+      
+      for(var i = 0; i < length; i++) {
+         var callback = disconnect[i];
+         
+         if(callback != null) {
+            callback(); // disconnected
+         }
+      }
       showSpinner(); // on disconnect show spinner
       console.log("Connection closed to '" + subscription.address + "' reconnecting in " + interval + " ms");
    };
@@ -116,7 +135,7 @@ function openSocket() {
    };
 }
 
-function createRoute(code, method) {
+function createRoute(code, method, failure) {
    var name = code.toUpperCase();
    
    if(name != code) {
@@ -126,6 +145,22 @@ function createRoute(code, method) {
    
    if(route == null) {
       routes[code] = method; // perhaps we should disconnect on every new route?
+      
+      if(failure != null) {
+         var length = disconnect.length;
+         var exists = false;
+         
+         for(var i = 0; i < length; i++) {
+            var callback = disconnect[i];
+            
+            if(callback == failure) { // don't add twice
+               exists = true;
+            }
+         }
+         if(!exists) {
+            disconnect.push(failure); // add a disconnect listener
+         }
+      }
       refreshSocket();
    }
 }

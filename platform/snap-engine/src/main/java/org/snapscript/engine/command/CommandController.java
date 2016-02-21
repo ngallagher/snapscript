@@ -39,6 +39,8 @@ public class CommandController implements FrameListener {
                listener.onStop((StopCommand)command);
             } else if(command instanceof BrowseCommand) {
                listener.onBrowse((BrowseCommand)command);
+            } else if(command instanceof AttachCommand) {
+               listener.onAttach((AttachCommand)command);
             }
          } else if(type == FrameType.PONG){
             listener.onPing();

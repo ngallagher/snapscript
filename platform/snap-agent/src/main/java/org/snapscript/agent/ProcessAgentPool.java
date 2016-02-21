@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,8 +29,8 @@ import org.snapscript.common.LeastRecentlyUsedCache;
 public class ProcessAgentPool {
 
    private final Cache<String, BlockingQueue<ProcessAgentConnection>> connections;
-   private final Cache<String, ProcessEventListener> listeners;
    private final BlockingQueue<ProcessAgentConnection> running;
+   private final Set<ProcessEventListener> listeners;
    private final ProcessEventInterceptor interceptor;
    private final ProcessAgentLauncher launcher;
    private final ProcessAgentPinger pinger;
@@ -42,7 +43,7 @@ public class ProcessAgentPool {
    
    public ProcessAgentPool(int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessAgentConnection>>();
-      this.listeners = new LeastRecentlyUsedCache<String, ProcessEventListener>();
+      this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessAgentConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
       this.server = new SocketEventServer(interceptor, port);
@@ -51,7 +52,7 @@ public class ProcessAgentPool {
       this.capacity = capacity;
    }
    
-   public ProcessAgentConnection acquire(ProcessEventListener listener, String system) {
+   public ProcessAgentConnection acquire(String system) {
       try {
          BlockingQueue<ProcessAgentConnection> pool = connections.fetch(system);
          
@@ -63,9 +64,6 @@ public class ProcessAgentPool {
          if(connection == null) {
             throw new IllegalStateException("No agent of type " + system + " as pool is empty");
          }
-         String name = connection.toString();
-         
-         listeners.cache(name, listener);
          running.offer(connection);
          return connection;
       }catch(Exception e){
@@ -74,7 +72,23 @@ public class ProcessAgentPool {
       return null;
    }
    
-   public void start(String address) {
+   public void register(ProcessEventListener listener) {
+      try {
+         listeners.add(listener);
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+   }
+   
+   public void remove(ProcessEventListener listener) {
+      try {
+         listeners.remove(listener);
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+   }
+   
+   public void start(String address) { // http://host:port/project
       try {
          server.start();
          pinger.start(address);
@@ -93,9 +107,9 @@ public class ProcessAgentPool {
    
    private class ProcessEventInterceptor extends ProcessEventAdapter {
       
-      private final Cache<String, ProcessEventListener> listeners;
+      private final Set<ProcessEventListener> listeners;
       
-      public ProcessEventInterceptor(Cache<String, ProcessEventListener> listeners) {
+      public ProcessEventInterceptor(Set<ProcessEventListener> listeners) {
          this.listeners = listeners;
       }
       
@@ -115,128 +129,96 @@ public class ProcessAgentPool {
       
       @Override
       public void onExit(ProcessEventChannel channel, ExitEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onExit(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onWriteError(ProcessEventChannel channel, WriteErrorEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onWriteError(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onWriteOutput(ProcessEventChannel channel, WriteOutputEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onWriteOutput(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onSyntaxError(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onBegin(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onProfile(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onPong(ProcessEventChannel channel, PongEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onPong(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }
       
       @Override
       public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
-         String process = event.getProcess();
-         ProcessEventListener listener = listeners.fetch(process);
-         
-         if(listener != null) {
+         for(ProcessEventListener listener : listeners) {
             try {
                listener.onScope(channel, event);
             } catch(Exception e) {
                e.printStackTrace();
-               listeners.take(process);
-               channel.close();
+               listeners.remove(listener);
             }
          }
       }

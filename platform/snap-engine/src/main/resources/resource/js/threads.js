@@ -3,10 +3,8 @@ var currentFocusThread = null;
 var currentFocusLine = -1;
 
 function createThreads() {
-   createRoute("BEGIN", startThreads)
-   createRoute("SCOPE", updateThreads);
-   createRoute("TERMINATE", terminateThreads);
-   createRoute("EXIT", terminateThreads);
+   createRoute("BEGIN", startThreads, clearThreads);
+   createRoute("SCOPE", updateThreads, clearVariables);
 }
 
 function startThreads(socket, type, text) {
@@ -17,10 +15,10 @@ function startThreads(socket, type, text) {
    clearVariables();
    clearTelemetry();
    clearThreads();
-   $("#status").html("<i>&nbsp;RUNNING: " + message.resource + " ("+message.process+") "+message.duration+" milliseconds</i>");
+   $("#process").html("<i>&nbsp;RUNNING: " + message.resource + " ("+message.process+") "+message.duration+" milliseconds</i>");
 }
 
-function terminateThreads(socket, type, text) {
+function terminateThreads() {
    suspendedThreads = {};
    currentFocusThread = null;
    clearEditorHighlights(); // this should be done in editor.js, i.e createRoute("EXIT" ... )
@@ -31,7 +29,7 @@ function terminateThreads(socket, type, text) {
 function clearThreads() {
    w2ui['threads'].records = [];
    w2ui['threads'].refresh();
-   $("#status").html("");
+   $("#process").html("");
 }
 
 function updateThreads(socket, type, text) {

@@ -19,6 +19,10 @@ public class PongEventMarshaller implements ProcessEventMarshaller<PongEvent> {
       DataInputStream input = new DataInputStream(buffer);
       String process = input.readUTF();
       
+      if(input.readBoolean()) {
+         String resource = input.readUTF();
+         return new PongEvent(process, resource, true);
+      }
       return new PongEvent(process);
    }
 
@@ -27,8 +31,16 @@ public class PongEventMarshaller implements ProcessEventMarshaller<PongEvent> {
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       DataOutputStream output = new DataOutputStream(buffer);
       String process = event.getProcess();
+      String resource = event.getResource();
       
       output.writeUTF(process);
+      
+      if(event.isRunning()) {
+         output.writeBoolean(true);
+         output.writeUTF(resource);
+      } else {
+         output.writeBoolean(false);
+      }
       output.flush();
       
       byte[] array = buffer.toByteArray();

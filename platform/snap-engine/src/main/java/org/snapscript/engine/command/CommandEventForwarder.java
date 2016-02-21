@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.ExitEvent;
+import org.snapscript.agent.event.PongEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProfileEvent;
@@ -16,71 +17,102 @@ import org.snapscript.agent.profiler.ProfileResult;
 
 public class CommandEventForwarder extends ProcessEventAdapter {
    
+   private final CommandFilter filter;
    private final CommandClient client;
+
    
-   public CommandEventForwarder(CommandClient client) {
+   public CommandEventForwarder(CommandClient client, CommandFilter filter) {
+      this.filter = filter;
       this.client = client;
    } 
    
    @Override
    public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
-      Map<String, Map<String, String>> variables = event.getVariables();
-      String thread = event.getThread();
-      String instruction = event.getInstruction();
-      String status = event.getStatus();
-      String resource = event.getResource();
-      int depth = event.getDepth();
-      int line = event.getLine();
-      client.sendScope(thread, instruction, status, resource, line, depth, variables);
+      if(filter.accept(event)) {
+         Map<String, Map<String, String>> variables = event.getVariables();
+         String thread = event.getThread();
+         String instruction = event.getInstruction();
+         String status = event.getStatus();
+         String resource = event.getResource();
+         int depth = event.getDepth();
+         int line = event.getLine();
+         client.sendScope(thread, instruction, status, resource, line, depth, variables);
+      }
    }
    
    @Override
-   public void onWriteError(ProcessEventChannel channel, WriteErrorEvent event) throws Exception {             
-      byte[] array = event.getData();
-      int length = event.getLength();
-      int offset = event.getOffset();
-      String text = new String(array, offset, length, "UTF-8");
-      client.sendPrintError(text);
+   public void onWriteError(ProcessEventChannel channel, WriteErrorEvent event) throws Exception {   
+      if(filter.accept(event)) {
+         String process = event.getProcess();
+         byte[] array = event.getData();
+         int length = event.getLength();
+         int offset = event.getOffset();
+         String text = new String(array, offset, length, "UTF-8");
+         client.sendPrintError(process, text);
+      }
    }
    
    @Override
-   public void onWriteOutput(ProcessEventChannel channel, WriteOutputEvent event) throws Exception {            
-      byte[] array = event.getData();
-      int length = event.getLength();
-      int offset = event.getOffset();
-      String text = new String(array, offset, length, "UTF-8");
-      client.sendPrintOutput(text);
+   public void onWriteOutput(ProcessEventChannel channel, WriteOutputEvent event) throws Exception {  
+      if(filter.accept(event)) {
+         String process = event.getProcess();
+         byte[] array = event.getData();
+         int length = event.getLength();
+         int offset = event.getOffset();
+         String text = new String(array, offset, length, "UTF-8");
+         client.sendPrintOutput(process, text);
+      }
    }
    
    @Override
    public void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception {
-      String resource = event.getResource();
-      int line = event.getLine();
-      client.sendSyntaxError(resource, line);
+      if(filter.accept(event)) {
+         String resource = event.getResource();
+         int line = event.getLine();
+         client.sendSyntaxError(resource, line);
+      }
    }
    
    @Override
    public void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception {
-      String resource = event.getResource();
-      String process = event.getProcess();
-      long duration = event.getDuration();
-      client.sendBegin(process, resource, duration);
+      if(filter.accept(event)) {
+         String process = event.getProcess();
+         String resource = event.getResource();
+         long duration = event.getDuration();
+         client.sendBegin(process, resource, duration);
+      }
    }
    
    @Override
    public void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception {
+      if(filter.accept(event)) {
+         String process = event.getProcess();
+         Set<ProfileResult> results = event.getResults();
+         client.sendProfile(process, results);
+      }
+   }
+   
+   @Override
+   public void onPong(ProcessEventChannel channel, PongEvent event) throws Exception {  
+      if(event.isRunning()) {
+         String focus = filter.get();
+         String process = event.getProcess();
+         String resource = event.getResource();
+         client.sendStatus(process, resource, process.equals(focus)); // update clients on status
+      }
+   }
+   
+   @Override
+   public void onExit(ProcessEventChannel channel, ExitEvent event) throws Exception {  
       String process = event.getProcess();
-      Set<ProfileResult> results = event.getResults();
-      client.sendProfile(process, results);
+      client.sendProcessExit(process);
    }
    
    @Override
-   public void onExit(ProcessEventChannel channel, ExitEvent event) throws Exception {              
-      client.sendProcessExit();
-   }
-   
-   @Override
-   public void onClose(ProcessEventChannel channel) throws Exception {             
-      client.sendProcessTerminate();
+   public void onClose(ProcessEventChannel channel) throws Exception { 
+      String focus = filter.get();
+      if(focus != null) {
+         client.sendProcessTerminate(focus); 
+      }
    }
 }

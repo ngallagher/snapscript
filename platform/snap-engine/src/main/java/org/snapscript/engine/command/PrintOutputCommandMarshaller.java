@@ -5,14 +5,20 @@ public class PrintOutputCommandMarshaller implements CommandMarshaller<PrintOutp
    @Override
    public PrintOutputCommand toCommand(String value) {
       int offset = value.indexOf(':');
-      String text = value.substring(offset + 1);
-      return new PrintOutputCommand(text);
+      String message = value.substring(offset + 1);
+      int next = message.indexOf(':');
+      String process = message.substring(0, next);
+      String text = message.substring(next + 1);
+      
+      return new PrintOutputCommand(process, text);
    }
 
    @Override
    public String fromCommand(PrintOutputCommand command) {
+      String process = command.getProcess();
       String text = command.getText();
-      return CommandType.PRINT_OUTPUT + ":" + text;
+      
+      return CommandType.PRINT_OUTPUT + ":" + process + ":" + text;
    }
 
 }

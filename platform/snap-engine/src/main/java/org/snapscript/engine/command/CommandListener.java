@@ -12,6 +12,7 @@ public class CommandListener {
    
    private final ProjectScriptValidator validator;
    private final CommandEventForwarder forwarder;
+   private final CommandFilter filter;
    private final CommandClient client;
    private final ProcessEngine engine;
    private final String project;
@@ -19,8 +20,9 @@ public class CommandListener {
    private final File root;
    
    public CommandListener(ProcessEngine engine, FrameChannel channel, File root, String project, String name) {
+      this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
-      this.forwarder = new CommandEventForwarder(client);
+      this.forwarder = new CommandEventForwarder(client, filter);
       this.validator = new ProjectScriptValidator();
       this.project = project;
       this.engine = engine;
@@ -66,7 +68,9 @@ public class CommandListener {
             encoder.write(source);
             encoder.close();
             //client.sendReloadTree();
-            engine.execute(forwarder, command, name);
+            
+            engine.register(forwarder); // make sure we are registered
+            engine.execute(command); 
          } else {
             client.sendSyntaxError(resource, line);
          }
@@ -75,9 +79,39 @@ public class CommandListener {
       }
    }
    
+   public void onAttach(AttachCommand command) {
+      try {
+         String process = command.getProcess();
+         String focus = filter.get();
+         
+         if(focus == null) { // not focused
+            if(command.isFocus()) {
+               filter.attach(process);
+            }
+         } else if(process.equals(focus)) { // focused
+            if(command.isFocus()) {
+               filter.attach(process); // accept messages from this process
+            } else {
+               filter.clear(); // clear the focus
+            }
+         } else {
+            if(command.isFocus()) {
+               filter.attach(process);
+            }
+         }
+         engine.register(forwarder); // make sure we are registered
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
+   
    public void onStep(StepCommand command) {
       try {
-         engine.step(command, name);
+         String focus = filter.get();
+         
+         if(focus != null) {
+            engine.step(command, focus);
+         }
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -99,7 +133,11 @@ public class CommandListener {
    
    public void onBreakpoints(BreakpointsCommand command) {
       try {
-         engine.breakpoints(command, name);
+         String focus = filter.get();
+         
+         if(focus != null) {
+            engine.breakpoints(command, focus);
+         }
       } catch(Exception e){
          e.printStackTrace();
       }
@@ -107,7 +145,11 @@ public class CommandListener {
    
    public void onBrowse(BrowseCommand command) {
       try {
-         engine.browse(command, name);
+         String focus = filter.get();
+         
+         if(focus != null) {
+            engine.browse(command, focus);
+         }
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -115,8 +157,13 @@ public class CommandListener {
    
    public void onStop(StopCommand command) {
       try {
-         client.sendProcessTerminate();
-         engine.stop(name);
+         String focus = filter.get();
+         
+         if(focus != null) {
+            engine.stop(focus);
+            client.sendProcessTerminate(focus);
+            filter.clear();
+         }
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -124,10 +171,15 @@ public class CommandListener {
    
    public void onPing() {
       try {
-         if(!engine.ping(name)) {
-            client.sendProcessTerminate();
-            engine.stop(name);
+         String focus = filter.get();
+         
+         if(focus != null) {
+            if(!engine.ping(focus)) {
+               client.sendProcessTerminate(focus);
+               filter.clear();
+            }
          }
+         engine.register(forwarder); // make sure we are registered
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -135,8 +187,8 @@ public class CommandListener {
    
    public void onClose() {
       try {
-         client.sendProcessTerminate();
-         engine.stop(name);
+         //client.sendProcessTerminate();
+         engine.remove(forwarder);
       } catch(Exception e) {
          e.printStackTrace();
       }
