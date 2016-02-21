@@ -8,12 +8,13 @@ import java.util.List;
 
 public class StackTraceExtractor {
    
-   private static final int DEBUG_DEPTH = 0; // set to two to debug
-   
+   private static final int DEFAULT_DEPTH = 0;
+   private static final int DEBUG_DEPTH = 2; 
+
    private final int depth;
    
    public StackTraceExtractor() {
-      this(DEBUG_DEPTH);
+      this(DEFAULT_DEPTH);
    }
    
    public StackTraceExtractor(int depth) {
