@@ -1,8 +1,0 @@
-var x="hello";
-System.out.println("
-
-                This is a test
-
-'${x}'
-${arguments}
-                ");

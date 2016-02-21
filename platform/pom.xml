@@ -31,7 +31,7 @@
            <module>snap-agent</module>
            <module>snap-engine</module>           
            <module>snap-graphics</module>
-           <module>snap-console</module>          
+           <module>snap-service</module>          
 	</modules>
 
 </project>
