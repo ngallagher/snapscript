@@ -8,7 +8,7 @@ public enum ResultType{
    NORMAL;
    
    public static Result getNormal(){
-      return new Result(NORMAL);
+      return Result.NORMAL_RESULT;
    }
    
    public static Result getNormal(Object value) {
@@ -16,7 +16,7 @@ public enum ResultType{
    }
    
    public static Result getReturn(){
-      return new Result(RETURN);
+      return Result.RETURN_RESULT;
    }
    
    public static Result getReturn(Object value) {
@@ -24,11 +24,11 @@ public enum ResultType{
    }
    
    public static Result getBreak() {
-      return new Result(BREAK);
+      return Result.BREAK_RESULT;
    }
    
    public static Result getContinue() {
-      return new Result(CONTINUE);
+      return Result.CONTINUE_RESULT;
    }
    
    public static Result getThrow(Object value) {

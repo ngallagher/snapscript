@@ -20,19 +20,24 @@ public class ScriptService {
       Model model = line.getModel();
       
       if(evaluate != null && script != null) {
-         throw new IllegalArgumentException("Both --evaluate and --script have been specified");
+         System.err.println("Both --evaluate and --script have been specified");
+         System.exit(0);
       }
       if(evaluate == null && script == null) {
-         throw new IllegalArgumentException("Neither --evaluate or --script have been specified");
+         System.err.println("Neither --evaluate or --script have been specified");
+         System.exit(0);
       }
       Context context = new StoreContext(store);
       Compiler compiler = new ResourceCompiler(context);
+      Executable executable = null;
       
+      if(script != null) {
+         executable = compiler.compile(script);
+      }
       if(evaluate != null) {
          ExpressionEvaluator evaluator = context.getEvaluator();
          evaluator.evaluate(model, evaluate);
       } else {
-         Executable executable = compiler.compile(script);
          executable.execute(model);
       }
    }

@@ -20,6 +20,7 @@ import org.snapscript.core.error.ThreadStack;
 
 public class FunctionMatcher {
    
+   private final Cache<Object, Function> instance;
    private final Cache<Object, Function> cache;
    private final FunctionKeyBuilder builder;
    private final ArgumentMatcher matcher;
@@ -32,6 +33,7 @@ public class FunctionMatcher {
    }
    
    public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack, int capacity) {
+      this.instance = new LeastRecentlyUsedCache<Object, Function>(capacity);
       this.cache = new LeastRecentlyUsedCache<Object, Function>(capacity);
       this.matcher = new ArgumentMatcher(matcher, loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
@@ -73,7 +75,7 @@ public class FunctionMatcher {
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
       Object key = builder.create(module, name, values);
-      Function function = cache.fetch(key);
+      Function function = cache.fetch(key); // static and module functions
       
       if(!cache.contains(key)) {
          List<Function> functions = module.getFunctions();
@@ -106,10 +108,9 @@ public class FunctionMatcher {
       return null;
    }
    
-   @Bug("We should remember that keys are static")
    public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
-      Object key = builder.create(type, name, values); // this key should indicate static
-      Function function = cache.fetch(key);
+      Object key = builder.create(type, name, values); 
+      Function function = cache.fetch(key); // static and module functions
       
       if(!cache.contains(key)) {
          List<Type> path = finder.createPath(type, name);
@@ -153,9 +154,9 @@ public class FunctionMatcher {
    public FunctionPointer match(Object value, String name, Object... values) throws Exception { 
       Type type = extractor.extract(value);
       Object key = builder.create(type, name, values);
-      Function function = cache.fetch(key);
+      Function function = instance.fetch(key); // all type functions
       
-      if(!cache.contains(key)) {
+      if(!instance.contains(key)) {
          List<Type> path = finder.createPath(type, name);
          int best = 0;
          
@@ -179,7 +180,7 @@ public class FunctionMatcher {
                }
             }
          }
-         cache.cache(key, function);
+         instance.cache(key, function);
       }
       if(function != null) {
          Signature signature = function.getSignature();

@@ -127,10 +127,10 @@ public enum NumericConverter {
          return INTEGER;
       }
       if (Short.class == type) {
-         return INTEGER;
+         return SHORT;
       }
       if (Byte.class == type) {
-         return INTEGER;
+         return BYTE;
       }
       return DOUBLE;
    }

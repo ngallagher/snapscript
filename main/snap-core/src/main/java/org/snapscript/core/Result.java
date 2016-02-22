@@ -8,6 +8,12 @@ import static org.snapscript.core.ResultType.THROW;
 
 public class Result {
    
+   public static final Result NORMAL_RESULT = new Result(NORMAL);
+   public static final Result RETURN_RESULT = new Result(RETURN);
+   public static final Result BREAK_RESULT = new Result(BREAK);
+   public static final Result CONTINUE_RESULT = new Result(CONTINUE);
+   public static final Result THROW_RESULT = new Result(THROW);
+   
    private final ResultType type;
    private final Object value;
 
