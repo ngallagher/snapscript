@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.variable;
 
+import java.util.Map;
+
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
@@ -16,6 +18,9 @@ public class VariableBinder {
       if(left != null) {
          if(Scope.class.isInstance(left)) {
             return new ScopeResolver(name);
+         }
+         if(Map.class.isInstance(left)) {
+            return new MapResolver(name);
          }
          if(Type.class.isInstance(left)) {
             return new TypeResolver(traverser, name);

@@ -1,20 +1,20 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.util.List;
+import java.util.Map;
 
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyWrapper;
 
-public class ListValue extends Value {
+public class MapValue extends Value {
    
    private final ProxyWrapper wrapper;
-   private final Integer index;
-   private final List list;
+   private final String name;
+   private final Map map;
    
-   public ListValue(ProxyWrapper wrapper, List list, Integer index) {
+   public MapValue(ProxyWrapper wrapper, Map map, String name) {
       this.wrapper = wrapper;
-      this.index = index;
-      this.list = list;
+      this.name = name;
+      this.map = map;
    }
    
    @Override
@@ -24,7 +24,7 @@ public class ListValue extends Value {
    
    @Override
    public Object getValue(){
-      Object value = list.get(index);
+      Object value = map.get(name);
       
       if(value != null) {
          return wrapper.fromProxy(value);
@@ -35,16 +35,16 @@ public class ListValue extends Value {
    @Override
    public void setValue(Object value){
       Object proxy = wrapper.toProxy(value);
-      int length = list.size();
       
-      for(int i = length; i <= index; i++) {
-         list.add(null);
+      if(value != null) {
+         map.put(name, proxy);
+      } else {
+         map.remove(name);
       }
-      list.set(index, proxy);
    }       
    
    @Override
    public String toString() {
-      return String.valueOf(list);
+      return String.valueOf(map);
    }
 }
