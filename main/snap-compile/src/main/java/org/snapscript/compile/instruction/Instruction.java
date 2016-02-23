@@ -9,7 +9,7 @@ import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
 import org.snapscript.compile.instruction.condition.ForInStatement;
-import org.snapscript.compile.instruction.condition.ForInfiniteStatement;
+import org.snapscript.compile.instruction.condition.LoopStatement;
 import org.snapscript.compile.instruction.condition.ForStatement;
 import org.snapscript.compile.instruction.condition.IfStatement;
 import org.snapscript.compile.instruction.condition.WhileStatement;
@@ -119,8 +119,8 @@ public enum Instruction {
    RETURN_STATEMENT(ReturnStatement.class, "return-statement"),      
    WHILE_STATEMENT(WhileStatement.class, "while-statement"),
    FOR_STATEMENT(ForStatement.class, "for-statement"),
-   FOR_INFINITE_STATEMENT(ForInfiniteStatement.class, "for-infinite-statement"),
    FOR_IN_STATEMENT(ForInStatement.class, "for-in-statement"),
+   LOOP_STATEMENT(LoopStatement.class, "loop-statement"),
    TYPE_CONSTRAINT(Constraint.class, "type-constraint"),
    VARIABLE_ARGUMENT(Modifier.class, "variable-argument"),
    PARAMETER(ParameterDeclaration.class, "parameter-declaration"),

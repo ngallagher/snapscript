@@ -12,11 +12,11 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.error.ErrorHandler;
 
-public class ForInfiniteStatement implements Compilation {
+public class LoopStatement implements Compilation {
    
    private final Statement loop;
    
-   public ForInfiniteStatement(Statement statement) {
+   public LoopStatement(Statement statement) {
       this.loop = new CompileResult(statement);
    }
    

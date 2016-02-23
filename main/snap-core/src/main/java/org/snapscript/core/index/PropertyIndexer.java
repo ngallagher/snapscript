@@ -4,8 +4,6 @@ import static org.snapscript.core.ModifierType.CONSTANT;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,12 +15,14 @@ import org.snapscript.core.Type;
 
 public class PropertyIndexer {
    
+   private final ClassPropertyBuilder builder;
    private final ModifierConverter converter;
    private final PropertyGenerator generator;
    private final PrimitivePromoter promoter;
    private final TypeIndexer indexer;
    
    public PropertyIndexer(TypeIndexer indexer){
+      this.builder = new ClassPropertyBuilder(indexer);
       this.converter = new ModifierConverter();
       this.generator = new PropertyGenerator();
       this.promoter = new PrimitivePromoter();
@@ -30,11 +30,11 @@ public class PropertyIndexer {
    }
 
    public List<Property> index(Class source) throws Exception {
+      List<Property> properties = builder.create(source);
       Method[] methods = source.getDeclaredMethods();
       Field[] fields = source.getDeclaredFields();
 
       if(fields.length > 0 || methods.length > 0) {
-         List<Property> properties = new ArrayList<Property>();
          Set<String> done = new HashSet<String>();
          
          for(Field field : fields) {
@@ -78,9 +78,8 @@ public class PropertyIndexer {
                }
             }
          }
-         return properties;
       }
-      return Collections.emptyList();
+      return properties;
    }
    
    private Method match(Method[] methods, Class require, String name) throws Exception {

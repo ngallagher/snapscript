@@ -30,3 +30,5 @@ var size = eval("list.size()");
 var max = Math.max(binary, hex);
 
 println("max=${max}");
+
+println(hex.class.getModule());

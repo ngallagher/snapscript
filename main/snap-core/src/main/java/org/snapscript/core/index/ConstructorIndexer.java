@@ -20,19 +20,22 @@ public class ConstructorIndexer {
 
    public List<Function> index(Type type) throws Exception {
       Class source = type.getType();
-      Constructor[] constructors = source.getDeclaredConstructors();
       
-      if(constructors.length > 0) {
-         List<Function> functions = new ArrayList<Function>();
-   
-         for(Constructor constructor : constructors){
-            int modifiers = converter.convert(constructor); // accept all consructors public/private
-            Class[] parameters = constructor.getParameterTypes();
-            Function function = generator.generate(type, constructor, parameters, modifiers);
-            
-            functions.add(function);
+      if(source != Class.class) {
+         Constructor[] constructors = source.getDeclaredConstructors();
+         
+         if(constructors.length > 0) {
+            List<Function> functions = new ArrayList<Function>();
+      
+            for(Constructor constructor : constructors){
+               int modifiers = converter.convert(constructor); // accept all consructors public/private
+               Class[] parameters = constructor.getParameterTypes();
+               Function function = generator.generate(type, constructor, parameters, modifiers);
+               
+               functions.add(function);
+            }
+            return functions;
          }
-         return functions;
       }
       return Collections.emptyList();
    }

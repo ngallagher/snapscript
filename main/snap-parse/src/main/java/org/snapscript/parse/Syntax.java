@@ -2,7 +2,7 @@ package org.snapscript.parse;
 
 public enum Syntax {
    SIGN("sign", "{'-'|'+'}"),
-   NUMBER("number", "?<sign>{[hexidecimal]|[binary]|[decimal]|[integer]}"), 
+   NUMBER("number", "?<sign>{[hexidecimal]|[binary]|[decimal]}"), 
    BOOLEAN("boolean", "{'true'|'false'}"),
    NULL("null", "'null'"),
    LITERAL("literal", "{<null>|<boolean>|<number>|[template]|[text]}"),
@@ -85,12 +85,12 @@ public enum Syntax {
    DECLARE_VARIABLE("declare-variable", "'var'' '<assignment-variable>?(':'<type-constraint>)?('='<assignment-expression>)"),
    DECLARE_CONSTANT("declare-constant", "'const'' '<assignment-variable>?(':'<type-constraint>)?('='<assignment-expression>)"),
    DECLARATION_STATEMENT("declaration-statement", "{<declare-variable>|<declare-constant>}';'"),   
-   CONDITIONAL_STATEMENT("conditional-statement", "{<if-statement>|<while-statement>|<for-statement>|<for-infinite-statement>|<for-in-statement>}"),
+   CONDITIONAL_STATEMENT("conditional-statement", "{<if-statement>|<while-statement>|<for-statement>|<for-in-statement>|<loop-statement>}"),
    IF_STATEMENT("if-statement", "'if('<conditional>')'<statement>?('else'?' '<statement>)"),  
    WHILE_STATEMENT("while-statement", "'while('<conditional>')'<statement>"),
    FOR_STATEMENT("for-statement", "'for('(<declaration-statement>|<assignment-statement>|<terminal-statement>)<conditional>';'?(<assignment>|<increment-decrement>)')'<statement>"),
-   FOR_INFINITE_STATEMENT("for-infinite-statement", "'for(;;)'<statement>"),
    FOR_IN_STATEMENT("for-in-statement", "'for('?('var'' ')([identifier])' ''in'?' '{<range>|<reference>}')'<statement>"),
+   LOOP_STATEMENT("loop-statement", "{'loop'|'for(;;)'}<statement>"),
    TRY_BODY("try-body", "<group-statement>"),
    CATCH_BODY("catch-body", "<group-statement>"),
    FINALLY_BODY("finally-body", "<group-statement>"),
