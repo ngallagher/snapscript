@@ -16,3 +16,16 @@ var closure = (a, b...)->{
 };
 
 closure("a=1","b=2","c=3","d=4","e=5","f=6","g=7","h=8");
+
+
+var v = sum(13, 44, 234, 1,3);
+
+println(v);
+
+function sum(a...){
+   var sum = 0;
+   for(var n in a){
+      sum += n;
+   }
+   return sum;
+}
