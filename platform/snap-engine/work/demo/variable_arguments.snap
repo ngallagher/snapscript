@@ -63,3 +63,13 @@ println(m);
 m.a = null;
 
 println(m);
+
+function max(a, b) {
+   return a > b ? a : b;
+}
+
+function max(a, b, c) { // function overloading
+   return a > b ? max(a, c) : max(b, c);
+}
+
+println(max(2,33,4));
