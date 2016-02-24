@@ -1,6 +1,6 @@
 package org.snapscript.compile;
 
-import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
+import static org.snapscript.compile.instruction.Instruction.SCRIPT_PACKAGE;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
@@ -8,9 +8,9 @@ import org.snapscript.compile.instruction.Assembler;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.compile.instruction.InstructionAssembler;
 import org.snapscript.core.Context;
+import org.snapscript.core.NoPackage;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
-import org.snapscript.core.NoPackage;
 import org.snapscript.core.PathConverter;
 import org.snapscript.core.Statement;
 import org.snapscript.core.StatementPackage;
@@ -27,14 +27,14 @@ public class ContextLinker implements PackageLinker {
    private final Assembler assembler;   
    
    public ContextLinker(Context context) {
-      this(context, Instruction.SCRIPT_PACKAGE);
+      this(context, SCRIPT_PACKAGE);
    }
    
    public ContextLinker(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.converter = new PathConverter(SCRIPT_EXTENSION);
       this.assembler = new InstructionAssembler(context);      
       this.compiler = new SyntaxCompiler();
+      this.converter = new PathConverter();
       this.instruction = instruction;
    }
    

@@ -1,7 +1,5 @@
 package org.snapscript.core.error;
 
-import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
-
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.PathConverter;
@@ -21,7 +19,7 @@ public class StackElement {
    }
    
    public StackElement(Trace trace, Function function) {
-      this.converter = new PathConverter(SCRIPT_EXTENSION);
+      this.converter = new PathConverter();
       this.function = function;
       this.trace = trace;
    }

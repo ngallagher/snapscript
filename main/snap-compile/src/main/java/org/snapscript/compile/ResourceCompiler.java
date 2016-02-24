@@ -1,7 +1,6 @@
 package org.snapscript.compile;
 
 import static org.snapscript.compile.instruction.Instruction.SCRIPT;
-import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
@@ -25,7 +24,7 @@ public class ResourceCompiler implements Compiler {
    
    public ResourceCompiler(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
-      this.converter = new PathConverter(SCRIPT_EXTENSION);
+      this.converter = new PathConverter();
       this.instruction = instruction;
       this.context = context;
    } 

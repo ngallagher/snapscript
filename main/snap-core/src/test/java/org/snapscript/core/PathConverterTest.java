@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class PathConverterTest extends TestCase {
    
    public void testPath() throws Exception {
-      PathConverter parser = new PathConverter(".snap");
+      PathConverter parser = new PathConverter();
       
       assertEquals("game.tetris", parser.createModule("/game/tetris.snap"));
       assertEquals("game.tetris", parser.createModule("game/tetris.snap"));
