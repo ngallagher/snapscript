@@ -13,7 +13,7 @@ public class CalculatePiTest extends TestCase{
    "var x = 0;\n"+
    "var pi = 4;\n"+
    "var plus = false;\n"+
-   "for (var i = 3; i < 100000000; i += 2)\n"+
+   "for (var i = 3; i < 10000000; i += 2)\n"+
    "{\n"+
    "    if (plus)\n"+
    "    {\n"+

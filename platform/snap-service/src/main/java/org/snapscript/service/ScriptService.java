@@ -1,6 +1,5 @@
 package org.snapscript.service;
 
-import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
 import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import org.snapscript.compile.Compiler;
@@ -17,7 +16,7 @@ public class ScriptService {
 
    public static void main(String[] options) throws Exception {
       CommandLineParser parser = new CommandLineParser();
-      PathConverter converter = new PathConverter(SCRIPT_EXTENSION);
+      PathConverter converter = new PathConverter();
       CommandLine line = parser.parse(options);
       Store store = line.getStore();
       String evaluate = line.getEvaluation();
