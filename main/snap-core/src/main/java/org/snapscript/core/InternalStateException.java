@@ -6,6 +6,10 @@ public class InternalStateException extends InternalException {
       super(message);
    }
    
+   public InternalStateException(Throwable cause) {
+      super(cause);
+   }
+   
    public InternalStateException(String message, Throwable cause) {
       super(message, cause);
    }

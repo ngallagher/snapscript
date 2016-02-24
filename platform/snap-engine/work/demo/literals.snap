@@ -13,22 +13,9 @@ var map = {"a": 1, "b": 2}; // map
 var empty = {:}; // empty map
 var mix = [1, 2, {"a": {"a", "b", [55, 66]}}];
 var array = new Byte[11]; // primitive byte[11]
-
-for(var entry in list){
-   println(entry);
-}
-
-for(var i = 0; i < list.size(); i++) {
-   var entry = list.get(i);
-   
-   if(entry != null){
-      println(entry);
-   }
-}
-
-var size = eval("list.size()");
-var max = Math.max(binary, hex);
-
-println("max=${max}");
-
-println(hex.class.getModule());
+var byte = array[1];
+var matrix = new Long[10][22]; // multidimensional long[10][22];
+var typed: Integer = 22;
+var coercion: Double = "1.234e2"; // coercion to double
+var instance = new HashMap(); // instantiate object
+var type = coercion.class; // reference type

@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.dispatch;
 
+import java.util.Map;
+
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -26,6 +28,9 @@ public class InvocationBinder {
          if(Type.class.isInstance(left)) {
             return new TypeDispatcher(extractor, scope, left);
          }  
+         if(Map.class.isInstance(left)) {
+            return new MapDispatcher(extractor, scope, left);
+         }
          if(type.isArray()) {
             return new ArrayDispatcher(extractor, scope, left);
          }

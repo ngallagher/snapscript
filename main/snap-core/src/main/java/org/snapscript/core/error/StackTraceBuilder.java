@@ -31,7 +31,8 @@ public class StackTraceBuilder {
       for(StackTraceElement trace : context) {
          list.add(trace);
       }
-      for(StackTraceElement trace : actual) {
+      for(int i = 1; i < actual.length; i++) { // strip Thread.getStackTrace
+         StackTraceElement trace = actual[i];
          String source = trace.getClassName();
          
          if(!source.startsWith(IMPORT_SNAPSCRIPT)) { // not really correct, stripping required elements!

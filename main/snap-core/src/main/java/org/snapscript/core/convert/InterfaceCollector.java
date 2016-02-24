@@ -41,6 +41,22 @@ public class InterfaceCollector {
       return empty;
    }
    
+   public Class[] filter(Class... types) {
+      if(types.length > 0) {
+         Set<Class> interfaces = new HashSet<Class>();
+         
+         for(Class entry : types) {
+            if(entry != null) {
+               if(entry.isInterface()) {
+                  interfaces.add(entry);
+               }
+            }
+         }
+         return interfaces.toArray(empty);
+      }
+      return empty;
+   }
+   
    private Set<Class> traverse(Type type) {
       Set<Type> types = traverser.traverse(type);
       

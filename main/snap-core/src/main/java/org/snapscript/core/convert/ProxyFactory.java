@@ -41,7 +41,9 @@ public class ProxyFactory {
    }
    
    public Object create(Function function, Class... require) {
-      if(require.length > 0) {
+      Class[] interfaces = collector.filter(require);
+      
+      if(interfaces.length > 0) {
          FunctionProxyHandler handler = new FunctionProxyHandler(wrapper, context, function);
          
          if(loader == null) {
@@ -53,7 +55,7 @@ public class ProxyFactory {
             }
             loader = context;
          }
-         return Proxy.newProxyInstance(loader, require, handler);
+         return Proxy.newProxyInstance(loader, interfaces, handler);
       }
       return function;
    }

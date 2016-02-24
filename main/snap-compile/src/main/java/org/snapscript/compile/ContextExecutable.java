@@ -7,6 +7,7 @@ import org.snapscript.core.Package;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Statement;
+import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.validate.ContextValidator;
 
 public class ContextExecutable implements Executable{
@@ -36,9 +37,14 @@ public class ContextExecutable implements Executable{
    public void execute(Model model) throws Exception{ 
       Scope scope = merger.merge(model, name);
       Statement script = library.compile(scope);
+      ErrorHandler handler = context.getHandler();
       
-      validator.validate(context);
-      script.execute(scope);
+      try {
+         validator.validate(context);
+         script.execute(scope);
+      } catch(Throwable cause) {
+         handler.throwExternal(scope, cause);
+      }
    }
 
 }

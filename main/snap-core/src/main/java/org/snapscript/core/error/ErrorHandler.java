@@ -5,37 +5,35 @@ import org.snapscript.core.Scope;
 
 public class ErrorHandler {
 
-   private final ThreadStack stack;
-   private final boolean replace;
+   private final ExternalErrorHandler external;
+   private final InternalErrorHandler internal;
    
    public ErrorHandler(ThreadStack stack) {
       this(stack, true);
    }
    
    public ErrorHandler(ThreadStack stack, boolean replace) {
-      this.replace = replace;
-      this.stack = stack;
+      this.internal = new InternalErrorHandler(stack, replace);
+      this.external = new ExternalErrorHandler();
    }
    
-   public Result throwError(Scope scope, Object value) {
-      if(InternalError.class.isInstance(value)) {
-         throw (InternalError)value;
+   public Result throwInternal(Scope scope, Object cause) {
+      if(InternalError.class.isInstance(cause)) {
+         throw (InternalError)cause;
       }
-      InternalError error = new InternalError(value);
-      
-      if(replace) {
-         StackTraceElement[] list = stack.build();
+      return internal.throwInternal(scope, cause); // fill in trace
+   }
+   
+   public Result throwExternal(Scope scope, Throwable cause) throws Exception {
+      if(InternalError.class.isInstance(cause)) {
+         InternalError error = (InternalError)cause;
+         Object original = error.getValue();
          
-         if(Throwable.class.isInstance(value)) {
-            Throwable cause = (Throwable)value;
-            StackTraceElement[] trace = stack.build(cause);
-            
-            cause.setStackTrace(trace);
-            error.setStackTrace(trace);
-         } else {
-            error.setStackTrace(list); // when there is no cause
+         if(Exception.class.isInstance(original)) {
+            throw (Exception)original; // throw original
          }
+         return external.throwExternal(scope, original); // no stack trace
       }
-      throw error;
+      return external.throwExternal(scope, cause); // no stack trace
    }
 }
