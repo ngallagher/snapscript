@@ -46,5 +46,4 @@ public class ContextExecutable implements Executable{
          handler.throwExternal(scope, cause);
       }
    }
-
 }

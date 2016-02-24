@@ -1,8 +1,14 @@
 package org.snapscript.core;
 
+import static org.snapscript.core.Reserved.SCRIPT_EXTENSION;
+
 public class PathConverter {
 
    private final String suffix;
+   
+   public PathConverter() {
+      this(SCRIPT_EXTENSION);
+   }
    
    public PathConverter(String suffix) {
       this.suffix = suffix;
