@@ -21,16 +21,20 @@ public class InternalErrorHandler {
       InternalError error = new InternalError(value);
       
       if(replace) {
-         StackTraceElement[] list = stack.build();
-         
          if(Throwable.class.isInstance(value)) {
             Throwable cause = (Throwable)value;
             StackTraceElement[] trace = stack.build(cause);
             
-            cause.setStackTrace(trace);
-            error.setStackTrace(trace);
+            if(trace.length > 0) {
+               cause.setStackTrace(trace);
+               error.setStackTrace(trace);
+            }
          } else {
-            error.setStackTrace(list); // when there is no cause
+            StackTraceElement[] trace = stack.build();
+            
+            if(trace.length > 0) {
+               error.setStackTrace(trace); // when there is no cause
+            }
          }
       }
       throw error;
