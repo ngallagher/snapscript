@@ -9,9 +9,11 @@ import java.util.Set;
 
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.convert.FunctionComparator;
 
 public class TypeCastChecker {
 
+   private final FunctionComparator comparator;
    private final ClosureFunctionFinder finder;
    private final ConstraintMatcher matcher;
    private final TypeExtractor extractor;
@@ -19,6 +21,7 @@ public class TypeCastChecker {
    private final TypeLoader loader;
    
    public TypeCastChecker(ConstraintMatcher matcher, TypeExtractor extractor, TypeLoader loader) {
+      this.comparator = new FunctionComparator(matcher);
       this.finder = new ClosureFunctionFinder(loader);
       this.traverser = new TypeTraverser();
       this.extractor = extractor;
@@ -60,44 +63,10 @@ public class TypeCastChecker {
             Function require = finder.find(real);
             
             if(require != null) {
-               return cast((Function)value, require);
+               return comparator.compare((Function)value, require);
             }
          }
       }
       return cast(type, constraint);
-   }
-   
-   private int cast(Function actual, Function require) throws Exception{
-      Signature actualSignature = actual.getSignature();
-      Signature requireSignature = require.getSignature();
-      List<Type> actualTypes = actualSignature.getTypes();
-      List<Type> constraintTypes = requireSignature.getTypes();
-      
-      return cast(actualTypes, constraintTypes);
-   }
-   
-   private int cast(List<Type> actual, List<Type> require) throws Exception{
-      int actualSize = actual.size();
-      int requireSize = require.size();
-      
-      if(actualSize == requireSize) {
-         int minimum = EXACT;
-         
-         for(int i = 0; i < actualSize; i++) {
-            Type actualType = actual.get(i);
-            Type constraintType = require.get(i);
-            ConstraintConverter converter = matcher.match(constraintType);
-            int score = converter.score(actualType);
-            
-            if(score <= INVALID) { // must check for numbers
-               return INVALID;
-            }
-            if(score < minimum) {
-               minimum = score;
-            }
-         }
-         return minimum;
-      }
-      return INVALID;
    }
 }

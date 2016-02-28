@@ -39,4 +39,11 @@ public class ModifierChecker {
       }
       return ModifierType.isPrivate(modifiers);
    }
+   
+   public boolean isOverride() {
+      if(modifiers == -1) {
+         modifiers = list.getModifiers();
+      }
+      return ModifierType.isOverride(modifiers);
+   }
 }

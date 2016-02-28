@@ -1,6 +1,5 @@
 package org.snapscript.core;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +43,7 @@ public class ModuleRegistry {
 
          modules.put(name, module);
          exporter.export(module);
+         references.add(module);
          
          return module;
       }

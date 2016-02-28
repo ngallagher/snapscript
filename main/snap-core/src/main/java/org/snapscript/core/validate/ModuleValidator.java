@@ -5,13 +5,14 @@ import java.util.List;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class ModuleValidator {
 
    private final TypeValidator validator;
    
-   public ModuleValidator() {
-      this.validator = new TypeValidator();
+   public ModuleValidator(ConstraintMatcher matcher) {
+      this.validator = new TypeValidator(matcher);
    }
    
    public void validate(Module module) throws Exception {

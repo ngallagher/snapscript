@@ -5,6 +5,7 @@ import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.ProxyWrapper;
 import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.error.ThreadStack;
+import org.snapscript.core.validate.ExecutableValidator;
 
 public interface Context{
    ThreadStack getStack();
@@ -12,6 +13,7 @@ public interface Context{
    ResourceManager getManager();
    ModuleRegistry getRegistry();
    ConstraintMatcher getMatcher();
+   ExecutableValidator getValidator();
    TraceInterceptor getInterceptor();
    ExpressionEvaluator getEvaluator();
    FunctionBinder getBinder();

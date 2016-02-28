@@ -14,9 +14,11 @@ import org.snapscript.core.convert.ProxyWrapper;
 import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.store.Store;
+import org.snapscript.core.validate.ExecutableValidator;
 
 public class StoreContext implements Context {
 
+   private final ExecutableValidator validator;
    private final ExpressionEvaluator executor;
    private final TraceInterceptor interceptor;
    private final ConstraintMatcher matcher;
@@ -39,6 +41,7 @@ public class StoreContext implements Context {
       this.linker = new ContextLinker(this);      
       this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader, wrapper);
+      this.validator = new ExecutableValidator(matcher);
       this.binder = new FunctionBinder(matcher, loader, stack);
       this.executor = new ContextEvaluator(this);
 
@@ -57,6 +60,11 @@ public class StoreContext implements Context {
    @Override
    public ErrorHandler getHandler() {
       return handler;
+   }
+   
+   @Override
+   public ExecutableValidator getValidator() {
+      return validator;
    }
    
    @Override

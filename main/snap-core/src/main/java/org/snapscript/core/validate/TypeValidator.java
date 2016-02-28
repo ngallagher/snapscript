@@ -11,10 +11,12 @@ import java.util.Set;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class TypeValidator {
    
@@ -22,10 +24,12 @@ public class TypeValidator {
    private static final String[] FUNCTIONS = { TYPE_CONSTRUCTOR };
    private static final String[] TYPES = { ANY_TYPE };
    
+   private final FunctionValidator validator;
    private final TypeTraverser traverser;
    
-   public TypeValidator() {
+   public TypeValidator(ConstraintMatcher matcher) {
       this.traverser = new TypeTraverser();
+      this.validator = new FunctionValidator(matcher, traverser);
    }
    
    public void validate(Type type) throws Exception {
@@ -95,7 +99,6 @@ public class TypeValidator {
       }
    }
    
-   
    private void validateFunctions(Type type) throws Exception {
       List<Function> functions = type.getFunctions();
       
@@ -109,6 +112,7 @@ public class TypeValidator {
             if(name.equals(require)) {
                matches++;
             }
+            validator.validate(function);
          }
          if(matches == 0) {
             Module module = type.getModule();
