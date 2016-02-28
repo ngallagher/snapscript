@@ -12,12 +12,12 @@ import junit.framework.TestCase;
 
 public class PositionSetTest extends TestCase {
    
-   private static final int ONE_MILLION = 1000000;
+   private static final int ITERATIONS = 10000;
    
    public void testPerformance() throws Exception {
       ThreadMXBean bean = (ThreadMXBean)ManagementFactory.getThreadMXBean();
       Random random = new SecureRandom();
-      Long[] values = new Long[ONE_MILLION];
+      Long[] values = new Long[ITERATIONS];
       
       for(int i = 0; i < values.length; i++) {
          values[i] = random.nextLong();

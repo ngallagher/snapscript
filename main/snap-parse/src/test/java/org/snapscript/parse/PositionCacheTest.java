@@ -13,13 +13,13 @@ import com.sun.management.ThreadMXBean;
 
 public class PositionCacheTest extends TestCase {
    
-   private static final int ONE_MILLION = 1000000;
+   private static final int ITERATIONS = 10000;
    
    public void testComparison() throws Exception {
       ThreadMXBean bean = (ThreadMXBean)ManagementFactory.getThreadMXBean();
       Random random = new SecureRandom();
-      long[] keys = new long[ONE_MILLION];
-      String[] values = new String[ONE_MILLION];
+      Long[] keys = new Long[ITERATIONS];
+      String[] values = new String[ITERATIONS];
       
       for(int i = 0; i < keys.length; i++) {
          keys[i] = random.nextLong();

@@ -1,4 +1,7 @@
 var a = 10;
 var b = 20;
 
-println(a == b);
+var x = (a == b);
+var y = a == b && b > 10;
+println(x);
+println(y);

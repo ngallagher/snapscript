@@ -4,14 +4,10 @@ var text = "this is some text to add to the buffer!!".getBytes("UTF-8");
 var source = new ByteArrayInputStream(text);
 var count = 0;
 
-while(count != -1){ // XXX expressions in conditions should be possible!!!!
-   count = source.read(data);
-   
-   if(count > 0) {
-      buffer.write(data, 0, count);
-   }
+while((count = source.read(data)) != -1){ 
+   buffer.write(data, 0, count);
 }
 var result = buffer.toString();
 
-System.err.println(result);
-System.err.println(text);
+println(result);
+println(text);

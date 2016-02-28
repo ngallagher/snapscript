@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;

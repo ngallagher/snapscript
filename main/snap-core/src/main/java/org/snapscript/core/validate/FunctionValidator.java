@@ -24,9 +24,10 @@ public class FunctionValidator {
    public void validate(Function function) throws Exception {
       Type type = function.getType();
       
-      if(type != null) {
-         validateModifiers(function);
+      if(type == null) {
+         throw new InternalStateException("Function '" + function + "' does not have a type");
       }
+      validateModifiers(function);
    }
    
    private void validateModifiers(Function function) throws Exception {

@@ -12,6 +12,10 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "count = source.read(buffer)", "assignment");
+      analyze(tree, "(count = source.read(buffer))", "assignment-operand");
+      analyze(tree, "(count = source.read(buffer)) != -1", "conditional");
+      analyze(tree, "a == b", "expression");
       analyze(tree, "a, b...", "parameter-list");
       analyze(tree, "f1 < f2 ? f1 : f2", "expression");
       analyze(tree, "x=f1 < f2 ? f1 : f2", "expression");
