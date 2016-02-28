@@ -128,7 +128,7 @@ public enum Syntax {
    FULL_QUALIFIER("full-qualifier", "[qualifier]*('.'[qualifier])"),
    WILD_QUALIFIER("wild-qualifier", "[qualifier]*('.'[qualifier])'.*'"),
    IMPORT_STATIC("import-static", "'import static'' '(<full-qualifier>|<wild-qualifier>)';'"),
-   IMPORT("import", "'import'' '(<full-qualifier>|<wild-qualifier>)';'"),   
+   IMPORT("import", "'import'' '(<full-qualifier>|<wild-qualifier>)?(' as '[type])';'"),   
    MODULE_NAME("module-name", "[identifier]"),
    MODULE_FUNCTION("module-function", "'function'' '<function>'('<parameter-list>')'<group-statement>"),
    MODULE_STATEMENT("module-statement", "{<try-statement>|<declaration-statement>|<conditional-statement>|<type-definition>|<expression-statement>}"),   

@@ -11,6 +11,7 @@ public interface Module {
    Type addType(String name);  
    Module addImport(String module);
    Type addImport(String module, String name);  
+   Type addImport(String module, String name, String alias);  
    InputStream getResource(String path);
    List<Function> getFunctions();
    List<Type> getTypes();

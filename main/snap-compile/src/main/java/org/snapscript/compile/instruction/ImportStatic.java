@@ -13,17 +13,17 @@ import org.snapscript.core.Type;
 
 public class ImportStatic extends Statement {   
    
-   private final String location;
-   private final String target;     
+   private final Qualifier qualifier;    
    
    public ImportStatic(Qualifier qualifier) {
-      this.location = qualifier.getLocation();
-      this.target = qualifier.getTarget();
+      this.qualifier = qualifier;
    }
    
    @Override
    public Result compile(Scope scope) throws Exception {
       Module module = scope.getModule();
+      String location = qualifier.getLocation();
+      String target = qualifier.getTarget();
       Type type = module.addType(location);
       List<Function> methods = type.getFunctions();
       List<Function> functions = module.getFunctions();

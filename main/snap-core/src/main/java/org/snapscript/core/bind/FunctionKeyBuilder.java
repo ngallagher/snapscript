@@ -1,6 +1,7 @@
 package org.snapscript.core.bind;
 
 import org.snapscript.core.Function;
+import org.snapscript.core.Signature;
 import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
 
@@ -19,10 +20,13 @@ public class FunctionKeyBuilder {
          Object value = list[i];
          
          if(value != null) {
-            if(!Function.class.isInstance(value)) { // closure matching
-               types[i] = extractor.extract(value);
+            if(Function.class.isInstance(value)) { // closure matching
+               Function function = (Function)value;
+               Signature signature = function.getSignature();
+               
+               types[i] = signature;
             } else {
-               types[i] = value;
+               types[i] = extractor.extract(value);
             }
          }
       }

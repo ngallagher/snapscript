@@ -96,6 +96,22 @@ public class ContextModule implements Module {
    }
 
    @Override
+   public Type addImport(String module, String name, String alias) {
+      try {
+         TypeLoader loader = context.getLoader();
+         Type type = loader.defineType(module, name);
+         
+         if(name != null) {
+            imports.put(alias, type);
+            references.add(type);
+         }
+         return type;
+      } catch(Exception e){
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
+      }
+   }
+   
+   @Override
    public Type getType(String name) {
       try {
          Type type = imports.get(name);
