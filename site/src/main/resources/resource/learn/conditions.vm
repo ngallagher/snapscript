@@ -1,0 +1,19 @@
+<div class="about-desc">
+	<span class="large-heading">Conditions</span>
+	<p>Conditional statements are used to perform different actions based on different conditions.</p>
+	<span class="small-heading">If Statement</span>
+	<p>The if statement is used to specify a group of statements to execute if a statement is true.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/conditions_if.snap")</code>
+	</pre>		
+	<span class="small-heading">Else Statement</span>
+	<p>The else statement is used to specify a group of statements to execute if a statement is false.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/conditions_if_else.snap")</code>
+	</pre>
+		<span class="small-heading">Conditional Operator</span>
+	<p>To make statements more concise there is a conditional operator.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/conditions_operator.snap")</code>
+	</pre>
+</div>

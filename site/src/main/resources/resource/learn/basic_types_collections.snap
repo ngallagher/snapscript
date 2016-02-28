@@ -1,0 +1,5 @@
+var set = {1, 2, "x", "y"}; // creates a LinkedHashSet
+var list = [1, 2, 3]; // creates an ArrayList
+var map = {"a": 1, "b": 2}; // creates a LinkedHashSet
+var empty = {:}; // creates an empty map
+var mix = [1, 2, {"a": {"a", "b", [55, 66]}}]; // mix collection types

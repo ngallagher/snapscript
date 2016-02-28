@@ -1,0 +1,10 @@
+var a = 0b00111100;
+var b = 0b00001101;
+var c = a & b; // bitwise and, c is 00001100
+var d = a | b; // bitwise or, d is 00111101
+var e = a & b; // bitwise xor, e is 00110001
+var f = ~a; // f is 11000011
+var g = f >> 2; // f is 00110000
+var h = f << 2; // h is 11000000
+var i = f >>> 2; // unsigned shift, i is 00110000
+

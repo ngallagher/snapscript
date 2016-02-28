@@ -1,0 +1,26 @@
+<div class="about-desc">
+	<span class="large-heading">Examples</span>
+	<p>To form a better idea of how all of this hangs together a number of simple examples should help
+	to close any gaps in this tutorial.</p>
+
+
+	<span class="small-heading">Calculate PI</span>
+	<p>This example provides a simple use of for loops, arithmetic operators, and conditional operators.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/examples_calculate_pi.snap")</code>
+	</pre>
+
+	<span class="small-heading">Quick Sort</span>
+	<p>This example shows how quick sort can be implemented. It illustrates a simple recursive algorithm that operates
+	over a provided list of numbers.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/examples_quick_sort.snap")</code>
+	</pre>
+
+
+	<span class="small-heading">File Search</span>
+	<p>This example shows how traits and classes can be used to search for files on a file system.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/examples_find_file.snap")</code>
+	</pre>
+</div>

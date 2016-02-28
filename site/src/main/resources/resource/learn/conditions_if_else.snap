@@ -1,0 +1,8 @@
+var a = 2;
+var b = 3;
+
+if(a >= b) { // false
+   println("a >= b");
+} else {
+   println("a < b"); // prints as a < b
+}

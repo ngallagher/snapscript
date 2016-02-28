@@ -1,0 +1,9 @@
+var a = 1;
+var b = 3;
+var c = true;
+var d = false;
+var e = a && b; // e is false
+var f = a || b; // f is true
+var g = !d; // not operator, g is true
+var h = b > a && a == 1; // logical and of, h is true
+var i = b > a && a != 1; // i is false

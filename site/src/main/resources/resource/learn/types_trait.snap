@@ -1,0 +1,17 @@
+trait Format
+   format(a);
+}
+
+class BoldFormat with Format{
+   
+   override format(a) {
+      return "<b>${a}</b>";
+   }
+}
+
+class ItalicFormat with Format {
+   
+   override format(a) {
+      return "<i>${a}</i>";
+   }
+}

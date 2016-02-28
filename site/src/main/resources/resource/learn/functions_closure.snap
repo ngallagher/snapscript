@@ -1,0 +1,12 @@
+var square = (x) -> x * x;
+var cube = (x) -> square(x) * x;
+
+cube(2); // result is 8
+
+var printAll = (values...) -> {
+   for(var e in values) {
+      println(e);
+   }
+}
+
+printAll(1, 2, 3, 4); // print all values

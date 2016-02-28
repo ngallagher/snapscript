@@ -1,0 +1,22 @@
+class Circle {
+   
+   const PI = 3.14; // enclosed variables
+   var radius;
+   
+   new(radius) { // constructor
+      this.radius = radius;
+   }
+   
+   area() {
+      return PI * r * r;
+   }
+   
+   diameter() {
+      return 2 * r;
+   }
+}
+
+var circle = new Circle(10);
+
+circle.area(); // calculate area
+

@@ -1,0 +1,9 @@
+var a = 0b0111011; // binary literal
+var b = 0xffe16; // hexidecimal literal
+var c = 2.0d;
+var float = 12.9f;
+
+var square = (x) -> x * x; // closure
+var cube = (x) -> square(x) * x;
+
+cube(c); // result is 8

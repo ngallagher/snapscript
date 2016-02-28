@@ -1,0 +1,17 @@
+<div class="about-desc">
+	<span class="large-heading">Inspect Variables</span>
+	<p>During the debugging process it is often useful to determine the state of the application. To assist the
+	development environment provides a variables panel that can be used to dive through the object graph that
+	is accessible within the executing scope.</p>
+ 	<br>
+      <img style="border: 1px solid #6f6f6f" src="/images/debugger_variables.png"/>
+
+</div>
+<!-- 
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_variables.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_console.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_breakpoints.png"/>
+   <br>	 -->

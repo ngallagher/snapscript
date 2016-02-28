@@ -1,0 +1,14 @@
+<div class="about-desc">
+	<span class="large-heading">Integrate Library</span>
+				<p>If you would like to embed the interpreter in to an existing application then all you need 
+				to do is create a compiler to compile a script. A script is compiled to an executable object, which is
+				essentially an execution tree representing the script. Finally, once you have the executable object, you can
+				provide a set of bindings that will be accessible to the script. These bindings can be provided by creating
+				a model object.</p>	
+				<br>
+				<pre><code class='java'>#include("/resource/home/integrate_execute.java")</code></pre>
+				<br>
+				<br>
+				<p>There are a number of configuration options for creating a compiler. For more information you can
+				browse through the code which is hosted <a href='https://github.com/ngallagher/snapscript/tree/master/main'>here</a>.
+</div>

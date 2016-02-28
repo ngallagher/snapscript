@@ -1,0 +1,47 @@
+<div class="about-desc">
+	<span class="large-heading">Basic Types</span>
+	<p>For programs to be useful, we need to be able to work with some
+		of the simplest units of data such as numbers, strings, structures, boolean
+		values, and the like. Support for these basic types is much the same as
+		you would expected for Java, with some additional features such as
+		string templates, map, set, and list literals.</p>
+	<p>In order to reference values they must be associated with a variable. Variables
+	are declared with the keyword <code>var</code> or <code>const</code>. A variable
+	can have an optional constraint by declaring a type. If constrained a variable
+	can only reference values of the declared type.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_variables.snap")</code>
+	</pre>		
+	<span class="small-heading">Booleans</span>
+	<p>The most basic type is the simple true or false value, which is
+		called a boolean value.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_booleans.snap")</code>
+	</pre>
+	<span class="small-heading">Numbers</span>
+	<p>The most basic type is the simple true or false value, which is
+		called a 'boolean' value.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_numbers.snap")</code>
+	</pre>
+	<span class="small-heading">Strings</span>
+	<p>A fundamental part of creating programs is working with textual data. As in other languages, we use the type string 
+	to refer to these textual types. Strings are represented by characters between either a single quote or a double quote.
+	When characters are between double quotes they are interpolated, meaning they have expressions evaluated within them. These
+	expressions start with the dollar character. All strings can span multiple lines.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_strings.snap")</code>
+	</pre>
+	<span class="small-heading">Arrays</span>
+	<p>The most basic type is the simple true or false value, which is
+		called a 'boolean' value.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_arrays.snap")</code>
+	</pre>
+	<span class="small-heading">Collections</span>
+	<p>Complex data structures can be represented with a simple and straight forward syntax. Collection types found
+	in Java such as maps, sets, and lists can be represented as follows.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/basic_types_collections.snap")</code>
+	</pre>
+</div>

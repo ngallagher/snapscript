@@ -1,0 +1,11 @@
+var result = sum(0, 13, 44, 234, 1, 3); 
+
+function sum(offset, numbers...){ // variable arguments
+   var size = numbers.size();
+   var sum = 0;
+   
+   for(var i = offset; i < size; i++){
+      sum += number;
+   }
+   return sum;
+}

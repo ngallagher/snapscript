@@ -1,0 +1,62 @@
+        #editor_literals {
+             font-family: Consolas, "Liberation Mono", Courier, monospace;
+                 font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:420px;
+         }
+        .block_literals{
+                         height:420px;
+        } 
+         #editor_loops {
+         font-family: Consolas, "Liberation Mono", Courier, monospace;
+                 font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:620px;
+         }
+         .block_loops{
+                        height:620px;
+         }
+             #editor_functions {
+         font-family: Consolas, "Liberation Mono", Courier, monospace;
+                 font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:430px;
+         }  
+         .block_functions{
+                          height:430px;
+         }
+
+             #editor_exceptions {
+         font-family: Consolas, "Liberation Mono", Courier, monospace;
+                 font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:400px;
+         }  
+         .block_exceptions{
+                          height:400px;
+         }
+
+                      #editor_types {
+         font-family: Consolas, "Liberation Mono", Courier, monospace;
+                 font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:400px;
+         }  
+         .block_types{
+                          height:400px;
+         }

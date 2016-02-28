@@ -1,0 +1,12 @@
+var list = [35, 22, 13, 64, 53];
+
+for(var e in list){ // iterates over the list
+   println(e);
+}
+
+for(var e in 0..9) { // iterates from 0 to 9
+   if(e == 7) {
+      break; // exit loop when e is 7
+   }
+   println(e); // prints from 0 to 6
+}

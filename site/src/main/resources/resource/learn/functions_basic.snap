@@ -1,0 +1,9 @@
+var r = max(11, 3, 67); // r is 67
+
+function max(a, b) {
+   return a > b ? a : b;
+}
+
+function max(a, b, c) { // function overloading
+   return a < b ? max(a, c) : max(b, c);
+}

@@ -1,0 +1,12 @@
+<div class="about-desc">
+	<span class="large-heading">Start Development</span>
+	<p>To start developing it is recommended that you download the development environment from 
+	<a href='https://github.com/ngallagher/snapscript/tree/master/release'>here</a>. The development environment comes
+	in a single archive which can be used to launch a web based interface. This web interface can be used to 
+	launch scripts which can be debugged and inspected in much the same way as you would do with a development
+	environment such as Eclipse or IntelliJ. To connect all you need to do is specify the port you would like it
+	to listen on.</p>	
+
+	<div class="command-console"><pre>java -jar snapd.jar --project-mode=multiple --directory=work --http-port=9090</pre></div>
+
+</div>

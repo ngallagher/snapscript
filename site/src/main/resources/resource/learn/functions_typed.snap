@@ -1,0 +1,20 @@
+var x: Double = 11.2;
+var y: Integer = 11;
+var z: String = "11";
+
+f(x); // prints double 11.2
+f(y); // prints integer 11
+f(z); // prints string 11
+f(true); // type coercion to string, prints string true
+
+function f(x: Integer) {
+   println("integer ${x}");
+}
+
+function f(x: Double) {
+   println("double ${x}");
+}
+
+function f(x: String) {
+   println("string ${x}");
+}

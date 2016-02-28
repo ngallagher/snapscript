@@ -1,0 +1,4 @@
+var a = 2;
+var b = 3;
+
+println(a >= b ? "a >= b" : "a < b"); // prints a < b

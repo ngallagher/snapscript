@@ -1,0 +1,9 @@
+import static lang.Math.*; // import static functions
+import security.SecureRandom;
+
+var random = new SecureRandom(); // create a java type
+var a = random.nextInt(40);
+var b = random.nextInt(40);
+var c = Math.max(a, b);
+
+println(c); // prints the maximum random

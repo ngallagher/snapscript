@@ -1,0 +1,11 @@
+var a = 10;
+var b = 20;
+var c = a + b; // add is 30
+var d = b - a; // subtract is 10
+var e = b / a; // divide is 2
+var f = a * b; // multiply is 200
+var g = b % a; // modulus is 0
+var h = a++; // a is 11 and h is 10
+var i = b--// b is 19 and i is 20
+var j = --a; // a is 10 and j is 10
+var k = ++b; // b is 20 as is k

@@ -1,0 +1,17 @@
+<div class="about-desc">
+	<span class="large-heading">Exceptions</span>
+	<p>Exceptions are used to indicate an error has occurred. It offers a simple means to return control to a calling function,
+	which can then handle the error. Typically an exception object is thrown, however it is possible to throw any type.</p>	
+	<span class="small-heading">Catch Statement</span>
+	<p>In order to catch an exception the throwing statement needs to be wrapped in a try catch statement. This statement
+	basically allows the program to try to execute a statement or group of statements, if during execution an exception is
+	thrown then an error handling block is executed.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/exceptions_try_catch.snap")</code>
+	</pre>
+		<span class="small-heading">Finally Statement</span>
+	<p>The finally statement is a group of statements that are always executed regardless of whether an exception is thrown..</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/exceptions_try_finally.snap")</code>
+	</pre>
+</div>

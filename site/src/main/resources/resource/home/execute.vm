@@ -1,0 +1,7 @@
+<div class="about-desc">
+	<span class="large-heading">Execute</span>
+	<p>Snap is an open source is a scripting language for the Java platform. It has been specifically written to be portable
+		across all Java platforms, including Android and Google App Engine.</p>
+	<pre>java -jar snap.jar --script=/example.snap --directory=/home/path</pre>
+
+</div>

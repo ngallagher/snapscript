@@ -1,0 +1,12 @@
+module ImageStore {
+
+   const cache = {:};
+   
+   function find(name) {
+      return cache.get(name);
+   }
+   
+   function cache(name, image) {
+      cache.put(name, image);
+   }
+} 

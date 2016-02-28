@@ -1,0 +1,7 @@
+try {
+   throw "throw a string value";
+} catch(e) {
+   println(e);
+} finally {
+   println("finally always runs");
+}

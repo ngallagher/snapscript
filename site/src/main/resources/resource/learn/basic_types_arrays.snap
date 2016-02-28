@@ -1,0 +1,5 @@
+var array = new String[10]; // array of strings
+var bytes = new Byte[11]; // primitive byte[11]
+var byte = array[1]; // reference element in array
+var matrix = new Long[10][22]; // multidimensional long[10][22];
+var long = matrix[2][3]; // reference multidimensional

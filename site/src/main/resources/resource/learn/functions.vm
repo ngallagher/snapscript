@@ -1,0 +1,33 @@
+<div class="about-desc">
+	<span class="large-heading">Functions</span>
+	<p>Functions group together control structures,
+		operations, and method calls.
+		These functions can then be called when needed, and the code contained
+		within them will be run. This makes it very easy to reuse code without
+		having to repeat it within your script.</p>
+	<span class="small-heading">Declaration</span>
+	<p>The most basic type of function is declared with a name and a specific number of parameters. 
+	Such a method can then be called using the declared name by passing in a right number of arguments.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/functions_basic.snap")</code>
+	</pre>		
+	<span class="small-heading">Type Constraints</span>
+	<p>In order to bind invocations to the correct function implementation it can be declared with optional
+	type constraints. These type constraints will ensure that variables of a specific type will be bound to 
+	the correct implementation.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/functions_typed.snap")</code>
+	</pre>
+		<span class="small-heading">Variable Arguments</span>
+	<p>At times it can be useful to provide a large number of arguments to a function. To achieve this
+	the last parameter can be declared with a variable argument modifier.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/functions_varargs.snap")</code>
+	</pre>
+			<span class="small-heading">Closures</span>
+	<p>A closure is an anonymous function that captures the current scope and can be assigned to a variable.
+	This variable can then act as a function and can be called in the same manner.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/functions_closure.snap")</code>
+	</pre>
+</div>

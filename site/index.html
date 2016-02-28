@@ -1,0 +1,195 @@
+
+<!--A Design by W3layouts
+   Author: W3layout
+   Author URL: http://w3layouts.com
+   License: Creative Commons Attribution 3.0 Unported
+   License URL: http://creativecommons.org/licenses/by/3.0/
+   -->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>snapscript</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/css/format.css" rel="stylesheet" type="text/css"
+	media="all" />
+
+<link href='http://fonts.googleapis.com/css?family=Asap:700'
+	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css'>
+<!-- jQuery -->
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<link rel="stylesheet" href="/css/custom.css">
+<script src="/js/highlight.pack.js"></script>
+<script>
+   hljs.initHighlightingOnLoad();
+</script>
+
+
+<!-- Add fancyBox main JS and CSS files -->
+<script src="/js/jquery.magnific-popup.js" type="text/javascript"></script>
+<link href="/css/magnific-popup.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+		<div class="single-header">
+	<div class="wrap">
+		<div class="logo">
+			<a href="index.html"><img src="/images/logo_white.png" alt="" /></a>
+		</div>
+		<div class="header-right">
+			<div id='cssmenu'>
+				<ul>
+					<li  class='active' ><a href='/index.html'><span>Home</span></a></li> |
+					<li  class='inactive' ><a href='/learn.html'><span>Learn</span></a></li> |
+					<li  class='inactive last' ><a href='/develop.html'><span>Develop</span></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>	<!-- div class="index-banner">
+         <div class="wrap">
+			<table border='1' width='100%'>
+				<tr>
+					<td  width='50%'><div class='banner-text'>
+					<span class='banner-bullet'>Language Features</span><br>
+					<div class='banner-summary'>
+					<p>Snap is an open source, optionally typed, object oriented scripting 
+					language for the Java platform. The learning curve is small for anyone with 
+					experience of Java, JavaScript, TypeScript, or Scala, amongst others. 
+					It has excellent integration with the host platform, and can do whatever 
+					can be done with Java and much more.</p></div>									
+					</td>
+					<td>	<pre>
+		<code class="snapscript">var a = 0b0111011; // binary literal
+var b = 0xffe16; // hexidecimal literal
+var c = 2.0d;
+var float = 12.9f;
+
+var square = (x) -> x * x; // closure
+var cube = (x) -> square(x) * x;
+
+cube(c); // result is 8
+</code>
+	</pre></td>
+				</tr>
+			</table>
+            </div>
+        
+      </div-->
+	<div class="main">
+		<div class="wrap">
+			<div class="single-top">
+							<div class="about-desc">
+	
+			<table border='1' width='100%'>
+				<tr>
+					<td  width='50%'>
+<span class="large-heading">Overview</span>
+					<p>Snap is an open source, optionally typed, object oriented scripting 
+					language for the Java platform. The learning curve is small for anyone with 
+					experience of Java, JavaScript, TypeScript, or Scala, amongst others. 
+					It has excellent integration with the host platform, and can do whatever 
+					can be done with Java and much more.</p>	
+							<p>The language is ideal for embedding in to an existing application, and is a fraction of the size of similar languages
+		for the Java platform. In addition to embedding it can be run as a standalone interpreter and has an development 
+		environment which allows scripts to be debugged and profiled.</p>							
+					</td>
+					<td>
+					&nbsp;
+					&nbsp;
+					<td>
+					<td>
+					<span class="large-heading" style='visibility: hidden;'>Sample</span><pre>
+		<code class="snapscript">var a = 0b0111011; // binary literal
+var b = 0xffe16; // hexidecimal literal
+var c = 2.0d;
+var float = 12.9f;
+
+var square = (x) -> x * x; // closure
+var cube = (x) -> square(x) * x;
+
+cube(c); // result is 8
+</code>
+	</pre></td>
+				</tr>
+			</table>
+</div>								<div class="about-desc">
+	<span class="large-heading">Getting Started</span>
+	<p>To begin it is recommended that you download the interpreter can be from 
+	<a href='https://github.com/ngallagher/snapscript/tree/master/release'>here</a>. The interpreter requires
+	Java to be installed on the host machine. Once you have downloaded the interpreter you can begin
+	running scripts right away. All you need to do is specify the script file relative to the current
+	directory.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap</pre></div>
+	
+		<p>If your scripts are in a different directory to the current working directory, then it can
+		be specified on the command line. The script will be loaded relative to that directory.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap --directory=/path/to/scripts</pre></div>
+	
+			<p>If you would like to specify arguments that will be available within the 
+			script to be executed then each argument provided on the command line will be available 
+			as a named variable throughout the script. Any argument beginning with the '--' prefix
+			will be available as a named variable within the script. For example the variables 'blah', 'foo', and 
+			'bar' could be provided as follows.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap --directory=/path/to/scripts --blah=10 --foo='some text' --bar=55</pre></div>
+	
+			<p>If all you want to do is to evaluate some expression then you can specify that expression on 
+			the command line. The expression will be executed and if there is any output then that will be displayed to 
+			the console.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --evaluate="println(1000 / 2.5)"</pre></div>
+	
+
+				<p>If you would like to embed the interpreter in to an existing application then all you need 
+				to do is create a compiler to compile a script. A script is compiled to an executable object, which is
+				essentially an execution tree representing the script. Finally, once you have the executable object, you can
+				provide a set of bindings that will be accessible to the script. These bindings can be provided by creating
+				a model object.</p>	
+				<br>
+				<pre><code class='java'>File file = new File('/path/to/scripts'); // path used to load scripts
+Store store = new FileStore(file);
+Context context = new StoreContext(store);
+Compiler compiler = new ResourceCompiler(context);
+Map map = new HashMap();
+Model model = new MapModel(map); // bindings for the script
+
+map.put("blah", 10);
+map.put("foo", "some text");
+map.put("bar", 50);
+
+Executable executable = compiler.compile('/run.snap');
+
+executable.execute(model); // execute the script</code></pre>
+				<br>
+				<br>
+				<p>There are a number of configuration options for creating a compiler. For more information you can
+				browse through the code which is hosted <a href='https://github.com/ngallagher/snapscript/tree/master/main'>here</a>.
+</div>
+				</div>
+
+		</div>
+	</div>
+	<div class="footer">
+	<div class="wrap">
+		<div class="footer-left">
+			<ul class="footer-nav">
+				<li><a href="/index.html">Home</a></li> |
+				<li><a href="/learn.html">Learn</a></li> |
+				<li><a href="/develop.html">Develop</a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div></body>
+</html>
+

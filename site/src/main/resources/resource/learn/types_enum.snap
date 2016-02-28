@@ -1,0 +1,15 @@
+enum Color {
+   RED("#ff0000"),
+   BLUE("#0000ff"),
+   GREEN("#00ff00");
+   
+   var rgb;
+   
+   new(rgb) {
+      this.rgb = rgb;
+   }
+}
+
+var red = Color.RED;
+var blue = Color.BLUE;
+

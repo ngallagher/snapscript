@@ -1,0 +1,8 @@
+var a = 10;
+var b = 20;
+var c = a == b // equal operator, c is false
+var d = a != b; // not equal operator, d is true
+var e = a > b; // greater than operator, e is false
+var f = a < b; // less than operator, f is true
+var g = a <= b; // g is false
+var h = a >= b; // h is true

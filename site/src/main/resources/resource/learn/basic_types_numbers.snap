@@ -1,0 +1,8 @@
+var binary = 0b0111011; // binary literal
+var hex = 0xffe16; // hexidecimal literal
+var int = 11;
+var long = 11L;
+var double = 0.5d;
+var float = 12.9f;
+var typed: Integer = 22; // integer value 22
+var coercion: Double = "1.234e2"; // coercion of string to double

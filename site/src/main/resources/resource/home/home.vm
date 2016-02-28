@@ -1,0 +1,73 @@
+<!--A Design by W3layouts
+   Author: W3layout
+   Author URL: http://w3layouts.com
+   License: Creative Commons Attribution 3.0 Unported
+   License URL: http://creativecommons.org/licenses/by/3.0/
+   -->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>snapscript</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/css/format.css" rel="stylesheet" type="text/css"
+	media="all" />
+
+<link href='http://fonts.googleapis.com/css?family=Asap:700'
+	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css'>
+<!-- jQuery -->
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<link rel="stylesheet" href="/css/custom.css">
+<script src="/js/highlight.pack.js"></script>
+<script>
+   hljs.initHighlightingOnLoad();
+</script>
+
+
+<!-- Add fancyBox main JS and CSS files -->
+<script src="/js/jquery.magnific-popup.js" type="text/javascript"></script>
+<link href="/css/magnific-popup.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	#set($home = true)
+	#parse("/resource/header.vm")
+	<!-- div class="index-banner">
+         <div class="wrap">
+			<table border='1' width='100%'>
+				<tr>
+					<td  width='50%'><div class='banner-text'>
+					<span class='banner-bullet'>Language Features</span><br>
+					<div class='banner-summary'>
+					<p>Snap is an open source, optionally typed, object oriented scripting 
+					language for the Java platform. The learning curve is small for anyone with 
+					experience of Java, JavaScript, TypeScript, or Scala, amongst others. 
+					It has excellent integration with the host platform, and can do whatever 
+					can be done with Java and much more.</p></div>									
+					</td>
+					<td>	<pre>
+		<code class="snapscript">#include("/resource/home/example.snap")</code>
+	</pre></td>
+				</tr>
+			</table>
+            </div>
+        
+      </div-->
+	<div class="main">
+		<div class="wrap">
+			<div class="single-top">
+							#parse("/resource/home/overview_with_sample.vm")
+								#parse("/resource/home/getting_started.vm")
+				</div>
+
+		</div>
+	</div>
+	#include("/resource/footer.vm")
+</body>
+</html>

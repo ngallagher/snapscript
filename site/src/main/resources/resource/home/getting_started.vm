@@ -1,0 +1,42 @@
+<div class="about-desc">
+	<span class="large-heading">Getting Started</span>
+	<p>To begin it is recommended that you download the interpreter can be from 
+	<a href='https://github.com/ngallagher/snapscript/tree/master/release'>here</a>. The interpreter requires
+	Java to be installed on the host machine. Once you have downloaded the interpreter you can begin
+	running scripts right away. All you need to do is specify the script file relative to the current
+	directory.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap</pre></div>
+	
+		<p>If your scripts are in a different directory to the current working directory, then it can
+		be specified on the command line. The script will be loaded relative to that directory.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap --directory=/path/to/scripts</pre></div>
+	
+			<p>If you would like to specify arguments that will be available within the 
+			script to be executed then each argument provided on the command line will be available 
+			as a named variable throughout the script. Any argument beginning with the '--' prefix
+			will be available as a named variable within the script. For example the variables 'blah', 'foo', and 
+			'bar' could be provided as follows.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --script=/run.snap --directory=/path/to/scripts --blah=10 --foo='some text' --bar=55</pre></div>
+	
+			<p>If all you want to do is to evaluate some expression then you can specify that expression on 
+			the command line. The expression will be executed and if there is any output then that will be displayed to 
+			the console.</p>	
+
+	<div class="command-console"><pre>java -jar snap.jar --evaluate="println(1000 / 2.5)"</pre></div>
+	
+
+				<p>If you would like to embed the interpreter in to an existing application then all you need 
+				to do is create a compiler to compile a script. A script is compiled to an executable object, which is
+				essentially an execution tree representing the script. Finally, once you have the executable object, you can
+				provide a set of bindings that will be accessible to the script. These bindings can be provided by creating
+				a model object.</p>	
+				<br>
+				<pre><code class='java'>#include("/resource/home/integrate_execute.java")</code></pre>
+				<br>
+				<br>
+				<p>There are a number of configuration options for creating a compiler. For more information you can
+				browse through the code which is hosted <a href='https://github.com/ngallagher/snapscript/tree/master/main'>here</a>.
+</div>

@@ -1,0 +1,26 @@
+<div class="about-desc">
+	<span class="large-heading">Loops</span>
+	<p>Loops are used to perform a group of statements a number of times until a condition has been satisfied.</p>
+	<span class="small-heading">While Statement</span>
+	<p>The while statement is the simplest conditional statement. It repeats a group of statements while the condition
+	it evaluates is false.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/loops_while.snap")</code>
+	</pre>		
+	<span class="small-heading">For Statement</span>
+	<p>The for statement is typically used to count over a range of numeric values. It contains three parts, a declaration,
+	a condition, and an optional statement which is evaluated at the end of the loop.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/loops_for.snap")</code>
+	</pre>
+		<span class="small-heading">For In Statement</span>
+	<p>The for in statement offers a simpler way to iterate over a range of values, a collection, or an array.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/loops_for_in.snap")</code>
+	</pre>
+			<span class="small-heading">Loop Statement</span>
+	<p>The loop statement offers a way to specify an infinite loop, it does not evaluate any condition.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/loops_loop.snap")</code>
+	</pre>
+</div>

@@ -1,0 +1,17 @@
+<div class="about-desc">
+	<span class="large-heading">Profile Execution</span>
+	<p>To access application performance the debugger contains an internal profiler. This profiler is used to track
+	the duration of time the application spends in any one part of the application. Information regarding the profiling
+	process is updated so that statistics can be compiled and viewed.</p>
+ 	<br>
+      <img style="border: 1px solid #6f6f6f" src="/images/debugger_telemetry.png"/>
+
+</div>
+<!-- 
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_variables.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_console.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_breakpoints.png"/>
+   <br>	 -->

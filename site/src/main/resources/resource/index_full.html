@@ -1,0 +1,181 @@
+<!--A Design by W3layouts
+   Author: W3layout
+   Author URL: http://w3layouts.com
+   License: Creative Commons Attribution 3.0 Unported
+   License URL: http://creativecommons.org/licenses/by/3.0/
+   -->
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <title>snapscript</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+      <link href='http://fonts.googleapis.com/css?family=Asap:700' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+      <!-- jQuery -->
+      <style>
+         #editor1 {
+         font-family: "Lucida Console", sans-serif; 
+         font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:300px;
+         } 
+         #editor2 {
+         font-family: "Lucida Console", sans-serif; 
+         font-size: 0.9em;   
+         border-style: solid;
+         border-width: 1px;
+         border-color: #c0c0c0;
+         position: relative;
+         height:250px;
+         } 
+      </style>
+      <script type="text/javascript" src="js/ace/ace.js"></script>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <link rel="stylesheet" href="css/default.css">
+      <script src="js/highlight.pack.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script>
+      <!-- Add fancyBox main JS and CSS files -->
+      <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+      <link href="css/magnific-popup.css" rel="stylesheet" type="text/css">
+      <script>
+         $(document).ready(function() {
+         	$('.popup-with-zoom-anim').magnificPopup({
+         		type: 'inline',
+         		fixedContentPos: false,
+         		fixedBgPos: true,
+         		overflowY: 'auto',
+         		closeBtnInside: true,
+         		preloader: false,
+         		midClick: true,
+         		removalDelay: 300,
+         		mainClass: 'my-mfp-zoom-in'
+         });
+         });
+      </script>
+      <script src="js/jquery.hoverdir.js"></script>
+      <script type="text/javascript">
+         $(function() {
+         
+         	$(' #da-thumbs > li ').each( function() { $(this).hoverdir({
+         		hoverDelay : 50,
+         		inverse : true
+         	}); } );
+         
+         });
+          
+      </script>
+   </head>
+   <body>
+      <div class="header">
+         <div class="wrap">
+            <div class="logo">
+               <a href="index.html"><img src="images/logo.png" alt=""/></a>
+            </div>
+            <div class="header-right">
+               <div id='cssmenu'>
+                  <ul>
+                     <li class='active'><a href='about.html'><span>Home</span></a></li>
+                     |
+                     <li><a href='learn.html'><span>Learn</span></a></li>
+                     |
+                     <li class='last'><a href='develop.html'><span>Develop</span></a></li>
+                  </ul>
+               </div>
+            </div>
+            <div class="clear"></div>
+         </div>
+      </div>
+      <div class="index-banner">
+         <div class="wrap">
+            <div class="single-top">
+               <h1 style="font-family: 'Asap', sans-serif; color: #ffffff; font-size: 30px; align: center;">Snap is...</h1>
+               <p style="color: #ffffff;">An open source language.
+               </p>
+               <br>
+               <h1 style="font-family: 'Asap', sans-serif; color: #ffffff; font-size: 20px; align: center;">Scripting for Android, Google App Engine, and the JVM</h1>
+               <br>
+               <br>
+               <br>
+               <div class="btn"><a href="learn.html">Learn More</a></div>
+            </div>
+         </div>
+      </div>
+      <div class="main">
+         <div class="wrap">
+         </div>
+      </div>
+      <div class="content-bottom">
+         <div class="wrap">
+            <div class="single-top">
+               <div class="about-desc">
+                  <h3><a href="#">Object Oriented</a></h3>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit</p>
+                  <div style='height: 300px;'>
+                     <div id='editor1'>// TODO</div>
+                  </div>
+               </div>
+               <h4 class="m_2">About</h4>
+               <div class="about-desc">
+                  <h3><a href="#">Lorem Ipsum is simply dummy text</a></h3>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Duis aute irure dolor in reprehenderit</p>
+                  <div style='height: 250px;'>
+                     <div id='editor2'>// TODO
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </div>
+      </div>
+      <div class="footer">
+         <div class="wrap">
+            <div class="footer-left">
+               <ul class="footer-nav">
+                  <li><a href="index.html">Home</a></li>
+                  |
+                  <li><a href="learn.html">Learn</a></li>
+                  | 
+                  <li><a href="develop.html">Develop</a></li>
+                  | 
+               </ul>
+            </div>
+            <div class="clear"></div>
+         </div>
+      </div>
+      <script>
+         var editor1 = ace.edit("editor1");
+         // editor.setTheme("ace/theme/monokai");
+         editor1.getSession().setMode("ace/mode/snapscript");
+         editor1.getSession().setTabSize(3);
+         editor1.getSession().setUseSoftTabs(true);
+         editor1.setShowPrintMargin(false);
+         
+            $.get("example1.snap", function(response) {
+               editor1.setValue(response, 1);
+            });
+         editor1.setReadOnly(true);
+         
+         
+         
+            var editor2 = ace.edit("editor2");
+         // editor.setTheme("ace/theme/monokai");
+         editor2.getSession().setMode("ace/mode/snapscript");
+         editor2.getSession().setTabSize(3);
+         editor2.getSession().setUseSoftTabs(true);
+         editor2.setShowPrintMargin(false);
+         
+            $.get("example2.snap", function(response) {
+               editor2.setValue(response, 1);
+            });
+         editor2.setReadOnly(true);
+      </script>
+   </body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="ContentTypeResolver" class="org.snapscript.engine.http.resource.ContentTypeResolver">
+    <constructor-arg>
+      <map>
+        <entry key=".*.vm" value="text/html" />
+        <entry key=".*.html" value="text/html" />
+        <entry key=".*.png" value="image/png" />
+        <entry key=".*.jpg" value="image/png" />
+        <entry key=".*.gif" value="image/gif" />
+        <entry key=".*.css" value="text/css" />
+        <entry key=".*.js" value="text/javascript" />
+        <entry key=".*.json" value="application/json" />
+        <entry key=".*.snap" value="text/plain" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <bean id="FileManager" class="org.snapscript.engine.http.resource.FileManager">
+    <constructor-arg value="/resource" />
+  </bean>
+
+  <bean id="FileResolver" class="org.snapscript.engine.http.resource.FileResolver">
+    <constructor-arg ref="FileManager" />
+  </bean>
+
+  <bean id="VelocityEngine" class="org.apache.velocity.app.VelocityEngine" init-method="init">
+    <constructor-arg>
+      <props>
+        <prop key="classpath.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>          
+        <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.Log4JLogChute</prop>
+        <prop key="runtime.log.logsystem.log4j.logger">root</prop>
+        <prop key="resource.loader">classpath</prop>
+        <prop key="parser.pool.size">5</prop>
+      </props>
+    </constructor-arg>
+  </bean>
+
+  <bean id="TemplateEngine" class="org.snapscript.engine.http.resource.template.VelocityTemplateEngine">
+    <constructor-arg ref="VelocityEngine" />
+    <constructor-arg ref="FileResolver" />
+    <constructor-arg value="/" />
+    <constructor-arg value=".vm" />
+  </bean>
+  
+  <bean id="TemplateResource" class="org.snapscript.engine.http.resource.template.TemplateResource">
+    <constructor-arg ref="TemplateEngine" />
+  </bean>
+
+  <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">
+    <constructor-arg value="Resource could not be found!!" />
+    <constructor-arg value="text/plain; charset=UTF-8" />
+    <constructor-arg value="UTF-8" />
+    <constructor-arg value="NOT_FOUND" />
+  </bean>
+
+  <bean id="ResourceMatcher" class="org.snapscript.engine.http.resource.RegularExpressionMatcher">
+    <constructor-arg>
+      <map>
+        <entry key="/.*.vm" value-ref="TemplateResource" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <bean id="FileMatcher" class="org.snapscript.engine.http.resource.FileMatcher">
+    <constructor-arg ref="FileResolver" />
+    <constructor-arg ref="ContentTypeResolver" />
+  </bean>
+
+  <bean id="CombinationMatcher" class="org.snapscript.engine.http.resource.CombinationMatcher">
+    <constructor-arg>
+      <list>
+        <ref bean="ResourceMatcher" />
+        <ref bean="FileMatcher" />
+      </list>
+    </constructor-arg>
+    <constructor-arg ref="NotFoundResource" />
+  </bean>
+
+  <bean id="ResourceContainer" class="org.snapscript.engine.http.resource.ResourceContainer">
+    <constructor-arg ref="CombinationMatcher" />
+  </bean>
+
+  <bean id="WebContainer" class="org.snapscript.engine.http.WebContainer">
+    <constructor-arg ref="ResourceContainer" />
+    <constructor-arg value="Snap/1.0" />
+  </bean>
+
+  <bean id="WebServer" class="org.snapscript.engine.http.WebServer" init-method="start">
+    <constructor-arg ref="WebContainer" />
+    <constructor-arg value="9090" />
+  </bean>
+</beans>

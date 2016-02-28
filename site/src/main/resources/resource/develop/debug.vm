@@ -1,0 +1,18 @@
+<div class="about-desc">
+	<span class="large-heading">Set Breakpoints</span>
+	<p>For any reasonably sized application the ability to debug is essential. A development environment
+	is provided that assists in debugging scripts. It has the ability to set breakpoints, and to step through
+	code one statement at a time. During the debug process the editor highlights the line that is to be
+	executed next.</p>
+ 	<br>
+      <img style="border: 1px solid #6f6f6f" src="/images/debugger_breakpoints.png"/>
+
+</div>
+<!-- 
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_variables.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_console.png"/>
+   <br>
+        <img style="border: 1px solid #6f6f6f" src="images/debugger_breakpoints.png"/>
+   <br>	 -->

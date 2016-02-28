@@ -1,0 +1,88 @@
+/*
+
+Colorbrewer theme
+Original: https://github.com/mbostock/colorbrewer-theme (c) Mike Bostock <mike@ocks.org>
+Ported by Fabrício Tavares de Oliveira
+
+*/
+
+pre > code {
+    white-space: pre;
+    margin-top: -1.00em;
+    margin-bottom: -2.00em;
+    display: block;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #fdfdfc;
+}
+
+.hljs,
+.hljs-subst {
+  color: #000;
+  border-radius: 5px;
+   /*   box-shadow: 5px 5px 5px #cccccc;*/
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-size: 0.9em;   
+  border-style: solid;
+  border-width: 1px;
+  border-color: #c0c0c0;
+}
+
+.hljs-string,
+.hljs-meta,
+.hljs-symbol,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-addition {
+  color: #756bb1;
+}
+
+.hljs-comment {
+  color: rgb(76, 136, 107);
+}
+.hljs-quote {
+  color: #636363;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-literal,
+.hljs-bullet,
+.hljs-link {
+  color: #31a354;
+}
+
+.hljs-deletion,
+.hljs-variable {
+  color: #88f;
+}
+
+.hljs-built_in {
+   color: #000000;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title,
+.hljs-section,
+.hljs-doctag,
+.hljs-type,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-strong {
+  color: #0000ff;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-attribute {
+  color: #e6550d;
+}

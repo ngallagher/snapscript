@@ -1,0 +1,7 @@
+var n = 0;
+
+loop { // infinite loop
+   if(n++ > 100) {
+      break;
+   }
+}

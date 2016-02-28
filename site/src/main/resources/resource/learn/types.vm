@@ -1,0 +1,64 @@
+<div class="about-desc">
+	<span class="large-heading">Types</span>
+	<p>In any substantial application types are required. A type is
+		basically a way to define an encapsulate variables and functions
+		within a named scope.</p>
+
+
+	<span class="small-heading">Class</span>
+	<p>A class is the most basic type. It contains variables and
+		functions that can operate on those variables. Once declared a type
+		can be instantiated by calling a special function called a
+		constructor.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_class.snap")</code>
+	</pre>
+
+
+	<span class="small-heading">Enumerations</span>
+	<p>An enumeration is a type that specifies a list of constant
+		values. This values are constant and are instances of the enum they
+		are declared in.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_enum.snap")</code>
+	</pre>
+
+
+	<span class="small-heading">Traits</span>
+	<p>A trait is similar to a class in that is specifies a list of functions. However, unlike a class
+	a trait does not declare any variables and does not have a constructor. It can be used to add
+	functions to a class.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_trait.snap")</code>
+	</pre>
+	
+		<span class="small-heading">Integration</span>
+	<p>To leverage the large array of frameworks and services available on the Java platform any Java type can
+	be instantiated, and any Java interface can be implemented.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_integration.snap")</code>
+	</pre>
+	
+			<span class="small-heading">Coercion</span>
+	<p>For interfaces that have only a single method a closure can be coerced to that interface type. This makes
+	for a much simpler and concise syntax similar to that offered by Java closures.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_coercion.snap")</code>
+	</pre>
+	
+				<span class="small-heading">Import</span>
+	<p>In order to access the Java types available they can be imported by name. Once imported the type can
+	be instantiated and used as if it was a script object. In addition to importing types, functions can
+	also be imported by using a static import.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_import.snap")</code>
+	</pre>
+	
+	
+					<span class="small-heading">Module</span>
+	<p>A module is collection of types, functions, and variables. It is similar to enclosing a script within
+	a named type. Modules are useful in providing constructs such as singletons.</p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/types_module.snap")</code>
+	</pre>
+</div>

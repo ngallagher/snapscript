@@ -1,0 +1,5 @@
+var a = true; // value a is true
+var b = false; // false
+var c = Boolean.FALSE; // type constraint of Boolean
+var d: Boolean = Boolean.TRUE; // like Boolean d = Boolean.TRUE
+var e = Boolean.FALSE; // like Object e = Boolean.FALSE

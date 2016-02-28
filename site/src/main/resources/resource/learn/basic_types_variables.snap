@@ -1,0 +1,4 @@
+var v = 22; // v can reference any type
+var i: Integer = 22; // i can only reference integers
+var d: Double = 22.0; // d can only reference doubles
+const c = 1.23; // c is constant, it cannot change

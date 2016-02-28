@@ -1,0 +1,17 @@
+<div class="single-header-light">
+	<div class="wrap">
+		<div class="logo">
+			<a href="index.html"><img src="/images/logo.png" alt="" /></a>
+		</div>
+		<div class="header-right">
+			<div id='cssmenu-light'>
+				<ul>
+					<li #if($home == true) class='active' #else class='inactive' #end><a href='/index.html'><span>Home</span></a></li> |
+					<li #if($learn == true) class='active' #else class='inactive' #end><a href='/learn.html'><span>Learn</span></a></li> |
+					<li #if($develop == true) class='active last' #else class='inactive last' #end><a href='/develop.html'><span>Develop</span></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

@@ -1,0 +1,33 @@
+<div class="about-desc">
+	<span class="large-heading">Operators</span>
+	<p>Operators are special symbols that perform specific operations on one, two, or three operands,
+	 and then return a result. They are typically used to manipulate or compare values.</p>
+	<span class="small-heading">Arithmetic Operators</span>
+	<p>Arithmetic operators are used in mathematical expressions in the same way that they are used in 
+	algebra.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/operators_arithmetic.snap")</code>
+	</pre>			
+	
+		<span class="small-heading">Relational Operators</span>
+	<p>Relational operators are used to make comparisons, such as equal to, not equal to, greater than,
+	less than.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/operators_relational.snap")</code>
+	</pre>		
+	
+		<span class="small-heading">Bitwise Operators</span>
+	<p>Bitwise operators are used to manipulate numbers, typically integers, at the byte level. They
+	do so by change the binary representation of the value.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/operators_bitwise.snap")</code>
+	</pre>		
+	
+		<span class="small-heading">Logical Operators</span>
+	<p>Logical operators are typically used to combine multiple relational operations in to a single
+	boolean result.</code></p>
+	<pre>
+		<code class="snapscript">#include("/resource/learn/operators_logical.snap")</code>
+	</pre>		
+
+</div>

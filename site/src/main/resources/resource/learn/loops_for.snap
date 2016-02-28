@@ -1,0 +1,6 @@
+for(var i = 0; i < 10; i++){ // loops from 1 to 10
+   if(i % 2 == 0) {
+      continue; // continue loop
+   }
+   println(i);  // prints only odd numbers
+}
