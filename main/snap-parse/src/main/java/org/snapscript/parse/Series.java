@@ -29,7 +29,7 @@ public class Series<T> implements Iterable<T> {
          array = new Object[4];
       } else {
          if(size == array.length) {
-            Object[] copy = new Object[size + 4];
+            Object[] copy = new Object[size * 2];
             
             for(int i = 0; i< array.length; i++) {
                copy[i] = array[i];
