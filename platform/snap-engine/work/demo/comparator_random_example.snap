@@ -5,7 +5,7 @@ const ONE_HUNDRED_THOUSAND = 100000;
 
 class DoubleComparator with Comparator{
 
-   compare(a,b){
+   override compare(a,b){
       return Double.compare(a,b);
    }
 }
@@ -22,8 +22,8 @@ for(var i = 0; i < ONE_HUNDRED_THOUSAND; i++) {
 var finish = System.currentTimeMillis();
 var duration = finish - start;
 
-System.out.println("Time taken was " + duration + " which is " + (duration / ONE_HUNDRED_THOUSAND) + " ms per entry");
+println("Time taken was " + duration + " which is " + (duration / ONE_HUNDRED_THOUSAND) + " ms per entry");
 
 for(var entry in set){
-   System.out.println(entry);
+   println(entry);
 }
