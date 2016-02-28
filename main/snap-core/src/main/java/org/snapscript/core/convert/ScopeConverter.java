@@ -6,13 +6,16 @@ import org.snapscript.core.Type;
 public class ScopeConverter extends ConstraintConverter {
    
    @Override
-   public int score(Type type) throws Exception {
-      Class real = type.getType();
-      
-      if(Scope.class.isAssignableFrom(real)) { // what is this doing
-         return EXACT;
+   public int score(Type actual) throws Exception {
+      if(actual != null) {
+         Class real = actual.getType();
+         
+         if(Scope.class.isAssignableFrom(real)) { // what is this doing
+            return EXACT;
+         }
+         return INVALID;
       }
-      return INVALID;
+      return POSSIBLE;
    }
    
    @Override

@@ -52,19 +52,24 @@ public class NumberConverter extends ConstraintConverter {
    
    @Override
    public int score(Type actual) throws Exception {
-      Class real = actual.getType();
+      Class require = type.getType();
       
-      if(real != null) {
-         Integer score = checker.score(real);
+      if(actual != null) {
+         Class real = actual.getType();
          
-         if(score != null) {
-            return score;
+         if(real != null) {
+            Integer score = checker.score(real);
+            
+            if(score != null) {
+               return score;
+            }
+            if(real == String.class) {
+               return POSSIBLE;
+            }
          }
-         if(real == String.class) {
-            return POSSIBLE;
-         }
+         return INVALID;
       }
-      return INVALID;
+      return POSSIBLE;
    }
    
    @Override

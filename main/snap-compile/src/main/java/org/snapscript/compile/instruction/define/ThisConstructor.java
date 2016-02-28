@@ -5,6 +5,7 @@ import org.snapscript.compile.instruction.construct.CreateObject;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -22,11 +23,12 @@ public class ThisConstructor implements TypePart {
    }
 
    @Override
-   public Initializer define(Scope scope, Initializer statement, Type type) throws Exception {  
+   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {  
+      Statement statement = new StaticBody(initializer, type);
       Evaluation name = new TypeReference(type);
       CreateObject evaluation = new CreateObject(name, arguments);
       
-      return new ThisInitializer(evaluation);
+      return new ThisInitializer(statement, evaluation);
    }
    
    private static class TypeReference implements Evaluation {

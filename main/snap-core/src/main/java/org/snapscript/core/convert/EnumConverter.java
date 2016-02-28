@@ -12,19 +12,22 @@ public class EnumConverter extends ConstraintConverter {
    
    @Override
    public int score(Type actual) throws Exception {
-      Class real = actual.getType();
-      Class require = type.getType();
-      
-      if(real != require) {
-         if(require.isAssignableFrom(real)) {
-            return EXACT;
+      if(actual != null) {
+         Class real = actual.getType();
+         Class require = type.getType();
+         
+         if(real != require) {
+            if(require.isAssignableFrom(real)) {
+               return EXACT;
+            }
+            if(real == String.class) {
+               return SIMILAR;
+            }
+            return INVALID;
          }
-         if(real == String.class) {
-            return SIMILAR;
-         }
-         return INVALID;
+         return EXACT;
       }
-      return EXACT;
+      return POSSIBLE;
    }
 
    @Override

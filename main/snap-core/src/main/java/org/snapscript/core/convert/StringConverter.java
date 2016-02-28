@@ -5,11 +5,13 @@ import org.snapscript.core.Type;
 public class StringConverter extends ConstraintConverter {
    
    @Override
-   public int score(Type type) throws Exception {
-      Class real = type.getType();
-      
-      if(real == String.class) {
-         return EXACT;
+   public int score(Type actual) throws Exception {
+      if(actual != null) {
+         Class real = actual.getType();
+         
+         if(real == String.class) {
+            return EXACT;
+         }
       }
       return POSSIBLE;
    }
@@ -27,6 +29,9 @@ public class StringConverter extends ConstraintConverter {
    }
    
    public Object convert(Object object) throws Exception {
-      return String.valueOf(object);
+      if(object != null) {
+         return String.valueOf(object);
+      }
+      return null;
    }
 }

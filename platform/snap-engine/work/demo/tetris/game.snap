@@ -63,7 +63,7 @@ class Tetris {
     }
 
     gameLoop() {
-        while (true) {
+        loop {
             if (keyboard.newGame()) {
                 game = new Game();
                 game.startGame();
