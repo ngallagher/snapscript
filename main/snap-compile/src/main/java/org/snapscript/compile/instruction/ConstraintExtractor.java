@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -14,12 +15,13 @@ public class ConstraintExtractor {
       this.constraint = constraint;
    }
 
+   @Bug
    public Type extract(Scope scope) throws Exception {
       if(constraint != null) {
          Value value = constraint.evaluate(scope, null);
          Module module = scope.getModule();
          String name = value.getString();
-         Type type = module.getType(name);
+         Type type = module.addType(name); // XXX is this safe?
          
          if(type == null) {
             throw new InternalStateException("Constraint '" + name +"' has not been imported");
