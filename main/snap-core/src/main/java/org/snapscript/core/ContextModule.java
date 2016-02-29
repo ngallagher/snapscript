@@ -11,6 +11,7 @@ public class ContextModule implements Module {
    private final Map<String, Type> imports;
    private final List<Function> functions; 
    private final List<Type> references;
+   private final PathConverter converter;
    private final ImportManager manager;
    private final Context context;
    private final String resource;
@@ -21,6 +22,7 @@ public class ContextModule implements Module {
       this.imports = new ConcurrentHashMap<String, Type>();
       this.references = new CopyOnWriteArrayList<Type>();
       this.manager = new ImportManager(context, resource);
+      this.converter = new PathConverter();
       this.scope = new ModuleScope(this);
       this.resource = resource;
       this.context = context;
@@ -155,6 +157,15 @@ public class ContextModule implements Module {
          return null;
       } catch(Exception e){
          throw new ModuleException("Could not load file '" + path + "'", e);
+      }
+   }
+   
+   @Override
+   public String getPath() {
+      try {
+         return converter.createPath(resource);
+      } catch(Exception e){
+         throw new ModuleException("Could not parse '" + resource + "'", e);
       }
    }
 

@@ -1,13 +1,10 @@
-package org.snapscript.compile;
+package org.snapscript.compile.instruction;
 
 import static org.snapscript.compile.instruction.Instruction.EXPRESSION;
 import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.instruction.Assembler;
-import org.snapscript.compile.instruction.Instruction;
-import org.snapscript.compile.instruction.InstructionAssembler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.ExpressionEvaluator;
@@ -20,7 +17,7 @@ import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
-public class ContextEvaluator implements ExpressionEvaluator {
+public class InstructionEvaluator implements ExpressionEvaluator {
    
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
@@ -28,11 +25,11 @@ public class ContextEvaluator implements ExpressionEvaluator {
    private final ScopeMerger merger;
    private final Assembler assembler;
    
-   public ContextEvaluator(Context context){
+   public InstructionEvaluator(Context context){
       this(context, EXPRESSION);
    }
    
-   public ContextEvaluator(Context context, Instruction instruction) {
+   public InstructionEvaluator(Context context, Instruction instruction) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new InstructionAssembler(context);
       this.merger = new ScopeMerger(context);

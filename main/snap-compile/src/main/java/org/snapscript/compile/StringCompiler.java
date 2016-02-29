@@ -5,6 +5,7 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
+import org.snapscript.compile.instruction.Application;
 import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Package;
@@ -48,7 +49,7 @@ public class StringCompiler implements Compiler {
          PackageLinker linker = context.getLinker();
          Package library = linker.link(module, source, instruction.name);
          
-         return new ContextExecutable(context, library, module);
+         return new Application(context, library, module);
       }
       return executable;
    } 

@@ -15,5 +15,6 @@ public interface Module {
    InputStream getResource(String path);
    List<Function> getFunctions();
    List<Type> getTypes();
+   String getPath();
    String getName();
 }

@@ -17,11 +17,11 @@ public class PositionCache<T> {
       this.capacity = capacity;
    }
    
-   public T fetch(Long key) {
+   public synchronized T fetch(Long key) {
       return table.get(key);
    }
    
-   public void cache(Long key, T value) {
+   public synchronized void cache(Long key, T value) {
       T previous = table.put(key, value);
       
       if(previous == null) {
@@ -38,11 +38,11 @@ public class PositionCache<T> {
       }
    }
    
-   public boolean contains(Long key) {
+   public synchronized boolean contains(Long key) {
       return table.contains(key);
    }
    
-   public int size() {
+   public synchronized int size() {
       return table.size();
    }
 }

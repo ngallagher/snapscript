@@ -1,5 +1,6 @@
-package org.snapscript.compile;
+package org.snapscript.compile.instruction;
 
+import org.snapscript.compile.Executable;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
@@ -10,7 +11,7 @@ import org.snapscript.core.Statement;
 import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.validate.ExecutableValidator;
 
-public class ContextExecutable implements Executable{
+public class Application implements Executable{
    
    private final ScopeMerger merger;
    private final Package library;
@@ -18,7 +19,7 @@ public class ContextExecutable implements Executable{
    private final Model model;
    private final String name;
    
-   public ContextExecutable(Context context, Package library, String name){
+   public Application(Context context, Package library, String name){
       this.merger = new ScopeMerger(context);
       this.model = new EmptyModel();
       this.library = library;

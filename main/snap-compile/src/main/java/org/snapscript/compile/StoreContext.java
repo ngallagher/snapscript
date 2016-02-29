@@ -1,5 +1,7 @@
 package org.snapscript.compile;
 
+import org.snapscript.compile.instruction.InstructionEvaluator;
+import org.snapscript.compile.instruction.InstructionLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
@@ -38,13 +40,12 @@ public class StoreContext implements Context {
       this.interceptor = new TraceInterceptor(stack);
       this.manager = new StoreManager(store);
       this.registry = new ModuleRegistry(this);
-      this.linker = new ContextLinker(this);      
+      this.linker = new InstructionLinker(this);      
       this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader, wrapper);
       this.validator = new ExecutableValidator(matcher);
       this.binder = new FunctionBinder(matcher, loader, stack);
-      this.executor = new ContextEvaluator(this);
-
+      this.executor = new InstructionEvaluator(this);
    }
    
    @Override
