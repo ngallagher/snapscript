@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceEvaluation;
@@ -22,9 +23,10 @@ public class ConstructObject implements Compilation {
    } 
    
    @Override
-   public Evaluation compile(Context context, String resource, int line) throws Exception {
+   public Evaluation compile(Module module, int line) throws Exception {
+      Context context = module.getContext();
       TraceInterceptor interceptor = context.getInterceptor();
-      Trace trace = TraceType.getConstruct(resource, line);
+      Trace trace = TraceType.getConstruct(module, line);
       
       return new TraceEvaluation(interceptor, construct, trace);
    }

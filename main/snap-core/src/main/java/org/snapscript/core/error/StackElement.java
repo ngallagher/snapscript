@@ -2,7 +2,6 @@ package org.snapscript.core.error;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
-import org.snapscript.core.PathConverter;
 import org.snapscript.core.Trace;
 import org.snapscript.core.Type;
 
@@ -10,7 +9,6 @@ public class StackElement {
    
    private static final String MAIN_FUNCTION = "main";
    
-   private final PathConverter converter;
    private final Function function;
    private final Trace trace;
    
@@ -19,18 +17,17 @@ public class StackElement {
    }
    
    public StackElement(Trace trace, Function function) {
-      this.converter = new PathConverter();
       this.function = function;
       this.trace = trace;
    }
    
    public StackTraceElement build() {
-      String resource = trace.getResource();
-      String module = converter.createModule(resource);
-      String path = converter.createPath(resource);
+      Module module = trace.getModule();
+      String path = module.getPath();
+      String name = module.getName();
       int line = trace.getLine();
       
-      return create(path, module, line);
+      return create(path, name, line);
    }
    
    private StackTraceElement create(String path, String module, int line) {

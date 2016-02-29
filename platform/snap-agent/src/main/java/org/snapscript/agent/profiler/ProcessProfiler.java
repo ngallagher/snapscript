@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceListener;
@@ -56,7 +57,8 @@ public class ProcessProfiler implements TraceListener {
    
    @Override
    public void before(Scope scope, Trace trace) {
-      String resource = trace.getResource();
+      Module module = trace.getModule();
+      String resource = module.getPath();
       ResourceProfiler profiler = profilers.get(resource);
       int line = trace.getLine();
       
@@ -83,7 +85,8 @@ public class ProcessProfiler implements TraceListener {
 
    @Override
    public void after(Scope scope, Trace trace) {
-      String resource = trace.getResource();
+      Module module = trace.getModule();
+      String resource = module.getPath();
       ResourceProfiler profiler = profilers.get(resource);
       int line = trace.getLine();
       

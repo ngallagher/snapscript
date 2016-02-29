@@ -3,11 +3,11 @@ package org.snapscript.core;
 public class Trace {
    
    private final TraceType type;
-   private final String resource;
+   private final Module module;
    private final int line;
    
-   public Trace(TraceType type, String resource, int line) {
-      this.resource = resource;
+   public Trace(TraceType type, Module module, int line) {
+      this.module = module;
       this.line = line;
       this.type = type;
    }
@@ -16,8 +16,8 @@ public class Trace {
       return type;
    }
 
-   public String getResource() {
-      return resource;
+   public Module getModule() {
+      return module;
    }
 
    public int getLine() {
@@ -26,6 +26,6 @@ public class Trace {
    
    @Override
    public String toString() {
-      return String.format("%s:%s", resource, line);
+      return String.format("%s:%s", module, line);
    }
 }

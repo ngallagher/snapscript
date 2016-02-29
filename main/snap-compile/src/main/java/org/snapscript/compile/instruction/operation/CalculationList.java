@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction.operation;
 
 import org.snapscript.core.Compilation;
-import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.Module;
 
 public class CalculationList implements Compilation { 
    
@@ -13,7 +13,7 @@ public class CalculationList implements Compilation {
    }
    
    @Override
-   public Evaluation compile(Context context, String resource, int line) throws Exception {
+   public Evaluation compile(Module module, int line) throws Exception {
       Calculator calculator = new Calculator();
       
       for(CalculationPart part : parts) {

@@ -8,11 +8,15 @@ public class PathConverterTest extends TestCase {
       PathConverter parser = new PathConverter();
       
       assertEquals("game.tetris", parser.createModule("/game/tetris.snap"));
+      assertEquals("game.tetris", parser.createModule("/game/tetris.snap"));
       assertEquals("game.tetris", parser.createModule("game/tetris.snap"));
       assertEquals("game.tetris", parser.createModule("game\\tetris.snap"));
       assertEquals("game.tetris", parser.createModule("\\game\\tetris.snap"));
       assertEquals("game.tetris", parser.createModule("game.tetris"));
+      assertEquals("game.tetris", parser.createModule("game.tetris"));
       assertEquals("test", parser.createModule("test.snap"));
+      assertEquals("test", parser.createModule("test.snap"));
+      assertEquals("test", parser.createModule("/test.snap"));
       assertEquals("test", parser.createModule("/test.snap"));
       assertEquals("test", parser.createModule("\\test.snap"));
       assertEquals("test", parser.createModule("test"));

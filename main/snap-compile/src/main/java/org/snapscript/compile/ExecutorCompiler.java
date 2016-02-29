@@ -10,13 +10,13 @@ import org.snapscript.core.EmptyModel;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Model;
 
-public class ExcecutorCompiler implements Compiler {
+public class ExecutorCompiler implements Compiler {
    
    private final Cache<String, Executable> cache;
    private final Executor executor;
    private final Compiler compiler;   
   
-   public ExcecutorCompiler(Executor executor, Compiler compiler) {      
+   public ExecutorCompiler(Executor executor, Compiler compiler) {      
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
       this.executor = executor;
       this.compiler = compiler;

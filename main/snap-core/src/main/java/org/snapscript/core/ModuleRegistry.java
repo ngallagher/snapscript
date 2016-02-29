@@ -11,6 +11,7 @@ public class ModuleRegistry {
 
    private final Map<String, Module> modules;
    private final List<Module> references;
+   private final PathConverter converter;
    private final SystemExporter exporter;
    private final Context context;
 
@@ -18,6 +19,7 @@ public class ModuleRegistry {
       this.modules = new ConcurrentHashMap<String, Module>();
       this.references = new CopyOnWriteArrayList<Module>();
       this.exporter = new SystemExporter(context);
+      this.converter = new PathConverter();
       this.context = context;
    }
    
@@ -36,10 +38,11 @@ public class ModuleRegistry {
       if (name == null) {
          throw new InternalArgumentException("Module name was null");
       }
+      String path = converter.createPath(name);
       Module current = modules.get(name);
 
       if (current == null) {
-         Module module = new ContextModule(context, name);
+         Module module = new ContextModule(context, path, name);
 
          modules.put(name, module);
          exporter.export(module);

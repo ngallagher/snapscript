@@ -26,9 +26,10 @@ public class ConstructObjectArray implements Compilation {
    }  
    
    @Override
-   public Evaluation compile(Context context, String resource, int line) throws Exception {
+   public Evaluation compile(Module module, int line) throws Exception {
+      Context context = module.getContext();
       TraceInterceptor interceptor = context.getInterceptor();
-      Trace trace = TraceType.getConstruct(resource, line);
+      Trace trace = TraceType.getConstruct(module, line);
       
       return new TraceEvaluation(interceptor, construct, trace);
    }

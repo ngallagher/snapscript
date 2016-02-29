@@ -202,7 +202,7 @@ public class EvaluationTest extends TestCase {
       ScopeMerger merger = new ScopeMerger(context);
       Scope scope = merger.merge(model, "default");
       SyntaxParser analyzer = compiler.compile();
-      SyntaxNode token = analyzer.parse(null, source, grammar);
+      SyntaxNode token = analyzer.parse("/default.snap", source, grammar);
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the
                                                       // following
       Statement statement = (Statement) builder.assemble(token, "xx");

@@ -5,15 +5,15 @@ public enum TraceType {
    INVOKE,
    NORMAL;
    
-   public static Trace getConstruct(String resource, int line) {
-      return new Trace(CONSTRUCT, resource, line);
+   public static Trace getConstruct(Module module, int line) {
+      return new Trace(CONSTRUCT, module, line);
    }
    
-   public static Trace getInvoke(String resource, int line) {
-      return new Trace(INVOKE, resource, line);
+   public static Trace getInvoke(Module module, int line) {
+      return new Trace(INVOKE, module, line);
    }
    
-   public static Trace getNormal(String resource, int line) {
-      return new Trace(NORMAL, resource, line);
+   public static Trace getNormal(Module module, int line) {
+      return new Trace(NORMAL, module, line);
    }
 }

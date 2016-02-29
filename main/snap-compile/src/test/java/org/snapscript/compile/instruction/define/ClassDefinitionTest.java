@@ -38,7 +38,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Store store = new ClassPathStore();
       Context context =new StoreContext(store);
-      ContextModule module = new ContextModule(context, DEFAULT_PACKAGE);
+      ContextModule module = new ContextModule(context, DEFAULT_PACKAGE, DEFAULT_PACKAGE);
       ModuleScope scope = new ModuleScope(module);
       Type type = definer.compile(scope).getValue();
 
@@ -60,7 +60,7 @@ public class ClassDefinitionTest extends TestCase {
       ClassDefinition definer = new ClassDefinition(name, hierarchy, parts);
       Store store = new ClassPathStore();
       Context context =new StoreContext(store);
-      Module module = new ContextModule(context, DEFAULT_PACKAGE);
+      Module module = new ContextModule(context, DEFAULT_PACKAGE, DEFAULT_PACKAGE);
       ModuleScope scope = new ModuleScope(module);
 
       Type type = definer.compile(scope).getValue(); 

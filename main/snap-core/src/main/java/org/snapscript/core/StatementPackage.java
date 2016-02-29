@@ -18,7 +18,7 @@ public class StatementPackage implements Package {
 
    @Override
    public Statement compile(Scope scope) throws Exception {
-      if(compile.compareAndSet(true, false)) {
+      if(compile.compareAndSet(true, false)) { // compile only once
          Module module = scope.getModule();
          Context context = module.getContext();
          

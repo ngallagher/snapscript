@@ -53,11 +53,11 @@ public class ThreadStackTest extends TestCase {
    }
    
    public static void createTrace(ThreadStack stack, String resource, int line){
-      stack.before(new Trace(TraceType.NORMAL, resource, line));
+      stack.before(new Trace(TraceType.NORMAL, new ContextModule(null, resource, resource), line));
    }
    
    public static void createFunction(ThreadStack stack, String functionName, String typeName, String moduleName){
-      Module module = new ContextModule(null, moduleName);
+      Module module = new ContextModule(null, moduleName, moduleName);
       TestType type = new TestType(module, typeName, null, null);
       List<Type> types = new ArrayList<Type>();
       List<String> names = new ArrayList<String>();

@@ -14,18 +14,20 @@ public class ContextModule implements Module {
    private final PathConverter converter;
    private final ImportManager manager;
    private final Context context;
-   private final String resource;
+   private final String prefix;
+   private final String path;
    private final Scope scope;
    
-   public ContextModule(Context context, String resource) {
+   public ContextModule(Context context, String path, String prefix) {
       this.functions = new CopyOnWriteArrayList<Function>();
       this.imports = new ConcurrentHashMap<String, Type>();
       this.references = new CopyOnWriteArrayList<Type>();
-      this.manager = new ImportManager(context, resource);
+      this.manager = new ImportManager(context, prefix);
       this.converter = new PathConverter();
       this.scope = new ModuleScope(this);
-      this.resource = resource;
       this.context = context;
+      this.prefix = prefix;
+      this.path = path;
    }
 
    @Override
@@ -52,7 +54,7 @@ public class ContextModule implements Module {
             TypeLoader loader = context.getLoader();
             
             if(loader != null) {
-               type = loader.defineType(resource, name);
+               type = loader.defineType(prefix, name);
             }
             if(type != null) {
                imports.put(name, type);
@@ -61,7 +63,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new ModuleException("Could not define '" + resource + "." + name + "'", e);
+         throw new ModuleException("Could not define '" + prefix + "." + name + "'", e);
       }
    }
    
@@ -76,7 +78,7 @@ public class ContextModule implements Module {
          }
          return module;
       } catch(Exception e){
-         throw new ModuleException("Could not import '" + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not import '" + name + "' in '" + prefix + "'", e);
       }
    }
    
@@ -93,7 +95,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
       }
    }
 
@@ -109,7 +111,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
       }
    }
    
@@ -128,7 +130,7 @@ public class ContextModule implements Module {
          }
          return type;
       } catch(Exception e){
-         throw new ModuleException("Could not find '" + name + "' in '" + resource + "'", e);
+         throw new ModuleException("Could not find '" + name + "' in '" + prefix + "'", e);
       }
    }
    
@@ -163,9 +165,9 @@ public class ContextModule implements Module {
    @Override
    public String getPath() {
       try {
-         return converter.createPath(resource);
+         return converter.createPath(prefix);
       } catch(Exception e){
-         throw new ModuleException("Could not parse '" + resource + "'", e);
+         throw new ModuleException("Could not parse '" + prefix + "'", e);
       }
    }
 
@@ -176,11 +178,11 @@ public class ContextModule implements Module {
    
    @Override
    public String getName() {
-      return resource;
+      return prefix;
    }
 
    @Override
    public String toString() {
-      return resource;
+      return prefix;
    }
 }

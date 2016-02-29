@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ScopeEvent;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceListener;
@@ -32,7 +33,8 @@ public class SuspendInterceptor implements TraceListener {
    public void before(Scope scope, Trace trace) {
       ThreadProgress progress = monitor.get();
       TraceType type = trace.getType();
-      String resource = trace.getResource();
+      Module module = trace.getModule();
+      String resource = module.getPath();
       int line = trace.getLine();
       
       if(matcher.match(resource, line) || progress.suspend()) { 

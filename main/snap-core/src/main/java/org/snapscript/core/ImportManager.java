@@ -7,12 +7,12 @@ public class ImportManager {
    
    private final Set<String> imports;
    private final Context context;
-   private final String resource;
+   private final String prefix;
    
-   public ImportManager(Context context, String resource) {
+   public ImportManager(Context context, String prefix) {
       this.imports = new CopyOnWriteArraySet<String>();
-      this.resource = resource;
       this.context = context;
+      this.prefix = prefix;
    }
    
    public void addImport(String name) {
@@ -22,7 +22,7 @@ public class ImportManager {
    public Type getType(String name) {
       try {
          TypeLoader loader = context.getLoader();
-         Type type = loader.resolveType(resource, name);
+         Type type = loader.resolveType(prefix, name);
          
          if(type == null) {
             for(String module : imports) {
@@ -45,7 +45,7 @@ public class ImportManager {
          }
          return type;
       } catch(Exception e){
-         throw new InternalStateException("Could not find '" + name + "' in '" + resource + "'", e);
+         throw new InternalStateException("Could not find '" + name + "' in '" + prefix + "'", e);
       }
    }
 
