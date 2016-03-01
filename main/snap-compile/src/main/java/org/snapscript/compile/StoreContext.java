@@ -1,7 +1,9 @@
 package org.snapscript.compile;
 
+import java.util.concurrent.Executor;
+
+import org.snapscript.compile.instruction.ExecutorLinker;
 import org.snapscript.compile.instruction.InstructionEvaluator;
-import org.snapscript.compile.instruction.InstructionLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
@@ -34,13 +36,17 @@ public class StoreContext implements Context {
    private final TypeLoader loader; 
    
    public StoreContext(Store store){
+      this(store, null);
+   }
+   
+   public StoreContext(Store store, Executor executor){
       this.stack = new ThreadStack();
       this.wrapper = new ProxyWrapper(this);
       this.handler = new ErrorHandler(stack);
       this.interceptor = new TraceInterceptor(stack);
       this.manager = new StoreManager(store);
       this.registry = new ModuleRegistry(this);
-      this.linker = new InstructionLinker(this);      
+      this.linker = new ExecutorLinker(this, executor);      
       this.loader = new TypeLoader(linker, registry, manager);
       this.matcher = new ConstraintMatcher(loader, wrapper);
       this.validator = new ExecutableValidator(matcher);

@@ -1,37 +1,60 @@
-package org.snapscript.core;
+package org.snapscript.compile.instruction;
+
+import static org.snapscript.compile.instruction.Instruction.SCRIPT_PACKAGE;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
+
+import org.snapscript.core.Context;
+import org.snapscript.core.InternalStateException;
+import org.snapscript.core.Package;
+import org.snapscript.core.PackageLinker;
+import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 
 public class ExecutorLinker implements PackageLinker {
    
    private final PackageLinker linker;
    private final Executor executor;
    
-   public ExecutorLinker(PackageLinker linker, Executor executor) {
+   public ExecutorLinker(Context context) {
+      this(context, null);
+   }
+   
+   public ExecutorLinker(Context context, Executor executor) {
+      this(context, executor, SCRIPT_PACKAGE);
+   }
+   
+   public ExecutorLinker(Context context, Executor executor, Instruction instruction) {
+      this.linker = new InstructionLinker(context, instruction);
       this.executor = executor;
-      this.linker = linker;
    }
 
    @Override
    public Package link(String resource, String source) throws Exception {
-      PackageCompilation compilation = new PackageCompilation(resource, source);
-      FutureTask<Package> task = new FutureTask<Package>(compilation);
-      FuturePackage result = new FuturePackage(task, resource);
-      
-      executor.execute(task); 
-      return result;
+      if(executor != null) {
+         PackageCompilation compilation = new PackageCompilation(resource, source);
+         FutureTask<Package> task = new FutureTask<Package>(compilation);
+         FuturePackage result = new FuturePackage(task, resource);
+         
+         executor.execute(task); 
+         return result;
+      }
+      return linker.link(resource, source);
    }
 
    @Override
    public Package link(String resource, String source, String grammar) throws Exception {
-      PackageCompilation compilation = new PackageCompilation(resource, source, grammar);
-      FutureTask<Package> task = new FutureTask<Package>(compilation);
-      FuturePackage result = new FuturePackage(task, resource);
-      
-      executor.execute(task); 
-      return result;
+      if(executor != null) {
+         PackageCompilation compilation = new PackageCompilation(resource, source, grammar);
+         FutureTask<Package> task = new FutureTask<Package>(compilation);
+         FuturePackage result = new FuturePackage(task, resource);
+         
+         executor.execute(task); 
+         return result;
+      }
+      return linker.link(resource, source, grammar);
    }
    
    private class FuturePackage implements Package {
