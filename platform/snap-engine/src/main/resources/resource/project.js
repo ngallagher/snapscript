@@ -201,28 +201,45 @@ function createLayout() {
                      type : 'left',
                      size : '60%',
                      style : pstyle,
-                     content : "<div class='titleTop'><table><tr>"
-                           + "<td>&nbsp;&nbsp;</td>" 
-                           + "<td><div class='saveScript' onclick='saveScript()' title='Save Script'></div></td>" 
-                           + "<td><div class='newScript' onclick='newScript()' title='New Script'></div></td>"
-                           + "<td><div class='deleteScript' onclick='deleteScript()' title='Delete Script'></div></td>"   
-                           + "<td><div class='runScript' onclick='runScript()' title='Run Script'></div></td>" 
-                           + "<td><div class='stopScript' onclick='stopScript()' title='Stop Script'></div></td>" 
-                           + "<td><div class='resumeScript' onclick='resumeScript()' title='Resume Script'></div></td>" 
-                           + "<td><div class='stepInScript' onclick='stepInScript()' title='Step In'></div></td>" 
-                           + "<td><div class='stepOutScript' onclick='stepOutScript()' title='Step Out'></div></td>" 
-                           + "<td><div class='stepOverScript' onclick='stepOverScript()' title='Step Over'></div></td>" 
-                           + "</tr></table></div>"
+                     content : "<div class='toolbarTop'>"
+                           + "<table>"
+                           + "<tr>"
+                           + "   <td>"
+                           + "      <table id='toolbarNormal'>"
+                           + "      <tr>"
+                           + "         <td>&nbsp;&nbsp;</td>" 
+                           + "         <td><div class='saveScript' onclick='saveScript()' title='Save Script'></div></td>" 
+                           + "         <td><div class='newScript' onclick='newScript()' title='New Script'></div></td>"
+                           + "         <td><div class='deleteScript' onclick='deleteScript()' title='Delete Script'></div></td>"   
+                           + "         <td><div class='runScript' onclick='runScript()' title='Run Script'></div></td>" 
+                           + "      </tr>"
+                           + "      </table>"
+                           + "   </td>" 
+                           + "   <td><div class='toolbarSeparator'></div></td>"
+                           + "   <td>"
+                           + "      <table id='toolbarDebug'>"
+                           + "      <tr>"
+                           + "         <td><div class='stopScript' onclick='stopScript()' title='Stop Script'></div></td>" 
+                           + "         <td><div class='resumeScript' onclick='resumeScript()' title='Resume Script'></div></td>" 
+                           + "         <td><div class='stepInScript' onclick='stepInScript()' title='Step In'></div></td>" 
+                           + "         <td><div class='stepOutScript' onclick='stepOutScript()' title='Step Out'></div></td>" 
+                           + "         <td><div class='stepOverScript' onclick='stepOverScript()' title='Step Over'></div></td>" 
+                           + "      </tr>"
+                           + "      </table>"
+                           + "   </td>"
+                           + "</tr>"
+                           + "</table>" 
+                           + "</div>"
                   }, {
                      type : 'main',
                      size : '20%',
                      style : pstyle,
-                     content : "<div class='titleTop'></div>"
+                     content : "<div class='toolbarTop'></div>"
                   }, {
                      type : 'right',
                      size : '20%',
                      style : pstyle,
-                     content : "<div class='titleTop'></div>"
+                     content : "<div class='toolbarTop'><div class='toolbarLogo'></div></div>"
                   } ]
          });
 

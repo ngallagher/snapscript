@@ -20,6 +20,11 @@ var list = new Point[100000];
 
 iterate(list);
 allocate(list);
+map(list);
+
+iterate(list);
+allocate(list);
+map(list);
 
 function iterate(list) {
    var start = System.currentTimeMillis();
@@ -41,4 +46,16 @@ function allocate(list) {
    var stop = System.currentTimeMillis();
 
    System.err.println("allocate="+(stop-start));
+}
+
+function map(list) {
+   var start = System.currentTimeMillis();
+   var p = null;
+   
+   for(var i = 0; i < list.size(); i++) {
+      p = {x: i,  y: i+1};
+   }
+   var stop = System.currentTimeMillis();
+
+   System.err.println("map="+(stop-start));
 }

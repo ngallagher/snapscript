@@ -8,13 +8,16 @@ function createStatus() {
 }
 
 function terminateStatusProcess(socket, type, text) {
+   if(text != null) {
+      statusProcesses[text] = null;
+   }
    if(statusFocus == text) {
       suspendedThreads = {};
       currentFocusThread = null;
       terminateThreads();
       clearStatusFocus();
    }
-   statusProcesses[text] = null;
+   showStatus();
 }
 
 function createStatusProcess(socket, type, text) { // process is running
@@ -43,6 +46,8 @@ function updateStatusFocus(process) {
    var processResource = statusProcesses[process];
    
    if(processResource != null){
+      $("#toolbarDebug").css('opacity', '1.0');
+      $("#toolbarDebug").css('filter', 'alpha(opacity=100)'); // msie
       $("#process").html("<i>&nbsp;RUNNING: " + processResource + " ("+process+")</i>");
    }
    if(statusFocus != process) {
@@ -60,6 +65,8 @@ function clearStatusFocus(){ // clear up stuff
    clearVariables();
 //   clearTelemetry();
 //   clearConsole();
+   $("#toolbarDebug").css('opacity', '0.4');
+   $("#toolbarDebug").css('filter', 'alpha(opacity=40)'); // msie
    $("#process").html("");
 }
 
