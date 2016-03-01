@@ -5,8 +5,8 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.snapscript.agent.common.ExceptionBuilder;
@@ -31,6 +31,7 @@ import org.snapscript.agent.event.socket.SocketEventClient;
 import org.snapscript.agent.profiler.ProcessProfiler;
 import org.snapscript.agent.profiler.ProfileResult;
 import org.snapscript.agent.profiler.ProfileResultUpdater;
+import org.snapscript.common.ThreadPool;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
@@ -70,6 +71,7 @@ public class ProcessAgent {
    private final ProcessProfiler profiler;
    private final BreakpointMatcher matcher;
    private final RemoteStore remoteReader;
+   private final Executor executor;
    private final Model model;
    private final String process;
    private final int port;
@@ -77,7 +79,8 @@ public class ProcessAgent {
    public ProcessAgent(URI rootURI, String process, int port) {
       this.remoteReader = new RemoteStore(rootURI);
       this.store = new ProcessAgentStore(remoteReader);
-      this.context = new StoreContext(store);
+      this.executor = new ThreadPool(4);
+      this.context = new StoreContext(store, executor);
       this.compiler = new ResourceCompiler(context);
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
