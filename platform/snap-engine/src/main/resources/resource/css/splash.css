@@ -10,7 +10,7 @@
 }
 
 #splash-image {
-	background: url("../img/splash.png");
+	background: url("/img/splash.png");
 	background-position: top;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -20,6 +20,20 @@
 	border: 1px solid #ffffff;
 	opacity: 0.9;
 	filter: alpha(opacity = 90);
+	height: 400px;
+	width: 600px;
+}
+
+#splash-square {
+	background-image: url("/img/splash.png");
+	background-position: top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	margin-top: 15%;
+	margin-left: auto;
+	margin-right: auto;
+	background: #ffffff;	
+	border: 1px solid #000000;
 	height: 400px;
 	width: 600px;
 }
