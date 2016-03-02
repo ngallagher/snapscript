@@ -137,7 +137,7 @@ function createLayout() {
                caption : '<div class="profilerTab">Profiler</div>'
             }, {
                id : 'tab7',
-               caption : '<div class="debugTab">Debug</div>'
+               caption : '<div class="debugTab">Debug&nbsp;&nbsp;</div>'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
