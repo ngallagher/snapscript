@@ -51,7 +51,7 @@ function updateStatusFocus(process) {
       $("#process").html("<i>&nbsp;RUNNING: " + processResource + " ("+process+")</i>");
    }
    if(statusFocus != process) {
-      clearTelemetry(); // telemetry does not apply
+      clearProfiler(); // profiler does not apply
       clearThreads(); // race condition here
       clearVariables();
    }
@@ -63,7 +63,7 @@ function clearStatusFocus(){ // clear up stuff
    statusFocus = null;
    clearThreads(); // race condition here
    clearVariables();
-//   clearTelemetry();
+//   clearProfiler();
 //   clearConsole();
    $("#toolbarDebug").css('opacity', '0.4');
    $("#toolbarDebug").css('filter', 'alpha(opacity=40)'); // msie

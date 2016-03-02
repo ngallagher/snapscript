@@ -1,14 +1,14 @@
 
-function startTelemetry() {
-   createRoute("PROFILE", updateTelemetry, clearTelemetry);
+function startProfiler() {
+   createRoute("PROFILE", updateProfiler, clearProfiler);
 }
 
-function updateTelemetry(socket, type, text) {
+function updateProfiler(socket, type, text) {
    var profileResult = JSON.parse(text);
    var profileRecords = profileResult.results;
-   var telemetryRecords = [];
-   var telemetryWidths = [];
-   var telemetryIndex = 1;
+   var profilerRecords = [];
+   var profilerWidths = [];
+   var profilerIndex = 1;
    var totalTime = 0;
   
    for(var i = 0; i < profileRecords.length; i++) {
@@ -21,17 +21,17 @@ function updateTelemetry(socket, type, text) {
          var percentageTime = (recordTime/totalTime)*100;
          var percentage = parseInt(percentageTime);
          
-         telemetryWidths[i] = percentage;
+         profilerWidths[i] = percentage;
       }
    }
    for(var i = 0; i < profileRecords.length; i++) {
       var profileRecord = profileRecords[i];
       var resourcePath = createResourcePath(profileRecord.resource);
-      var displayName = "<div class='telemetryRecord'>"+resourcePath.projectPath+"</div>";
-      var percentageBar = "<div style='padding: 2px;'><div style='height: 10px; background: #C61414; width: "+telemetryWidths[i]+"%;'></div></div>";
+      var displayName = "<div class='profilerRecord'>"+resourcePath.projectPath+"</div>";
+      var percentageBar = "<div style='padding: 2px;'><div style='height: 10px; background: #C61414; width: "+profilerWidths[i]+"%;'></div></div>";
       
-      telemetryRecords.push({
-         recid: telemetryIndex++,
+      profilerRecords.push({
+         recid: profilerIndex++,
          resource: displayName,
          percentage: percentageBar,
          duration: profileRecord.time,
@@ -41,13 +41,13 @@ function updateTelemetry(socket, type, text) {
       });
    }
    //console.log(text);
-   w2ui['telemetry'].records = telemetryRecords;
-   w2ui['telemetry'].refresh();
+   w2ui['profiler'].records = profilerRecords;
+   w2ui['profiler'].refresh();
 }
 
-function clearTelemetry() {
-   w2ui['telemetry'].records = [];
-   w2ui['telemetry'].refresh();
+function clearProfiler() {
+   w2ui['profiler'].records = [];
+   w2ui['profiler'].refresh();
 }
 
-registerModule("telemetry", "Telemetry module: telemetry.js", startTelemetry, [ "common", "socket" ]);
+registerModule("profiler", "Profiler module: profiler.js", startProfiler, [ "common", "socket" ]);

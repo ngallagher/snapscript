@@ -1,4 +1,4 @@
-#telemetry {
+#profiler {
     font-family: "Lucida Console", sans-serif; 
     font-size: 0.9em;   
     background-color: #ffffff;
@@ -14,7 +14,7 @@
     left: 8px;
 }
 
-.telemetryTab {	
+.profilerTab {	
 	background-image: url('/img/toolbar/th_vertical.gif');	
 	background-position: left bottom;
 	background-repeat: no-repeat;
@@ -25,7 +25,7 @@
 	z-index: 1009;
 }
 
-.telemetryRecord {
+.profilerRecord {
 	/*font-family: "Lucida Console", sans-serif;*/
     font-size: 1.1em;
 	background-image: url('/img/toolbar/read_obj.gif');	

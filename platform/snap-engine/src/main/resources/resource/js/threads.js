@@ -13,7 +13,7 @@ function startThreads(socket, type, text) {
    suspendedThreads = {};
    currentFocusThread = null;
    clearVariables();
-   clearTelemetry();
+   clearProfiler();
    clearThreads();
    $("#process").html("<i>&nbsp;RUNNING: " + message.resource + " ("+message.process+") "+message.duration+" milliseconds</i>");
 }

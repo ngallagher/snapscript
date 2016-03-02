@@ -1,158 +1,3 @@
-var spinnerHiding = false;
-var projectBreakpoints = {};
-
-function newScript() {
-   resetEditor();
-   clearConsole();
-   clearProblems();
-}
-
-function runScript() {
-   saveScriptWithAction(function() {
-      var editorData = loadEditor();
-      var message = JSON.stringify({
-         breakpoints : editorData.breakpoints,
-         project : document.title,
-         resource : editorData.resource.filePath,
-         source : editorData.source,
-      });
-      socket.send("EXECUTE:" + message);
-   });
-}
-
-function saveScript() {
-   saveScriptWithAction(function() {
-   });
-}
-
-function saveScriptWithAction(saveCallback) {
-   var editorData = loadEditor();
-   if (editorData.resource == null) {
-      openTreeDialog(null, false, function(resourceDetails) {
-         var message = JSON.stringify({
-            project : document.title,
-            resource : resourceDetails.filePath,
-            source : editorData.source,
-         });
-         clearConsole();
-         clearProblems();
-         socket.send("SAVE:" + message);
-         updateEditor(editorData.source, resourceDetails.projectPath);
-         saveCallback();
-      });
-   } else {
-      if (isEditorChanged()) {
-         openTreeDialog(editorData.resource, true, function(resourceDetails) {
-            var message = JSON.stringify({
-               project : document.title,
-               resource : resourceDetails.filePath,
-               source : editorData.source,
-            });
-            clearConsole();
-            clearProblems();
-            socket.send("SAVE:" + message); 
-            updateEditor(editorData.source, resourceDetails.projectPath);
-            saveCallback();
-         });
-      } else {
-         clearConsole();
-         clearProblems();
-         saveCallback();
-      }
-   }
-}
-
-function deleteScript() {
-   var editorData = loadEditor();
-   var message = JSON.stringify({
-      project : document.title,
-      resource : editorData.resource.filePath
-   });
-   clearConsole();
-   clearProblems();
-   socket.send("DELETE:" + message);
-}
-
-function updateScriptBreakpoints() {
-   var editorData = loadEditor();
-   var message = JSON.stringify({
-      breakpoints : editorData.breakpoints,
-      project : document.title,
-   });
-   socket.send("BREAKPOINTS:" + message);
-}
-
-function stepOverScript() {
-   var threadScope = focusedThread();
-   if(threadScope != null) {
-      var message = JSON.stringify({
-         thread: threadScope.thread,
-         type: "STEP_OVER"
-      });
-      clearEditorHighlights() 
-      socket.send("STEP:" + message);
-   }
-}
-
-function stepInScript() {
-   var threadScope = focusedThread();
-   if(threadScope != null) {
-      var message = JSON.stringify({
-         thread: threadScope.thread,
-         type: "STEP_IN"
-      });
-      clearEditorHighlights() 
-      socket.send("STEP:" + message);
-   }
-}
-
-function stepOutScript() {
-   var threadScope = focusedThread();
-   if(threadScope != null) {
-      var message = JSON.stringify({
-         thread: threadScope.thread,
-         type: "STEP_OUT"
-      });
-      clearEditorHighlights() 
-      socket.send("STEP:" + message);
-   }
-}
-
-function resumeScript() {
-   var threadScope = focusedThread();
-   if(threadScope != null) {
-      var message = JSON.stringify({
-         thread: threadScope.thread,
-         type: "RUN"
-      });
-      clearEditorHighlights() 
-      socket.send("STEP:" + message);
-   }
-}
-
-function stopScript() {
-   socket.send("STOP");
-}
-
-function browseScriptVariables(variables) {
-   var threadScope = focusedThread();
-   if(threadScope != null) {
-      var message = JSON.stringify({
-         thread: threadScope.thread,
-         expand: variables
-      });
-      socket.send("BROWSE:" + message);
-   }
-}
-
-function attachProcess(process) {
-   var statusFocus = currentStatusFocus(); // what is the current focus
-   var message = JSON.stringify({
-      process: process,
-      focus: statusFocus != process // toggle the focus
-   });
-   socket.send("ATTACH:" + message); // attach to process
-}
 
 function createLayout() {
 
@@ -289,7 +134,7 @@ function createLayout() {
                caption : '<div class="variableTab">Variables</div>'
             }, {
                id : 'tab6',
-               caption : '<div class="telemetryTab">Telemetry</div>'
+               caption : '<div class="profilerTab">Profiler</div>'
             }, {
                id : 'tab7',
                caption : '<div class="statusTab">Status</div>'
@@ -320,9 +165,9 @@ function createLayout() {
                   $('#variables').w2render('variables');
                   showVariables();
                } else if(event.target == 'tab6'){
-                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='telemetry'></div>");
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='profiler'></div>");
                   w2ui['tabLayout'].refresh();
-                  $('#telemetry').w2render('telemetry');
+                  $('#profiler').w2render('profiler');
                   showVariables();
                } else {
                   w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='status'></div>");
@@ -398,7 +243,7 @@ function createLayout() {
    });
    
    $().w2grid({
-      name : 'telemetry',
+      name : 'profiler',
       columns : [ {
          field : 'resource',
          caption : 'Resource',
