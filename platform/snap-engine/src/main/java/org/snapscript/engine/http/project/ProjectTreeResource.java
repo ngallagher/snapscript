@@ -103,9 +103,9 @@ public class ProjectTreeResource implements Resource {
             builder.append(currentPath);
             
             if(openPath) {
-               builder.append("\" class=\"expanded folder\">");
+               builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"expanded folder\">");
             } else {
-               builder.append("\" class=\"folder\">");
+               builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"folder\">");
             }
             builder.append(name);
             builder.append("\n");
@@ -131,8 +131,23 @@ public class ProjectTreeResource implements Resource {
             }
          } else {
             if(!foldersOnly) {
+               String icon = "data-icon=\"/img/toolbar/cu_obj.gif\"";
+               
+               if(name.endsWith(".gif")) {
+                  icon = "data-icon=\"/img/toolbar/image_obj.gif\"";
+               } else if(name.endsWith(".png")) {
+                  icon = "data-icon=\"/img/toolbar/image_obj.gif\"";
+               } else if(name.endsWith(".jpg")) {
+                  icon = "data-icon=\"/img/toolbar/image_obj.gif\"";    
+               } else if(name.endsWith(".jar")) {
+                  icon = "data-icon=\"/img/toolbar/jar_src_obj.gif\"";                    
+               }else if(!name.endsWith(".snap")){
+                  icon = "data-icon=\"/img/toolbar/file_obj.gif\"";
+               }
                builder.append(pathIndent);
-               builder.append("<li id=\"");
+               builder.append("<li ");
+               builder.append(icon);
+               builder.append(" id=\"");
                builder.append(idPrefix);
                builder.append(id);
                builder.append("\" title=\"");

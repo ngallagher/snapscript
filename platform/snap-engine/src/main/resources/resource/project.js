@@ -137,7 +137,7 @@ function createLayout() {
                caption : '<div class="profilerTab">Profiler</div>'
             }, {
                id : 'tab7',
-               caption : '<div class="statusTab">Status</div>'
+               caption : '<div class="debugTab">Debug</div>'
             } ],
             onClick : function(event) {
                if (event.target == 'tab1') {
@@ -170,9 +170,9 @@ function createLayout() {
                   $('#profiler').w2render('profiler');
                   showVariables();
                } else {
-                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='status'></div>");
+                  w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='debug'></div>");
                   w2ui['tabLayout'].refresh();
-                  $('#status').w2render('status');
+                  $('#debug').w2render('debug');
                   showStatus();
                }
             }
@@ -312,7 +312,7 @@ function createLayout() {
    });
    
    $().w2grid({
-      name : 'status',
+      name : 'debug',
       columns : [ 
        {
          field : 'name',
@@ -350,7 +350,7 @@ function createLayout() {
          sortable : true,
          resizable : true
       }, {
-         field : 'status',
+         field : 'debug',
          caption : 'Status',
          size : '10%',
          sortable : true,

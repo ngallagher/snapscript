@@ -18,7 +18,7 @@
 <link href="/css/threads.css" rel="stylesheet" />
 <link href="/css/variables.css" rel="stylesheet" />
 <link href="/css/profiler.css" rel="stylesheet" />
-<link href="/css/status.css" rel="stylesheet" />
+<link href="/css/debug.css" rel="stylesheet" />
 <link href="/css/toolbar.css" rel="stylesheet" />
 <script src="/js/external/ace/ace.js"></script>
 <script src="/js/external/jquery.js"></script>
@@ -35,7 +35,7 @@
 <script src="/js/console.js"></script>
 <script src="/js/tree.js"></script>
 <script src="/js/threads.js"></script>
-<script src="/js/status.js"></script>
+<script src="/js/debug.js"></script>
 <script src="/js/variables.js"></script>
 <script src="/js/dialog.js"></script>
 <script src="/js/common.js"></script>

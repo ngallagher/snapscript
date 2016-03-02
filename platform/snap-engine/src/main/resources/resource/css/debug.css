@@ -1,4 +1,4 @@
-#status {
+#debug {
     font-family: "Lucida Console", sans-serif; 
     font-size: 0.9em;   
     background-color: #ffffff;
@@ -14,8 +14,8 @@
     left: 8px;
 }
 
-.statusTab {	
-	background-image: url('/img/toolbar/nav_go.gif');	
+.debugTab {	
+	background-image: url('/img/toolbar/debug_exc.gif');	
 	background-position: left bottom;
 	background-repeat: no-repeat;
 	padding-top: 3px;
@@ -25,7 +25,7 @@
 	z-index: 1009;
 }
 
-.statusRecord {
+.debugRecord {
 	/*font-family: "Lucida Console", sans-serif;*/
     font-size: 1.1em;
 	background-image: url('/img/toolbar/nav_go.gif');	
@@ -34,7 +34,7 @@
 	padding-left: 22px; /* Or size of icon + spacing */
 }
 
-.statusFocusRecord {
+.debugFocusRecord {
 	/*font-family: "Lucida Console", sans-serif;*/
     font-size: 1.1em;
 	background-image: url('/img/toolbar/resume_co.gif');	

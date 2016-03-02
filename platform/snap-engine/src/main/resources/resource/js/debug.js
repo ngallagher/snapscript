@@ -73,8 +73,8 @@ function clearStatusFocus(){ // clear up stuff
 function clearStatus() {
    statusProcesses = {};
    statusFocus = null;
-   w2ui['status'].records = [];
-   w2ui['status'].refresh();
+   w2ui['debug'].records = [];
+   w2ui['debug'].refresh();
 }
 
 function showStatus() {
@@ -87,10 +87,10 @@ function showStatus() {
          
          if(statusResource != null) {
             var resourcePathDetails = createResourcePath(statusResource);
-            var displayName = "<div class='statusRecord'>"+statusProcess+"</div>";
+            var displayName = "<div class='debugRecord'>"+statusProcess+"</div>";
    
             if(statusFocus == statusProcess) {
-               displayName = "<div class='statusFocusRecord'>"+statusProcess+"</div>";
+               displayName = "<div class='debugFocusRecord'>"+statusProcess+"</div>";
             }
             statusRecords.push({
                recid: statusIndex++,
@@ -103,8 +103,8 @@ function showStatus() {
          }
       }
    }
-   w2ui['status'].records = statusRecords;
-   w2ui['status'].refresh();
+   w2ui['debug'].records = statusRecords;
+   w2ui['debug'].refresh();
 }
 
 registerModule("status", "Status module: status.js", createStatus, [ "common", "socket", "tree" ]);
