@@ -8,9 +8,13 @@ import java.util.regex.Pattern;
 
 public class ProcessEngineLauncher {
    
+   private static final String MODE_ARGUMENT = "mode";
+   private static final String DEFAULT_MODE = "develop";
+   
    public static void main(String[] list) throws Exception {
       Map<String, String> commands = new HashMap<String, String>();
       ProcessEngineArgument[] arguments = ProcessEngineArgument.values();
+      String mode = DEFAULT_MODE;
       
       for(ProcessEngineArgument argument : arguments) {
          String name = argument.command;
@@ -53,7 +57,10 @@ public class ProcessEngineLauncher {
          String value= commands.get(name);
          System.out.println("--" + name + "=" + value);
       }
-      ProcessEngineContext service = new ProcessEngineContext("/context/application.xml");
+      if(commands.containsKey(MODE_ARGUMENT)) { // is there a mode setting
+         mode = commands.get(MODE_ARGUMENT);
+      }
+      ProcessEngineContext service = new ProcessEngineContext("/context/" + mode + ".xml");
       service.start();
    }
 }
