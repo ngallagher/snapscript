@@ -6,10 +6,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.snapscript.service.ScriptService;
+
 public class ProcessEngineLauncher {
    
    private static final String MODE_ARGUMENT = "mode";
    private static final String DEFAULT_MODE = "develop";
+   private static final String RUN_MODE = "run";
    
    public static void main(String[] list) throws Exception {
       Map<String, String> commands = new HashMap<String, String>();
@@ -59,8 +62,12 @@ public class ProcessEngineLauncher {
       }
       if(commands.containsKey(MODE_ARGUMENT)) { // is there a mode setting
          mode = commands.get(MODE_ARGUMENT);
+      } 
+      if(mode.equals(RUN_MODE)) {
+         ProcessEngineContext service = new ProcessEngineContext("/context/" + mode + ".xml");
+         service.start();
+      } else {
+         ScriptService.main(list);
       }
-      ProcessEngineContext service = new ProcessEngineContext("/context/" + mode + ".xml");
-      service.start();
    }
 }

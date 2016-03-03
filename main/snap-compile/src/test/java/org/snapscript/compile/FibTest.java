@@ -27,6 +27,7 @@ public class FibTest extends TestCase {
    //time=1517 memory=1,933,574,016
    
    //time=1619 memory=1,769,799,896
+   //time=1572 memory=1,769,659,520
    
    //time=1263 memory=1,586,663,120
    //time=1279 memory=1,586,655,976
