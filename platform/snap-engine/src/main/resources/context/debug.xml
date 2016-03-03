@@ -139,6 +139,6 @@
 
   <bean id="WebServer" class="org.snapscript.engine.http.WebServer">
     <constructor-arg ref="WebContainer" />
-    <constructor-arg value="${http-port}" />
+    <constructor-arg value="${port}" />
   </bean>
 </beans>

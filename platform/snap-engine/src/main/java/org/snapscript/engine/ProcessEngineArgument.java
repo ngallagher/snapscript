@@ -3,10 +3,10 @@ package org.snapscript.engine;
 import java.util.regex.Pattern;
 
 public enum ProcessEngineArgument {
-   HTTP_PORT("http-port", "0", "Port for HTTP connections", "\\d+"),
    AGENT_PORT("agent-port", "0", "Port for agent connections", "\\d+"),
    AGENT_POOL("agent-pool", "4", "Number of agents in pool", "\\d+"),
-   MODE("project-mode", "single", "Mode to start on", "(single|multiple)"),
+   PORT("port", "0", "Port for HTTP connections", "\\d+"),
+   MODE("mode", "develop", "Mode to start on", "(develop|debug|run)"),
    DIRECTORY("directory", "work", "Directory used for sources", ".*"),
    SCRIPT("script", null, "Script to launch", ".*.snap");
    

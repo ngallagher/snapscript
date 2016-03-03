@@ -6,10 +6,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.snapscript.engine.http.project.ProjectMode;
 import org.snapscript.service.ScriptService;
 
 public class ProcessEngineLauncher {
    
+   private static final String PROJECT_MODE = "project-mode";
    private static final String MODE_ARGUMENT = "mode";
    private static final String DEFAULT_MODE = "develop";
    private static final String RUN_MODE = "run";
@@ -17,6 +19,7 @@ public class ProcessEngineLauncher {
    public static void main(String[] list) throws Exception {
       Map<String, String> commands = new HashMap<String, String>();
       ProcessEngineArgument[] arguments = ProcessEngineArgument.values();
+      String projectMode = ProjectMode.MULTIPLE_MODE;
       String mode = DEFAULT_MODE;
       
       for(ProcessEngineArgument argument : arguments) {
@@ -62,9 +65,14 @@ public class ProcessEngineLauncher {
       }
       if(commands.containsKey(MODE_ARGUMENT)) { // is there a mode setting
          mode = commands.get(MODE_ARGUMENT);
-      } 
-      if(mode.equals(RUN_MODE)) {
+      }
+      if(!mode.equals(RUN_MODE)) {
          ProcessEngineContext service = new ProcessEngineContext("/context/" + mode + ".xml");
+         
+         if(!mode.equals(DEFAULT_MODE)) {
+            projectMode = ProjectMode.SINGLE_MODE;
+         }
+         System.setProperty(PROJECT_MODE, projectMode);
          service.start();
       } else {
          ScriptService.main(list);

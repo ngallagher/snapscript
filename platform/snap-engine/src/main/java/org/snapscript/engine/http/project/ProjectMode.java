@@ -2,8 +2,8 @@ package org.snapscript.engine.http.project;
 
 public class ProjectMode {
 
-   private static final String SINGLE_MODE = "debug";
-   private static final String MULTIPLE_MODE = "multiple";
+   public static final String SINGLE_MODE = "debug";
+   public static final String MULTIPLE_MODE = "multiple";
    
    private final String mode;
    
