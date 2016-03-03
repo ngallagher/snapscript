@@ -11,7 +11,7 @@ public class MatchOneGrammar implements Grammar {
    private final int index;
    
    public MatchOneGrammar(List<Grammar> grammars, String name, int index) {
-      this(grammars, name, index, 100);
+      this(grammars, name, index, 10000);
    }
    
    public MatchOneGrammar(List<Grammar> grammars, String name, int index, int capacity) {

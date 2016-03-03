@@ -80,7 +80,8 @@ public class ProcessAgent {
       this.remoteReader = new RemoteStore(rootURI);
       this.store = new ProcessAgentStore(remoteReader);
       this.executor = new ThreadPool(4);
-      this.context = new StoreContext(store, executor);
+      //this.context = new StoreContext(store, executor);
+      this.context = new StoreContext(store);
       this.compiler = new ResourceCompiler(context);
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();

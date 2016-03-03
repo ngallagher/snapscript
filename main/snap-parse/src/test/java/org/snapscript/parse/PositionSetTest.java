@@ -24,7 +24,7 @@ public class PositionSetTest extends TestCase {
       }
       long id = Thread.currentThread().getId();
       for(int n = 0; n  < 10; n++) {
-         PositionSet cache = new PositionSet(100);
+         ArrayPositionSet cache = new ArrayPositionSet(100);
          LeastRecentlyUsedSet<Long> set = new LeastRecentlyUsedSet<Long>(100);
          System.gc();
          Thread.sleep(1000);
@@ -52,7 +52,7 @@ public class PositionSetTest extends TestCase {
    }
    
    public void testLargeCache() throws Exception {
-      PositionSet cache = new PositionSet(10);
+      ArrayPositionSet cache = new ArrayPositionSet(10);
       LeastRecentlyUsedSet<Long> set = new LeastRecentlyUsedSet<Long>(10);
       Random random = new SecureRandom();
       
@@ -70,7 +70,7 @@ public class PositionSetTest extends TestCase {
    }
 
    public void testSimpleCache() throws Exception {
-      PositionSet cache = new PositionSet(10);
+      ArrayPositionSet cache = new ArrayPositionSet(10);
       
       assertTrue(cache.add(11L));
       assertTrue(cache.add(12L));

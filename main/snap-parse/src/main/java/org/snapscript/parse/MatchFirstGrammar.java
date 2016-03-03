@@ -10,7 +10,7 @@ public class MatchFirstGrammar implements Grammar {
    private final String name;
    
    public MatchFirstGrammar(List<Grammar> grammars, String name) {
-      this(grammars, name, 100);
+      this(grammars, name, 10000);
    }
    
    public MatchFirstGrammar(List<Grammar> grammars, String name, int capacity) {

@@ -19,7 +19,7 @@ public class SyntaxCompiler {
       this.compiler = new GrammarCompiler(resolver, indexer);      
    } 
 
-   public SyntaxParser compile() {
+   public synchronized SyntaxParser compile() {
       if(grammars.isEmpty()) {
          Syntax[] language = Syntax.values();
          

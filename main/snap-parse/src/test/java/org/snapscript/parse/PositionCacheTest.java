@@ -27,7 +27,7 @@ public class PositionCacheTest extends TestCase {
       }
       long id = Thread.currentThread().getId();
       for(int n = 0; n  < 10; n++) {
-         PositionCache<String> cache = new PositionCache<String>(100);
+         ArrayPositionCache<String> cache = new ArrayPositionCache<String>(100);
          LeastRecentlyUsedMap<Long, String> map = new LeastRecentlyUsedMap<Long, String>(100);
          System.gc();
          Thread.sleep(1000);

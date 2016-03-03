@@ -37,7 +37,7 @@ public class ResourceProfiler {
    
    public void enter(int line) {
       // thread local required, also recursion counter
-      if(times.length < line) {
+      if(times.length <= line) {
          counts = copyOf(counts, line + 50);
          times = copyOf(times, line + 50);
          start = copyOf(start, line + 50);

@@ -18,7 +18,7 @@ import org.snapscript.core.ResultType;
 //Time taken to compile  was 2989 size was 57071
 public class CompilePerformanceTest extends TestCase {   
 
-   private static final int ITERATIONS = 20;
+   private static final int ITERATIONS = 50;
    public static void main(String[] l)throws Exception{
       new CompilePerformanceTest().testCompilerPerformance();
    }
