@@ -21,7 +21,8 @@ public class SearchPathFinderTest extends TestCase {
     * trait I{
     * }
     * 
-    * D,C,B,A,I,J,K,X,Y,Z,Runnable
+    * [D, C, B, A, X, Y, Z, I, J, K]
+    * MAYBE THIS IS BETTER: D,C,B,A,I,J,K,X,Y,Z,Runnable
     */
    public void testSearchPath() throws Exception {
       TypePathBuilder finder = new TypePathBuilder();
@@ -61,12 +62,14 @@ public class SearchPathFinderTest extends TestCase {
       assertEquals(c, types.get(1));
       assertEquals(b, types.get(2));
       assertEquals(a, types.get(3));
-      assertEquals(i, types.get(4));
-      assertEquals(j, types.get(5));
-      assertEquals(k, types.get(6));
-      assertEquals(x, types.get(7));
-      assertEquals(y, types.get(8));
-      assertEquals(z, types.get(9));
+
+      assertEquals(x, types.get(4));
+      assertEquals(y, types.get(5));
+      assertEquals(z, types.get(6));
+      
+      assertEquals(i, types.get(7));
+      assertEquals(j, types.get(8));
+      assertEquals(k, types.get(9));
       
    }
 
