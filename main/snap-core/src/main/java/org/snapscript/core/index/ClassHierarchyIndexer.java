@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.snapscript.core.Type;
 
-public class HierarchyIndexer {
+public class ClassHierarchyIndexer {
 
    private final TypeIndexer indexer;
    
-   public HierarchyIndexer(TypeIndexer indexer) {
+   public ClassHierarchyIndexer(TypeIndexer indexer) {
       this.indexer = indexer;
    }
    

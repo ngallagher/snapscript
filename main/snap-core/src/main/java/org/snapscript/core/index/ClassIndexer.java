@@ -15,7 +15,7 @@ import org.snapscript.core.Type;
 
 public class ClassIndexer {
 
-   private final HierarchyIndexer hierarchy;
+   private final ClassHierarchyIndexer hierarchy;
    private final FunctionIndexer functions;
    private final PropertyIndexer properties;
    private final PrimitivePromoter promoter;
@@ -24,9 +24,9 @@ public class ClassIndexer {
    private final TypeIndexer indexer;
 
    public ClassIndexer(TypeIndexer indexer, ModuleRegistry registry, ImportScanner scanner) {
+      this.hierarchy = new ClassHierarchyIndexer(indexer);
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer);
-      this.hierarchy = new HierarchyIndexer(indexer);
       this.promoter = new PrimitivePromoter();
       this.scanner = scanner;
       this.registry = registry;
