@@ -108,15 +108,15 @@ class Intersection {
 
 class Surface {
    var roughness;
-   abstract diffuse(pos){}
-   abstract specular(pos){}
-   abstract reflect(pos){}
+   abstract diffuse(pos);
+   abstract specular(pos);
+   abstract reflect(pos);
 }
 
 class Thing {
    var surface: Surface;
-   abstract intersect(ray){}
-   abstract normal(pos){}
+   abstract intersect(ray);
+   abstract normal(pos);
 }
 
 class Light {
@@ -299,8 +299,8 @@ class RayTracer {
 
    render(scene, graphics, screenWidth, screenHeight) {
       var getPoint = (x, y, camera) -> {
-         var recenterX = (x) ->(x - (screenWidth / 2.0)) / 2.0 / screenWidth;
-         var recenterY = (y) -> -1 * (y - (screenHeight / 2.0)) / 2.0 / screenHeight;
+         var recenterX = x ->(x - (screenWidth / 2.0)) / 2.0 / screenWidth;
+         var recenterY = y -> -1 * (y - (screenHeight / 2.0)) / 2.0 / screenHeight;
          return Vec.norm(Vec.plus(camera.forward, Vec.plus(Vec.times(recenterX(x), camera.right), Vec.times(recenterY(y), camera.up))));
       };
       for (var y = 0; y < screenHeight; y++) {

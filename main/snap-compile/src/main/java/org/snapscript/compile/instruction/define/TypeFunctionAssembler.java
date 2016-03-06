@@ -26,10 +26,10 @@ public class TypeFunctionAssembler {
       this.body = body;
    } 
 
-   public TypeFunctionBuilder assemble(Scope scope, Type type) throws Exception {
+   public TypeFunctionBuilder assemble(Scope scope, Type type, int mask) throws Exception {
       String name = extractor.extract(scope);
       Signature signature = parameters.create(scope);
-      int modifiers = list.getModifiers();
+      int modifiers = mask | list.getModifiers();
       
       if(checker.isStatic()) {
          return new StaticFunctionBuilder(signature, body, name, modifiers);
