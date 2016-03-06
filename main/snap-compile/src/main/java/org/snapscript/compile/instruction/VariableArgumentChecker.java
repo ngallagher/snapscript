@@ -12,7 +12,6 @@ public class VariableArgumentChecker {
    
    public boolean isVariable(Scope scope) throws Exception {
       int length = list.length;
-      int count = 0;
       
       for(int i = 0; i < length - 1; i++) {
          ParameterDeclaration declaration = list[i];
@@ -24,16 +23,18 @@ public class VariableArgumentChecker {
             if(parameter.isVariable()) {
                throw new IllegalStateException("Illegal declaration " + name + "... at index " + i);
             }
-            count++;
          }
          
       }
-      if(count > 0) {
+      if(length > 0) {
          ParameterDeclaration declaration = list[length-1];
-         Parameter parameter = declaration.get(scope);
          
-         if(parameter.isVariable()) {
-            return true;
+         if(declaration != null) {
+            Parameter parameter = declaration.get(scope);
+            
+            if(parameter.isVariable()) {
+               return true;
+            }
          }
       }
       return false;

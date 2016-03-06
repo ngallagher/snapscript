@@ -1,10 +1,5 @@
 package org.snapscript.compile;
 
-import java.lang.management.ManagementFactory;
-import java.text.DecimalFormat;
-
-import com.sun.management.ThreadMXBean;
-
 import junit.framework.TestCase;
 
 public class VariableArgumentTest extends TestCase {
@@ -37,6 +32,18 @@ public class VariableArgumentTest extends TestCase {
    "\n"+
    "fun(1,true,33,44,55);\n";
          
+   private static final String SOURCE_4 =
+   "var v = sum(13, 44, 234, 1, 3);\n"+
+   "\n"+
+   "function sum(numbers...){ // variable arguments\n"+
+   "   var sum = 0;\n"+
+   "\n"+
+   "   for(var number in numbers){\n"+
+   "      sum += number;\n"+
+   "   }\n"+
+   "   return sum;\n"+
+   "}\n";
+
          
    public void testVariableArguments() throws Exception {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
@@ -63,9 +70,16 @@ public class VariableArgumentTest extends TestCase {
       assertTrue(failure);
    }
    
+   public void testVariableArgumentsSum() throws Exception {
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      Executable executable = compiler.compile(SOURCE_4);
+      executable.execute();
+   }
+   
    public static void main(String[] list) throws Exception {
       new VariableArgumentTest().testVariableArguments();
       new VariableArgumentTest().testVariableArgumentsWithConstraint();
       new VariableArgumentTest().testVariableArgumentsWithFailure();
+      new VariableArgumentTest().testVariableArgumentsSum();
    }
 }
