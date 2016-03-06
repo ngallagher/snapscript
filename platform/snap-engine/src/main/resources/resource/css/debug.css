@@ -42,3 +42,12 @@
 	background-repeat: no-repeat;
 	padding-left: 22px; /* Or size of icon + spacing */
 }
+
+.debugIdleRecord {
+	/*font-family: "Lucida Console", sans-serif;*/
+    font-size: 1.1em;
+	background-image: url('/img/toolbar/suspend_co.gif');	
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 22px; /* Or size of icon + spacing */
+}

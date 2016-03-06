@@ -94,12 +94,13 @@ public class CommandEventForwarder extends ProcessEventAdapter {
    
    @Override
    public void onPong(ProcessEventChannel channel, PongEvent event) throws Exception {  
-      if(event.isRunning()) {
-         String focus = filter.get();
-         String process = event.getProcess();
-         String resource = event.getResource();
-         client.sendStatus(process, resource, process.equals(focus)); // update clients on status
-      }
+      String focus = filter.get();
+      String process = event.getProcess();
+      String system = event.getSystem();
+      String resource = event.getResource();
+      boolean running = event.isRunning();
+      long time = System.currentTimeMillis();
+      client.sendStatus(process, system, resource, time, running, process.equals(focus)); // update clients on status
    }
    
    @Override

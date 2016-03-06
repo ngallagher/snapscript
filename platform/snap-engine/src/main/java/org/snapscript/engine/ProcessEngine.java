@@ -37,7 +37,7 @@ public class ProcessEngine {
    }
    
    public boolean execute(ExecuteCommand command, ProcessEventFilter filter) { 
-      String system = System.getProperty("os.name");
+      String system = command.getSystem();
       ProcessAgentConnection connection = pool.acquire(system);
       
       if(connection != null) {

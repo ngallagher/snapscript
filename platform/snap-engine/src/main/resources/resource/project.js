@@ -317,13 +317,25 @@ function createLayout() {
        {
          field : 'name',
          caption : 'Process',
-         size : '50%',
+         size : '20%',
+         sortable : true,
+         resizable : true
+      }, {
+         field : 'system',
+         caption : 'System',
+         size : '20%',
+         sortable : true,
+         resizable : true
+      }, {
+         field : 'status',
+         caption : 'Status',
+         size : '20%',
          sortable : true,
          resizable : true
       },{
          field : 'resource',
          caption : 'Resource',
-         size : '50%',
+         size : '40%',
          sortable : true,
          resizable : true
       } ],
@@ -333,9 +345,12 @@ function createLayout() {
             var sel = grid.getSelection();
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
-               openTreeFile(record.script, function() {
-                  attachProcess(record.process);
-               });
+               
+               if(record.running) {
+                  openTreeFile(record.script, function() {
+                     attachProcess(record.process);
+                  });
+               }
             }
          }
       }

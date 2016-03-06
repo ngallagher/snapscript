@@ -45,7 +45,8 @@ public class ProcessEngineScript {
             buffer.close();
             
             String source = buffer.toString("UTF-8");
-            ExecuteCommand command = new ExecuteCommand(projectName, script, source, Collections.EMPTY_MAP);
+            String system = System.getProperty("os.name");
+            ExecuteCommand command = new ExecuteCommand(projectName, system, script, source, Collections.EMPTY_MAP);
             
             listener.onExecute(command);
          } catch(Exception e) {

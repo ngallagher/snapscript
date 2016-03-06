@@ -35,8 +35,8 @@ public class SocketEventClient {
       this.listener = listener;
    }
    
-   public ProcessEventChannel connect(int port) throws Exception {
-      Socket socket = new Socket("localhost", port);
+   public ProcessEventChannel connect(String host, int port) throws Exception {
+      Socket socket = new Socket(host, port);
       InputStream input = socket.getInputStream();
       OutputStream output = socket.getOutputStream();
       SocketConnection connection = new SocketConnection(socket, input, output);

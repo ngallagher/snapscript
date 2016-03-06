@@ -74,20 +74,22 @@ public class ProcessAgent {
    private final Executor executor;
    private final Model model;
    private final String process;
+   private final URI root;
    private final int port;
 
-   public ProcessAgent(URI rootURI, String process, int port) {
-      this.remoteReader = new RemoteStore(rootURI);
+   public ProcessAgent(URI root, String process, int port) {
+      this.remoteReader = new RemoteStore(root);
       this.store = new ProcessAgentStore(remoteReader);
       this.executor = new ThreadPool(4);
-      //this.context = new StoreContext(store, executor);
-      this.context = new StoreContext(store);
+      this.context = new StoreContext(store, executor);
+      //this.context = new StoreContext(store);
       this.compiler = new ResourceCompiler(context);
       this.controller = new SuspendController();
       this.matcher = new BreakpointMatcher();
       this.profiler = new ProcessProfiler();
       this.model = new EmptyModel();
       this.process = process;
+      this.root = root;
       this.port = port;
    }
    
@@ -111,10 +113,11 @@ public class ProcessAgent {
       TraceInterceptor interceptor = context.getInterceptor();
       try {
          String system = System.getProperty("os.name");
+         String host = root.getHost();
          RegisterEvent register = new RegisterEvent(process, system);
-         ClientListener listener = new ClientListener(process);
+         ClientListener listener = new ClientListener(process, system);
          SocketEventClient client = new SocketEventClient(listener);
-         ProcessEventChannel channel = client.connect(port);
+         ProcessEventChannel channel = client.connect(host, port);
          SuspendInterceptor suspender = new SuspendInterceptor(channel, matcher, controller, process);
          
          interceptor.register(profiler);
@@ -130,10 +133,12 @@ public class ProcessAgent {
       
       private final AtomicReference<String> reference;
       private final String process;
+      private final String system;
       
-      public ClientListener(String process) throws Exception {
+      public ClientListener(String process, String system) throws Exception {
          this.reference = new AtomicReference<String>();
          this.process = process;
+         this.system = system;
       }
 
       @Override
@@ -184,7 +189,7 @@ public class ProcessAgent {
       @Override
       public void onPing(ProcessEventChannel channel, PingEvent event) throws Exception {
          String resource = reference.get();
-         PongEvent pong = new PongEvent(process, resource, resource != null);
+         PongEvent pong = new PongEvent(process, system,  resource, resource != null);
          channel.send(pong);
       }
 

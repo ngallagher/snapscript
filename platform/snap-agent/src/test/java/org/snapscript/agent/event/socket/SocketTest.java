@@ -54,7 +54,7 @@ public class SocketTest extends TestCase {
       SocketEventClient client = new SocketEventClient(new DemoListener("client-listener"));
       
       server.start();
-      ProcessEventChannel channel = client.connect(3344);
+      ProcessEventChannel channel = client.connect("localhost", 3344);
       
       for(int i = 0; i < 100; i++) {
          channel.send(new RegisterEvent("blah-" + i, System.getProperty("os.name")));

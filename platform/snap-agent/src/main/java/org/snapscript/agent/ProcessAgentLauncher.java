@@ -20,6 +20,7 @@ public class ProcessAgentLauncher {
       String path = System.getProperty("java.class.path");
       String type = ProcessAgent.class.getCanonicalName();
       long sequence = counter.getAndIncrement();
+      long time = System.currentTimeMillis();
       int port = channel.port();
       ProcessBuilder builder = new ProcessBuilder(
             String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar), 
@@ -29,7 +30,7 @@ public class ProcessAgentLauncher {
             path, 
             type, 
             root,
-            String.format("agent-%s", sequence),
+            String.format("agent-%s%s", sequence, time),
             String.valueOf(port));
       builder.redirectErrorStream(true);
       builder.start();
