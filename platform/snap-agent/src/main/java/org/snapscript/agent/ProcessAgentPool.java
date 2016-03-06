@@ -38,7 +38,7 @@ public class ProcessAgentPool {
    private final int capacity;
    
    public ProcessAgentPool(int port, int capacity) throws IOException {
-      this(port, capacity, 5000);
+      this(port, capacity, 2000);
    }
    
    public ProcessAgentPool(int port, int capacity, long frequency) throws IOException {
