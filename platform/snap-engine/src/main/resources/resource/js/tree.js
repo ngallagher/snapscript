@@ -20,7 +20,14 @@ function showTree() {
 
 function openTreeFile(resourcePath, afterLoad) {
    $.get(resourcePath, function(response) {
-      updateEditor(response, resourcePath);
+      if(!resourcePath.endsWith(".snap")) {
+         var resourceBlob = new Blob([response], {type: "application/octet-stream"});
+         var resourceFile = resourcePath.replace(/.*\//, "");
+         
+         saveAs(resourceBlob, resourceFile);
+      } else {
+         updateEditor(response, resourcePath);
+      }
       afterLoad();
    });
 }

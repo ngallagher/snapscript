@@ -28,6 +28,7 @@
 <script src="/js/external/spin.js"></script>
 <script src="/js/external/fancytree.js"></script>
 <script src="/js/external/w2ui.js"></script>
+<script src="/js/external/filesaver.js"></script>
 <script src="/js/module.js"></script>
 <script src="/js/spinner.js"></script>
 <script src="/js/editor.js"></script>
