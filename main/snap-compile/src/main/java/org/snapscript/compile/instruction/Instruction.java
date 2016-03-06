@@ -125,6 +125,7 @@ public enum Instruction {
    VARIABLE_ARGUMENT(Modifier.class, "variable-argument"),
    PARAMETER(ParameterDeclaration.class, "parameter-declaration"),
    PARAMETER_LIST(ParameterList.class, "parameter-list"),
+   CLOSURE_PARAMETER_LIST(ClosureParameterList.class, "closure-parameter-list"),
    CLOSURE(Closure.class, "closure"),
    THROW(ThrowStatement.class, "throw-statement"),    
    TRY_CATCH(TryCatchStatement.class, "try-catch-statement"),

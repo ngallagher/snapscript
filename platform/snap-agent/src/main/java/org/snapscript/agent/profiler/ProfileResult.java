@@ -3,15 +3,15 @@ package org.snapscript.agent.profiler;
 public class ProfileResult implements Comparable<ProfileResult>{
    
    private String resource;
-   private long time;
-   private int line;
-   private int count;
+   private Integer line;
+   private Integer count;
+   private Long time;
    
    public ProfileResult() {
       super();
    }
    
-   public ProfileResult(String resource, long time, int count, int line) {
+   public ProfileResult(String resource, Long time, Integer count, Integer line) {
       this.resource = resource;
       this.time = time;
       this.line = line;
@@ -20,10 +20,10 @@ public class ProfileResult implements Comparable<ProfileResult>{
    
    @Override
    public int compareTo(ProfileResult other) {
-      int compare = Long.compare(other.time, time);
+      int compare = other.time.compareTo(time);
       
       if(compare == 0) {
-         return Integer.compare(other.line, line);
+         return other.line.compareTo(line);
       }
       return compare;
    }

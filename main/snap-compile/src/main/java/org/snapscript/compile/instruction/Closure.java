@@ -10,20 +10,20 @@ import org.snapscript.core.ValueType;
 
 public class Closure implements Evaluation {
    
-   private ParameterList parameters;
+   private ClosureParameterList parameters;
    private ClosureBuilder builder;
    private Statement closure;
    
-   public Closure(ParameterList parameters, Statement statement){  
+   public Closure(ClosureParameterList parameters, Statement statement){  
       this.builder = new ClosureBuilder(statement);
       this.parameters = parameters;
    }  
    
-   public Closure(ParameterList parameters, Expression expression){
+   public Closure(ClosureParameterList parameters, Expression expression){
       this(parameters, null, expression);
    }
    
-   public Closure(ParameterList parameters, Statement statement, Expression expression){
+   public Closure(ClosureParameterList parameters, Statement statement, Expression expression){
       this.closure = new ClosureStatement(statement, expression);
       this.builder = new ClosureBuilder(closure);
       this.parameters = parameters;
