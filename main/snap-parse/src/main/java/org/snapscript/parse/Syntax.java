@@ -101,7 +101,7 @@ public enum Syntax {
    PARAMETER_NAME("parameter-name", "[identifier]"),
    PARAMETER_DECLARATION("parameter-declaration", "<parameter-name>?<variable-argument>?(':'<type-constraint>)"),
    PARAMETER_LIST("parameter-list", "?(<parameter-declaration>*(','<parameter-declaration>))"),
-   CLOSURE_PARAMETER_LIST("closure-parameter-list", "<parameter-declaration>|'('<parameter-list>')'"),
+   CLOSURE_PARAMETER_LIST("closure-parameter-list", "'('<parameter-list>')'|?<parameter-declaration>"),
    CLOSURE("closure", "<closure-parameter-list>?' ''->'?' '{<group-statement>|<expression>}"),
    TYPE_NAME("type-name", "[type]"),
    TRAIT_NAME("trait-name", "[type]"),

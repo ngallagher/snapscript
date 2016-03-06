@@ -42,16 +42,20 @@ public class ParameterList {
          boolean variable = checker.isVariable(scope);
          
          for(int i = 0; i < list.length; i++) {
-            Parameter parameter = list[i].get(scope);
-            Type type = parameter.getType();
-            String name = parameter.getName();
-
-            if(type != null) {
-               constraints.add(type);
-            } else {
-               constraints.add(null);
+            ParameterDeclaration declaration = list[i];
+            
+            if(declaration != null) {
+               Parameter parameter = declaration.get(scope);
+               Type type = parameter.getType();
+               String name = parameter.getName();
+   
+               if(type != null) {
+                  constraints.add(type);
+               } else {
+                  constraints.add(null);
+               }
+               names.add(name);
             }
-            names.add(name);
          }
          signature = new Signature(names, constraints, variable);
       }

@@ -7,6 +7,10 @@ public class ClosureParameterList {
    
    private final ParameterList multiple;
    private final ParameterList single;
+   
+   public ClosureParameterList() {
+      this(null, null);
+   }
   
    public ClosureParameterList(ParameterList multiple) {
       this(multiple, null);
