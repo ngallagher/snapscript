@@ -1,23 +1,18 @@
 package org.snapscript.core.index;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DefaultMethodChecker {
    
-   private static final String DEFAULT_METHOD = "isDefault";
-
-   private AtomicBoolean check;
-   private Method access;
+   private final DefaultMethodAccessor accessor;
    
    public DefaultMethodChecker() {
-      this.check = new AtomicBoolean(true);
+      this.accessor = new DefaultMethodAccessor();
    }
    
    public boolean check(Method method) throws Exception {
-      if(check.compareAndSet(true, false)) {
-         access = Method.class.getDeclaredMethod(DEFAULT_METHOD);
-      }
+      Method access = accessor.access();
+
       if(access != null) {
         Object result = access.invoke(method);
         Boolean value = (Boolean)result;
