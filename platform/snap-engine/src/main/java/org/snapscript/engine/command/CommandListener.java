@@ -3,6 +3,7 @@ package org.snapscript.engine.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Map;
 
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.engine.ProcessEngine;
@@ -99,6 +100,7 @@ public class CommandListener {
                filter.attach(process);
             }
          }
+         engine.breakpoints(command, process);
          engine.register(forwarder); // make sure we are registered
       } catch(Exception e) {
          e.printStackTrace();

@@ -147,8 +147,11 @@ function browseScriptVariables(variables) {
 
 function attachProcess(process) {
    var statusFocus = currentStatusFocus(); // what is the current focus
+   var editorData = loadEditor();
    var message = JSON.stringify({
       process: process,
+      breakpoints : editorData.breakpoints,
+      project : document.title,
       focus: statusFocus != process // toggle the focus
    });
    socket.send("ATTACH:" + message); // attach to process

@@ -1,15 +1,19 @@
 package org.snapscript.engine.command;
 
-public class AttachCommand implements Command {
+import java.util.HashMap;
+import java.util.Map;
+
+public class AttachCommand extends BreakpointsCommand {
 
    private String process;
    private boolean focus;
    
    public AttachCommand() {
-      super();
+      this.breakpoints = new HashMap<String, Map<Integer, Boolean>>();
    }
    
-   public AttachCommand(String process, boolean focus) {
+   public AttachCommand(String process, String project, boolean focus, Map<String, Map<Integer, Boolean>> breakpoints) {
+      super(project, breakpoints);
       this.process = process;
       this.focus = focus;
    }

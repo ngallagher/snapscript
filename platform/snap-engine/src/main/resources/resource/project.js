@@ -365,7 +365,7 @@ function createLayout() {
          sortable : true,
          resizable : true
       }, {
-         field : 'debug',
+         field : 'status',
          caption : 'Status',
          size : '10%',
          sortable : true,

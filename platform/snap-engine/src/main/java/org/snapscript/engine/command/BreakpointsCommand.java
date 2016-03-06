@@ -1,14 +1,15 @@
 package org.snapscript.engine.command;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BreakpointsCommand implements Command {
 
-   private Map<String, Map<Integer, Boolean>> breakpoints;
-   private String project;
+   protected Map<String, Map<Integer, Boolean>> breakpoints;
+   protected String project;
    
    public BreakpointsCommand() {
-      super();
+      this.breakpoints = new HashMap<String, Map<Integer, Boolean>>();
    }
    
    public BreakpointsCommand(String project, Map<String, Map<Integer, Boolean>> breakpoints) {

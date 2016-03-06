@@ -27,6 +27,8 @@ public class CommandController implements FrameListener {
             
             if(command instanceof ExecuteCommand) {
                listener.onExecute((ExecuteCommand)command);
+            } else if(command instanceof AttachCommand) {
+               listener.onAttach((AttachCommand)command);
             } else if(command instanceof BreakpointsCommand) {
                listener.onBreakpoints((BreakpointsCommand)command);
             } else if(command instanceof DeleteCommand) {
@@ -39,9 +41,7 @@ public class CommandController implements FrameListener {
                listener.onStop((StopCommand)command);
             } else if(command instanceof BrowseCommand) {
                listener.onBrowse((BrowseCommand)command);
-            } else if(command instanceof AttachCommand) {
-               listener.onAttach((AttachCommand)command);
-            }
+            } 
          } else if(type == FrameType.PONG){
             listener.onPing();
          }

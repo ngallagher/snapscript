@@ -39,7 +39,7 @@ public class ProfileResultUpdater implements Runnable {
          }catch(Exception e) {
             e.printStackTrace();
          }finally{
-            delay = 5000;
+            delay = 2000;
          }
       }
    }
