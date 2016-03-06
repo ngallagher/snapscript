@@ -12,9 +12,11 @@ import org.snapscript.core.Type;
 
 public class FunctionGenerator {
 
+   private final DefaultMethodChecker checker;
    private final TypeIndexer indexer;
    
    public FunctionGenerator(TypeIndexer indexer) {
+      this.checker = new DefaultMethodChecker();
       this.indexer = indexer;
    }
    
@@ -32,8 +34,13 @@ public class FunctionGenerator {
             names.add("a" + i);
          }
          Signature signature = new Signature(names, types, variable);
-         Invocation invocation = new MethodInvocation(method);
+         Invocation invocation = null;
          
+         if(checker.check(method)) {
+            invocation = new DefaultMethodInvocation(method);
+         } else {
+            invocation = new MethodInvocation(method);
+         }
          if(!method.isAccessible()) {
             method.setAccessible(true);
          }

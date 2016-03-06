@@ -64,7 +64,7 @@ public class TypePathBuilder {
       
       done.add(type);
       
-      if(iterator.hasNext()) {
+      while(iterator.hasNext()) {
          Type next = iterator.next();
          
          if(!done.contains(next)) {

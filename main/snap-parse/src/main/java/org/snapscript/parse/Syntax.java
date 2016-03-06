@@ -136,7 +136,7 @@ public enum Syntax {
    SCRIPT_IMPORT("script-import", "<import-static>|<import>"),
    SCRIPT_FUNCTION("script-function", "'function'' '<function>'('<parameter-list>')'<group-statement>"),
    SCRIPT_STATEMENT("script-statement", "{<try-statement>|<declaration-statement>|<conditional-statement>|<type-definition>|<module-definition>|<expression-statement>}"),
-   SCRIPT_PACKAGE("script-package", "*<script-import>*{<type-definition>}"),
+   SCRIPT_PACKAGE("script-package", "*<script-import>*{<type-definition>|<module-definition>}"),
    SCRIPT("script", "*<script-import>*{<script-function>|<script-statement>}");
    
    public final String name;

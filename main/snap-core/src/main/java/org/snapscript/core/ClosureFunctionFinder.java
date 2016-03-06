@@ -53,8 +53,12 @@ public class ClosureFunctionFinder {
          List<Function> matches = new ArrayList<Function>();
          
          for(Function function : functions) {
-            if(match(function)) {
-               matches.add(function);
+            int modifiers = function.getModifiers();
+            
+            if(ModifierType.isAbstract(modifiers)) {
+               if(match(function)) {
+                  matches.add(function);
+               }
             }
          }
          int count = matches.size();
