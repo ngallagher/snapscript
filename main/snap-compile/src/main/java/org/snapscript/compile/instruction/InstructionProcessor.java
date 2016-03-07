@@ -23,9 +23,6 @@ public class InstructionProcessor {
          String resource = line.getResource();
          String name = converter.createModule(resource);
          ModuleRegistry registry = context.getRegistry();
-         if(name==null){
-            System.err.println(resource);
-         }
          Module module = registry.addModule(name);
          int number = line.getNumber();
          

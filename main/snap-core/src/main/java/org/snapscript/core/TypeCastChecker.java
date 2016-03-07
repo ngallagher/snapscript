@@ -15,7 +15,6 @@ public class TypeCastChecker {
 
    private final FunctionComparator comparator;
    private final ClosureFunctionFinder finder;
-   private final ConstraintMatcher matcher;
    private final TypeExtractor extractor;
    private final TypeTraverser traverser;
    private final TypeLoader loader;
@@ -25,7 +24,6 @@ public class TypeCastChecker {
       this.finder = new ClosureFunctionFinder(loader);
       this.traverser = new TypeTraverser();
       this.extractor = extractor;
-      this.matcher = matcher;
       this.loader = loader;
    }
    

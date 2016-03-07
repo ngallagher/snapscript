@@ -2,14 +2,14 @@ package org.snapscript.core.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.core.TypeCastChecker;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.TypeCastChecker;
 import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.TypeVerifier;
@@ -24,7 +24,7 @@ public class ConstraintMatcher {
    private final TypeCastChecker checker;
    
    public ConstraintMatcher(TypeLoader loader, ProxyWrapper wrapper) {
-      this.converters = new HashMap<Type, ConstraintConverter>();
+      this.converters = new ConcurrentHashMap<Type, ConstraintConverter>();
       this.extractor = new TypeExtractor(loader);
       this.checker = new TypeCastChecker(this, extractor, loader);
       this.comparator = new TypeVerifier(loader, checker);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
@@ -75,30 +74,35 @@ public class FunctionMatcher {
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
       Object key = builder.create(module, name, values);
-      Function function = cache.fetch(key); // static and module functions
-      
+
       if(!cache.contains(key)) {
          List<Function> functions = module.getFunctions();
-         int size = functions.size();
-         int best = 0;
-   
-         for(int i = size - 1; i >= 0; i--) { 
-            Function next = functions.get(i);
-            String method = next.getName();
-   
-            if(name.equals(method)) {
-               Signature signature = next.getSignature();
-               ArgumentConverter match = matcher.match(signature);
-               int score = match.score(values);
-   
-               if(score > best) {
-                  function = next;
-                  best = score;
+         Function function = null;
+         
+         if(!functions.isEmpty()) {
+            int size = functions.size();
+            int best = 0;
+      
+            for(int i = size - 1; i >= 0; i--) { 
+               Function next = functions.get(i);
+               String method = next.getName();
+      
+               if(name.equals(method)) {
+                  Signature signature = next.getSignature();
+                  ArgumentConverter match = matcher.match(signature);
+                  int score = match.score(values);
+      
+                  if(score > best) {
+                     function = next;
+                     best = score;
+                  }
                }
             }
          }
          cache.cache(key, function);
       }
+      Function function = cache.fetch(key); // static and module functions
+      
       if(function != null) {
          Signature signature = function.getSignature();
          ArgumentConverter converter = matcher.match(signature);
@@ -110,21 +114,69 @@ public class FunctionMatcher {
    
    public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
       Object key = builder.create(type, name, values); 
-      Function function = cache.fetch(key); // static and module functions
-      
+
       if(!cache.contains(key)) {
          List<Type> path = finder.createPath(type, name);
-         int best = 0;
+         Function function = null;
          
-         for(Type entry : path) {
-            List<Function> functions = entry.getFunctions();
-            int size = functions.size();
+         if(!path.isEmpty()) {
+            int best = 0;
             
-            for(int i = size - 1; i >= 0; i--) {
-               Function next = functions.get(i);
-               int modifiers = next.getModifiers();
+            for(Type entry : path) {
+               List<Function> functions = entry.getFunctions();
+               int size = functions.size();
                
-               if(ModifierType.isStatic(modifiers)) { // must be static
+               for(int i = size - 1; i >= 0; i--) {
+                  Function next = functions.get(i);
+                  int modifiers = next.getModifiers();
+                  
+                  if(ModifierType.isStatic(modifiers)) { // must be static
+                     String method = next.getName();
+                     
+                     if(name.equals(method)) {
+                        Signature signature = next.getSignature();
+                        ArgumentConverter match = matcher.match(signature);
+                        int score = match.score(values);
+         
+                        if(score > best) {
+                           function = next;
+                           best = score;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+         cache.cache(key, function);
+      }
+      Function function = cache.fetch(key); // static and module functions
+         
+      if(function != null) {
+         Signature signature = function.getSignature();
+         ArgumentConverter converter = matcher.match(signature);
+         
+         return new FunctionPointer(function, converter, stack, values);
+      }
+      return null;
+   }
+   
+   public FunctionPointer match(Object value, String name, Object... values) throws Exception { 
+      Type type = extractor.extract(value);
+      Object key = builder.create(type, name, values);
+      
+      if(!instance.contains(key)) {
+         List<Type> path = finder.createPath(type, name);
+         Function function = null;
+         
+         if(!path.isEmpty()) {
+            int best = 0;
+            
+            for(Type entry : path) {
+               List<Function> functions = entry.getFunctions();
+               int size = functions.size();
+               
+               for(int i = size - 1; i >= 0; i--) {
+                  Function next = functions.get(i);
                   String method = next.getName();
                   
                   if(name.equals(method)) {
@@ -140,48 +192,10 @@ public class FunctionMatcher {
                }
             }
          }
-         cache.cache(key, function);
-      }
-      if(function != null) {
-         Signature signature = function.getSignature();
-         ArgumentConverter converter = matcher.match(signature);
-         
-         return new FunctionPointer(function, converter, stack, values);
-      }
-      return null;
-   }
-   
-   public FunctionPointer match(Object value, String name, Object... values) throws Exception { 
-      Type type = extractor.extract(value);
-      Object key = builder.create(type, name, values);
-      Function function = instance.fetch(key); // all type functions
-      
-      if(!instance.contains(key)) {
-         List<Type> path = finder.createPath(type, name);
-         int best = 0;
-         
-         for(Type entry : path) {
-            List<Function> functions = entry.getFunctions();
-            int size = functions.size();
-            
-            for(int i = size - 1; i >= 0; i--) {
-               Function next = functions.get(i);
-               String method = next.getName();
-               
-               if(name.equals(method)) {
-                  Signature signature = next.getSignature();
-                  ArgumentConverter match = matcher.match(signature);
-                  int score = match.score(values);
-   
-                  if(score > best) {
-                     function = next;
-                     best = score;
-                  }
-               }
-            }
-         }
          instance.cache(key, function);
       }
+      Function function = instance.fetch(key); // all type functions
+      
       if(function != null) {
          Signature signature = function.getSignature();
          ArgumentConverter converter = matcher.match(signature);
