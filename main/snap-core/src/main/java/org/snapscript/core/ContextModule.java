@@ -8,10 +8,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ContextModule implements Module {
 
-   private final Map<String, Type> imports;
+   private final Map<String, Module> modules;
+   private final Map<String, Type> types;
    private final List<Function> functions; 
    private final List<Type> references;
-   private final PathConverter converter;
    private final ImportManager manager;
    private final Context context;
    private final String prefix;
@@ -20,10 +20,10 @@ public class ContextModule implements Module {
    
    public ContextModule(Context context, String path, String prefix) {
       this.functions = new CopyOnWriteArrayList<Function>();
-      this.imports = new ConcurrentHashMap<String, Type>();
+      this.modules = new ConcurrentHashMap<String, Module>();
+      this.types = new ConcurrentHashMap<String, Type>();
       this.references = new CopyOnWriteArrayList<Type>();
       this.manager = new ImportManager(context, prefix);
-      this.converter = new PathConverter();
       this.scope = new ModuleScope(this);
       this.context = context;
       this.prefix = prefix;
@@ -57,7 +57,7 @@ public class ContextModule implements Module {
                type = loader.defineType(prefix, name);
             }
             if(type != null) {
-               imports.put(name, type);
+               types.put(name, type);
                references.add(type);
             }
          }
@@ -68,29 +68,77 @@ public class ContextModule implements Module {
    }
    
    @Override
-   public Module addImport(String name) {
+   public Module addModule(String module) {
       try {
          ModuleRegistry registry = context.getRegistry();
-         Module module = registry.addModule(name);
+         Module result = registry.addModule(module);
          
-         if(module != null) {
-            manager.addImport(name); // add package "tetris.game."
+         if(result != null) {
+            manager.addImport(module); // add package "tetris.game.*"
+            modules.put(module, result);
          }
-         return module;
+         return result;
       } catch(Exception e){
-         throw new ModuleException("Could not import '" + name + "' in '" + prefix + "'", e);
+         throw new ModuleException("Could not import '" + module + "' in '" + prefix + "'", e);
       }
    }
    
+   @Override
+   public Module addModule(String module, String name) {
+      try {
+         ModuleRegistry registry = context.getRegistry();
+         Module result = registry.addModule(module + "." + name);
+         
+         if(result != null) {
+            modules.put(name, result);
+         }
+         return result;
+      } catch(Exception e){
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
+      }
+   }
    
    @Override
-   public Type addImport(String module, String name) {
+   public Module addModule(String module, String name, String alias) {
+      try {
+         ModuleRegistry registry = context.getRegistry();
+         Module result = registry.addModule(module + "." + name);
+         
+         if(result != null) {
+            modules.put(alias, result);
+         }
+         return result;
+      } catch(Exception e){
+         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
+      }
+   }
+   
+   @Override
+   public Module getModule(String name) {
+      try {
+         Module module = modules.get(name);
+         
+         if(module == null) {
+            module = manager.getModule(name);
+            
+            if(module != null) {
+               modules.put(name, module);
+            }
+         }
+         return module;
+      } catch(Exception e){
+         throw new ModuleException("Could not find '" + name + "' in '" + prefix + "'", e);
+      }
+   }
+   
+   @Override
+   public Type addType(String module, String name) {
       try {
          TypeLoader loader = context.getLoader();
          Type type = loader.defineType(module, name);
          
          if(name != null) {
-            imports.put(name, type);
+            types.put(name, type);
             references.add(type);
          }
          return type;
@@ -100,13 +148,13 @@ public class ContextModule implements Module {
    }
 
    @Override
-   public Type addImport(String module, String name, String alias) {
+   public Type addType(String module, String name, String alias) {
       try {
          TypeLoader loader = context.getLoader();
          Type type = loader.defineType(module, name);
          
          if(name != null) {
-            imports.put(alias, type);
+            types.put(alias, type);
             references.add(type);
          }
          return type;
@@ -118,13 +166,13 @@ public class ContextModule implements Module {
    @Override
    public Type getType(String name) {
       try {
-         Type type = imports.get(name);
+         Type type = types.get(name);
          
          if(type == null) {
             type = manager.getType(name);
             
             if(type != null) {
-               imports.put(name, type);
+               types.put(name, type);
                references.add(type);
             }
          }
@@ -161,15 +209,6 @@ public class ContextModule implements Module {
          throw new ModuleException("Could not load file '" + path + "'", e);
       }
    }
-   
-   @Override
-   public String getPath() {
-      try {
-         return converter.createPath(prefix);
-      } catch(Exception e){
-         throw new ModuleException("Could not parse '" + prefix + "'", e);
-      }
-   }
 
    @Override
    public Scope getScope() {
@@ -179,6 +218,11 @@ public class ContextModule implements Module {
    @Override
    public String getName() {
       return prefix;
+   }
+   
+   @Override
+   public String getPath() {
+      return path;
    }
 
    @Override

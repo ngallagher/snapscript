@@ -2,9 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.Module;
-import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
@@ -38,12 +36,12 @@ public class ModuleDefinition extends Statement {
       Value value = module.evaluate(scope, null);
       String name = value.getString();
       Module parent = scope.getModule();
-      Context context = parent.getContext();
-      ModuleRegistry registry = context.getRegistry();
-      Module module = registry.addModule(name);
+      String prefix = parent.getName();
+      Module module = parent.addModule(prefix,  name);
       String include = parent.getName();
-      
-      module.addImport(include);
+          
+      parent.addModule(prefix,  name); // make module accessible by name
+      module.addModule(include); // make outer classes accessible
       
       return ValueType.getConstant(module);
    }

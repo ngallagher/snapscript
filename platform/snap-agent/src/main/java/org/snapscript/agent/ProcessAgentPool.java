@@ -297,10 +297,10 @@ public class ProcessAgentPool {
                   }
                }
                int pool = active.size();
-               int remaining = require - pool;
+               int remaining = require - pool; 
                
-               for(int i = 0; i < remaining; i++) {
-                  launch(); // launch a new process
+               if(remaining > 0) {
+                  launch(); // launch a new process at a time
                }
                available.addAll(active);
             }

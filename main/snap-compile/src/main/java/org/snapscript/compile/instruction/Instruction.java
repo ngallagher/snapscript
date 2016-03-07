@@ -156,6 +156,7 @@ public enum Instruction {
    WILD_QUALIFIER(WildQualifier.class, "wild-qualifier"),
    FULL_QUALIFIER(FullQualifier.class, "full-qualifier"),
    IMPORT(Import.class, "import"), 
+   IMPORT_MODULE(ImportModule.class, "import-module"),
    IMPORT_STATIC(ImportStatic.class, "import-static"),
    MODULE_NAME(ModuleName.class, "module-name"),    
    MODULE_FUNCTION(FunctionDeclaration.class, "module-function"),     

@@ -18,6 +18,23 @@ public class ImportManager {
    public void addImport(String name) {
       imports.add(name);
    }
+   
+   public Module getModule(String name) {
+      try {
+         ModuleRegistry registry = context.getRegistry();
+         
+         for(String module : imports) {
+            Module match = registry.getModule(module + "." + name); // get imports from the outer module if it exists
+            
+            if(match != null) {
+               return match;
+            }
+         }
+         return null;
+      } catch(Exception e){
+         throw new InternalStateException("Could not find '" + name + "' in '" + prefix + "'", e);
+      }
+   }
 
    public Type getType(String name) {
       try {
@@ -39,6 +56,10 @@ public class ImportManager {
                   
                   if(match != null) {
                      type = match.getType(name); // get imports from the outer module if it exists
+
+                     if(type != null) {
+                        return type;
+                     }
                   }
                }
             }

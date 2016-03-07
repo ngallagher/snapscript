@@ -13,16 +13,16 @@ import org.snapscript.core.Statement;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.Value;
 
-public class Import implements Compilation {
+public class ImportModule implements Compilation {
 
    private final Qualifier qualifier;
    private final Evaluation alias;   
    
-   public Import(Qualifier qualifier) {
+   public ImportModule(Qualifier qualifier) {
       this(qualifier, null);
    }
    
-   public Import(Qualifier qualifier, Evaluation alias) {
+   public ImportModule(Qualifier qualifier, Evaluation alias) {
       this.qualifier = qualifier;
       this.alias = alias;
    }
@@ -33,16 +33,8 @@ public class Import implements Compilation {
       TypeLoader loader = context.getLoader();
       String location = qualifier.getLocation();
       String target = qualifier.getTarget();
+      Package library = loader.importPackage(location);
       
-      if(target == null) {
-         Package library = loader.importPackage(location);
-         
-         if(library != null) {
-            return new CompileResult(library, location);
-         }
-      }
-      Package library = loader.importType(location, target);
-
       if(library != null) {
          if(alias != null) {
             Scope scope = module.getScope();
@@ -62,10 +54,6 @@ public class Import implements Compilation {
       private final String location;
       private final String target;
       private final String alias;
-      
-      public CompileResult(Package library, String location) {
-         this(library, location, null);
-      }
       
       public CompileResult(Package library, String location, String target) {
          this(library, location, target, null);
@@ -87,9 +75,9 @@ public class Import implements Compilation {
             library.compile(scope);
          } else {
             if(alias != null) {
-               module.addType(location, target, alias);
+               module.addModule(location, target, alias);
             } else {
-               module.addType(location, target);
+               module.addModule(location, target);
             }
             library.compile(scope);
          }

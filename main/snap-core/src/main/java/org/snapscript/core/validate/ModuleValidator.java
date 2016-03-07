@@ -17,7 +17,7 @@ public class ModuleValidator {
    
    public void validate(Module module) throws Exception {
       List<Type> types = module.getTypes();
-      String resource = module.getName();
+      String resource = module.getPath();
       
       for(Type type : types) {
          Module parent = type.getModule();

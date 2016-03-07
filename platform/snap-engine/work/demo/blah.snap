@@ -1,5 +1,6 @@
-import io.Blah;
+import module io.Goo as Splat; // should module be a type
 import math.stuff.Max;
+import io.Blah;
 
 class Foo {
    var text;
@@ -28,3 +29,6 @@ var b = new Blah();
 System.err.println(n);
 System.err.println(f);
 b.test(Max.max(23,44,1));
+
+var res = Splat.fun("xx");
+println(res);

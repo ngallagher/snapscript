@@ -17,3 +17,8 @@ class BlahBlah extends Blah with Runnable {
       test("run");
    }
 }
+module Goo {
+   function fun(text){
+      return "fun("+text+")";
+   }
+}
