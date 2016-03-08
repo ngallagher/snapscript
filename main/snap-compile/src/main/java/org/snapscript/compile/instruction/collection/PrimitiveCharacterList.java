@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveCharacterList extends AbstractList<Character> implements RandomAccess {
+public class PrimitiveCharacterList extends PrimitiveArrayList<Character> {
 
    private final char[] array;
    private final int length;
@@ -59,16 +57,6 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
    public Character get(int index) {
       return array[index];
    }
-
-   @Override
-   public boolean add(Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
    
    @Override
    public Character set(int index, Character value) {
@@ -87,17 +75,6 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
          }
       }
       return -1;
-   }
-
-   @Override
-   public boolean contains(Object o) {
-      int index = indexOf(o);
-
-      if (index == -1) {
-         return false;
-      }
-      return true;
-
    }
 }
 

@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveDoubleList extends AbstractList<Object> implements RandomAccess {
+public class PrimitiveDoubleList extends PrimitiveArrayList<Object> {
 
    private final double[] array;
    private final int length;
@@ -69,16 +67,6 @@ public class PrimitiveDoubleList extends AbstractList<Object> implements RandomA
    public Object get(int index) {
       return array[index];
    }
-  
-   @Override
-   public boolean add(Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
 
    @Override
    public Object set(int index, Object value) {
@@ -125,16 +113,5 @@ public class PrimitiveDoubleList extends AbstractList<Object> implements RandomA
          }
       }
       return -1;
-   }
-
-   @Override
-   public boolean contains(Object o) {
-      int index = indexOf(o);
-
-      if (index == -1) {
-         return false;
-      }
-      return true;
-
    }
 }
