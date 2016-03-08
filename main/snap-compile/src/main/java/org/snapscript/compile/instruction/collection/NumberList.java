@@ -6,13 +6,13 @@ import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveNumberList extends AbstractList<Object> implements RandomAccess {
+public class NumberList extends AbstractList<Object> implements RandomAccess {
 
    private final Object array;
    private final Class type;
    private final int length;
 
-   public PrimitiveNumberList(Object array, Class type) {
+   public NumberList(Object array, Class type) {
       this.length = Array.getLength(array);
       this.array = array;
       this.type = type;
@@ -54,7 +54,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Short[].class) {
             value = number.shortValue();
          } else if(type == Float[].class) {
-            value = number.shortValue();
+            value = number.floatValue();
          } else if(type == String[].class) {
             value = number.toString();
          } else if(type == Object[].class) {
@@ -120,7 +120,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Short.class) {
             value = number.shortValue();
          } else if(type == Float.class) {
-            value = number.shortValue();
+            value = number.floatValue();
          } else {
             throw new InternalArgumentException("Incompatible value type");
          }
@@ -148,7 +148,7 @@ public class PrimitiveNumberList extends AbstractList<Object> implements RandomA
          } else if(type == Short.class) {
             value = number.shortValue();
          } else if(type == Float.class) {
-            value = number.shortValue();
+            value = number.floatValue();
          } else if(type == String.class) {
             value = number.toString();
          } else {

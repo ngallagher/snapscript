@@ -6,14 +6,16 @@ import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveCharacterList extends AbstractList<Character> implements RandomAccess {
+public class CharacterList extends AbstractList<Character> implements RandomAccess {
 
-   private final char[] array;
+   private final Object array;
+   private final Class type;
    private final int length;
 
-   public PrimitiveCharacterList(char[] array) {
-      this.length = array.length;
+   public CharacterList(Object array, Class type) {
+      this.length = Array.getLength(array);
       this.array = array;
+      this.type = type;
    }
 
    @Override
@@ -23,7 +25,7 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Character.class, length);
+      Object instance = Array.newInstance(type, length);
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
@@ -38,11 +40,11 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Character character = array[i];
+         Character character = (Character)Array.get(array, i);
          Object value = character;
          
          if(type == String[].class) {
-            value = value.toString();
+            value = value.toString();;
          } else if(type == Character[].class) {
             value = character;
          } else if(type == Object[].class) {
@@ -72,15 +74,18 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
    
    @Override
    public Character set(int index, Character value) {
-      Character previous = array[index];
-      array[index] = value;
-      return previous;
+      Object previous = Array.get(array, index);
+      Character result = (Character)previous;
+      Array.set(array, index, value);
+      return result;
    }
 
    @Override
    public int indexOf(Object object) {
+      Class type = object.getClass();
+      
       for (int i = 0; i < length; i++) {
-         Object value = array[i];
+         Object value = Array.get(array, i);
 
          if (object.equals(value)) {
             return i;
@@ -100,5 +105,3 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    }
 }
-
-

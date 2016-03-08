@@ -8,14 +8,12 @@ import org.snapscript.core.InternalArgumentException;
 
 public class PrimitiveBooleanList extends AbstractList<Boolean> implements RandomAccess {
 
-   private final Object array;
-   private final Class type;
+   private final boolean[] array;
    private final int length;
 
-   public PrimitiveBooleanList(Object array, Class type) {
-      this.length = Array.getLength(array);
+   public PrimitiveBooleanList(boolean[] array) {
+      this.length = array.length;
       this.array = array;
-      this.type = type;
    }
 
    @Override
@@ -25,11 +23,11 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(type, length);
+      Object instance = Array.newInstance(Boolean.class, length);
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -40,7 +38,7 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Boolean flag = (Boolean)Array.get(array, i);
+         Boolean flag = array[i];
          Object value = flag;
          
          if(type == String[].class) {
@@ -74,9 +72,8 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
 
    @Override
    public Boolean set(int index, Boolean value) {
-      Object previous = Array.get(array, index);
-      Boolean result = (Boolean)previous;
-      Array.set(array, index, value);
+      Boolean result = array[index];
+      array[index] = value;
       return result;
    }
 
@@ -85,7 +82,7 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
       Class type = object.getClass();
       
       for (int i = 0; i < length; i++) {
-         Object value = Array.get(array, i);
+         Object value = array[i];
 
          if (object.equals(value)) {
             return i;
@@ -105,4 +102,3 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
 
    }
 }
-

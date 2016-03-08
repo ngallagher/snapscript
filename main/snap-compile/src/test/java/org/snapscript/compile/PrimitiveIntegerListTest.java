@@ -1,26 +1,26 @@
 package org.snapscript.compile;
 
-import org.snapscript.compile.instruction.collection.NumberList;
-
 import junit.framework.TestCase;
 
-public class PrimitiveNumberListTest extends TestCase {
+import org.snapscript.compile.instruction.collection.PrimitiveIntegerList;
+
+public class PrimitiveIntegerListTest extends TestCase {
 
    public void testList() throws Exception {
-      byte[] array = new byte[1024];
-      NumberList list = new NumberList(array, Byte.class);
+      int[] array = new int[1024];
+      PrimitiveIntegerList list = new PrimitiveIntegerList(array);
       
       assertEquals(array.length, list.size());
       
       for(int i = 0; i < array.length; i++) {
-         assertEquals(list.get(i), (byte)0);
+         assertEquals(list.get(i), (int)0);
       }
       assertTrue(list.contains("0"));
-      Byte[] copy = (Byte[])list.toArray();
+      Integer[] copy = (Integer[])list.toArray();
       
       assertEquals(copy.length, array.length);
       for(int i = 0; i < array.length; i++) {
-         assertEquals(copy[i], (Byte)((byte)0));
+         assertEquals(copy[i], (Integer)((int)0));
       }
       for(int i = 0; i < 100; i++){
          list.set(i, i);

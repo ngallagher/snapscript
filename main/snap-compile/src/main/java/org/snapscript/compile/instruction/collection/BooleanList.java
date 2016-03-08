@@ -6,14 +6,16 @@ import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveCharacterList extends AbstractList<Character> implements RandomAccess {
+public class BooleanList extends AbstractList<Boolean> implements RandomAccess {
 
-   private final char[] array;
+   private final Object array;
+   private final Class type;
    private final int length;
 
-   public PrimitiveCharacterList(char[] array) {
-      this.length = array.length;
+   public BooleanList(Object array, Class type) {
+      this.length = Array.getLength(array);
       this.array = array;
+      this.type = type;
    }
 
    @Override
@@ -23,7 +25,7 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Character.class, length);
+      Object instance = Array.newInstance(type, length);
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
@@ -38,15 +40,15 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Character character = array[i];
-         Object value = character;
+         Boolean flag = (Boolean)Array.get(array, i);
+         Object value = flag;
          
          if(type == String[].class) {
             value = value.toString();
-         } else if(type == Character[].class) {
-            value = character;
+         } else if(type == Boolean[].class) {
+            value = flag;
          } else if(type == Object[].class) {
-            value = character;
+            value = flag;
          } else {
             throw new InternalArgumentException("Incompatible array type");
          }
@@ -56,31 +58,34 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
    }
 
    @Override
-   public Character get(int index) {
-      return (Character)Array.get(array, index);
+   public Boolean get(int index) {
+      return (Boolean)Array.get(array, index);
+   }
+   
+   @Override
+   public boolean add(Boolean element) {
+      throw new InternalArgumentException("Array cannot be resized");
+   }
+   
+   @Override
+   public void add(int index, Boolean element) {
+      throw new InternalArgumentException("Array cannot be resized");
    }
 
    @Override
-   public boolean add(Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public Character set(int index, Character value) {
-      Character previous = array[index];
-      array[index] = value;
-      return previous;
+   public Boolean set(int index, Boolean value) {
+      Object previous = Array.get(array, index);
+      Boolean result = (Boolean)previous;
+      Array.set(array, index, value);
+      return result;
    }
 
    @Override
    public int indexOf(Object object) {
+      Class type = object.getClass();
+      
       for (int i = 0; i < length; i++) {
-         Object value = array[i];
+         Object value = Array.get(array, i);
 
          if (object.equals(value)) {
             return i;
@@ -100,5 +105,4 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    }
 }
-
 

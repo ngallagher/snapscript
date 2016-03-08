@@ -1,14 +1,14 @@
 package org.snapscript.compile;
 
-import org.snapscript.compile.instruction.collection.PrimitiveCharacterList;
-
 import junit.framework.TestCase;
 
-public class PrimitiveCharacterListTest extends TestCase {
+import org.snapscript.compile.instruction.collection.CharacterList;
+
+public class CharacterListTest extends TestCase {
 
    public void testList() throws Exception {
       char[] array = new char[1024];
-      PrimitiveCharacterList list = new PrimitiveCharacterList(array);
+      CharacterList list = new CharacterList(array, Character.class);
       
       assertEquals(array.length, list.size());
       
