@@ -3,6 +3,7 @@ package org.snapscript.compile.instruction;
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.ImportManager;
 import org.snapscript.core.Module;
 import org.snapscript.core.NoStatement;
 import org.snapscript.core.Package;
@@ -81,15 +82,16 @@ public class Import implements Compilation {
       @Override
       public Result compile(Scope scope) throws Exception {
          Module module = scope.getModule();
+         ImportManager manager = module.getManager();
          
          if(target == null) {
-            module.addModule(location);
+            manager.addImport(location); // import game.tetris.*;
             library.compile(scope);
          } else {
             if(alias != null) {
-               module.addType(location, target, alias);
+               manager.addImport(location, target, alias); // import game.tetris.Block as Shape;
             } else {
-               module.addType(location, target);
+               manager.addImport(location, target); // import game.tetris.Block;
             }
             library.compile(scope);
          }

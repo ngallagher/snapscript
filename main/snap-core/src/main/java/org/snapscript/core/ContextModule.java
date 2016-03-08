@@ -34,6 +34,11 @@ public class ContextModule implements Module {
    public Context getContext() {
       return context;
    }
+   
+   @Override
+   public ImportManager getManager() {
+      return manager;
+   }
 
    @Override
    public List<Function> getFunctions() {
@@ -56,60 +61,14 @@ public class ContextModule implements Module {
             if(loader != null) {
                type = loader.defineType(prefix, name);
             }
-            if(type != null) {
-               types.put(name, type);
-               references.add(type);
-            }
+         }
+         if(type != null) {
+            types.put(name, type);
+            references.add(type);
          }
          return type;
       } catch(Exception e){
          throw new ModuleException("Could not define '" + prefix + "." + name + "'", e);
-      }
-   }
-   
-   @Override
-   public Module addModule(String module) {
-      try {
-         ModuleRegistry registry = context.getRegistry();
-         Module result = registry.addModule(module);
-         
-         if(result != null) {
-            manager.addImport(module); // add package "tetris.game.*"
-            modules.put(module, result);
-         }
-         return result;
-      } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "' in '" + prefix + "'", e);
-      }
-   }
-   
-   @Override
-   public Module addModule(String module, String name) {
-      try {
-         ModuleRegistry registry = context.getRegistry();
-         Module result = registry.addModule(module + "." + name);
-         
-         if(result != null) {
-            modules.put(name, result);
-         }
-         return result;
-      } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
-      }
-   }
-   
-   @Override
-   public Module addModule(String module, String name, String alias) {
-      try {
-         ModuleRegistry registry = context.getRegistry();
-         Module result = registry.addModule(module + "." + name);
-         
-         if(result != null) {
-            modules.put(alias, result);
-         }
-         return result;
-      } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
       }
    }
    
@@ -119,47 +78,14 @@ public class ContextModule implements Module {
          Module module = modules.get(name);
          
          if(module == null) {
-            module = manager.getModule(name);
-            
-            if(module != null) {
-               modules.put(name, module);
-            }
+            module = manager.getModule(name); // import tetris.game.*
+         }
+         if(module != null) {
+            modules.put(name, module);
          }
          return module;
       } catch(Exception e){
          throw new ModuleException("Could not find '" + name + "' in '" + prefix + "'", e);
-      }
-   }
-   
-   @Override
-   public Type addType(String module, String name) {
-      try {
-         TypeLoader loader = context.getLoader();
-         Type type = loader.defineType(module, name);
-         
-         if(name != null) {
-            types.put(name, type);
-            references.add(type);
-         }
-         return type;
-      } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
-      }
-   }
-
-   @Override
-   public Type addType(String module, String name, String alias) {
-      try {
-         TypeLoader loader = context.getLoader();
-         Type type = loader.defineType(module, name);
-         
-         if(name != null) {
-            types.put(alias, type);
-            references.add(type);
-         }
-         return type;
-      } catch(Exception e){
-         throw new ModuleException("Could not import '" + module + "." + name + "' in '" + prefix + "'", e);
       }
    }
    
@@ -170,11 +96,10 @@ public class ContextModule implements Module {
          
          if(type == null) {
             type = manager.getType(name);
-            
-            if(type != null) {
-               types.put(name, type);
-               references.add(type);
-            }
+         }
+         if(type != null) {
+            types.put(name, type);
+            references.add(type);
          }
          return type;
       } catch(Exception e){

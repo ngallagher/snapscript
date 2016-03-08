@@ -24,12 +24,16 @@ public class TypeLoader {
       return manager.importType(module, name); 
    }
    
+   public synchronized Type defineType(String module, String name) throws Exception {
+      return indexer.defineType(module, name);
+   }
+   
    public synchronized Type resolveType(String module, String name) throws Exception {
       return indexer.loadType(module, name);
    }
    
-   public synchronized Type defineType(String module, String name) throws Exception {
-      return indexer.defineType(module, name);
+   public synchronized Type resolveType(String type) throws Exception {
+      return indexer.loadType(type);
    }
    
    public synchronized Type loadType(Class type) throws Exception {

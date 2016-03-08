@@ -1,15 +1,19 @@
 package org.snapscript.core;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class ImportManager {
    
+   private final Map<String, String> aliases;
    private final Set<String> imports;
    private final Context context;
    private final String prefix;
    
    public ImportManager(Context context, String prefix) {
+      this.aliases = new ConcurrentHashMap<String, String>();
       this.imports = new CopyOnWriteArraySet<String>();
       this.context = context;
       this.prefix = prefix;
@@ -19,15 +23,31 @@ public class ImportManager {
       imports.add(name);
    }
    
+   public void addImport(String module, String name) {
+      aliases.put(name, module + "."+name);
+   }
+   
+   public void addImport(String module, String name, String alias) {
+      aliases.put(alias, module + "."+name);
+   }
+   
    public Module getModule(String name) {
       try {
          ModuleRegistry registry = context.getRegistry();
+         String alias = aliases.get(name);
          
-         for(String module : imports) {
-            Module match = registry.getModule(module + "." + name); // get imports from the outer module if it exists
+         if(alias != null) {
+            Module module = registry.getModule(alias);
             
-            if(match != null) {
-               return match;
+            if(module != null) {
+               return module;
+            }
+         }
+         for(String prefix : imports) {
+            Module module = registry.getModule(prefix + "." + name); // get imports from the outer module if it exists
+            
+            if(module != null) {
+               return module;
             }
          }
          return null;
@@ -40,8 +60,17 @@ public class ImportManager {
       try {
          TypeLoader loader = context.getLoader();
          Type type = loader.resolveType(prefix, name);
-         
+
          if(type == null) {
+            String alias = aliases.get(name);
+            
+            if(alias != null) {
+               type = loader.resolveType(alias);
+               
+               if(type != null) {
+                  return type;
+               }
+            }
             for(String module : imports) {
                type = loader.resolveType(module, name); // this is "tetris.game.*"
             }
@@ -51,11 +80,11 @@ public class ImportManager {
             if(type == null) {
                ModuleRegistry registry = context.getRegistry();
                
-               for(String module : imports) {
-                  Module match = registry.getModule(module);
+               for(String prefix : imports) {
+                  Module module = registry.getModule(prefix);
                   
-                  if(match != null) {
-                     type = match.getType(name); // get imports from the outer module if it exists
+                  if(module != null) {
+                     type = module.getType(name); // get imports from the outer module if it exists
 
                      if(type != null) {
                         return type;

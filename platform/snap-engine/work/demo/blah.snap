@@ -1,4 +1,4 @@
-import module io.Goo as Splat; // should module be a type
+import io.Goo as Splat; // should module be a type
 import math.stuff.Max;
 import io.Blah;
 

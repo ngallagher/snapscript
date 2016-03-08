@@ -20,6 +20,20 @@ public class TypeIndexer {
       this.scanner = scanner;
       this.registry = registry;
    }
+   
+   public Type loadType(String type) throws Exception {
+      Type done = types.get(type);
+
+      if (done == null) {
+         Class match = scanner.importType(type);
+         
+         if (match == null) {
+            return null;
+         }
+         return loadType(match);
+      }
+      return done;
+   }
 
    public Type loadType(String module, String name) throws Exception {
       String alias = createName(module, name);

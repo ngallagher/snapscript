@@ -12,38 +12,23 @@ import org.snapscript.core.ValueType;
 
 public class ModuleDefinition extends Statement {   
    
-   private final ModuleName module;
+   private final ModuleBuilder builder;
    private final Statement body;
    
    public ModuleDefinition(ModuleName module, Statement... body) {
+      this.builder = new ModuleBuilder(module);
       this.body = new ModuleBody(body);
-      this.module = module;     
    }
 
    @Override
    public Result compile(Scope scope) throws Exception {
-      Value value = create(scope);
-      Module module = value.getValue();
+      Module module = builder.create(scope);
+      Value value = ValueType.getTransient(module);
       Scope inner = module.getScope();
       State state = inner.getState();
       
       state.addConstant(TYPE_THIS, value);
       
-      return body.execute(inner); // is this executing stuff
+      return body.execute(inner); // is this a good idea?
    }
-   
-   protected Value create(Scope scope) throws Exception {
-      Value value = module.evaluate(scope, null);
-      String name = value.getString();
-      Module parent = scope.getModule();
-      String prefix = parent.getName();
-      Module module = parent.addModule(prefix,  name);
-      String include = parent.getName();
-          
-      parent.addModule(prefix,  name); // make module accessible by name
-      module.addModule(include); // make outer classes accessible
-      
-      return ValueType.getConstant(module);
-   }
-
 }
