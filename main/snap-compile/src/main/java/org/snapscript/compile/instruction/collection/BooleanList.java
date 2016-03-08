@@ -6,14 +6,12 @@ import org.snapscript.core.InternalArgumentException;
 
 public class BooleanList extends ArrayWrapper<Boolean> {
 
-   private final Object array;
-   private final Class type;
+   private final Boolean[] array;
    private final int length;
 
-   public BooleanList(Object array, Class type) {
-      this.length = Array.getLength(array);
+   public BooleanList(Boolean[] array) {
+      this.length = array.length;
       this.array = array;
-      this.type = type;
    }
 
    @Override
@@ -23,24 +21,22 @@ public class BooleanList extends ArrayWrapper<Boolean> {
    
    @Override
    public Boolean get(int index) {
-      return (Boolean)Array.get(array, index);
+      return array[index];
    }
 
    @Override
    public Boolean set(int index, Boolean value) {
-      Object previous = Array.get(array, index);
-      Boolean result = (Boolean)previous;
-      Array.set(array, index, value);
-      return result;
+      Boolean previous = array[index];
+      array[index] = value;
+      return previous;
    }
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(type, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Boolean[length];
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -51,7 +47,7 @@ public class BooleanList extends ArrayWrapper<Boolean> {
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Boolean flag = (Boolean)Array.get(array, i);
+         Boolean flag = array[i];
          Object value = flag;
          
          if(type == String[].class) {
@@ -73,7 +69,7 @@ public class BooleanList extends ArrayWrapper<Boolean> {
       Class type = object.getClass();
       
       for (int i = 0; i < length; i++) {
-         Object value = Array.get(array, i);
+         Object value = array[i];
 
          if (object.equals(value)) {
             return i;

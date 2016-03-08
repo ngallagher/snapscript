@@ -2,12 +2,12 @@ package org.snapscript.compile.instruction.collection;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveDoubleList extends ArrayWrapper<Object> {
+public class DoubleList extends ArrayWrapper<Object> {
 
-   private final double[] array;
+   private final Double[] array;
    private final int length;
    
-   public PrimitiveDoubleList(double[] array) {
+   public DoubleList(Double[] array) {
       this.length = array.length;
       this.array = array;
    }

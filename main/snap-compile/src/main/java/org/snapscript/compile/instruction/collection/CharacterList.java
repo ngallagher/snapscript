@@ -1,19 +1,15 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
 public class CharacterList extends ArrayWrapper<Character> {
 
-   private final Object array;
-   private final Class type;
+   private final Character[] array;
    private final int length;
 
-   public CharacterList(Object array, Class type) {
-      this.length = Array.getLength(array);
+   public CharacterList(Character[] array) {
+      this.length = array.length;
       this.array = array;
-      this.type = type;
    }
 
    @Override
@@ -23,15 +19,14 @@ public class CharacterList extends ArrayWrapper<Character> {
    
    @Override
    public Character get(int index) {
-      return (Character)Array.get(array, index);
+      return array[index];
    }
    
    @Override
    public Character set(int index, Character value) {
-      Object previous = Array.get(array, index);
-      Character result = (Character)previous;
-      Array.set(array, index, value);
-      return result;
+      Character previous = array[index];
+      array[index] = value;
+      return previous;
    }
 
    @Override
@@ -39,7 +34,7 @@ public class CharacterList extends ArrayWrapper<Character> {
       Object[] copy = new Character[length];
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -50,11 +45,11 @@ public class CharacterList extends ArrayWrapper<Character> {
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Character character = (Character)Array.get(array, i);
+         Character character = array[i];
          Object value = character;
          
          if(type == String[].class) {
-            value = value.toString();;
+            value = value.toString();
          } else if(type == Character[].class) {
             value = character;
          } else if(type == Object[].class) {
@@ -72,7 +67,7 @@ public class CharacterList extends ArrayWrapper<Character> {
       Class type = object.getClass();
       
       for (int i = 0; i < length; i++) {
-         Object value = Array.get(array, i);
+         Object value = array[i];
 
          if (object.equals(value)) {
             return i;

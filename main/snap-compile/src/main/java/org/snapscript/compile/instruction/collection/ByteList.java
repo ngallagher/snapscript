@@ -2,12 +2,12 @@ package org.snapscript.compile.instruction.collection;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveDoubleList extends ArrayWrapper<Object> {
+public class ByteList extends ArrayWrapper<Object> {
 
-   private final double[] array;
+   private final Byte[] array;
    private final int length;
    
-   public PrimitiveDoubleList(double[] array) {
+   public ByteList(Byte[] array) {
       this.length = array.length;
       this.array = array;
    }
@@ -16,7 +16,7 @@ public class PrimitiveDoubleList extends ArrayWrapper<Object> {
    public int size() {
       return length;
    }
-   
+
    @Override
    public Object get(int index) {
       return array[index];
@@ -24,22 +24,22 @@ public class PrimitiveDoubleList extends ArrayWrapper<Object> {
 
    @Override
    public Object set(int index, Object value) {
-      Double previous = array[index];
+      Byte previous = array[index];
       Class type = value.getClass();
       
       if(type == String.class) {
          String text = (String)value;
-         array[index] = Double.parseDouble(text);
+         array[index] = Byte.parseByte(text);
       } else {
          Number number = (Number)value;
-         array[index] = number.doubleValue();
+         array[index] = number.byteValue();
       }
       return previous;
    }
-
+   
    @Override
    public Object[] toArray() {
-      Object[] copy = new Double[length];
+      Object[] copy = new Byte[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -53,20 +53,20 @@ public class PrimitiveDoubleList extends ArrayWrapper<Object> {
       int require = copy.length;
      
       for(int i = 0; i < length && i < require; i++) {
-         Double number = array[i];
+         Byte number = array[i];
          Object value = number;
          
-         if(type != Double[].class) {
-            if(type == Byte[].class) {
-               value = number.byteValue();
+         if(type != Byte[].class) {
+            if(type == Short[].class) {
+               value = number.shortValue();
+            } else if(type == Double[].class) {
+               value = number.doubleValue();
             } else if(type == Float[].class) {
                value = number.floatValue();
-            } else if(type == Integer[].class) {
-               value = number.intValue();
             } else if(type == Long[].class) {
                value = number.longValue();
-            } else if(type == Short[].class) {
-               value = number.shortValue();
+            } else if(type == Integer[].class) {
+               value = number.intValue();
             } else if(type == String[].class) {
                value = number.toString();
             } else if(type == Object[].class) {
@@ -85,20 +85,20 @@ public class PrimitiveDoubleList extends ArrayWrapper<Object> {
       Class type = object.getClass();
       
       for (int i = 0; i < length; i++) {
-         Double number = array[i];
+         Byte number = array[i];
          Object value = number;
          
-         if(type != Double.class) {
-            if(type == Integer.class) {
-               value = number.intValue();
-            } else if(type == Byte.class) {
-               value = number.byteValue();
-            } else if(type == Float.class) {
+         if(type != Byte.class) {
+            if(type == Float.class) {
                value = number.floatValue();
-            } else if(type == Long.class) {
-               value = number.longValue();
             } else if(type == Short.class) {
                value = number.shortValue();
+            } else if(type == Double.class) {
+               value = number.doubleValue();
+            } else if(type == Long.class) {
+               value = number.longValue();
+            } else if(type == Integer.class) {
+               value = number.intValue();
             } else if(type == String.class) {
                value = number.toString();
             } else {

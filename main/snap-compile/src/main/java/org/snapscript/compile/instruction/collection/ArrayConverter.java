@@ -37,28 +37,28 @@ public class ArrayConverter {
          return new PrimitiveBooleanList((boolean[])array);
       }
       if(type == Byte[].class) {
-         return new NumberList(array, Byte.class);
+         return new ByteList((Byte[])array);
       }
       if(type == Integer[].class) {
-         return new NumberList(array, Integer[].class);
+         return new IntegerList((Integer[])array);
       }
       if(type == Long[].class) {
-         return new NumberList(array, Long.class);
+         return new LongList((Long[])array);
       }
       if(type == Double[].class) {
-         return new NumberList(array, Double.class);
+         return new DoubleList((Double[])array);
       }
       if(type == Float[].class) {
-         return new NumberList(array, Float.class);
+         return new FloatList((Float[])array);
       }
       if(type == Short[].class) {
-         return new NumberList(array, Short.class);
+         return new ShortList((Short[])array);
       }
       if(type == Character[].class) {
-         return new CharacterList(array, Character.class);
+         return new CharacterList((Character[])array);
       }
       if(type == Boolean[].class) {
-         return new BooleanList(array, Character.class);
+         return new BooleanList((Boolean[])array);
       }
       return new ObjectList((Object[])array, type);
    }
