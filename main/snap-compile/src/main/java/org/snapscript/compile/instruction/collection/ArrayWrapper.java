@@ -5,7 +5,7 @@ import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public abstract class PrimitiveArrayList<T> extends AbstractList<T> implements RandomAccess {
+public abstract class ArrayWrapper<T> extends AbstractList<T> implements RandomAccess {
 
    public int length() {
       return size();

@@ -1,11 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-import java.util.RandomAccess;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveShortList extends PrimitiveArrayList<Object> {
+public class PrimitiveShortList extends ArrayWrapper<Object> {
 
    private final short[] array;
    private final int length;
@@ -21,9 +18,28 @@ public class PrimitiveShortList extends PrimitiveArrayList<Object> {
    }
 
    @Override
+   public Object get(int index) {
+      return array[index];
+   }
+
+   @Override
+   public Object set(int index, Object value) {
+      Short previous = array[index];
+      Class type = value.getClass();
+      
+      if(type == String.class) {
+         String text = (String)value;
+         array[index] = Short.parseShort(text);
+      } else {
+         Number number = (Number)value;
+         array[index] = number.shortValue();
+      }
+      return previous;
+   }
+
+   @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Short.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Short[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -62,26 +78,6 @@ public class PrimitiveShortList extends PrimitiveArrayList<Object> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Object get(int index) {
-      return array[index];
-   }
-
-   @Override
-   public Object set(int index, Object value) {
-      Short previous = array[index];
-      Class type = value.getClass();
-      
-      if(type == String.class) {
-         String text = (String)value;
-         array[index] = Short.parseShort(text);
-      } else {
-         Number number = (Number)value;
-         array[index] = number.shortValue();
-      }
-      return previous;
    }
 
    @Override

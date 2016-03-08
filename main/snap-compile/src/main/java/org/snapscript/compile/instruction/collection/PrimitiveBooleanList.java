@@ -1,10 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveBooleanList extends PrimitiveArrayList<Boolean> {
+public class PrimitiveBooleanList extends ArrayWrapper<Boolean> {
 
    private final boolean[] array;
    private final int length;
@@ -18,11 +16,22 @@ public class PrimitiveBooleanList extends PrimitiveArrayList<Boolean> {
    public int size() {
       return length;
    }
+   
+   @Override
+   public Boolean get(int index) {
+      return array[index];
+   }
 
    @Override
+   public Boolean set(int index, Boolean value) {
+      Boolean result = array[index];
+      array[index] = value;
+      return result;
+   }
+   
+   @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Boolean.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Boolean[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -51,18 +60,6 @@ public class PrimitiveBooleanList extends PrimitiveArrayList<Boolean> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Boolean get(int index) {
-      return array[index];
-   }
-
-   @Override
-   public Boolean set(int index, Boolean value) {
-      Boolean result = array[index];
-      array[index] = value;
-      return result;
    }
 
    @Override

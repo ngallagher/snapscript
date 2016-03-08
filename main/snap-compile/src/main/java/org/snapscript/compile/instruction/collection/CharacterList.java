@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class CharacterList extends AbstractList<Character> implements RandomAccess {
+public class CharacterList extends ArrayWrapper<Character> {
 
    private final Object array;
    private final Class type;
@@ -22,11 +20,23 @@ public class CharacterList extends AbstractList<Character> implements RandomAcce
    public int size() {
       return length;
    }
+   
+   @Override
+   public Character get(int index) {
+      return (Character)Array.get(array, index);
+   }
+   
+   @Override
+   public Character set(int index, Character value) {
+      Object previous = Array.get(array, index);
+      Character result = (Character)previous;
+      Array.set(array, index, value);
+      return result;
+   }
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(type, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Character[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = Array.get(array, i);
@@ -58,29 +68,6 @@ public class CharacterList extends AbstractList<Character> implements RandomAcce
    }
 
    @Override
-   public Character get(int index) {
-      return (Character)Array.get(array, index);
-   }
-
-   @Override
-   public boolean add(Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Character element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public Character set(int index, Character value) {
-      Object previous = Array.get(array, index);
-      Character result = (Character)previous;
-      Array.set(array, index, value);
-      return result;
-   }
-
-   @Override
    public int indexOf(Object object) {
       Class type = object.getClass();
       
@@ -92,16 +79,5 @@ public class CharacterList extends AbstractList<Character> implements RandomAcce
          }
       }
       return -1;
-   }
-
-   @Override
-   public boolean contains(Object o) {
-      int index = indexOf(o);
-
-      if (index == -1) {
-         return false;
-      }
-      return true;
-
    }
 }

@@ -1,10 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveDoubleList extends PrimitiveArrayList<Object> {
+public class PrimitiveDoubleList extends ArrayWrapper<Object> {
 
    private final double[] array;
    private final int length;
@@ -18,11 +16,30 @@ public class PrimitiveDoubleList extends PrimitiveArrayList<Object> {
    public int size() {
       return length;
    }
+   
+   @Override
+   public Object get(int index) {
+      return array[index];
+   }
+
+   @Override
+   public Object set(int index, Object value) {
+      Double previous = array[index];
+      Class type = value.getClass();
+      
+      if(type == String.class) {
+         String text = (String)value;
+         array[index] = Float.parseFloat(text);
+      } else {
+         Number number = (Number)value;
+         array[index] = number.doubleValue();
+      }
+      return previous;
+   }
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Double.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Double[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -61,26 +78,6 @@ public class PrimitiveDoubleList extends PrimitiveArrayList<Object> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Object get(int index) {
-      return array[index];
-   }
-
-   @Override
-   public Object set(int index, Object value) {
-      Double previous = array[index];
-      Class type = value.getClass();
-      
-      if(type == String.class) {
-         String text = (String)value;
-         array[index] = Float.parseFloat(text);
-      } else {
-         Number number = (Number)value;
-         array[index] = number.doubleValue();
-      }
-      return previous;
    }
 
    @Override

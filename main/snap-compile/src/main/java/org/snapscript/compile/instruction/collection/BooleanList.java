@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class BooleanList extends AbstractList<Boolean> implements RandomAccess {
+public class BooleanList extends ArrayWrapper<Boolean> {
 
    private final Object array;
    private final Class type;
@@ -21,6 +19,19 @@ public class BooleanList extends AbstractList<Boolean> implements RandomAccess {
    @Override
    public int size() {
       return length;
+   }
+   
+   @Override
+   public Boolean get(int index) {
+      return (Boolean)Array.get(array, index);
+   }
+
+   @Override
+   public Boolean set(int index, Boolean value) {
+      Object previous = Array.get(array, index);
+      Boolean result = (Boolean)previous;
+      Array.set(array, index, value);
+      return result;
    }
 
    @Override
@@ -58,29 +69,6 @@ public class BooleanList extends AbstractList<Boolean> implements RandomAccess {
    }
 
    @Override
-   public Boolean get(int index) {
-      return (Boolean)Array.get(array, index);
-   }
-   
-   @Override
-   public boolean add(Boolean element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Boolean element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-
-   @Override
-   public Boolean set(int index, Boolean value) {
-      Object previous = Array.get(array, index);
-      Boolean result = (Boolean)previous;
-      Array.set(array, index, value);
-      return result;
-   }
-
-   @Override
    public int indexOf(Object object) {
       Class type = object.getClass();
       
@@ -92,17 +80,6 @@ public class BooleanList extends AbstractList<Boolean> implements RandomAccess {
          }
       }
       return -1;
-   }
-
-   @Override
-   public boolean contains(Object o) {
-      int index = indexOf(o);
-
-      if (index == -1) {
-         return false;
-      }
-      return true;
-
    }
 }
 

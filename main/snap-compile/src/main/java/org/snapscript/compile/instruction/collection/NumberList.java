@@ -1,12 +1,10 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class NumberList extends AbstractList<Object> implements RandomAccess {
+public class NumberList extends ArrayWrapper<Object> {
 
    private final Object array;
    private final Class type;
@@ -70,16 +68,6 @@ public class NumberList extends AbstractList<Object> implements RandomAccess {
    @Override
    public Object get(int index) {
       return Array.get(array, index);
-   }
-  
-   @Override
-   public boolean add(Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
    }
 
    @Override

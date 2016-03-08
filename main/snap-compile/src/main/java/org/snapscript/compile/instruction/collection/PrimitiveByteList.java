@@ -1,11 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-import java.util.AbstractList;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveByteList extends AbstractList<Object> {
+public class PrimitiveByteList extends ArrayWrapper<Object> {
 
    private final byte[] array;
    private final int length;
@@ -21,9 +18,28 @@ public class PrimitiveByteList extends AbstractList<Object> {
    }
 
    @Override
+   public Object get(int index) {
+      return array[index];
+   }
+
+   @Override
+   public Object set(int index, Object value) {
+      Byte previous = array[index];
+      Class type = value.getClass();
+      
+      if(type == String.class) {
+         String text = (String)value;
+         array[index] = Byte.parseByte(text);
+      } else {
+         Number number = (Number)value;
+         array[index] = number.byteValue();
+      }
+      return previous;
+   }
+   
+   @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Byte.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Byte[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -62,26 +78,6 @@ public class PrimitiveByteList extends AbstractList<Object> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Object get(int index) {
-      return array[index];
-   }
-
-   @Override
-   public Object set(int index, Object value) {
-      Byte previous = array[index];
-      Class type = value.getClass();
-      
-      if(type == String.class) {
-         String text = (String)value;
-         array[index] = Byte.parseByte(text);
-      } else {
-         Number number = (Number)value;
-         array[index] = number.byteValue();
-      }
-      return previous;
    }
 
    @Override

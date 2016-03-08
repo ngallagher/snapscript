@@ -1,10 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveLongList extends PrimitiveArrayList<Object> {
+public class PrimitiveLongList extends ArrayWrapper<Object> {
 
    private final long[] array;
    private final int length;
@@ -18,11 +16,30 @@ public class PrimitiveLongList extends PrimitiveArrayList<Object> {
    public int size() {
       return length;
    }
+   
+   @Override
+   public Object get(int index) {
+      return array[index];
+   }
 
    @Override
+   public Object set(int index, Object value) {
+      Long previous = array[index];
+      Class type = value.getClass();
+      
+      if(type == String.class) {
+         String text = (String)value;
+         array[index] = Long.parseLong(text);
+      } else {
+         Number number = (Number)value;
+         array[index] = number.longValue();
+      }
+      return previous;
+   }
+   
+   @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Long.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Long[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -61,26 +78,6 @@ public class PrimitiveLongList extends PrimitiveArrayList<Object> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Object get(int index) {
-      return array[index];
-   }
-
-   @Override
-   public Object set(int index, Object value) {
-      Long previous = array[index];
-      Class type = value.getClass();
-      
-      if(type == String.class) {
-         String text = (String)value;
-         array[index] = Long.parseLong(text);
-      } else {
-         Number number = (Number)value;
-         array[index] = number.longValue();
-      }
-      return previous;
    }
 
    @Override

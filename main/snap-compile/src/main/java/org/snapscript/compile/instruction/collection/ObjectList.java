@@ -1,12 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.RandomAccess;
 
-import org.snapscript.core.InternalArgumentException;
-
-public class ObjectList extends AbstractList<Object> implements RandomAccess {
+public class ObjectList extends ArrayWrapper<Object> {
 
    private final Object[] array;
    private final Class type;
@@ -21,6 +17,18 @@ public class ObjectList extends AbstractList<Object> implements RandomAccess {
    @Override
    public int size() {
       return length;
+   }
+   
+   @Override
+   public Object get(int index) {
+      return array[index];
+   }
+
+   @Override
+   public Object set(int index, Object value) {
+      Object previous = array[index];
+      array[index] = value;
+      return previous;
    }
 
    @Override
@@ -48,28 +56,6 @@ public class ObjectList extends AbstractList<Object> implements RandomAccess {
    }
 
    @Override
-   public Object get(int index) {
-      return array[index];
-   }
-   
-   @Override
-   public boolean add(Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-   
-   @Override
-   public void add(int index, Object element) {
-      throw new InternalArgumentException("Array cannot be resized");
-   }
-
-   @Override
-   public Object set(int index, Object value) {
-      Object previous = array[index];
-      array[index] = value;
-      return previous;
-   }
-
-   @Override
    public int indexOf(Object object) {
       for (int i = 0; i < length; i++) {
          Object value = array[i];
@@ -79,17 +65,6 @@ public class ObjectList extends AbstractList<Object> implements RandomAccess {
          }
       }
       return -1;
-   }
-
-   @Override
-   public boolean contains(Object o) {
-      int index = indexOf(o);
-
-      if (index == -1) {
-         return false;
-      }
-      return true;
-
    }
 }
 

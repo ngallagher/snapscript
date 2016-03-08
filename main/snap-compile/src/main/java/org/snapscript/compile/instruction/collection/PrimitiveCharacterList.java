@@ -1,10 +1,8 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
-public class PrimitiveCharacterList extends PrimitiveArrayList<Character> {
+public class PrimitiveCharacterList extends ArrayWrapper<Character> {
 
    private final char[] array;
    private final int length;
@@ -18,11 +16,22 @@ public class PrimitiveCharacterList extends PrimitiveArrayList<Character> {
    public int size() {
       return length;
    }
+   
+   @Override
+   public Character get(int index) {
+      return array[index];
+   }
+   
+   @Override
+   public Character set(int index, Character value) {
+      Character previous = array[index];
+      array[index] = value;
+      return previous;
+   }
 
    @Override
    public Object[] toArray() {
-      Object instance = Array.newInstance(Character.class, length);
-      Object[] copy = (Object[])instance;
+      Object[] copy = new Character[length];
       
       for(int i = 0; i < length; i++) {
          copy[i] = array[i];
@@ -51,18 +60,6 @@ public class PrimitiveCharacterList extends PrimitiveArrayList<Character> {
          copy[i] = (T)value;
       }
       return copy;
-   }
-
-   @Override
-   public Character get(int index) {
-      return array[index];
-   }
-   
-   @Override
-   public Character set(int index, Character value) {
-      Character previous = array[index];
-      array[index] = value;
-      return previous;
    }
 
    @Override
