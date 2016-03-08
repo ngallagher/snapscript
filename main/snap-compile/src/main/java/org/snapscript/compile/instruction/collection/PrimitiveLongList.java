@@ -31,7 +31,7 @@ public class PrimitiveLongList extends AbstractList<Object> implements RandomAcc
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -87,9 +87,9 @@ public class PrimitiveLongList extends AbstractList<Object> implements RandomAcc
    @Override
    public Object set(int index, Object value) {
       Long previous = array[index];
-      Class entry = value.getClass();
+      Class type = value.getClass();
       
-      if(entry == String.class) {
+      if(type == String.class) {
          String text = (String)value;
          array[index] = Long.parseLong(text);
       } else {

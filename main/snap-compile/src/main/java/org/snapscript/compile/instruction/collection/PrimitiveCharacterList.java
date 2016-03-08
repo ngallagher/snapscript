@@ -27,7 +27,7 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -57,7 +57,7 @@ public class PrimitiveCharacterList extends AbstractList<Character> implements R
 
    @Override
    public Character get(int index) {
-      return (Character)Array.get(array, index);
+      return array[index];
    }
 
    @Override

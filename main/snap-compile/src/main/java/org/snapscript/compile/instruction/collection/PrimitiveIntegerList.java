@@ -28,10 +28,10 @@ public class PrimitiveIntegerList extends AbstractList<Object> implements Random
    @Override
    public Object[] toArray() {
       Object instance = Array.newInstance(Integer.class, length);
-      Object[] copy = (Object[])instance;
+      Integer[] copy = (Integer[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -87,9 +87,9 @@ public class PrimitiveIntegerList extends AbstractList<Object> implements Random
    @Override
    public Object set(int index, Object value) {
       Integer previous = array[index];
-      Class entry = value.getClass();
+      Class type = value.getClass();
       
-      if(entry == String.class) {
+      if(type == String.class) {
          String text = (String)value;
          array[index] = Integer.parseInt(text);
       } else {

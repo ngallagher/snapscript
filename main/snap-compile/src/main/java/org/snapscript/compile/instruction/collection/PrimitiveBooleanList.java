@@ -57,7 +57,7 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
 
    @Override
    public Boolean get(int index) {
-      return (Boolean)Array.get(array, index);
+      return array[index];
    }
    
    @Override
@@ -79,8 +79,6 @@ public class PrimitiveBooleanList extends AbstractList<Boolean> implements Rando
 
    @Override
    public int indexOf(Object object) {
-      Class type = object.getClass();
-      
       for (int i = 0; i < length; i++) {
          Object value = array[i];
 

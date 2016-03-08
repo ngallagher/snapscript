@@ -15,10 +15,6 @@ public class PrimitiveDoubleList extends AbstractList<Object> implements RandomA
       this.length = array.length;
       this.array = array;
    }
-   
-   public int length() {
-      return length;
-   }
 
    @Override
    public int size() {
@@ -31,7 +27,7 @@ public class PrimitiveDoubleList extends AbstractList<Object> implements RandomA
       Object[] copy = (Object[])instance;
       
       for(int i = 0; i < length; i++) {
-         copy[i] = Array.get(array, i);
+         copy[i] = array[i];
       }
       return copy;
    }
@@ -87,9 +83,9 @@ public class PrimitiveDoubleList extends AbstractList<Object> implements RandomA
    @Override
    public Object set(int index, Object value) {
       Double previous = array[index];
-      Class entry = value.getClass();
+      Class type = value.getClass();
       
-      if(entry == String.class) {
+      if(type == String.class) {
          String text = (String)value;
          array[index] = Float.parseFloat(text);
       } else {
