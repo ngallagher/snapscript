@@ -53,7 +53,7 @@ public class ContextModule implements Module {
    @Override
    public Type addType(String name) {
       try {
-         Type type = getType(name);
+         Type type = getType(name); 
          
          if(type == null) {
             TypeLoader loader = context.getLoader();
@@ -61,10 +61,10 @@ public class ContextModule implements Module {
             if(loader != null) {
                type = loader.defineType(prefix, name);
             }
-         }
-         if(type != null) {
-            types.put(name, type);
-            references.add(type);
+            if(type != null) {
+               types.put(name, type);
+               references.add(type);
+            }
          }
          return type;
       } catch(Exception e){
@@ -78,10 +78,13 @@ public class ContextModule implements Module {
          Module module = modules.get(name);
          
          if(module == null) {
-            module = manager.getModule(name); // import tetris.game.*
-         }
-         if(module != null) {
-            modules.put(name, module);
+            if(!types.containsKey(name)) { // don't resolve if its a type
+               module = manager.getModule(name); // import tetris.game.*
+               
+               if(module != null) {
+                  modules.put(name, module);
+               }
+            }
          }
          return module;
       } catch(Exception e){
@@ -95,11 +98,14 @@ public class ContextModule implements Module {
          Type type = types.get(name);
          
          if(type == null) {
-            type = manager.getType(name);
-         }
-         if(type != null) {
-            types.put(name, type);
-            references.add(type);
+            if(!modules.containsKey(name)) {// don't resolve if its a module
+               type = manager.getType(name);
+            
+               if(type != null) {
+                  types.put(name, type);
+                  references.add(type);
+               }
+            }
          }
          return type;
       } catch(Exception e){
