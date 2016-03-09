@@ -22,9 +22,9 @@ public class FunctionMatcher {
    private final Cache<Object, Function> instance;
    private final Cache<Object, Function> cache;
    private final FunctionKeyBuilder builder;
+   private final FunctionPathFinder finder;
    private final ArgumentMatcher matcher;
    private final TypeExtractor extractor;
-   private final TypePathBuilder finder;
    private final ThreadStack stack;
    
    public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
@@ -37,7 +37,7 @@ public class FunctionMatcher {
       this.matcher = new ArgumentMatcher(matcher, loader, capacity);
       this.builder = new FunctionKeyBuilder(loader);
       this.extractor = new TypeExtractor(loader);
-      this.finder = new TypePathBuilder();
+      this.finder = new FunctionPathFinder();
       this.stack = stack;
    }
    
@@ -116,7 +116,7 @@ public class FunctionMatcher {
       Object key = builder.create(type, name, values); 
 
       if(!cache.contains(key)) {
-         List<Type> path = finder.createPath(type, name);
+         List<Type> path = finder.findPath(type, name);
          Function function = null;
          
          if(!path.isEmpty()) {
@@ -165,7 +165,7 @@ public class FunctionMatcher {
       Object key = builder.create(type, name, values);
       
       if(!instance.contains(key)) {
-         List<Type> path = finder.createPath(type, name);
+         List<Type> path = finder.findPath(type, name);
          Function function = null;
          
          if(!path.isEmpty()) {

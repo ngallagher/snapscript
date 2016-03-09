@@ -25,7 +25,7 @@ public class SearchPathFinderTest extends TestCase {
     * MAYBE THIS IS BETTER: D,C,B,A,I,J,K,X,Y,Z,Runnable
     */
    public void testSearchPath() throws Exception {
-      TypePathBuilder finder = new TypePathBuilder();
+      FunctionPathFinder finder = new FunctionPathFinder();
       Type a = new TestType(null, "A", null, null);
       Type b = new TestType(null, "B", null, null);
       Type c = new TestType(null, "C", null, null);
@@ -54,7 +54,7 @@ public class SearchPathFinderTest extends TestCase {
       typesD.add(j);
       typesD.add(k);
       
-      List<Type> types = finder.createPath(d, "x");
+      List<Type> types = finder.findPath(d, "x");
       
       System.err.println(types);
       

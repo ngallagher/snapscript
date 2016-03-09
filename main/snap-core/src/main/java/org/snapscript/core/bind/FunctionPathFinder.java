@@ -9,32 +9,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
 
-public class TypePathBuilder {
+public class FunctionPathFinder {
    
    private final Map<Type, List<Type>> paths;
    
-   public TypePathBuilder() {
+   public FunctionPathFinder() {
       this.paths = new ConcurrentHashMap<Type, List<Type>>();
    }
 
-   @Bug("Need better checking for constructor here")
-   public List<Type> createPath(Type type, String name) {
+   public List<Type> findPath(Type type, String name) {
       if(name.equals(TYPE_CONSTRUCTOR)) {
          return Arrays.asList(type);
       }
+      return findTypes(type, name);
+   }
+   
+   private List<Type> findTypes(Type type, String name) {
       List<Type> path = paths.get(type);
       Class real = type.getType();
       
       if(path == null) {
          List<Type> result = new ArrayList<Type>();
       
-         collectClasses(type, result);
+         findClasses(type, result);
       
          if(real == null) {
-            collectTraits(type, result);
+            findTraits(type, result);
          }
          paths.put(type, result);
          return result;
@@ -42,7 +44,7 @@ public class TypePathBuilder {
       return path;
    }
    
-   private void collectTraits(Type type, List<Type> done) {
+   private void findTraits(Type type, List<Type> done) {
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       
@@ -54,11 +56,11 @@ public class TypePathBuilder {
                done.add(entry);
             }
          }
-         collectTraits(next, done);
+         findTraits(next, done);
       }
    }
    
-   private void collectClasses(Type type, List<Type> done) {
+   private void findClasses(Type type, List<Type> done) {
       List<Type> types = type.getTypes();
       Iterator<Type> iterator = types.iterator();
       
@@ -68,7 +70,7 @@ public class TypePathBuilder {
          Type next = iterator.next();
          
          if(!done.contains(next)) {
-            collectClasses(next, done);
+            findClasses(next, done);
          }
       }
    }
