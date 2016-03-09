@@ -10,10 +10,10 @@ import static org.snapscript.core.Reserved.IMPORT_JAVA_UTIL;
 import static org.snapscript.core.Reserved.IMPORT_SNAPSCRIPT;
 
 import java.lang.Package;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class ImportScanner {
    
@@ -39,10 +39,10 @@ public class ImportScanner {
    }
    
    public ImportScanner(String... prefixes) {
-      this.packages = new HashMap<String, Package>();
-      this.names = new HashMap<Object, String>();
-      this.types = new HashMap<String, Class>();
-      this.failures = new HashSet<String>();
+      this.packages = new ConcurrentHashMap<String, Package>();
+      this.names = new ConcurrentHashMap<Object, String>();
+      this.types = new ConcurrentHashMap<String, Class>();
+      this.failures = new CopyOnWriteArraySet<String>();
       this.prefixes = prefixes;
    }
    

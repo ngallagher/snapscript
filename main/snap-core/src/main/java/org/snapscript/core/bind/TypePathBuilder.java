@@ -4,10 +4,10 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Bug;
 import org.snapscript.core.Type;
@@ -17,7 +17,7 @@ public class TypePathBuilder {
    private final Map<Type, List<Type>> paths;
    
    public TypePathBuilder() {
-      this.paths = new HashMap<Type, List<Type>>();
+      this.paths = new ConcurrentHashMap<Type, List<Type>>();
    }
 
    @Bug("Need better checking for constructor here")

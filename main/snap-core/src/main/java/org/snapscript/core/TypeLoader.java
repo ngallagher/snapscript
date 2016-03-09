@@ -16,27 +16,27 @@ public class TypeLoader {
       this.manager = new PackageManager(loader, scanner);
    }
    
-   public synchronized Package importPackage(String module) throws Exception  {
+   public Package importPackage(String module) throws Exception  {
       return manager.importPackage(module);
    }   
    
-   public synchronized Package importType(String module, String name) throws Exception {
+   public Package importType(String module, String name) throws Exception {
       return manager.importType(module, name); 
    }
    
-   public synchronized Type defineType(String module, String name) throws Exception {
+   public Type defineType(String module, String name) throws Exception {
       return indexer.defineType(module, name);
    }
    
-   public synchronized Type resolveType(String module, String name) throws Exception {
+   public Type resolveType(String module, String name) throws Exception {
       return indexer.loadType(module, name);
    }
    
-   public synchronized Type resolveType(String type) throws Exception {
+   public Type resolveType(String type) throws Exception {
       return indexer.loadType(type);
    }
    
-   public synchronized Type loadType(Class type) throws Exception {
+   public Type loadType(Class type) throws Exception {
       return indexer.loadType(type);
    } 
 }

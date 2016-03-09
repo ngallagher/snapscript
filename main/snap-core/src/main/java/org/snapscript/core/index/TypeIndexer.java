@@ -21,7 +21,7 @@ public class TypeIndexer {
       this.registry = registry;
    }
    
-   public Type loadType(String type) throws Exception {
+   public synchronized Type loadType(String type) throws Exception {
       Type done = types.get(type);
 
       if (done == null) {
@@ -35,7 +35,7 @@ public class TypeIndexer {
       return done;
    }
 
-   public Type loadType(String module, String name) throws Exception {
+   public synchronized Type loadType(String module, String name) throws Exception {
       String alias = createName(module, name);
       Type done = types.get(alias);
 
@@ -50,7 +50,7 @@ public class TypeIndexer {
       return done;
    }
 
-   public Type defineType(String module, String name) throws Exception {
+   public synchronized Type defineType(String module, String name) throws Exception {
       String alias = createName(module, name);
       Type done = types.get(alias);
 
@@ -70,7 +70,7 @@ public class TypeIndexer {
       return done;
    }
 
-   public Type loadType(Class source) throws Exception {
+   public synchronized Type loadType(Class source) throws Exception {
       Type done = types.get(source);
       
       if (done == null) {
@@ -87,7 +87,7 @@ public class TypeIndexer {
       return done;
    }
 
-   private Type createType(String module, String name) throws Exception {
+   private synchronized Type createType(String module, String name) throws Exception {
       String alias = createName(module, name);
       Type type = types.get(alias);
       
@@ -97,7 +97,7 @@ public class TypeIndexer {
       return type;
    }
    
-   private Type createType(Class source) throws Exception {
+   private synchronized Type createType(Class source) throws Exception {
       String alias = scanner.importName(source);
       String name = source.getSimpleName();
       Type type = types.get(alias);
@@ -108,7 +108,7 @@ public class TypeIndexer {
       return type;
    }
    
-   private String createName(String module, String name) {
+   private synchronized String createName(String module, String name) {
       if(module != null) {
          int length = module.length();
          
