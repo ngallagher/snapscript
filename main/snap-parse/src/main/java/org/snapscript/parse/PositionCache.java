@@ -6,25 +6,25 @@ import org.snapscript.common.LeastRecentlyUsedMap;
 
 public class PositionCache<T> {
    
-   private final Map<Long, T> cache;
+   private final Map<Integer, T> cache;
    
    public PositionCache(int capacity) {
-      this.cache = new LeastRecentlyUsedMap<Long, T>(capacity);
+      this.cache = new LeastRecentlyUsedMap<Integer, T>(capacity);
    }
    
-   public synchronized T fetch(Long position) {
+   public T fetch(Integer position) {
       return cache.get(position);
    }
    
-   public synchronized void cache(Long position, T value) {
+   public void cache(Integer position, T value) {
       cache.put(position, value);
    }
    
-   public synchronized boolean contains(Long position) {
+   public boolean contains(Integer position) {
       return cache.containsKey(position);
    }
    
-   public synchronized int size() {
+   public int size() {
       return cache.size();
    }
 }

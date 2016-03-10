@@ -1,6 +1,5 @@
 package org.snapscript.parse;
 
-import org.snapscript.parse.TextCategory;
 
 public class TextCategoryBuilder {
    public static void main(String[] list) throws Exception {

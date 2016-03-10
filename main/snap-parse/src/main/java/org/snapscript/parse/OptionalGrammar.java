@@ -1,24 +1,38 @@
 package org.snapscript.parse;
 
+
 public class OptionalGrammar implements Grammar {
 
-   private final Grammar grammar;  
-   private final String name;
+   private final Grammar grammar; 
    
-   public OptionalGrammar(Grammar grammar, String name) {
+   public OptionalGrammar(Grammar grammar) {
       this.grammar = grammar;
-      this.name = name;   
-   }  
-   
-   @Override
-   public boolean read(SyntaxReader reader, int depth) {      
-      grammar.read(reader, depth);
-      return true;
    }
    
    @Override
-   public String toString() {
-      return String.format("?%s", grammar);
-   }     
+   public Matcher compile(int serial) {
+      Matcher matcher = grammar.compile(serial);
+      return new OptionalMatcher(matcher);
+   } 
+   
+   private static class OptionalMatcher implements Matcher {
+      
+      private final Matcher matcher;
+      
+      public OptionalMatcher(Matcher matcher) {
+         this.matcher = matcher; 
+      }
+   
+      @Override
+      public boolean match(SyntaxReader reader, int depth) {      
+         matcher.match(reader, depth);
+         return true;
+      }
+      
+      @Override
+      public String toString() {
+         return String.format("?%s", matcher);
+      }    
+   }
 }
 

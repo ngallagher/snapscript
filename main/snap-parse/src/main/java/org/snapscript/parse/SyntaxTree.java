@@ -9,36 +9,34 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SyntaxTree {
 
    private final Comparator<SyntaxNode> comparator;
-   private final Series<SyntaxCursor> nodes;
+   private final List<SyntaxCursor> nodes;
    private final LexicalAnalyzer analyzer;
    private final GrammarIndexer indexer;
    private final AtomicInteger commit;
-   private final IntegerStack stack;
+   private final PositionStack stack;
    private final String resource;
    private final String grammar;
-   private final long serial;
 
-   public SyntaxTree(GrammarIndexer indexer, String resource, String grammar, char[] original, char[] source, short[] lines, short[] types, int serial) {
+   public SyntaxTree(GrammarIndexer indexer, String resource, String grammar, char[] original, char[] source, short[] lines, short[] types) {
       this.analyzer = new TokenScanner(indexer, resource, original, source, lines, types);
       this.comparator = new SyntaxNodeComparator();
-      this.nodes = new Series<SyntaxCursor>();
+      this.nodes = new ArrayList<SyntaxCursor>();
       this.commit = new AtomicInteger();
-      this.stack = new IntegerStack();
+      this.stack = new PositionStack();
       this.resource = resource;
       this.indexer = indexer;
       this.grammar = grammar;
-      this.serial = serial;
    } 
 
    public SyntaxReader mark() {   
       int index = indexer.index(grammar);
-      int depth = stack.depth(index);
+      int depth = stack.depth(0, index);
 
       if (depth >= 0) {
          throw new ParseException("Tree has been created");
       }
-      stack.push(index);
-      return new SyntaxCursor(nodes, index, index, 0);
+      stack.push(0,index);
+      return new SyntaxCursor(nodes, index, 0);
    }
    
    public SyntaxNode commit() { 
@@ -79,19 +77,17 @@ public class SyntaxTree {
 
    private class SyntaxCursor implements SyntaxReader {
 
-      private Series<SyntaxCursor> parent;
-      private Series<SyntaxCursor> nodes;
+      private List<SyntaxCursor> parent;
+      private List<SyntaxCursor> nodes;
       private Token value;
       private int grammar;
-      private int key;
       private int start;
 
-      public SyntaxCursor(Series<SyntaxCursor> parent, int grammar, int key, int start) {
-         this.nodes = new Series<SyntaxCursor>();
+      public SyntaxCursor(List<SyntaxCursor> parent, int grammar, int start) {
+         this.nodes = new ArrayList<SyntaxCursor>();
          this.grammar = grammar;
          this.parent = parent;
          this.start = start;
-         this.key = key;
       }      
       
       public SyntaxNode create() {
@@ -99,19 +95,18 @@ public class SyntaxTree {
       }
 
       @Override
-      public long position() {
-         return (serial << 32) | analyzer.mark();
+      public int position() {
+         return analyzer.mark();
       }
 
       @Override
       public SyntaxReader mark(int grammar) {              
          int off = analyzer.mark();
-         int key = off << 10 | grammar;
-         int index = stack.depth(key); // this is slow!!
+         int index = stack.depth(off, grammar); // this is slow!!
 
          if (index <= 0) {
-            stack.push(key);
-            return new SyntaxCursor(nodes, grammar, key, off);
+            stack.push(off, grammar);
+            return new SyntaxCursor(nodes, grammar, off);
          }
          return null;
       }    
@@ -119,14 +114,8 @@ public class SyntaxTree {
       @Override
       public int reset() {
          int mark = analyzer.mark();
-         
-         while (!stack.isEmpty()) {
-            int top = stack.pop();
-
-            if (top == key) {
-               break;
-            }
-         }
+            
+         stack.pop(start, grammar);
          analyzer.reset(start); // sets the global offset
          return mark;
       }
@@ -135,17 +124,13 @@ public class SyntaxTree {
       public void commit() {
          int mark = analyzer.mark();
          int error = commit.get();
-         
-         while (!stack.isEmpty()) {
-            int top = stack.pop();
+         int value = stack.pop(start, grammar);
 
-            if (top == key) {
-               if(mark > error) {
-                  commit.set(mark);
-               }
-               parent.add(this);
-               break;
+         if (value != -1) {
+            if(mark > error) {
+               commit.set(mark);
             }
+            parent.add(this);
          }
       }
 
@@ -251,12 +236,12 @@ public class SyntaxTree {
 
    private class SyntaxResult implements SyntaxNode {
 
-      private Series<SyntaxCursor> children;
+      private List<SyntaxCursor> children;
       private Token token;
       private int grammar;
       private int start;
 
-      public SyntaxResult(Series<SyntaxCursor> children, Token token, int grammar, int start) {
+      public SyntaxResult(List<SyntaxCursor> children, Token token, int grammar, int start) {
          this.children = children;
          this.grammar = grammar;
          this.token = token;

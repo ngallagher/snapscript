@@ -1,22 +1,35 @@
 package org.snapscript.parse;
 
+
 public class LiteralGrammar implements Grammar {
 
-   private final String value;
-   private final String name;
+   private final Matcher matcher;
    
-   public LiteralGrammar(String value, String name) {
-      this.value = value;
-      this.name = name;
+   public LiteralGrammar(String value) {
+      this.matcher = new GrammarMatcher(value);
    }
    
    @Override
-   public boolean read(SyntaxReader source, int depth) {
-      return source.literal(value);
-   }
+   public Matcher compile(int serial) {
+      return matcher;
+   } 
    
-   @Override
-   public String toString() {
-      return String.format("'%s'", value);
-   }   
+   private static class GrammarMatcher implements Matcher {
+      
+      private final String value;
+      
+      public GrammarMatcher(String value) {
+         this.value = value;
+      }
+      
+      @Override
+      public boolean match(SyntaxReader source, int depth) {
+         return source.literal(value);
+      }
+      
+      @Override
+      public String toString() {
+         return String.format("'%s'", value);
+      }
+   }
 }

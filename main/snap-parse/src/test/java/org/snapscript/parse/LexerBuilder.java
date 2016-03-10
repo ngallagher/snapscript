@@ -5,7 +5,6 @@ import java.util.List;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
-import org.snapscript.parse.Token;
 
 public class LexerBuilder {
 

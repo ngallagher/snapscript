@@ -66,7 +66,7 @@ public class SourceCompressor {
       short[] types = new short[write];
       
       if(write == 0) {
-         throw new ParseException("Source text is empty");
+         throw new SourceException("Source text is empty");
       }
       for(int i = 0; i < write; i++) {
          char next = compress[i];
@@ -117,7 +117,7 @@ public class SourceCompressor {
                   }
                   read++;
                }
-               throw new ParseException("Comment not closed at line " + line);
+               throw new SourceException("Comment not closed at line " + line);
             }
          }
       }
@@ -161,11 +161,14 @@ public class SourceCompressor {
                   }
                }
             }
+            if(next == '\n') {
+               line++;
+            }
             lines[write] = line;
             compress[write++] = original[read++];
             size++;
          }
-         throw new ParseException("String literal not closed at line " + line);
+         throw new SourceException("String literal not closed at line " + line);
       }
       return false;
    }

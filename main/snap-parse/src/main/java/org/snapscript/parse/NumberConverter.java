@@ -21,6 +21,6 @@ public class NumberConverter {
       if(type == short.class) {
          return value.shortValue();
       }
-      throw new IllegalArgumentException("No number conversion for " + type);
+      throw new ParseException("No number conversion for " + type);
    }
 }

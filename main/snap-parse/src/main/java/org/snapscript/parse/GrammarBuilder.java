@@ -15,7 +15,7 @@ public class GrammarBuilder {
    
    public Grammar createLiteral(String text, String origin) { 
       String value = indexer.literal(text);
-      return new LiteralGrammar(value, origin);
+      return new LiteralGrammar(value);
    }
    
    public Grammar createReference(String text, String origin) {
@@ -24,15 +24,15 @@ public class GrammarBuilder {
    }   
    
    public Grammar createOptional(Grammar node, String origin) {
-      return new OptionalGrammar(node, origin);
+      return new OptionalGrammar(node);
    }          
    
    public Grammar createRepeat(Grammar node, String origin) {
-      return new RepeatGrammar(node, origin);      
+      return new RepeatGrammar(node);      
    }
    
    public Grammar createRepeatOnce(Grammar node, String origin) {
-      return new RepeatGrammar(node, origin, true);
+      return new RepeatGrammar(node, true);
    }   
    
    public Grammar createSpecial(String text, String origin) {
@@ -41,7 +41,7 @@ public class GrammarBuilder {
       for(Symbol symbol : symbols) {
          if(symbol.name.equals(text)) {     
             int index = indexer.index(text);
-            return new SymbolGrammar(symbol, text, origin, index); 
+            return new SymbolGrammar(symbol, text, index); 
          }       
       }
       return null;

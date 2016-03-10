@@ -6,21 +6,21 @@ import org.snapscript.common.LeastRecentlyUsedSet;
 
 public class PositionSet {
 
-   private final Set<Long> positions;
+   private final Set<Integer> positions;
    
    public PositionSet(int capacity) {
-      this.positions = new LeastRecentlyUsedSet<Long>(capacity);
+      this.positions = new LeastRecentlyUsedSet<Integer>(capacity);
    }
    
-   public synchronized boolean add(Long position) {
+   public boolean add(Integer position) {
       return positions.add(position);
    }
    
-   public synchronized boolean contains(Long position) {
+   public boolean contains(Integer position) {
       return positions.contains(position);
    }
    
-   public synchronized int size() {
+   public int size() {
       return positions.size();
    }
 }

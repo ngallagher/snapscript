@@ -1,5 +1,6 @@
 package org.snapscript.parse;
 
+
 public enum Symbol {
    IDENTIFIER("identifier") {
       @Override

@@ -1,7 +1,5 @@
 package org.snapscript.parse;
 
-import org.snapscript.parse.TextReader;
-
 import junit.framework.TestCase;
 
 public class TokenReaderTest extends TestCase  {

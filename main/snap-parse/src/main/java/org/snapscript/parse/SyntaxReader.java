@@ -11,7 +11,7 @@ public interface SyntaxReader {
    boolean template();
    boolean text();
    boolean type();  
-   long position(); 
+   int position(); 
    void commit();
    int reset();
 }

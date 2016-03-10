@@ -1,47 +1,30 @@
 package org.snapscript.parse;
 
-import java.util.concurrent.atomic.AtomicReference;
+import org.snapscript.common.Cache;
+import org.snapscript.common.LeastRecentlyUsedCache;
 
 public class ReferenceGrammar implements Grammar {
 
-   private final AtomicReference<Grammar> cache;
-   private final GrammarResolver resolver; 
-   private final String name;
-   private final int index;
+   private final Cache<Integer, Matcher> matchers;
+   private final MatcherResolver resolver; 
    
    public ReferenceGrammar(GrammarResolver resolver, String name, int index) {
-      this.cache = new AtomicReference<Grammar>();
-      this.resolver = resolver;
-      this.index = index;
-      this.name = name;
+      this(resolver, name, index, 100);
+   }
+   
+   public ReferenceGrammar(GrammarResolver resolver, String name, int index, int capacity) {
+      this.matchers = new LeastRecentlyUsedCache<Integer, Matcher>(capacity);
+      this.resolver = new MatcherResolver(resolver, name, index);
    }   
    
    @Override
-   public boolean read(SyntaxReader node, int depth) {
-      Grammar grammar = cache.get();
+   public Matcher compile(int serial) {
+      Matcher matcher = matchers.fetch(serial); 
       
-      if(grammar == null) {
-         grammar = resolver.resolve(name);
-         
-         if(grammar == null) {
-            throw new IllegalArgumentException("Grammar '" + name + "' does not exist");
-         }
-         cache.set(grammar);
-      }      
-      SyntaxReader child = node.mark(index);   
-
-      if(child != null) {
-         if(grammar.read(child, 0)) {
-            child.commit();
-            return true;
-         }
-         child.reset();
+      if(matcher == null) {
+         matcher = resolver.resolve(serial);
+         matchers.cache(serial, matcher);
       }
-      return false;
-   }
-   
-   @Override
-   public String toString() {
-      return String.format("<%s>", name);
-   }      
+      return matcher;
+   }  
 }
