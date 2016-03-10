@@ -1,7 +1,7 @@
 package org.snapscript.parse;
 
-public interface SyntaxReader {
-   SyntaxReader mark(int index); 
+public interface SyntaxBuilder {
+   SyntaxBuilder mark(int index); 
    boolean literal(String value);   
    boolean decimal();
    boolean binary();

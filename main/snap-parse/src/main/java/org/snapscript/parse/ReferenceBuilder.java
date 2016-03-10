@@ -2,37 +2,37 @@ package org.snapscript.parse;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MatcherResolver {
+public class ReferenceBuilder {
 
    private final GrammarResolver resolver; 
    private final String name;
    private final int index;
    
-   public MatcherResolver(GrammarResolver resolver, String name, int index) {
+   public ReferenceBuilder(GrammarResolver resolver, String name, int index) {
       this.resolver = resolver;
       this.index = index;
       this.name = name;
    }   
    
-   public Matcher resolve(int serial) {
+   public GrammarMatcher create(int serial) {
       Grammar grammar = resolver.resolve(name);
       
       if(grammar == null) {
          throw new ParseException("Grammar '" + name + "' not found");
       }
-      return new GrammarMatcher(grammar, name, index, serial);
+      return new ReferenceMatcher(grammar, name, index, serial);
    }  
    
-   private static class GrammarMatcher implements Matcher {
+   private static class ReferenceMatcher implements GrammarMatcher {
       
-      private final AtomicReference<Matcher> reference;
+      private final AtomicReference<GrammarMatcher> reference;
       private final Grammar grammar;
       private final String name;
       private final int index;
       private final int serial;
       
-      public GrammarMatcher(Grammar grammar, String name, int index, int serial) {
-         this.reference = new AtomicReference<Matcher>();
+      public ReferenceMatcher(Grammar grammar, String name, int index, int serial) {
+         this.reference = new AtomicReference<GrammarMatcher>();
          this.grammar = grammar;
          this.serial = serial;
          this.index = index;
@@ -40,14 +40,14 @@ public class MatcherResolver {
       }  
    
       @Override
-      public boolean match(SyntaxReader node, int depth) {  
-         Matcher matcher = reference.get();
+      public boolean match(SyntaxBuilder builder, int depth) {  
+         GrammarMatcher matcher = reference.get();
          
          if(matcher == null) {
-            matcher = grammar.compile(serial);
+            matcher = grammar.create(serial);
             reference.set(matcher);
          }
-         SyntaxReader child = node.mark(index);   
+         SyntaxBuilder child = builder.mark(index);   
    
          if(child != null) {
             if(matcher.match(child, 0)) {

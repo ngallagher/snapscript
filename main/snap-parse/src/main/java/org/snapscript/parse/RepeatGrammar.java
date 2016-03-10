@@ -1,6 +1,5 @@
 package org.snapscript.parse;
 
-
 public class RepeatGrammar implements Grammar {
 
    private final Grammar grammar;
@@ -16,27 +15,27 @@ public class RepeatGrammar implements Grammar {
    }    
    
    @Override
-   public Matcher compile(int serial) {
-      Matcher matcher = grammar.compile(serial);
+   public GrammarMatcher create(int serial) {
+      GrammarMatcher matcher = grammar.create(serial);
       return new RepeatMatcher(matcher, once);
    }     
 
-   private static class RepeatMatcher implements Matcher {
+   private static class RepeatMatcher implements GrammarMatcher {
 
-      private final Matcher matcher;  
+      private final GrammarMatcher matcher;  
       private final boolean once;
 
-      public RepeatMatcher(Matcher matcher, boolean once) {
+      public RepeatMatcher(GrammarMatcher matcher, boolean once) {
          this.matcher = matcher;   
          this.once = once;
       } 
    
       @Override
-      public boolean match(SyntaxReader reader, int depth) {    
+      public boolean match(SyntaxBuilder builder, int depth) {    
          int count = 0;
    
          while(true) {   
-            if(!matcher.match(reader, depth)) {            
+            if(!matcher.match(builder, depth)) {            
                break;               
             }      
             count++;

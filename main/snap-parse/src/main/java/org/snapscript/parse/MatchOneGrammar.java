@@ -22,26 +22,26 @@ public class MatchOneGrammar implements Grammar {
    }       
    
    @Override
-   public Matcher compile(int serial) {
-      List<Matcher> matchers = new ArrayList<Matcher>();
+   public GrammarMatcher create(int serial) {
+      List<GrammarMatcher> matchers = new ArrayList<GrammarMatcher>();
       
       for(Grammar grammar : grammars) {
-         Matcher matcher = grammar.compile(serial);
+         GrammarMatcher matcher = grammar.create(serial);
          matchers.add(matcher);
       }
       return new MatchOneMatcher(matchers, name, index, capacity);
    }
    
-   private static class MatchOneMatcher implements Matcher {
+   private static class MatchOneMatcher implements GrammarMatcher {
       
-      private final PositionCache<Matcher> cache;
-      private final List<Matcher> matchers;
+      private final PositionCache<GrammarMatcher> cache;
+      private final List<GrammarMatcher> matchers;
       private final PositionSet failure;
       private final String name;
       private final int index;
 
-      public MatchOneMatcher(List<Matcher> matchers, String name, int index, int capacity) {
-         this.cache = new PositionCache<Matcher>(capacity);
+      public MatchOneMatcher(List<GrammarMatcher> matchers, String name, int index, int capacity) {
+         this.cache = new PositionCache<GrammarMatcher>(capacity);
          this.failure = new PositionSet(capacity);
          this.matchers = matchers;
          this.index = index;
@@ -49,19 +49,19 @@ public class MatchOneGrammar implements Grammar {
       }    
    
       @Override
-      public boolean match(SyntaxReader reader, int depth) {
-         Integer position = reader.position();
+      public boolean match(SyntaxBuilder builder, int depth) {
+         Integer position = builder.position();
          
          if(!failure.contains(position)) {
-            Matcher best = cache.fetch(position);
+            GrammarMatcher best = cache.fetch(position);
             
             if(best == null) {
                int count = matchers.size();
                int size = -1;     
                   
                for(int i = 0; i < count; i++) {
-                  Matcher matcher = matchers.get(i);
-                  SyntaxReader child = reader.mark(index);   
+                  GrammarMatcher matcher = matchers.get(i);
+                  SyntaxBuilder child = builder.mark(index);   
          
                   if(child != null) {
                      if(matcher.match(child, 0)) {
@@ -83,7 +83,7 @@ public class MatchOneGrammar implements Grammar {
                }
             }
             if(best != null) {            
-               if(!best.match(reader, 0)) {
+               if(!best.match(builder, 0)) {
                   throw new ParseException("Could not read node in " + name);  
                }     
                return true;

@@ -1,0 +1,6 @@
+var m = 'blah
+
+blah
+blah';
+
+println(m);

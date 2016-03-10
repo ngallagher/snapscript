@@ -1,20 +1,19 @@
 package org.snapscript.parse;
 
-
 public class SymbolGrammar implements Grammar {
 
-   private final Matcher matcher;
+   private final GrammarMatcher matcher;
    
    public SymbolGrammar(Symbol symbol, String value, int index) {
       this.matcher = new SymbolMatcher(symbol, value, index);
    }
 
    @Override
-   public Matcher compile(int serial) {
+   public GrammarMatcher create(int serial) {
       return matcher;
    }  
    
-   private static class SymbolMatcher implements Matcher {
+   private static class SymbolMatcher implements GrammarMatcher {
       
       private final Symbol symbol;
       private final String value;
@@ -27,8 +26,8 @@ public class SymbolGrammar implements Grammar {
       }
    
       @Override
-      public boolean match(SyntaxReader reader, int depth) {
-         SyntaxReader child = reader.mark(index);
+      public boolean match(SyntaxBuilder builder, int depth) {
+         SyntaxBuilder child = builder.mark(index);
    
          if(symbol.read(child)) {
             child.commit();

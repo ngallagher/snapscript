@@ -21,9 +21,9 @@ public class SyntaxParser {
       if(grammar == null) {
          throw new IllegalArgumentException("Grammar " + name + " is not defined");
       }
-      Matcher matcher = grammar.compile(count);
+      GrammarMatcher matcher = grammar.create(count);
       SyntaxTree tree = builder.create(resource, expression, name);
-      SyntaxReader root = tree.mark();
+      SyntaxBuilder root = tree.mark();
          
       if(matcher.match(root, 0)) {
          root.commit();

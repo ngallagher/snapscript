@@ -28,7 +28,7 @@ public class SyntaxTree {
       this.grammar = grammar;
    } 
 
-   public SyntaxReader mark() {   
+   public SyntaxBuilder mark() {   
       int index = indexer.index(grammar);
       int depth = stack.depth(0, index);
 
@@ -75,7 +75,7 @@ public class SyntaxTree {
       return node;
    }
 
-   private class SyntaxCursor implements SyntaxReader {
+   private class SyntaxCursor implements SyntaxBuilder {
 
       private List<SyntaxCursor> parent;
       private List<SyntaxCursor> nodes;
@@ -100,7 +100,7 @@ public class SyntaxTree {
       }
 
       @Override
-      public SyntaxReader mark(int grammar) {              
+      public SyntaxBuilder mark(int grammar) {              
          int off = analyzer.mark();
          int index = stack.depth(off, grammar); // this is slow!!
 
