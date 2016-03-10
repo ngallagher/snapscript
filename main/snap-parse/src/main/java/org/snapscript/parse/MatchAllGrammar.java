@@ -1,22 +1,18 @@
 package org.snapscript.parse;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MatchAllGrammar implements Grammar {
 
    private final List<Grammar> grammars;
    private final String name;
-   private final int capacity;
    private final int index;
    
    public MatchAllGrammar(List<Grammar> grammars, String name, int index) {
-      this(grammars, name, index, 1000);
-   }
-   
-   public MatchAllGrammar(List<Grammar> grammars, String name, int index, int capacity) {
       this.grammars = grammars;
-      this.capacity = capacity;
       this.index = index;
       this.name = name;
    }  
@@ -29,20 +25,20 @@ public class MatchAllGrammar implements Grammar {
          GrammarMatcher matcher = grammar.create(serial);
          matchers.add(matcher);
       }
-      return new MatchAllMatcher(matchers, name, index, capacity);
+      return new MatchAllMatcher(matchers, name, index);
    } 
    
    public static class MatchAllMatcher implements GrammarMatcher {
       
       private final List<GrammarMatcher> matchers;
-      private final PositionSet success;
-      private final PositionSet failure;
+      private final Set<Integer> success;
+      private final Set<Integer> failure;
       private final String name;
       private final int index;
 
-      public MatchAllMatcher(List<GrammarMatcher> matchers, String name, int index, int capacity) {
-         this.success = new PositionSet(capacity);
-         this.failure = new PositionSet(capacity);
+      public MatchAllMatcher(List<GrammarMatcher> matchers, String name, int index) {
+         this.success = new HashSet<Integer>();
+         this.failure = new HashSet<Integer>();
          this.matchers = matchers;
          this.index = index;
          this.name = name;

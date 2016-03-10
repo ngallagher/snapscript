@@ -1,22 +1,20 @@
 package org.snapscript.parse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MatchOneGrammar implements Grammar {
    
    private final List<Grammar> grammars;
    private final String name;
-   private final int capacity;
    private final int index;
    
    public MatchOneGrammar(List<Grammar> grammars, String name, int index) {
-      this(grammars, name, index, 1000);
-   }
-   
-   public MatchOneGrammar(List<Grammar> grammars, String name, int index, int capacity) {
       this.grammars = grammars;
-      this.capacity = capacity;
       this.index = index;
       this.name = name;
    }       
@@ -29,20 +27,20 @@ public class MatchOneGrammar implements Grammar {
          GrammarMatcher matcher = grammar.create(serial);
          matchers.add(matcher);
       }
-      return new MatchOneMatcher(matchers, name, index, capacity);
+      return new MatchOneMatcher(matchers, name, index);
    }
    
    private static class MatchOneMatcher implements GrammarMatcher {
       
-      private final PositionCache<GrammarMatcher> cache;
+      private final Map<Integer, GrammarMatcher> cache;
       private final List<GrammarMatcher> matchers;
-      private final PositionSet failure;
+      private final Set<Integer> failure;
       private final String name;
       private final int index;
 
-      public MatchOneMatcher(List<GrammarMatcher> matchers, String name, int index, int capacity) {
-         this.cache = new PositionCache<GrammarMatcher>(capacity);
-         this.failure = new PositionSet(capacity);
+      public MatchOneMatcher(List<GrammarMatcher> matchers, String name, int index) {
+         this.cache = new HashMap<Integer, GrammarMatcher>();
+         this.failure = new HashSet<Integer>();
          this.matchers = matchers;
          this.index = index;
          this.name = name;
@@ -53,7 +51,7 @@ public class MatchOneGrammar implements Grammar {
          Integer position = builder.position();
          
          if(!failure.contains(position)) {
-            GrammarMatcher best = cache.fetch(position);
+            GrammarMatcher best = cache.get(position);
             
             if(best == null) {
                int count = matchers.size();
@@ -77,7 +75,7 @@ public class MatchOneGrammar implements Grammar {
                   }
                }                  
                if(best != null) {
-                  cache.cache(position, best);
+                  cache.put(position, best);
                } else {
                   failure.add(position);
                }
