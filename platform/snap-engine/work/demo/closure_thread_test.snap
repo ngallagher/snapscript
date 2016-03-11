@@ -10,7 +10,7 @@ t1.join();
 var t2 = new Thread(() ->{
    for(var i in 0..9){
       println("t2:"+prefix+i);
-   }
+   } 
 });
 t2.start();
 t2.join();

@@ -147,7 +147,7 @@ public class SourceCompressor {
                      compress[write++] = original[read++];
                      return true;
                   }
-                  for(int i = 1; i < size; i++) {
+                  for(int i = 1; i <= size; i++) {
                      char value = original[read - i];
                      
                      if(!escape(value)) {

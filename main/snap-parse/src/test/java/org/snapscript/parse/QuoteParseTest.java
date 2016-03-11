@@ -4,6 +4,11 @@ import junit.framework.TestCase;
 
 public class QuoteParseTest extends TestCase {
    
+   public void testEscapeSlash() throws Exception {
+      String text=new SourceCompressor("'\\\\'".toCharArray()).compress().toString(); 
+      System.err.println(text);
+   }
+   
    public void testOpenQuote() throws Exception {
       boolean failure=false;
       try{
