@@ -31,6 +31,15 @@ public class ImportManager {
       aliases.put(alias, module + "."+name);
    }
    
+   public void addImports(Module module) {
+      ImportManager manager = module.getManager();
+
+      if(manager != null) {
+         manager.aliases.putAll(aliases);
+         manager.imports.addAll(imports);
+      }
+   }
+   
    public Module getModule(String name) {
       try {
          ModuleRegistry registry = context.getRegistry();

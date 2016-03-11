@@ -33,7 +33,8 @@ public class ModuleBuilder {
       ImportManager manager = parent.getManager();
       ModuleRegistry registry = context.getRegistry();
       Module module = registry.addModule(prefix +"."+ name); // create module
-          
+      
+      manager.addImports(module); // add parent imports
       manager.addImport(prefix, name); // make module accessible by name
       
       return module;
