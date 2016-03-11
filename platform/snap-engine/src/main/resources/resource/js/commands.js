@@ -1,31 +1,42 @@
 
-function newScript() {
-   resetEditor();
-   clearConsole();
-   clearProblems();
-}
-
-function runScript() {
-   var waitingProcessSystem = findStatusWaitingProcessSystem();
-   saveScriptWithAction(function() {
-      var editorData = loadEditor();
-      var message = JSON.stringify({
-         breakpoints : editorData.breakpoints,
-         project : document.title,
-         resource : editorData.resource.filePath,
-         system: waitingProcessSystem,
-         source : editorData.source,
-      });
-      socket.send("EXECUTE:" + message);
+function newFile() {
+   openTreeDialog(null, false, function(resourceDetails) {
+      if(!isResourceFolder(resourceDetails.filePath)) {
+         var message = JSON.stringify({
+            project : document.title,
+            resource : resourceDetails.filePath,
+            source : "",
+            directory: false
+         });
+         clearConsole();
+         clearProblems();
+         socket.send("SAVE:" + message);
+         updateEditor("", resourceDetails.projectPath);
+      }
    });
 }
 
-function saveScript() {
-   saveScriptWithAction(function() {
+function newDirectory() {
+   openTreeDialog(null, false, function(resourceDetails) {
+      if(isResourceFolder(resourceDetails.filePath)) {
+         var message = JSON.stringify({
+            project : document.title,
+            resource : resourceDetails.filePath,
+            source : "",
+            directory: true
+         });
+         clearConsole();
+         clearProblems();
+         socket.send("SAVE:" + message);
+      }
    });
 }
 
-function saveScriptWithAction(saveCallback) {
+function saveFile() {
+   saveFileWithAction(function(){});
+}
+
+function saveFileWithAction(saveCallback) {
    var editorData = loadEditor();
    if (editorData.resource == null) {
       openTreeDialog(null, false, function(resourceDetails) {
@@ -33,6 +44,7 @@ function saveScriptWithAction(saveCallback) {
             project : document.title,
             resource : resourceDetails.filePath,
             source : editorData.source,
+            directory: false
          });
          clearConsole();
          clearProblems();
@@ -47,6 +59,7 @@ function saveScriptWithAction(saveCallback) {
                project : document.title,
                resource : resourceDetails.filePath,
                source : editorData.source,
+               directory: false
             });
             clearConsole();
             clearProblems();
@@ -62,15 +75,51 @@ function saveScriptWithAction(saveCallback) {
    }
 }
 
-function deleteScript() {
+function deleteFile(resourceDetails) {
    var editorData = loadEditor();
-   var message = JSON.stringify({
-      project : document.title,
-      resource : editorData.resource.filePath
+   if(resourceDetails == null && editorData.resource != null) {
+      resourceDetails = editorData.resource;
+   }
+   if(resourceDetails != null) {
+      var message = JSON.stringify({
+         project : document.title,
+         resource : resourceDetails.filePath
+      });
+      clearConsole();
+      clearProblems();
+      socket.send("DELETE:" + message);
+      
+      if(editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) { // delete focused file
+         resetEditor();
+      }
+   }
+}
+
+function deleteDirectory(resourceDetails) {
+   if(resourceDetails != null) {
+      var message = JSON.stringify({
+         project : document.title,
+         resource : resourceDetails.filePath
+      });
+      clearConsole();
+      clearProblems();
+      socket.send("DELETE:" + message);
+   }
+}
+
+function runScript() {
+   var waitingProcessSystem = findStatusWaitingProcessSystem();
+   saveFileWithAction(function() {
+      var editorData = loadEditor();
+      var message = JSON.stringify({
+         breakpoints : editorData.breakpoints,
+         project : document.title,
+         resource : editorData.resource.filePath,
+         system: waitingProcessSystem,
+         source : editorData.source,
+      });
+      socket.send("EXECUTE:" + message);
    });
-   clearConsole();
-   clearProblems();
-   socket.send("DELETE:" + message);
 }
 
 function updateScriptBreakpoints() {

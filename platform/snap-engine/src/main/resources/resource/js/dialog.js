@@ -34,7 +34,7 @@ function openConfirmDialog() {
 function openTreeDialog(resourceDetails, foldersOnly, saveCallback) {
    var project = document.title;
    var dialogTitle = "Save As";
-   var dialogExpandPath = "/src";
+   var dialogExpandPath = "/";
 
    if (resourceDetails != null) {
       dialogTitle = "Save Changes";

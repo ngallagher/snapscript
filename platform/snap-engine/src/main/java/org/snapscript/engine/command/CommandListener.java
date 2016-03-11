@@ -3,7 +3,6 @@ package org.snapscript.engine.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Map;
 
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.engine.ProcessEngine;
@@ -37,7 +36,7 @@ public class CommandListener {
          String source = command.getSource();
          //int line = validator.parse(resource, source);
          
-         //if(line == -1) {
+         if(!command.isDirectory()) {
             File file = new File(root, "/" + resource);
             boolean exists = file.exists();
             FileOutputStream out = new FileOutputStream(file);
@@ -48,6 +47,14 @@ public class CommandListener {
             if(!exists) {
                client.sendReloadTree();
             }
+         } else {
+            File file = new File(root, "/"+resource);
+            
+            if(!file.exists()) {
+               file.mkdirs();
+               client.sendReloadTree();
+            }
+         }
          //} else {
          //   client.sendSyntaxError(resource, line);
          //}

@@ -34,19 +34,19 @@
 	background-repeat: no-repeat;
     padding: 12px; 
 }
-#saveScript {
+#saveFile {
 	background-image: url('/img/toolbar/save_edit.gif');	
 	background-position: center;
 	background-repeat: no-repeat;
     padding: 12px; 
 }
-#deleteScript {
+#deleteFile {
 	background-image: url('/img/toolbar/trash.gif');	
 	background-position: center;
 	background-repeat: no-repeat;
     padding: 12px;
 }
-#newScript {
+#newFile {
 	background-image: url('/img/toolbar/new_con.gif');	
 	background-position: center;
 	background-repeat: no-repeat;

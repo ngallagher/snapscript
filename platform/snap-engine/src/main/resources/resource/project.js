@@ -53,9 +53,9 @@ function createLayout() {
                            + "      <table id='toolbarNormal'>"
                            + "      <tr>"
                            + "         <td>&nbsp;&nbsp;</td>" 
-                           + "         <td><div id='saveScript' onclick='saveScript()' title='Save Script'></div></td>" 
-                           + "         <td><div id='newScript' onclick='newScript()' title='New Script'></div></td>"
-                           + "         <td><div id='deleteScript' onclick='deleteScript()' title='Delete Script'></div></td>"   
+                           + "         <td><div id='newFile' onclick='newFile()' title='New File'></div></td>"                           
+                           + "         <td><div id='saveFile' onclick='saveFile()' title='Save File'></div></td>" 
+                           + "         <td><div id='deleteFile' onclick='deleteFile(null)' title='Delete File'></div></td>"   
                            + "         <td><div id='runScript' onclick='runScript()' title='Run Script'></div></td>" 
                            + "      </tr>"
                            + "      </table>"
@@ -97,7 +97,7 @@ function createLayout() {
          size : '60%',
          resizable : false,
          style : pstyle,
-         content : "<div id='editor'>// TODO write code </div>"
+         content : "<div id='editor'></div>"
       }, {
          type : 'bottom',
          size : '40%',

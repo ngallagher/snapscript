@@ -20,7 +20,9 @@ function showTree() {
 
 function openTreeFile(resourcePath, afterLoad) {
    $.get(resourcePath, function(response) {
-      if(!resourcePath.endsWith(".snap")) {
+      var mode = resolveEditorMode(resourcePath);
+      
+      if(mode == null) {
          var resourceBlob = new Blob([response], {type: "application/octet-stream"});
          var resourceFile = resourcePath.replace(/.*\//, "");
          
@@ -53,15 +55,15 @@ function createTree(element, id, expandPath, foldersOnly, clickCallback) { // #e
 //            menu: "#options",
             menu: [
                 {title: "&nbsp;New", uiIcon: "menu-new", children: [
-                   {title: "&nbsp;Script", cmd: "newScript", uiIcon: "menu-new"},
-                   {title: "&nbsp;Image", cmd: "newImage", uiIcon: "menu-new"}
-                   ]},
-                {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"},               
-                {title: "&nbsp;Save", cmd: "saveScript", uiIcon: "menu-save"},             
-                {title: "&nbsp;Delete", cmd: "deleteScript", uiIcon: "menu-trash", disabled: false },
-                {title: "----"},
-                {title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
-                {title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true }
+                   {title: "&nbsp;File", cmd: "newFile", uiIcon: "menu-new"},
+                   {title: "&nbsp;Directory", cmd: "newDirectory", uiIcon: "menu-new"}
+                   ]},              
+                {title: "&nbsp;Save", cmd: "saveFile", uiIcon: "menu-save"},             
+                {title: "&nbsp;Delete", cmd: "deleteFile", uiIcon: "menu-trash", disabled: false },
+                {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"} //,              
+                //{title: "----"},
+                //{title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
+                //{title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true }
                 ],
             beforeOpen: function(event, ui) {
               var node = $.ui.fancytree.getNode(ui.target);
@@ -94,25 +96,62 @@ function handleTreeMenu(resourcePath, commandName, elementId) {
       openTreeFile(resourcePath.resourcePath, function(){
          runScript();
       });
-   }else if(commandName == "newScript") {
+   }else if(commandName == "newFile") {
+      newFile();
+   }else if(commandName == "newDirectory") {
+      newDirectory();
+   }else if(commandName == "saveFile") {
       openTreeFile(resourcePath.resourcePath, function(){
-         resetEditor();
-         //saveScript(); // pop open the dialog
+         saveFile();
       });
-   }else if(commandName == "saveScript") {
-      openTreeFile(resourcePath.resourcePath, function(){
-         saveScript();
-      });
-   }else if(commandName == "deleteScript") {
-      openTreeFile(resourcePath.resourcePath, function(){
-         deleteScript();
-      });
+   }else if(commandName == "deleteFile") {
+      if(isResourceFolder(resourcePath.resourcePath)) {
+         deleteDirectory(resourcePath);
+      } else {
+         deleteFile(resourcePath);
+      }
    }
+}
+
+function isResourceFolder(path) {
+   if(!path.endsWith("/")) {
+      var parts = path.split(".");
+      
+      if(path.length === 1 || (parts[0] === "" && parts.length === 2)) {
+          return true;
+      }
+      var extension = parts.pop();
+      var slash = extension.indexOf('/');
+      
+      return slash >= 0;
+   }
+   return true;
+}
+
+function cleanResourcePath(path) {
+   if(path != null) {
+      return path.replace(/\/*/, "/"); // replace // with /
+   }
+   return null;
 }
 
 function createResourcePath(path) { 
    var resourcePathPrefix = "/resource/" + document.title + "/";
+   var resourcePathRoot = "/resource/" + document.title;
    
+   if(path == resourcePathRoot || path == resourcePathPrefix) { // its the root /
+      var currentPathDetails = {
+         resourcePath: resourcePathPrefix, // /resource/<project>/blah/script.snap
+         projectPath: "/", // /blah/script.snap
+         projectDirectory: "/", // /blah
+         filePath: "/", // /blah/script.snap
+         fileName: null, // script.snap
+         fileDirectory: "/" // /blah
+      };
+      var currentPathText = JSON.stringify(currentPathDetails);
+      console.log("createResourcePath(" + path + "): " + currentPathText);
+      return currentPathDetails;
+   }
    console.log("createResourcePath(" + path + ")");
    
    if(!path.startsWith("/")) {  // script.snap
@@ -121,7 +160,7 @@ function createResourcePath(path) {
    if(!path.startsWith(resourcePathPrefix)) { // /resource/<project>/(<file-path>)
       path = "/resource/" + document.title + path;
    }
-   var isFolder = path.indexOf(".snap", path.length - ".snap".length) == -1; // /resource/<project>/blah/
+   var isFolder = isResourceFolder(path); // /resource/<project>/blah/
    var pathSegments = path.split("/"); // [0="", 1="resource", 2="<project>", 3="blah", 4="script.snap"]
    var currentResourcePath = "/resource/" + document.title;
    var currentProjectPath = "";
@@ -157,12 +196,12 @@ function createResourcePath(path) {
       }
    }
    var currentPathDetails = {
-      resourcePath: currentResourcePath, // /resource/<project>/blah/script.snap
-      projectPath: currentProjectPath, // /blah/script.snap
-      projectDirectory: currentProjectDirectory, // /blah
-      filePath: currentFilePath, // /blah/script.snap
-      fileName: currentFileName, // script.snap
-      fileDirectory: currentFileDirectory // /blah
+      resourcePath: cleanResourcePath(currentResourcePath), // /resource/<project>/blah/script.snap
+      projectPath: cleanResourcePath(currentProjectPath), // /blah/script.snap
+      projectDirectory: cleanResourcePath(currentProjectDirectory == "" ? "/" : currentProjectDirectory), // /blah
+      filePath: cleanResourcePath(currentFilePath), // /blah/script.snap
+      fileName: cleanResourcePath(currentFileName), // script.snap
+      fileDirectory: cleanResourcePath(currentFileDirectory) // /blah
    };
    var currentPathText = JSON.stringify(currentPathDetails);
    console.log("createResourcePath(" + path + "): " + currentPathText);

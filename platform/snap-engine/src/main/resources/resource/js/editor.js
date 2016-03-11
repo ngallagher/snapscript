@@ -163,7 +163,7 @@ function resetEditor() {
 
    editorMarkers = {};
    editorResource = null;
-   editorText = "// TODO write code";
+   editor.setReadOnly(true);
    session.setValue(editorText, 1);
    $("#currentFile").html("");
 }
@@ -195,10 +195,63 @@ function loadEditor() {
    };
 }
 
+function resolveEditorMode(resource) {
+   var token = resource.toLowerCase();
+   
+   if(token.endsWith(".snap")) {
+      return "ace/mode/snapscript";
+   }
+   if(token.endsWith(".xml")) {
+      return "ace/mode/xml";
+   }
+   if(token.endsWith(".json")) {
+      return "ace/mode/json";
+   }
+   if(token.endsWith(".sql")) {
+      return "ace/mode/sql";
+   }
+   if(token.endsWith(".js")) {
+      return "ace/mode/javascript";
+   }
+   if(token.endsWith(".html")) {
+      return "ace/mode/html";
+   }
+   if(token.endsWith(".htm")) {
+      return "ace/mode/html";
+   }
+   if(token.endsWith(".txt")) {
+      return "ace/mode/text";
+   }
+   if(token.endsWith(".properties")) {
+      return "ace/mode/properties";
+   }
+   if(token.endsWith(".gitignore")) {
+      return "ace/mode/text";
+   }
+   if(token.endsWith(".project")) {
+      return "ace/mode/xml";
+   }
+   if(token.endsWith(".classpath")) {
+      return "ace/mode/xml";
+   }
+   return null;
+}
+
 function updateEditor(text, resource) {
    var editor = ace.edit("editor");
+   var session = editor.getSession();
+   var currentMode = session.getMode();
+   var actualMode = resolveEditorMode(resource);
+   
+   if(actualMode != currentMode) {
+      session.setMode({
+         path: actualMode,
+         v: Date.now() 
+      })
+   }
+   editor.setReadOnly(false);
    editor.setValue(text, 1);
-
+   
    clearEditor();
    clearProblems();
    scrollEditorToTop();
@@ -240,6 +293,7 @@ function showEditor() {
    // editor.setTheme("ace/theme/monokai");
    editor.getSession().setMode("ace/mode/snapscript");
    editor.getSession().setTabSize(3);
+   editor.setReadOnly(true);
    editor.getSession().setUseSoftTabs(true);
    editor.setShowPrintMargin(false);
    editor.commands.addCommand({
