@@ -1,6 +1,6 @@
 
 function newFile() {
-   openTreeDialog(null, false, function(resourceDetails) {
+   newFileTreeDialog(null, true, function(resourceDetails) {
       if(!isResourceFolder(resourceDetails.filePath)) {
          var message = JSON.stringify({
             project : document.title,
@@ -17,7 +17,7 @@ function newFile() {
 }
 
 function newDirectory() {
-   openTreeDialog(null, false, function(resourceDetails) {
+   newDirectoryTreeDialog(null, true, function(resourceDetails) {
       if(isResourceFolder(resourceDetails.filePath)) {
          var message = JSON.stringify({
             project : document.title,

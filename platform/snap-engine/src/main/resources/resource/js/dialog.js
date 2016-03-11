@@ -32,12 +32,26 @@ function openConfirmDialog() {
 }
 
 function openTreeDialog(resourceDetails, foldersOnly, saveCallback) {
+   if (resourceDetails != null) {
+      createTreeDialog(resourceDetails, foldersOnly, saveCallback, "Save Changes");
+   } else {
+      createTreeDialog(resourceDetails, foldersOnly, saveCallback, "Save As");
+   }
+}
+
+function newFileTreeDialog(resourceDetails, foldersOnly, saveCallback){
+   createTreeDialog(resourceDetails, foldersOnly, saveCallback, "New File");
+}
+
+function newDirectoryTreeDialog(resourceDetails, foldersOnly, saveCallback){
+   createTreeDialog(resourceDetails, foldersOnly, saveCallback, "New Directory");
+}
+
+function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitle) {
    var project = document.title;
-   var dialogTitle = "Save As";
    var dialogExpandPath = "/";
 
    if (resourceDetails != null) {
-      dialogTitle = "Save Changes";
       dialogExpandPath = resourceDetails.projectDirectory; // /src/blah
    }
    w2popup.open({
