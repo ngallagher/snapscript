@@ -39,21 +39,18 @@ function updateThreads(socket, type, text) {
    var threadScope = JSON.parse(text);
    var editorData = loadEditor();
    
-   if(currentFocusThread != threadScope.thread || currentFocusLine != threadScope.line) { // this will keep switching!!
-      if(editorData.resource.filePath != threadScope.resource) { // e.g /game/tetris.snap
-         var threadEditorFocusKey = threadEditorFocus[threadScope.thread];
-         
-         if(threadEditorFocusKey != threadScope.key) { // has this thread been focused before!!
+   if(hasThreadFocusLineChanged(threadScope)) { // this will keep switching!!
+      if(hasThreadFocusResourceChanged(threadScope)) { // e.g /game/tetris.snap
+         if(isThreadUpdateNew(threadScope)) { // has this thread been focused before!!
             var resourcePathDetails = createResourcePath(threadScope.resource);
             
             openTreeFile(resourcePathDetails.resourcePath, function(){
-               updateThreadFocus(threadScope.thread, threadScope.line);
+               updateThreadFocus(threadScope.thread, threadScope.line, threadScope.key);
                showEditorLine(threadScope.line);
-               threadEditorFocus[threadScope.thread] = threadScope.key; // remember we already focused here
             });
          }
       } else {
-         updateThreadFocus(threadScope.thread, threadScope.line);
+         updateThreadFocus(threadScope.thread, threadScope.line, threadScope.key);
          showEditorLine(threadScope.line);
       }
    }
@@ -61,6 +58,20 @@ function updateThreads(socket, type, text) {
    showThreads();
    showVariables();
 } 
+
+function isThreadUpdateNew(threadScope) {
+   var threadEditorFocusKey = threadEditorFocus[threadScope.thread]; // get last key for this thread
+   return threadEditorFocusKey != threadScope.key; // has this thread been focused before!!
+}
+
+function hasThreadFocusLineChanged(threadScope) {
+   return currentFocusThread != threadScope.thread || currentFocusLine != threadScope.line; // hash the thread or focus line changed
+}
+
+function hasThreadFocusResourceChanged(threadScope) {
+   var editorData = loadEditor();
+   return editorData.resource.filePath != threadScope.resource; // is there a need to update the editor
+}
 
 function focusedThread() {
    if(currentFocusThread != null) {
@@ -74,7 +85,8 @@ function clearFocusThread() {
    currentFocusLine = -1;
 }
 
-function updateThreadFocus(thread, line) {
+function updateThreadFocus(thread, line, key) {
+   threadEditorFocus[thread] = key; // remember we already focused here
    currentFocusThread = thread;
    currentFocusLine = line;
 } 
@@ -118,6 +130,7 @@ function showThreads() {
             instruction: threadScope.instruction,
             variables: threadScope.variables,
             resource: threadScope.resource,
+            key: threadScope.key,
             line: threadScope.line,
             script: resourcePathDetails.resourcePath
          });

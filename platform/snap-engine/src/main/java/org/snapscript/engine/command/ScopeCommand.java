@@ -25,6 +25,7 @@ public class ScopeCommand implements Command {
       this.status = status;
       this.depth = depth;
       this.line = line;
+      this.key = key;
    }
 
    public Map<String, Map<String, String>> getVariables() {

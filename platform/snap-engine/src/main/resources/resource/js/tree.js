@@ -149,7 +149,7 @@ function createResourcePath(path) {
          fileDirectory: "/" // /blah
       };
       var currentPathText = JSON.stringify(currentPathDetails);
-      console.log("createResourcePath(" + path + "): " + currentPathText);
+      //console.log("createResourcePath(" + path + "): " + currentPathText);
       return currentPathDetails;
    }
    console.log("createResourcePath(" + path + ")");
@@ -204,7 +204,7 @@ function createResourcePath(path) {
       fileDirectory: cleanResourcePath(currentFileDirectory) // /blah
    };
    var currentPathText = JSON.stringify(currentPathDetails);
-   console.log("createResourcePath(" + path + "): " + currentPathText);
+   //console.log("createResourcePath(" + path + "): " + currentPathText);
    return currentPathDetails;
 }
 

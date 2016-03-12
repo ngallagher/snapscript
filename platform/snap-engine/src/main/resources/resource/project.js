@@ -402,7 +402,7 @@ function createLayout() {
             if (sel.length == 1) {
                var record = grid.get(sel[0]);
                openTreeFile(record.script, function(){
-                  updateThreadFocus(record.thread, record.line);
+                  updateThreadFocus(record.thread, record.line, record.key);
                   showEditorLine(record.line);  
                });
             }
