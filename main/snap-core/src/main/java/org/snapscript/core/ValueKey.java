@@ -27,8 +27,10 @@ public class ValueKey {
    
    @Override
    public int hashCode() {
+      int hash = name.hashCode();
+      
       if(type != null) {
-         return name.hashCode() ^ type.hashCode();
+         return 31 * hash+type.hashCode();
       }
       return name.hashCode();
    }

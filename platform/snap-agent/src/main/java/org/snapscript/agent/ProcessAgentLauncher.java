@@ -26,6 +26,8 @@ public class ProcessAgentLauncher {
             String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar), 
             "-XX:+UnlockCommercialFeatures",
             "-XX:+FlightRecorder",
+            "-Xmx100m",
+            "-Xms10m",
             "-cp", 
             path, 
             type, 

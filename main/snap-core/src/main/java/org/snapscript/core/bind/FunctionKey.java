@@ -42,7 +42,12 @@ public class FunctionKey {
    
    @Override
    public int hashCode() {
-      return length ^ name.hashCode();
+      int hash = length;
+      
+      hash = hash *31 + name.hashCode();
+      hash = hash *31 + type.hashCode();
+      
+      return hash;
    }
    
    @Override
