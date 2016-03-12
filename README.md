@@ -7,5 +7,19 @@ The language is ideal for embedding in to an existing application, and is a frac
 
 [http://www.snapscript.org/](http://www.snapscript.org/)
 
-Breakpoints
-![Developer Console](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_breakpoints.png)
+##### Breakpoints
+![Developer Breakpoints](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_breakpoints.png)
+##### Console
+![Developer Console](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_console.png)
+##### Variables
+![Developer Variables](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_variables.png)
+##### Threads
+![Developer Threads](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_threads.png)
+##### Profiler
+![Developer Profiler](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_profiler.png)
+##### Process View
+![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_debug.png)
+##### Save Resources
+![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_save.png)
+##### Projects
+![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_open.png)
