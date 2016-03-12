@@ -70,3 +70,9 @@
 	opacity: 0.4;
     filter: alpha(opacity=40); /* msie */
 }
+#toolbarSwitch {
+	background-image: url('/img/toolbar/switch.gif');	
+	background-position: right center;
+	background-repeat: no-repeat;
+    padding: 12px;   
+}

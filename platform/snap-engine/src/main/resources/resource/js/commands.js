@@ -210,4 +210,8 @@ function attachProcess(process) {
    socket.send("ATTACH:" + message); // attach to process
 }
 
+function switchProject() {
+   document.location="/";
+}
+
 registerModule("commands", "Commands module: commands.js", null, [ "common", "editor", "tree", "threads" ]);

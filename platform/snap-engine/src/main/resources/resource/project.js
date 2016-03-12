@@ -47,7 +47,7 @@ function createLayout() {
                      size : '60%',
                      style : pstyle,
                      content : "<div class='toolbarTop'>"
-                           + "<table>"
+                           + "<table border='0'>"
                            + "<tr>"
                            + "   <td>"
                            + "      <table id='toolbarNormal'>"
@@ -84,7 +84,14 @@ function createLayout() {
                      type : 'right',
                      size : '20%',
                      style : pstyle,
-                     content : "<div class='toolbarTop'><div class='toolbarLogo'></div></div>"
+                     content : "<div class='toolbarTop'>"+
+                               "<table border='0' width='100%'>"+
+                               "<tr>"+
+                               "   <td width='100%'><div id='toolbarSwitch' onclick='switchProject()'></div></td>"+     
+                               "   <td>&nbsp;&nbsp;</td>"+                                 
+                               "</tr>"+
+                               "</table>"+
+                               "</div>"
                   } ]
          });
 
