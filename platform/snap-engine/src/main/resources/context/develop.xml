@@ -70,6 +70,12 @@
     <constructor-arg ref="TemplateEngine" />
     <constructor-arg value="project.vm" />
   </bean>
+  
+  <bean id="ProjectOpenDialog" class="org.snapscript.engine.http.project.ProjectOpenDialog">
+    <constructor-arg ref="TemplateEngine" />
+    <constructor-arg value="start.vm" />
+    <constructor-arg value="${directory}" />    
+  </bean> 
 
   <bean id="ProjectFileResource" class="org.snapscript.engine.http.project.ProjectFileResource">
     <constructor-arg ref="ProjectBuilder" />
@@ -98,7 +104,8 @@
       <map>
         <entry key="/project/.*" value-ref="ProjectResource" />
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
-        <entry key="/tree/.*" value-ref="ProjectTreeResource" />
+        <entry key="/tree.*" value-ref="ProjectTreeResource" />
+        <entry key="/" value-ref="ProjectOpenDialog" />        
       </map>
     </constructor-arg>
   </bean>

@@ -209,3 +209,5 @@ function attachProcess(process) {
    });
    socket.send("ATTACH:" + message); // attach to process
 }
+
+registerModule("commands", "Commands module: commands.js", null, [ "common", "editor", "tree", "threads" ]);

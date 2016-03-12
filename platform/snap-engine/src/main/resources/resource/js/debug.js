@@ -171,4 +171,4 @@ function showStatus() {
    w2ui['debug'].refresh();
 }
 
-registerModule("debug", "Debug module: debug.js", createStatus, [ "common", "socket", "tree" ]);
+registerModule("debug", "Debug module: debug.js", createStatus, [ "common", "socket", "tree", "threads" ]);

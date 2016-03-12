@@ -36,22 +36,25 @@ function openAlertDialog(message) {
 
 function openTreeDialog(resourceDetails, foldersOnly, saveCallback) {
    if (resourceDetails != null) {
-      createTreeDialog(resourceDetails, foldersOnly, saveCallback, "Save Changes");
+      createProjectDialog(resourceDetails, foldersOnly, saveCallback, "Save Changes");
    } else {
-      createTreeDialog(resourceDetails, foldersOnly, saveCallback, "Save As");
+      createProjectDialog(resourceDetails, foldersOnly, saveCallback, "Save As");
    }
 }
 
 function newFileTreeDialog(resourceDetails, foldersOnly, saveCallback){
-   createTreeDialog(resourceDetails, foldersOnly, saveCallback, "New File");
+   createProjectDialog(resourceDetails, foldersOnly, saveCallback, "New File");
 }
 
 function newDirectoryTreeDialog(resourceDetails, foldersOnly, saveCallback){
-   createTreeDialog(resourceDetails, foldersOnly, saveCallback, "New Directory");
+   createProjectDialog(resourceDetails, foldersOnly, saveCallback, "New Directory");
 }
 
-function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitle) {
-   var project = document.title;
+function createProjectDialog(resourceDetails, foldersOnly, saveCallback, dialogTitle) {
+   createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitle, "/" +document.title)
+}
+
+function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitle, treePath) {
    var dialogExpandPath = "/";
 
    if (resourceDetails != null) {
@@ -87,7 +90,6 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
       }
    });
    $("#dialogSave").click(function() {
-//      w2popup.lock('Saving', true);
       var dialogFileName = $('#dialogFile').html();
       var dialogFolder = $('#dialogFolder').html();
       var dialogProjectPath = dialogFolder + "/" + dialogFileName; // /src/blah/script.snap
@@ -95,10 +97,6 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
       
       saveCallback(dialogPathDetails);
       w2popup.close();
-//      setTimeout(function() {
-//         w2popup.unlock();
-//         w2popup.close();
-//      }, 1000);
    });
    $("#dialogCancel").click(function() {
       w2popup.close();
@@ -107,7 +105,7 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
       $('#dialogFolder').html(cleanResourcePath(resourceDetails.projectDirectory)); // /src/blah
       $('#dialogFile').html(resourceDetails.fileName); // script.snap
    }
-   createTree("dialog", "dialogTree", dialogExpandPath, foldersOnly, function(event, data) {
+   createTree(treePath, "dialog", "dialogTree", dialogExpandPath, foldersOnly, null, function(event, data) {
       var selectedFileDetails = createResourcePath(data.node.tooltip);
 
       if (data.node.isFolder()) {
@@ -120,3 +118,59 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
    });
 }
 
+function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath) {
+   var completeFunction = function() {
+      var dialogFolder = $('#dialogPath').html();
+      var dialogPathDetails = createResourcePath(dialogFolder); 
+      var projectName = dialogPathDetails.projectDirectory;
+      
+      if(projectName.startsWith("/")) {
+         projectName = projectName.substring(1);
+      }
+      openCallback(dialogPathDetails, projectName);
+   };
+   w2popup.open({
+      title : dialogTitle,
+      body : '<div id="dialogContainerBig"><div id="dialog"></div></div><div id="dialogPath" onClick="this.contentEditable=\'true\';"></div>',
+      buttons : '<button id="dialogSave" class="btn">Open</button>',
+      width : 500,
+      height : 400,
+      overflow : 'hidden',
+      color : '#333',
+      speed : '0.3',
+      opacity : '0.8',
+      modal : true,
+      showClose : true,
+      showMax : true,
+      onOpen : function(event) {
+         console.log('open');
+      },
+      onClose : function(event) { 
+         closeCallback(); // this should probably be a parameter
+      },
+      onMax : function(event) {
+         console.log('max');
+      },
+      onMin : function(event) {
+         console.log('min');
+      },
+      onKeydown : function(event) {
+         console.log('keydown');
+      }
+   });
+   $("#dialogSave").click(function() {
+      completeFunction();
+      w2popup.close();
+   });
+   createTreeOfDepth(treePath, "dialog", "dialogTree", "/" + document.title, true, null, function(event, data) {
+      var selectedFileDetails = createResourcePath(data.node.tooltip);
+      var projectName = selectedFileDetails.projectDirectory;
+      
+      if(projectName.startsWith("/")) {
+         projectName = projectName.substring(1);
+      }
+      $('#dialogPath').html(projectName);
+   }, 2);
+}
+
+registerModule("dialog", "Dialog module: dialog.js", null, [ "common", "tree" ]);

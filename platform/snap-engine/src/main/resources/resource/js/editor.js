@@ -328,4 +328,4 @@ function showEditor() {
    finishedLoading();
 }
 
-registerModule("editor", "Editor module: editor.js", createEditor, [ "common", "spinner" ]);
+registerModule("editor", "Editor module: editor.js", createEditor, [ "common", "spinner", "tree" ]);

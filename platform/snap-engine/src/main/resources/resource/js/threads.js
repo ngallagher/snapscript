@@ -140,4 +140,4 @@ function showThreads() {
    w2ui['threads'].refresh();
 }
 
-registerModule("threads", "Thread module: threads.js", createThreads, [ "common", "socket", "tree" ]);
+registerModule("threads", "Thread module: threads.js", createThreads, [ "common", "socket", "explorer" ]);

@@ -1,6 +1,9 @@
 package org.snapscript.engine.http.project;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,6 +25,10 @@ public class ProjectBuilder {
       this.mode = mode;
    }
    
+   public File getRoot() {
+      return workPath;
+   }
+   
    public Project createProject(Path path){ // /project/<project-name>/ || /project/default
       if(mode.isMultipleMode()) { // multiple project support
          String projectPrefix = path.getPath(1, 1); // /<project-name>
@@ -32,8 +39,26 @@ public class ProjectBuilder {
             project = new Project(workPath, projectName, projectName);
             projects.put(projectName, project);
          }
+         File file = project.getProjectPath();
+         
+         if(!file.exists()) {
+            file.mkdirs();
+            createDefaultProject(file);
+         }
          return project;
       }
       return single;
+   }
+   
+   private void createDefaultProject(File file) {
+      try {
+         File ignore = new File(file, ".gitignore");
+         OutputStream stream = new FileOutputStream(ignore);
+         PrintStream print = new PrintStream(stream);
+         print.println("/temp/");
+         print.close();
+      }catch(Exception e) {
+         e.printStackTrace();
+      }
    }
 }
