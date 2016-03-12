@@ -104,17 +104,17 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
       w2popup.close();
    });
    if (resourceDetails != null) {
-      $('#dialogFolder').html(resourceDetails.projectDirectory); // /src/blah
+      $('#dialogFolder').html(cleanResourcePath(resourceDetails.projectDirectory)); // /src/blah
       $('#dialogFile').html(resourceDetails.fileName); // script.snap
    }
    createTree("dialog", "dialogTree", dialogExpandPath, foldersOnly, function(event, data) {
       var selectedFileDetails = createResourcePath(data.node.tooltip);
 
       if (data.node.isFolder()) {
-         $('#dialogFolder').html(selectedFileDetails.projectDirectory);
+         $('#dialogFolder').html(cleanResourcePath(selectedFileDetails.projectDirectory));
          $('#dialogFile').html("");
       } else {
-         $('#dialogFolder').html(selectedFileDetails.projectDirectory); // /src/blah
+         $('#dialogFolder').html(cleanResourcePath(selectedFileDetails.projectDirectory)); // /src/blah
          $('#dialogFile').html(selectedFileDetails.fileName); // file.snap
       }
    });

@@ -130,7 +130,12 @@ function isResourceFolder(path) {
 
 function cleanResourcePath(path) {
    if(path != null) {
-      return path.replace(/\/*/, "/"); // replace // with /
+      var cleanPath = path.replace(/\/+/, "/"); // replace // with /
+      
+      if(cleanPath.endsWith("/")) {
+         cleanPath = cleanPath.substring(0,cleanPath.length-1);
+      }
+      return cleanPath;
    }
    return null;
 }
@@ -146,7 +151,8 @@ function createResourcePath(path) {
          projectDirectory: "/", // /blah
          filePath: "/", // /blah/script.snap
          fileName: null, // script.snap
-         fileDirectory: "/" // /blah
+         fileDirectory: "/", // /blah
+         originalPath: path
       };
       var currentPathText = JSON.stringify(currentPathDetails);
       //console.log("createResourcePath(" + path + "): " + currentPathText);
@@ -201,7 +207,8 @@ function createResourcePath(path) {
       projectDirectory: cleanResourcePath(currentProjectDirectory == "" ? "/" : currentProjectDirectory), // /blah
       filePath: cleanResourcePath(currentFilePath), // /blah/script.snap
       fileName: cleanResourcePath(currentFileName), // script.snap
-      fileDirectory: cleanResourcePath(currentFileDirectory) // /blah
+      fileDirectory: cleanResourcePath(currentFileDirectory), // /blah
+      originalPath: path
    };
    var currentPathText = JSON.stringify(currentPathDetails);
    //console.log("createResourcePath(" + path + "): " + currentPathText);
