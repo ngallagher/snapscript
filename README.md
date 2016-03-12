@@ -7,3 +7,5 @@ The language is ideal for embedding in to an existing application, and is a frac
 
 [http://www.snapscript.org/](http://www.snapscript.org/)
 
+Breakpoints
+![Developer Console](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_breakpoints.png)
