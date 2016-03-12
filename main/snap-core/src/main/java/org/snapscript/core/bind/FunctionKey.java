@@ -3,15 +3,17 @@ package org.snapscript.core.bind;
 public class FunctionKey {      
 
    private final Object[] types;
-   private final Object type;
+   private final String function;
+   private final Object source;
    private final String name;
    private final int length;
    
-   public FunctionKey(Object type, String name, Object[] types) {
+   public FunctionKey(Object source, String function, Object[] types) {
+      this.name = source.toString();
       this.length = name.length();
+      this.function = function;
+      this.source = source;
       this.types = types;
-      this.name = name;
-      this.type = type;
    }
    
    @Override
@@ -23,7 +25,7 @@ public class FunctionKey {
    }
    
    public boolean equals(FunctionKey key) {
-      if(key.type != type) {
+      if(key.source != source) {
          return false;
       }
       if(key.types.length != types.length) {
@@ -42,10 +44,10 @@ public class FunctionKey {
    
    @Override
    public int hashCode() {
-      int hash = length;
+      int hash = types.length;
       
       hash = hash *31 + name.hashCode();
-      hash = hash *31 + type.hashCode();
+      hash = hash *31 + function.hashCode();
       
       return hash;
    }

@@ -9,6 +9,10 @@ public class Function<T> {
    private final Type type;
    private final int modifiers;
 
+   public Function(Signature signature, Invocation<T> invocation, Type type, String name){
+      this(signature, invocation, type, name, 0);
+   }
+   
    public Function(Signature signature, Invocation<T> invocation, Type type, String name, int modifiers){
       this(signature, invocation, type, name, modifiers, 0);
    }

@@ -26,8 +26,10 @@ public class FunctionMatcher {
    private final ArgumentMatcher matcher;
    private final TypeExtractor extractor;
    private final ThreadStack stack;
+   private final Function invalid;
    
    public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
+      this.invalid = new Function(null, null, null, null, 0);
       this.instance = new ConcurrentHashMap<Object, Function>();
       this.cache = new ConcurrentHashMap<Object, Function>();
       this.matcher = new ArgumentMatcher(matcher, loader);
@@ -70,36 +72,34 @@ public class FunctionMatcher {
 
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
       Object key = builder.create(module, name, values);
-
-      if(!cache.containsKey(key)) {
+      Function function = cache.get(key); // static and module functions
+      
+      if(function == null) {
          List<Function> functions = module.getFunctions();
-         Function function = null;
-         
-         if(!functions.isEmpty()) {
-            int size = functions.size();
-            int best = 0;
-      
-            for(int i = size - 1; i >= 0; i--) { 
-               Function next = functions.get(i);
-               String method = next.getName();
-      
-               if(name.equals(method)) {
-                  Signature signature = next.getSignature();
-                  ArgumentConverter match = matcher.match(signature);
-                  int score = match.score(values);
-      
-                  if(score > best) {
-                     function = next;
-                     best = score;
-                  }
+         int size = functions.size();
+         int best = 0;
+   
+         for(int i = size - 1; i >= 0; i--) { 
+            Function next = functions.get(i);
+            String method = next.getName();
+   
+            if(name.equals(method)) {
+               Signature signature = next.getSignature();
+               ArgumentConverter match = matcher.match(signature);
+               int score = match.score(values);
+   
+               if(score > best) {
+                  function = next;
+                  best = score;
                }
             }
          }
+         if(function == null) {
+            function = invalid;
+         }
          cache.put(key, function);
       }
-      Function function = cache.get(key); // static and module functions
-      
-      if(function != null) {
+      if(function != invalid) {
          Signature signature = function.getSignature();
          ArgumentConverter converter = matcher.match(signature);
          
@@ -110,69 +110,21 @@ public class FunctionMatcher {
    
    public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
       Object key = builder.create(type, name, values); 
-
-      if(!cache.containsKey(key)) {
-         List<Type> path = finder.findPath(type, name);
-         Function function = null;
-         
-         if(!path.isEmpty()) {
-            int best = 0;
-            
-            for(Type entry : path) {
-               List<Function> functions = entry.getFunctions();
-               int size = functions.size();
-               
-               for(int i = size - 1; i >= 0; i--) {
-                  Function next = functions.get(i);
-                  int modifiers = next.getModifiers();
-                  
-                  if(ModifierType.isStatic(modifiers)) { // must be static
-                     String method = next.getName();
-                     
-                     if(name.equals(method)) {
-                        Signature signature = next.getSignature();
-                        ArgumentConverter match = matcher.match(signature);
-                        int score = match.score(values);
-         
-                        if(score > best) {
-                           function = next;
-                           best = score;
-                        }
-                     }
-                  }
-               }
-            }
-         }
-         cache.put(key, function);
-      }
       Function function = cache.get(key); // static and module functions
-         
-      if(function != null) {
-         Signature signature = function.getSignature();
-         ArgumentConverter converter = matcher.match(signature);
-         
-         return new FunctionPointer(function, converter, stack, values);
-      }
-      return null;
-   }
-   
-   public FunctionPointer match(Object value, String name, Object... values) throws Exception { 
-      Type type = extractor.extract(value);
-      Object key = builder.create(type, name, values);
       
-      if(!instance.containsKey(key)) {
+      if(function == null) {
          List<Type> path = finder.findPath(type, name);
-         Function function = null;
+         int best = 0;
          
-         if(!path.isEmpty()) {
-            int best = 0;
+         for(Type entry : path) {
+            List<Function> functions = entry.getFunctions();
+            int size = functions.size();
             
-            for(Type entry : path) {
-               List<Function> functions = entry.getFunctions();
-               int size = functions.size();
+            for(int i = size - 1; i >= 0; i--) {
+               Function next = functions.get(i);
+               int modifiers = next.getModifiers();
                
-               for(int i = size - 1; i >= 0; i--) {
-                  Function next = functions.get(i);
+               if(ModifierType.isStatic(modifiers)) { // must be static
                   String method = next.getName();
                   
                   if(name.equals(method)) {
@@ -188,11 +140,55 @@ public class FunctionMatcher {
                }
             }
          }
-         instance.put(key, function);
+         if(function == null) {
+            function = invalid;
+         }
+         cache.put(key, function);
+      }  
+      if(function != invalid) {
+         Signature signature = function.getSignature();
+         ArgumentConverter converter = matcher.match(signature);
+         
+         return new FunctionPointer(function, converter, stack, values);
       }
+      return null;
+   }
+   
+   public FunctionPointer match(Object value, String name, Object... values) throws Exception { 
+      Type type = extractor.extract(value);
+      Object key = builder.create(type, name, values);
       Function function = instance.get(key); // all type functions
       
-      if(function != null) {
+      if(!instance.containsKey(key)) {
+         List<Type> path = finder.findPath(type, name);
+         int best = 0;
+         
+         for(Type entry : path) {
+            List<Function> functions = entry.getFunctions();
+            int size = functions.size();
+            
+            for(int i = size - 1; i >= 0; i--) {
+               Function next = functions.get(i);
+               String method = next.getName();
+               
+               if(name.equals(method)) {
+                  Signature signature = next.getSignature();
+                  ArgumentConverter match = matcher.match(signature);
+                  int score = match.score(values);
+   
+                  if(score > best) {
+                     function = next;
+                     best = score;
+                  }
+               }
+            }
+         }
+         if(function == null) {
+            function = invalid;
+         }
+         instance.put(key, function); // this could be null?
+      }      
+      if(function != invalid) {
          Signature signature = function.getSignature();
          ArgumentConverter converter = matcher.match(signature);
          
