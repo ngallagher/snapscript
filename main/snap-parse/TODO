@@ -1,6 +1,0 @@
-Create an interface called Compilation
-
-
-public interface Compilation {
-	T compile(); // return something better......, count scopes and declarations....
-}

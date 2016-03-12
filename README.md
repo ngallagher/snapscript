@@ -9,11 +9,11 @@ The language is ideal for embedding in to an existing application, and is a frac
 
 #### Development Environment
 
-Snap comes with a development environment that is available over HTTP on any web browser that supports Web Sockets. To develop and debug scripts the devlopment environment can be started with the following command. All that is required is a web browser and a Java 1.5 or greater. The development environment is a single JAR file that can be downloaded from [here](https://github.com/ngallagher/snapscript/tree/master/release). In addition an embeddable version is available which can be integrated in to any Java application.
+Snap comes with a development environment that is available over HTTP on any web browser that supports Web Sockets. To develop and debug scripts the devlopment environment can be started with the command shown below. All that is required is a web browser and Java 1.5 or greater. The development environment is a single JAR file that can be downloaded from [here](https://github.com/ngallagher/snapscript/tree/master/release). In addition an embeddable version is available which can be integrated in to any Java application.
 
 *java -jar snapd.jar --mode=develop --directory=work --port=4457*
 
-The development environment can use hot stand-by agents to improve performance, the agent pool can be configured on the command line. In addition the agent connect port can be specified to enable Android applications to connection to the development environment. An example configuration is shown below.
+The development environment can use hot stand-by agents to improve responsiveness, the agent pool can be configured on the command line. In addition the agent connect port can be specified to enable Android applications to connect to the development environment. An example configuration is shown below.
 
 *java -jar snapd.jar --mode=develop --directory=work --port=4457 --agent-pool=4 --agent-port=4456*
 
