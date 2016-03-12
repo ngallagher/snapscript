@@ -39,13 +39,18 @@ public class CommandListener {
          if(!command.isDirectory()) {
             File file = new File(root, "/" + resource);
             boolean exists = file.exists();
-            FileOutputStream out = new FileOutputStream(file);
-            OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
-            encoder.write(source);
-            encoder.close();
             
-            if(!exists) {
-               client.sendReloadTree();
+            if(command.isCreate() && exists) {
+               client.sendAlert(resource, "Resource " + resource + " already exists");
+            } else {
+               FileOutputStream out = new FileOutputStream(file);
+               OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
+               encoder.write(source);
+               encoder.close();
+               
+               if(!exists) {
+                  client.sendReloadTree();
+               }
             }
          } else {
             File file = new File(root, "/"+resource);

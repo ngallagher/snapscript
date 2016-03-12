@@ -1,6 +1,7 @@
 var suspendedThreads = {};
 var currentFocusThread = null;
 var currentFocusLine = -1;
+var threadEditorFocus = {};
 
 function createThreads() {
    createRoute("BEGIN", startThreads, clearThreads);
@@ -11,6 +12,7 @@ function startThreads(socket, type, text) {
    var message = JSON.parse(text);
    
    suspendedThreads = {};
+   threadEditorFocus = {};
    currentFocusThread = null;
    clearVariables();
    clearProfiler();
@@ -19,6 +21,7 @@ function startThreads(socket, type, text) {
 }
 
 function terminateThreads() {
+   threadEditorFocus = {};
    suspendedThreads = {};
    currentFocusThread = null;
    clearEditorHighlights(); // this should be done in editor.js, i.e createRoute("EXIT" ... )
@@ -38,12 +41,17 @@ function updateThreads(socket, type, text) {
    
    if(currentFocusThread != threadScope.thread || currentFocusLine != threadScope.line) { // this will keep switching!!
       if(editorData.resource.filePath != threadScope.resource) { // e.g /game/tetris.snap
-         var resourcePathDetails = createResourcePath(threadScope.resource);
+         var threadEditorFocusKey = threadEditorFocus[threadScope.thread];
          
-         openTreeFile(resourcePathDetails.resourcePath, function(){
-            updateThreadFocus(threadScope.thread, threadScope.line);
-            showEditorLine(threadScope.line);
-         });
+         if(threadEditorFocusKey != threadScope.key) { // has this thread been focused before!!
+            var resourcePathDetails = createResourcePath(threadScope.resource);
+            
+            openTreeFile(resourcePathDetails.resourcePath, function(){
+               updateThreadFocus(threadScope.thread, threadScope.line);
+               showEditorLine(threadScope.line);
+               threadEditorFocus[threadScope.thread] = threadScope.key; // remember we already focused here
+            });
+         }
       } else {
          updateThreadFocus(threadScope.thread, threadScope.line);
          showEditorLine(threadScope.line);

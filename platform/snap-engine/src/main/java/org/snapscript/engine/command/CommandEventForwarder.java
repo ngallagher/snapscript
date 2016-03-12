@@ -36,7 +36,8 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          String resource = event.getResource();
          int depth = event.getDepth();
          int line = event.getLine();
-         client.sendScope(thread, instruction, status, resource, line, depth, variables);
+         int key = event.getSequence();
+         client.sendScope(thread, instruction, status, resource, line, depth, key, variables);
       }
    }
    

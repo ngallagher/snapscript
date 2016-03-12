@@ -23,7 +23,7 @@ class B extends A{
    }
    foo(){
       println('B.foo()');
-      println(x);
+      println(x); // ERROR in super calls!!
    }
 }
 var x = new B(11);

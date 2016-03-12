@@ -11,12 +11,13 @@ public class ScopeCommand implements Command {
    private String thread;
    private int depth;
    private int line;
+   private int key;
    
    public ScopeCommand() {
       super();
    }
 
-   public ScopeCommand(String thread, String instruction, String status, String resource, int line, int depth, Map<String, Map<String, String>> variables) {
+   public ScopeCommand(String thread, String instruction, String status, String resource, int line, int depth, int key, Map<String, Map<String, String>> variables) {
       this.variables = variables;
       this.instruction = instruction;
       this.thread = thread;
@@ -80,5 +81,13 @@ public class ScopeCommand implements Command {
 
    public void setLine(int line) {
       this.line = line;
+   }
+
+   public int getKey() {
+      return key;
+   }
+
+   public void setKey(int key) {
+      this.key = key;
    }
 }

@@ -1,9 +1,12 @@
-function openConfirmDialog() {
+function openAlertDialog(message) {
    w2popup.open({
-      title : 'Popup Title',
-      body : '<div class="dialog">This is text inside the popup</div>',
-      buttons : '<button class="btn" onclick="w2popup.close();">Close</button> ' + '<button class="btn" onclick="w2popup.lock(\'Loading\', true); '
-            + '        setTimeout(function () { w2popup.unlock(); }, 2000);">Lock</button>',
+      title : 'Alert',
+      body : '<div class="dialog">'+
+             '    <div style="style="text-align: center">'+
+             '       <div style="display: inline-block;">'+message+'</div>'+
+             '    </div>'+
+             '</div>',
+      buttons : '<button class="btn" onclick="w2popup.close();">Close</button>',
       width : 500,
       height : 300,
       overflow : 'hidden',

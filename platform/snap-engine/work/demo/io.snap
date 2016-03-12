@@ -22,3 +22,9 @@ module Goo {
       return "fun("+text+")";
    }
 }
+class Task with Runnable{
+
+   run(){
+      println("run");
+   }
+}

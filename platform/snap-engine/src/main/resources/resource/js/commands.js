@@ -6,7 +6,8 @@ function newFile() {
             project : document.title,
             resource : resourceDetails.filePath,
             source : "",
-            directory: false
+            directory: false,
+            create: true
          });
          clearConsole();
          clearProblems();
@@ -23,7 +24,8 @@ function newDirectory() {
             project : document.title,
             resource : resourceDetails.filePath,
             source : "",
-            directory: true
+            directory: true,
+            create: true
          });
          clearConsole();
          clearProblems();
@@ -44,7 +46,8 @@ function saveFileWithAction(saveCallback) {
             project : document.title,
             resource : resourceDetails.filePath,
             source : editorData.source,
-            directory: false
+            directory: false,
+            create: false
          });
          clearConsole();
          clearProblems();
@@ -59,7 +62,8 @@ function saveFileWithAction(saveCallback) {
                project : document.title,
                resource : resourceDetails.filePath,
                source : editorData.source,
-               directory: false
+               directory: false,
+               create: false
             });
             clearConsole();
             clearProblems();

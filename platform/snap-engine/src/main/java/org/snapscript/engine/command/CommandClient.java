@@ -18,8 +18,8 @@ public class CommandClient {
       this.project = project;
    } 
    
-   public void sendScope(String thread, String instruction, String status, String resource, int line, int depth, Map<String, Map<String, String>> variables) throws Exception {
-      ScopeCommand command = new ScopeCommand(thread, instruction, status, resource, line, depth, variables);
+   public void sendScope(String thread, String instruction, String status, String resource, int line, int depth, int key, Map<String, Map<String, String>> variables) throws Exception {
+      ScopeCommand command = new ScopeCommand(thread, instruction, status, resource, line, depth, key, variables);
       String message = writer.write(command);
       channel.send(message);
    }
@@ -74,6 +74,12 @@ public class CommandClient {
    
    public void sendProcessTerminate(String process) throws Exception {
       TerminateCommand command = new TerminateCommand(process);
+      String message = writer.write(command);
+      channel.send(message);
+   }
+   
+   public void sendAlert(String resource, String text) throws Exception {
+      AlertCommand command = new AlertCommand(resource, text);
       String message = writer.write(command);
       channel.send(message);
    }
