@@ -18,8 +18,8 @@ The language is ideal for embedding in to an existing application, and is a frac
 ##### Profiler
 ![Developer Profiler](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_profiler.png)
 ##### Process View
-![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_debug.png)
+![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_agents.png)
 ##### Save Resources
 ![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_save.png)
-##### Projects
+##### Open Projects
 ![Developer Debug](https://raw.githubusercontent.com/ngallagher/snapscript/master/site/images/debugger_open.png)
