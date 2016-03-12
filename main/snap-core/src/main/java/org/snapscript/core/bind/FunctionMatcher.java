@@ -1,9 +1,9 @@
 package org.snapscript.core.bind;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.common.Cache;
-import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
@@ -19,8 +19,8 @@ import org.snapscript.core.error.ThreadStack;
 
 public class FunctionMatcher {
    
-   private final Cache<Object, Function> instance;
-   private final Cache<Object, Function> cache;
+   private final Map<Object, Function> instance;
+   private final Map<Object, Function> cache;
    private final FunctionKeyBuilder builder;
    private final FunctionPathFinder finder;
    private final ArgumentMatcher matcher;
@@ -28,13 +28,9 @@ public class FunctionMatcher {
    private final ThreadStack stack;
    
    public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
-      this(matcher, loader, stack, 50000);
-   }
-   
-   public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack, int capacity) {
-      this.instance = new LeastRecentlyUsedCache<Object, Function>(capacity);
-      this.cache = new LeastRecentlyUsedCache<Object, Function>(capacity);
-      this.matcher = new ArgumentMatcher(matcher, loader, capacity);
+      this.instance = new ConcurrentHashMap<Object, Function>();
+      this.cache = new ConcurrentHashMap<Object, Function>();
+      this.matcher = new ArgumentMatcher(matcher, loader);
       this.builder = new FunctionKeyBuilder(loader);
       this.extractor = new TypeExtractor(loader);
       this.finder = new FunctionPathFinder();
@@ -75,7 +71,7 @@ public class FunctionMatcher {
    public FunctionPointer match(Module module, String name, Object... values) throws Exception {
       Object key = builder.create(module, name, values);
 
-      if(!cache.contains(key)) {
+      if(!cache.containsKey(key)) {
          List<Function> functions = module.getFunctions();
          Function function = null;
          
@@ -99,9 +95,9 @@ public class FunctionMatcher {
                }
             }
          }
-         cache.cache(key, function);
+         cache.put(key, function);
       }
-      Function function = cache.fetch(key); // static and module functions
+      Function function = cache.get(key); // static and module functions
       
       if(function != null) {
          Signature signature = function.getSignature();
@@ -115,7 +111,7 @@ public class FunctionMatcher {
    public FunctionPointer match(Type type, String name, Object... values) throws Exception { 
       Object key = builder.create(type, name, values); 
 
-      if(!cache.contains(key)) {
+      if(!cache.containsKey(key)) {
          List<Type> path = finder.findPath(type, name);
          Function function = null;
          
@@ -147,9 +143,9 @@ public class FunctionMatcher {
                }
             }
          }
-         cache.cache(key, function);
+         cache.put(key, function);
       }
-      Function function = cache.fetch(key); // static and module functions
+      Function function = cache.get(key); // static and module functions
          
       if(function != null) {
          Signature signature = function.getSignature();
@@ -164,7 +160,7 @@ public class FunctionMatcher {
       Type type = extractor.extract(value);
       Object key = builder.create(type, name, values);
       
-      if(!instance.contains(key)) {
+      if(!instance.containsKey(key)) {
          List<Type> path = finder.findPath(type, name);
          Function function = null;
          
@@ -192,9 +188,9 @@ public class FunctionMatcher {
                }
             }
          }
-         instance.cache(key, function);
+         instance.put(key, function);
       }
-      Function function = instance.fetch(key); // all type functions
+      Function function = instance.get(key); // all type functions
       
       if(function != null) {
          Signature signature = function.getSignature();

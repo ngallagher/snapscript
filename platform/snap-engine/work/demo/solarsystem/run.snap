@@ -58,7 +58,7 @@ module SolarSystem {
 
         loop {
             skyFrame.getPanel().repaint();
-            Thread.sleep(15);
+            //Thread.sleep(15);
         }
     }
 
