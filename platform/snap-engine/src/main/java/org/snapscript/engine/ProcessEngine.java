@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.agent.ProcessAgentConfiguration;
 import org.snapscript.agent.ProcessAgentConnection;
 import org.snapscript.agent.ProcessAgentPool;
 import org.snapscript.agent.event.ProcessEventFilter;
@@ -17,11 +18,15 @@ import org.snapscript.engine.command.StepCommand;
 public class ProcessEngine {
    
    private final Map<String, ProcessAgentConnection> connections; // active processes
+   private final ProcessAgentConfiguration configuration;
+   private final ProcessEngineLoader loader;
    private final ProcessAgentPool pool;
 
-   public ProcessEngine(int port, int capacity) throws Exception {
+   public ProcessEngine(ProcessEngineLoader loader, int port, int capacity) throws Exception {
       this.connections = new ConcurrentHashMap<String, ProcessAgentConnection>();
-      this.pool = new ProcessAgentPool(port, capacity);
+      this.configuration = new ProcessAgentConfiguration();
+      this.pool = new ProcessAgentPool(configuration, port, capacity);
+      this.loader = loader;
    }
    
    public void register(ProcessEventListener listener) {
@@ -115,6 +120,8 @@ public class ProcessEngine {
    }
    
    public void start(String address) {
+      loader.load(configuration);
+      configuration.setAddress(address);
       pool.start(address);
    }
    

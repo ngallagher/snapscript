@@ -3,7 +3,7 @@ package org.snapscript.engine.http.project;
 import java.io.File;
 
 public class Project {
-
+   
    private final ProjectFileSystem fileSystem;
    private final File sourcePath;
    private final File projectPath;

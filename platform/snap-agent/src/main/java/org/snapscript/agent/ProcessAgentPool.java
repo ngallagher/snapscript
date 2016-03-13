@@ -31,17 +31,18 @@ public class ProcessAgentPool {
    private final Cache<String, BlockingQueue<ProcessAgentConnection>> connections;
    private final BlockingQueue<ProcessAgentConnection> running;
    private final Set<ProcessEventListener> listeners;
+   private final ProcessAgentConfiguration configuration;
    private final ProcessEventInterceptor interceptor;
    private final ProcessAgentLauncher launcher;
    private final ProcessAgentPinger pinger;
    private final SocketEventServer server;
    private final int capacity;
    
-   public ProcessAgentPool(int port, int capacity) throws IOException {
-      this(port, capacity, 2000);
+   public ProcessAgentPool(ProcessAgentConfiguration configuration, int port, int capacity) throws IOException {
+      this(configuration, port, capacity, 2000);
    }
    
-   public ProcessAgentPool(int port, int capacity, long frequency) throws IOException {
+   public ProcessAgentPool(ProcessAgentConfiguration configuration, int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessAgentConnection>>();
       this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessAgentConnection>();
@@ -49,6 +50,7 @@ public class ProcessAgentPool {
       this.server = new SocketEventServer(interceptor, port);
       this.launcher = new ProcessAgentLauncher(server);
       this.pinger = new ProcessAgentPinger(frequency);
+      this.configuration = configuration;
       this.capacity = capacity;
    }
    
@@ -226,18 +228,19 @@ public class ProcessAgentPool {
    
    private class ProcessAgentPinger implements Runnable {
    
-      private final AtomicReference<String> reference;
+      private final AtomicReference<String> location;
       private final Thread thread;
       private final long frequency;
       
       public ProcessAgentPinger(long frequency) {
-         this.reference = new AtomicReference<String>();
+         this.location = new AtomicReference<String>();
          this.thread = new Thread(this);
          this.frequency = frequency;
       }
       
       public void start(String address) {
-         if(reference.compareAndSet(null, address)) {
+         if(location.compareAndSet(null, address)) {
+            configuration.setAddress(address);
             thread.start();
             
          }
@@ -264,10 +267,10 @@ public class ProcessAgentPool {
       
       public boolean launch() {
          try {
-            String address = reference.get();
-            
+            String address = location.get();
+
             if(address != null) {
-               launcher.launch(address);
+               launcher.launch(configuration);
                return true;
             }
          }catch(Exception e) {
