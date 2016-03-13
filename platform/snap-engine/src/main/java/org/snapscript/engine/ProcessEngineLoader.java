@@ -43,6 +43,12 @@ public class ProcessEngineLoader {
             String delimeter = "";
             
             for(String entry : paths) {
+               File location = new File(entry);
+               File normal = location.getCanonicalFile();
+               
+               if(!normal.exists()) {
+                  throw new IllegalArgumentException("Path '" + normal + "' does not exist");
+               }
                builder.append(delimeter);
                builder.append(entry);
                delimeter = separator;

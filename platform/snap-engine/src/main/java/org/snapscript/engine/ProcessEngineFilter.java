@@ -11,6 +11,6 @@ public class ProcessEngineFilter implements Filter {
       if(value == null) {
          value = System.getProperty(text);
       }
-      return text;
+      return value;
    }
 }
