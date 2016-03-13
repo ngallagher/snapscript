@@ -42,8 +42,9 @@ public class ProcessEngineScanner {
                   expression = expression.replace("(", "\\("); // escape (
                   expression = expression.replace(")", "\\)"); // escape )
                   expression = expression.replace("-", "\\-"); // escape -
+                  expression = expression.replace("$", "\\$"); // escape $
                   expression = expression.replace(RECURSIVE_PATTERN, ".*");
-                  expression = expression.replace(SINGLE_PATTERN, "[a-zA-Z0-9_\\-\\(\\)\\.\\s]+");
+                  expression = expression.replace(SINGLE_PATTERN, "[a-zA-Z0-9_\\$\\-\\(\\)\\.\\s]+");
                   scan(expression, directory, list);
                   
                   if(list.isEmpty()) {
