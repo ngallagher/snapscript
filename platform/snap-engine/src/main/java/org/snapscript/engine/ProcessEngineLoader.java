@@ -43,17 +43,16 @@ public class ProcessEngineLoader {
             String delimeter = "";
             
             for(String entry : paths) {
-               File location = new File(entry);
-               File normal = location.getCanonicalFile();
+               List<File> matches = ProcessEngineScanner.scan(entry);
                
-               if(!normal.exists()) {
-                  throw new IllegalArgumentException("Path '" + normal + "' does not exist");
+               for(File match : matches) {
+                  String normal = match.getCanonicalPath();
+                  
+                  System.out.println(normal);
+                  builder.append(delimeter);
+                  builder.append(normal);
+                  delimeter = separator;
                }
-               String token = normal.getCanonicalPath();
-               
-               builder.append(delimeter);
-               builder.append(token);
-               delimeter = separator;
             }
             maxMemory = specification.getMaxMemory();
             minMemory = specification.getMinMemory();

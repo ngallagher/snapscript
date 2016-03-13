@@ -1,15 +1,8 @@
 <project maxMemory="200" minMemory="10">
-  <path>${user.dir}\..\..\platform\snap-engine\target\classes</path>
-  <path>${user.dir}\..\..\main\snap-compile\target\classes</path>
-  <path>${user.dir}\..\..\main\snap-core\target\classes</path>
-  <path>${user.dir}\..\..\main\snap-parse\target\classes</path>
-  <path>${user.dir}\..\..\main\snap-common\target\classes</path>
-  <path>${user.dir}\..\..\platform\snap-agent\target\classes</path>
-  <path>${user.dir}\..\..\platform\snap-service\target\classes</path>
-  <path>${user.dir}\..\..\platform\snap-graphics\target\classes</path>
+  <path>${user.dir}\..\..\**\target\classes</path> <!-- ** is recursive -->
   <path>${user.home}\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar</path>
-  <path>${user.home}\.m2\repository\stax\stax-api\1.0.1\stax-api-1.0.1.jar</path>
-  <path>${user.home}\.m2\repository\stax\stax\1.2.0\stax-1.2.0.jar</path>
+  <path>${user.home}\.m2\repository\stax\stax-api\1.0.1\*-1.0.1.jar</path> <!-- * is a single file or directory -->
+  <path>${user.home}\.m2\repository\stax\stax\1.2.0\*-1.2.0.jar</path>
   <path>${user.home}\.m2\repository\xpp3\xpp3\1.1.3.3\xpp3-1.1.3.3.jar</path>
   <path>${user.home}\.m2\repository\org\simpleframework\simple-http\6.0.1\simple-http-6.0.1.jar</path>
   <path>${user.home}\.m2\repository\org\simpleframework\simple-common\6.0.1\simple-common-6.0.1.jar</path>
