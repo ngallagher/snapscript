@@ -49,8 +49,10 @@ public class ProcessEngineLoader {
                if(!normal.exists()) {
                   throw new IllegalArgumentException("Path '" + normal + "' does not exist");
                }
+               String token = normal.getCanonicalPath();
+               
                builder.append(delimeter);
-               builder.append(entry);
+               builder.append(token);
                delimeter = separator;
             }
             maxMemory = specification.getMaxMemory();
