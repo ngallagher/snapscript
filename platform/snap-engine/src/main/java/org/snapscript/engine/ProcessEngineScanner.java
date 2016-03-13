@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ProcessEngineScanner {
    
-   private static final String RECURSIVE_PATTERN = "_RECURSIVE_";
-   private static final String SINGLE_PATTERN = "_SINGLE_";
+   private static final String RECURSIVE_PATTERN = "_RECURSIVE_PATTERN_";
+   private static final String SINGLE_PATTERN = "_SINGLE_PATTERN_";
 
    public static List<File> scan(String pattern) throws Exception {
       List<File> list = new ArrayList<File>();
