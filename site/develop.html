@@ -59,14 +59,20 @@
 			<div class="single-top">
 				<div class="about-desc">
 	<span class="large-heading">Start Development</span>
-	<p>To start developing it is recommended that you download the development environment from 
-	<a href='https://github.com/ngallagher/snapscript/tree/master/release'>here</a>. The development environment comes
-	in a single archive which can be used to launch a web based interface. This web interface can be used to 
-	launch scripts which can be debugged and inspected in much the same way as you would do with a development
-	environment such as Eclipse or IntelliJ. To connect all you need to do is specify the port you would like it
-	to listen on.</p>	
+	
+   
+   <p>Snap comes with a development environment that is available over HTTP on any web browser that supports Web Sockets. To develop and debug scripts the 
+   devlopment environment can be started with the command shown below. All that is required is a web browser and Java 1.5 or greater. The development 
+   environment is a single JAR file that can be downloaded from here. In addition an embeddable version is available which can be integrated in to any 
+   Java application.</p>
 
-	<div class="command-console"><pre>java -jar snapd.jar --mode=develop --directory=work --port=4457 --agent-pool=4 --agent-port=4456</pre></div>
+   <div class="command-console"><pre>java -jar snapd.jar --mode=develop --directory=work --port=4457</pre></div>
+
+           <p>The development environment can use hot stand-by agents to improve responsiveness, the agent pool can be configured on the command line. 
+           In addition the agent connect port can be specified to enable Android applications to connect to the development environment. An example
+           configuration is shown below.</p>
+
+<div class="command-console"><pre>java -jar snapd.jar --mode=develop --directory=work --port=4457 --agent-pool=4 --agent-port=4456</pre></div>
 
 </div>
 				<div class="about-desc">

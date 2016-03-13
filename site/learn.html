@@ -58,7 +58,17 @@
 
 			<div class="single-top">
 				<div class="about-desc">
-	<span class="large-heading">Basic Types</span>
+
+                 
+                 
+                 	<span class="large-heading">Learn</span>
+	<p>Here an overview of the language is provided, the types, control flow statements and the constructs that can be used
+   to develop applications are illustrated. In addition to this tutorial many examples can be viewed 
+   <a href='https://github.com/ngallagher/snapscript/blob/master/platform/snap-engine/work/demo'>here</a>.
+   The examples include a wide range scripts from games to basic utilities.</p>
+   </div> 
+   			<div class="about-desc">
+                    <span class="large-heading">Basic Types</span>
 	<p>For programs to be useful, we need to be able to work with some
 		of the simplest units of data such as numbers, strings, structures, boolean
 		values, and the like. Support for these basic types is much the same as
@@ -550,174 +560,7 @@ println(c); // prints the maximum random</code>
 } </code>
 	</pre>
 </div>
-				<div class="about-desc">
-	<span class="large-heading">Examples</span>
-	<p>To form a better idea of how all of this hangs together a number of simple examples should help
-	to close any gaps in this tutorial.</p>
-
-
-	<span class="small-heading">Calculate PI</span>
-	<p>This example provides a simple use of for loops, arithmetic operators, and conditional operators.</p>
-	<pre>
-		<code class="snapscript">var pi = 4;
-var plus = false;
-
-for (var i = 3; i < 100000000; i += 2) {
-   if (plus) {
-      pi += 4.0 / i;
-   } else {
-      pi -= 4.0 / i;
-   }
-   plus = !plus;
-}
-println(pi);</code>
-	</pre>
-
-	<span class="small-heading">Quick Sort</span>
-	<p>This example shows how quick sort can be implemented. It illustrates a simple recursive algorithm that operates
-	over a provided list of numbers.</p>
-	<pre>
-		<code class="snapscript">function partition(array, left, right) {
-   var pivot = array[(left + right) >>> 1];
-   
-   while (left <= right) {
-      while (array[left] < pivot) {
-         left++;
-      }
-      while (array[right] > pivot) {
-         right--;
-      }
-      if (left <= right) {
-         var temp = array[left];
-         array[left++] = array[right];
-         array[right--] = temp;
-      }
-   }
-   return left;
-}
-
-function quicksort(array, left, right) {
-   var mid = partition(array, left, right);
-   
-   if (left < mid - 1) {
-      quicksort(array, left, mid - 1);
-   }
-   if (right > mid) {
-      quicksort(array, mid, right);
-   }
-   return array;
-}
-
-function sort(items) {
-   var size = items.size();
-   
-   if(size > 0) {
-      return quicksort(items, 0, size - 1);
-   }
-   return items;
-}
-
-sort([1, 2, 3, 4, 5, 6, 2, 3, 4, 7, 88, 2, 34]);
-
-</code>
-	</pre>
-
-
-	<span class="small-heading">File Search</span>
-	<p>This example shows how traits and classes can be used to search for files on a file system.</p>
-	<pre>
-		<code class="snapscript">import io.File;
-import io.FileReader;
-import io.BufferedReader;
-
-trait Searcher {
-   search(text);
-}
-
-function search(searcher: Searcher, text) {
-   var results = searcher.search(text);
-   
-   for(var result in results) {
-      println(result);
-   }
-}
-
-class TextFileSearcher with Searcher {
-   
-   static const DEFAULT_PATTERN = ".txt";
-   
-   var pattern;
-   var root; // reference directory
-   
-   new(root) : this(root, DEFAULT_PATTERN){}
-   
-   new(root, pattern) {
-      this.root = new File(root);
-      this.pattern = pattern;
-   }
-   
-   override search(text) {
-      var results = find(pattern); // find files matching
-      var matches = [];
-      
-      for(var result in results) {
-         if(result.source.contains(text)) {
-            matches.add(result.file); // matches contain text
-         }
-      }
-      return matches;
-   }
-
-   find(pattern){
-      return find(root, pattern, []);
-   }
-
-   static find(root, pattern, found) { // recursive search of directory
-      var list = root.listFiles((entry) -> { // closure coercion to FileFilter
-
-         if(entry.isFile()) {
-            return entry.name.endsWith(pattern);
-         }
-         return entry.isDirectory();
-      });
-      for(var entry in list) {
-         if(entry.isDirectory()) {
-            find(entry, pattern, found); // recursive find
-         } else {
-            var text = read(entry); // read contents
-            
-            found.add({ // add map with 'file' and 'source'
-               file: entry,
-               source: text
-            });
-         }
-      }
-      return found; // results
-   }
-}
-
-
-function read(file) {
-   var reader = new FileReader(file);
-   var buffer = new BufferedReader(reader);
-   var builder = new StringBuilder();
-   
-   loop { // infinite loop
-      var line = buffer.readLine();
-      
-      if(line == null) { // when EOF is reached
-         return builder.toString();
-      }
-      builder.append(line);
-   }
-}
-
-var directory = new TextFileSearcher("/files");
-
-search(directory, "hello");
-</code>
-	</pre>
-</div>
+				
 </div>
 
 
