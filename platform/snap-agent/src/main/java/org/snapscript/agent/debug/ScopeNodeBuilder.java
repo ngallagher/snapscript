@@ -75,6 +75,9 @@ public class ScopeNodeBuilder {
             Map<String, String> criteria = createCriteria(name, "" + object, text, false, depth);
             variables.put(path, criteria);
          }
+      } else {
+         Map<String, String> criteria = createCriteria(name, "null", "", false, depth);
+         variables.put(path, criteria);
       }
       return null;
    }
