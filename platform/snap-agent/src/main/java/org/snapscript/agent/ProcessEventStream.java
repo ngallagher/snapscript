@@ -8,13 +8,13 @@ import org.snapscript.agent.event.ProcessEventType;
 import org.snapscript.agent.event.WriteErrorEvent;
 import org.snapscript.agent.event.WriteOutputEvent;
 
-public class ProcessAgentStream extends OutputStream {
+public class ProcessEventStream extends OutputStream {
 
    private final ProcessEventChannel channel;
    private final ProcessEventType type;
    private final String process;
    
-   public ProcessAgentStream(ProcessEventType type, ProcessEventChannel channel, String process) {
+   public ProcessEventStream(ProcessEventType type, ProcessEventChannel channel, String process) {
       this.process = process;
       this.channel = channel;
       this.type = type;

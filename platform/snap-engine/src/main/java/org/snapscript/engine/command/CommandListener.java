@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
 import org.simpleframework.http.socket.FrameChannel;
-import org.snapscript.engine.ProcessEngine;
+import org.snapscript.engine.ProcessManager;
 import org.snapscript.engine.http.project.ProjectScriptValidator;
 
 public class CommandListener {
@@ -14,12 +14,12 @@ public class CommandListener {
    private final CommandEventForwarder forwarder;
    private final CommandFilter filter;
    private final CommandClient client;
-   private final ProcessEngine engine;
+   private final ProcessManager engine;
    private final String project;
    private final String name;
    private final File root;
    
-   public CommandListener(ProcessEngine engine, FrameChannel channel, File root, String project, String name) {
+   public CommandListener(ProcessManager engine, FrameChannel channel, File root, String project, String name) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);

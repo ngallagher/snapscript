@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 
-import org.snapscript.agent.ProcessAgentStream;
+import org.snapscript.agent.ProcessEventStream;
 import org.snapscript.agent.event.ExitEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
@@ -59,7 +59,7 @@ public class SocketTest extends TestCase {
       for(int i = 0; i < 100; i++) {
          channel.send(new RegisterEvent("blah-" + i, System.getProperty("os.name")));
       }
-      ProcessAgentStream stream = new ProcessAgentStream(ProcessEventType.WRITE_ERROR, channel, "XXX");
+      ProcessEventStream stream = new ProcessEventStream(ProcessEventType.WRITE_ERROR, channel, "XXX");
       PrintStream printer = new PrintStream(stream, true, "UTF-8");
       printer.println("line-1");
       printer.println("line-2");

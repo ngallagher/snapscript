@@ -1,25 +1,24 @@
 package org.snapscript.engine;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class ProcessEngineScanner {
+public class FilePatternScanner {
    
    private static final String RECURSIVE_PATTERN = "_RECURSIVE_PATTERN_";
    private static final String SINGLE_PATTERN = "_SINGLE_PATTERN_";
-
-   public static List<File> scan(String pattern) throws Exception {
-      List<File> list = new ArrayList<File>();
-      File file = new File(pattern);
+   
+   public static List<File> scan(String token) throws Exception {
+      File file = new File(token);
       
-      if(pattern.contains("*")) {
-         int index = pattern.indexOf("*");
-         String expression = pattern;
+      if(token.contains("*")) {
+         int index = token.indexOf("*");
+         String expression = token.trim();
          
          if(index != -1) {
-            String parent = pattern.substring(0, index);
+            String parent = token.substring(0, index);
             File directory = new File(parent);
             
             if(directory.exists()) {
@@ -45,46 +44,23 @@ public class ProcessEngineScanner {
                   expression = expression.replace("$", "\\$"); // escape $
                   expression = expression.replace(RECURSIVE_PATTERN, ".*");
                   expression = expression.replace(SINGLE_PATTERN, "[a-zA-Z0-9_\\$\\-\\(\\)\\.\\s]+");
-                  scan(expression, directory, list);
+                  
+                  Pattern pattern = Pattern.compile(expression);
+                  List<File> list = FilePatternMatcher.scan(pattern, directory);
                   
                   if(list.isEmpty()) {
                      throw new IllegalArgumentException("Could not match file '" + pattern + "'");
                   }
                   return list;
                }catch(Exception e) {
-                  throw new IllegalArgumentException("Could not parse pattern '" +pattern+ "'", e);
+                  throw new IllegalArgumentException("Could not parse pattern '" +token+ "'", e);
                }
             }
          }
       }
       if(!file.exists()) {
-         throw new IllegalArgumentException("Could not match file '" + pattern + "'");
+         throw new IllegalArgumentException("Could not match file '" + token + "'");
       }
       return Collections.singletonList(file);
-   }
-   
-   private static List<File> scan(String pattern, File directory, List<File> files) throws Exception {
-      if(directory.exists()) {
-         File[] list = directory.listFiles();
-         String normal = directory.getCanonicalPath();
-         
-         if(normal.matches(pattern)) {
-            files.add(directory);
-         } else {
-            for(File entry : list) {
-               normal = entry.getCanonicalPath();
-               
-               if(normal.matches(pattern)) {
-                  if(entry.isFile()) {
-                     files.add(entry);
-                  }
-               }
-               if(entry.isDirectory()) {
-                  scan(pattern, entry, files);
-               }
-            }
-         }
-      }
-      return files;
    }
 }

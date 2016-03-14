@@ -2,7 +2,7 @@ package org.snapscript.engine;
 
 import org.simpleframework.xml.filter.Filter;
 
-public class ProcessEngineFilter implements Filter {
+public class ConfigurationFilter implements Filter {
 
    @Override
    public String replace(String text) {

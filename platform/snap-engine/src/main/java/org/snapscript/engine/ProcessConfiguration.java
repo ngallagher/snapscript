@@ -1,13 +1,13 @@
-package org.snapscript.agent;
+package org.snapscript.engine;
 
-public class ProcessAgentConfiguration {
+public class ProcessConfiguration {
 
    private String classPath;
    private String address;
    private int maxMemory;
    private int minMemory;
    
-   public ProcessAgentConfiguration() {
+   public ProcessConfiguration() {
       super();
    }
 

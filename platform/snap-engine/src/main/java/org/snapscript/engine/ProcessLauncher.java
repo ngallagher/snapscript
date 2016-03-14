@@ -1,21 +1,22 @@
-package org.snapscript.agent;
+package org.snapscript.engine;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.agent.ProcessRunner;
 import org.snapscript.agent.event.ProcessEventChannel;
 
-public class ProcessAgentLauncher {
+public class ProcessLauncher {
    
    private final ProcessEventChannel channel;
    private final AtomicLong counter;
    
-   public ProcessAgentLauncher(ProcessEventChannel channel) {
+   public ProcessLauncher(ProcessEventChannel channel) {
       this.counter = new AtomicLong();
       this.channel = channel;
    }
 
-   public void launch(ProcessAgentConfiguration configuration) throws Exception {
+   public void launch(ProcessConfiguration configuration) throws Exception {
       String home = System.getProperty("java.home");
       String classPath = configuration.getClassPath();
       String address = configuration.getAddress();
@@ -33,7 +34,7 @@ public class ProcessAgentLauncher {
       if(minMemoryMegabytes > 0) {
          minMemory = "-Xms" + minMemoryMegabytes + "m";
       }
-      String type = ProcessAgent.class.getCanonicalName();
+      String type = ProcessRunner.class.getCanonicalName();
       long sequence = counter.getAndIncrement();
       long time = System.currentTimeMillis();
       int port = channel.port();

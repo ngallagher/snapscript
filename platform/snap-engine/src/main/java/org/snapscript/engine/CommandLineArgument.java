@@ -2,7 +2,7 @@ package org.snapscript.engine;
 
 import java.util.regex.Pattern;
 
-public enum ProcessEngineArgument {
+public enum CommandLineArgument {
    AGENT_PORT("agent-port", "0", "Port for agent connections", "\\d+"),
    AGENT_POOL("agent-pool", "4", "Number of agents in pool", "\\d+"),
    PORT("port", "0", "Port for HTTP connections", "\\d+"),
@@ -15,7 +15,7 @@ public enum ProcessEngineArgument {
    public final String command;
    public final String value;
    
-   private ProcessEngineArgument(String command, String value, String description, String pattern) {
+   private CommandLineArgument(String command, String value, String description, String pattern) {
       this.pattern = Pattern.compile(pattern);
       this.description = description;
       this.command = command;
@@ -27,9 +27,9 @@ public enum ProcessEngineArgument {
    }
    
    public static Pattern getPattern(String command) {
-      ProcessEngineArgument[] arguments = ProcessEngineArgument.values();
+      CommandLineArgument[] arguments = CommandLineArgument.values();
       
-      for(ProcessEngineArgument argument : arguments) {
+      for(CommandLineArgument argument : arguments) {
          String name = argument.command;
          
          if(name.equals(command)) {

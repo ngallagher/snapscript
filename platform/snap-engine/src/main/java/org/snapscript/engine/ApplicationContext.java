@@ -6,24 +6,23 @@ import java.io.File;
 import java.io.IOException;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
-public class ProcessEngineContext {
+public class ApplicationContext {
 
    private final ClassPathXmlApplicationContext appContext;
    private final Resource[] propertyFiles;
 
-   public ProcessEngineContext(Resource configFile, Resource... propertyFiles) throws IOException {
+   public ApplicationContext(Resource configFile, Resource... propertyFiles) throws IOException {
       this(configFile.getFile(), propertyFiles);
    }
 
-   public ProcessEngineContext(File configFile, Resource... propertyFiles) throws IOException {
+   public ApplicationContext(File configFile, Resource... propertyFiles) throws IOException {
       this(configFile.getPath(), propertyFiles);
    }
 
-   public ProcessEngineContext(String configFile, Resource... propertyFiles) throws IOException {
+   public ApplicationContext(String configFile, Resource... propertyFiles) throws IOException {
       this.appContext = new ClassPathXmlApplicationContext(new String[] { configFile }, false);
       this.propertyFiles = propertyFiles;
    }
@@ -39,10 +38,6 @@ public class ProcessEngineContext {
 
    public <T> T get(Class<T> type) {
       return appContext.getBean(type);
-   }
-   
-   public ApplicationContext getAppContext() {
-      return appContext;
    }
    
 }

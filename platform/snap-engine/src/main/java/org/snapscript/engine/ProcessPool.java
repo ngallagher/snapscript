@@ -1,4 +1,4 @@
-package org.snapscript.agent;
+package org.snapscript.engine;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,42 +26,42 @@ import org.snapscript.agent.event.socket.SocketEventServer;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 
-public class ProcessAgentPool {
+public class ProcessPool {
 
-   private final Cache<String, BlockingQueue<ProcessAgentConnection>> connections;
-   private final BlockingQueue<ProcessAgentConnection> running;
+   private final Cache<String, BlockingQueue<ProcessConnection>> connections;
+   private final BlockingQueue<ProcessConnection> running;
    private final Set<ProcessEventListener> listeners;
-   private final ProcessAgentConfiguration configuration;
+   private final ProcessConfiguration configuration;
    private final ProcessEventInterceptor interceptor;
-   private final ProcessAgentLauncher launcher;
+   private final ProcessLauncher launcher;
    private final ProcessAgentPinger pinger;
    private final SocketEventServer server;
    private final int capacity;
    
-   public ProcessAgentPool(ProcessAgentConfiguration configuration, int port, int capacity) throws IOException {
+   public ProcessPool(ProcessConfiguration configuration, int port, int capacity) throws IOException {
       this(configuration, port, capacity, 2000);
    }
    
-   public ProcessAgentPool(ProcessAgentConfiguration configuration, int port, int capacity, long frequency) throws IOException {
-      this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessAgentConnection>>();
+   public ProcessPool(ProcessConfiguration configuration, int port, int capacity, long frequency) throws IOException {
+      this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessConnection>>();
       this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
-      this.running = new LinkedBlockingQueue<ProcessAgentConnection>();
+      this.running = new LinkedBlockingQueue<ProcessConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
       this.server = new SocketEventServer(interceptor, port);
-      this.launcher = new ProcessAgentLauncher(server);
+      this.launcher = new ProcessLauncher(server);
       this.pinger = new ProcessAgentPinger(frequency);
       this.configuration = configuration;
       this.capacity = capacity;
    }
    
-   public ProcessAgentConnection acquire(String system) {
+   public ProcessConnection acquire(String system) {
       try {
-         BlockingQueue<ProcessAgentConnection> pool = connections.fetch(system);
+         BlockingQueue<ProcessConnection> pool = connections.fetch(system);
          
          if(pool == null) {
             throw new IllegalArgumentException("No pool of type '" + system + "'");
          }
-         ProcessAgentConnection connection = pool.poll(5, TimeUnit.SECONDS); // take a process from the pool
+         ProcessConnection connection = pool.poll(5, TimeUnit.SECONDS); // take a process from the pool
          
          if(connection == null) {
             throw new IllegalStateException("No agent of type " + system + " as pool is empty");
@@ -119,11 +119,11 @@ public class ProcessAgentPool {
       public void onRegister(ProcessEventChannel channel, RegisterEvent event) throws Exception {
          String process = event.getProcess();
          String system = event.getSystem();
-         ProcessAgentConnection connection = new ProcessAgentConnection(channel, process);
-         BlockingQueue<ProcessAgentConnection> pool = connections.fetch(system);
+         ProcessConnection connection = new ProcessConnection(channel, process);
+         BlockingQueue<ProcessConnection> pool = connections.fetch(system);
          
          if(pool == null) {
-            pool = new LinkedBlockingQueue<ProcessAgentConnection>();
+            pool = new LinkedBlockingQueue<ProcessConnection>();
             connections.cache(system, pool);
          }
          pool.offer(connection);
@@ -251,10 +251,10 @@ public class ProcessAgentPool {
          while(true) {
             try {
                String host = System.getProperty("os.name");
-               BlockingQueue<ProcessAgentConnection> pool = connections.fetch(host);
+               BlockingQueue<ProcessConnection> pool = connections.fetch(host);
                
                if(pool == null) {
-                  pool = new LinkedBlockingQueue<ProcessAgentConnection>();
+                  pool = new LinkedBlockingQueue<ProcessConnection>();
                   connections.cache(host, pool);
                }
                Thread.sleep(frequency);
@@ -283,14 +283,14 @@ public class ProcessAgentPool {
          Set<String> systems = connections.keySet();
          
          try {
-            List<ProcessAgentConnection> active = new ArrayList<ProcessAgentConnection>();
+            List<ProcessConnection> active = new ArrayList<ProcessConnection>();
             int require = capacity;
             
             for(String system : systems) {
-               BlockingQueue<ProcessAgentConnection> available = connections.fetch(system);
+               BlockingQueue<ProcessConnection> available = connections.fetch(system);
                
                while(!connections.isEmpty()) {
-                  ProcessAgentConnection connection = available.poll();
+                  ProcessConnection connection = available.poll();
                   
                   if(connection == null) {
                      break;
@@ -310,7 +310,7 @@ public class ProcessAgentPool {
             active.clear();
             
             while(!connections.isEmpty()) {
-               ProcessAgentConnection connection = running.poll();
+               ProcessConnection connection = running.poll();
                
                if(connection == null) {
                   break;

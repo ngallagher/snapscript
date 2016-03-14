@@ -1,4 +1,4 @@
-package org.snapscript.agent;
+package org.snapscript.engine;
 
 import java.util.Map;
 import java.util.Set;
@@ -10,12 +10,12 @@ import org.snapscript.agent.event.PingEvent;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.StepEvent;
 
-public class ProcessAgentConnection {
+public class ProcessConnection {
 
    private final ProcessEventChannel channel;
    private final String process;
 
-   public ProcessAgentConnection(ProcessEventChannel channel, String process) {
+   public ProcessConnection(ProcessEventChannel channel, String process) {
       this.channel = channel;
       this.process = process;
    }

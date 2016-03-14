@@ -2,16 +2,18 @@ package org.snapscript.agent;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 
+import org.snapscript.core.store.RemoteStore;
 import org.snapscript.core.store.Store;
 
-public class ProcessAgentStore implements Store {
+public class ProcessStore implements Store {
 
    private String project;
    private Store store;
    
-   public ProcessAgentStore(Store store) {
-      this.store = store;
+   public ProcessStore(URI root) {
+      this.store = new RemoteStore(root);
    }
    
    public void update(String project) {

@@ -4,9 +4,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.agent.ProcessAgentConfiguration;
-import org.snapscript.agent.ProcessAgentConnection;
-import org.snapscript.agent.ProcessAgentPool;
 import org.snapscript.agent.event.ProcessEventFilter;
 import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.StepEvent;
@@ -15,17 +12,17 @@ import org.snapscript.engine.command.BrowseCommand;
 import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.command.StepCommand;
 
-public class ProcessEngine {
+public class ProcessManager {
    
-   private final Map<String, ProcessAgentConnection> connections; // active processes
-   private final ProcessAgentConfiguration configuration;
-   private final ProcessEngineLoader loader;
-   private final ProcessAgentPool pool;
+   private final Map<String, ProcessConnection> connections; // active processes
+   private final ProcessConfiguration configuration;
+   private final ConfigurationLoader loader;
+   private final ProcessPool pool;
 
-   public ProcessEngine(ProcessEngineLoader loader, int port, int capacity) throws Exception {
-      this.connections = new ConcurrentHashMap<String, ProcessAgentConnection>();
-      this.configuration = new ProcessAgentConfiguration();
-      this.pool = new ProcessAgentPool(configuration, port, capacity);
+   public ProcessManager(ConfigurationLoader loader, int port, int capacity) throws Exception {
+      this.connections = new ConcurrentHashMap<String, ProcessConnection>();
+      this.configuration = new ProcessConfiguration();
+      this.pool = new ProcessPool(configuration, port, capacity);
       this.loader = loader;
    }
    
@@ -43,7 +40,7 @@ public class ProcessEngine {
    
    public boolean execute(ExecuteCommand command, ProcessEventFilter filter) { 
       String system = command.getSystem();
-      ProcessAgentConnection connection = pool.acquire(system);
+      ProcessConnection connection = pool.acquire(system);
       
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
@@ -62,7 +59,7 @@ public class ProcessEngine {
    }
    
    public boolean breakpoints(BreakpointsCommand command, String process) {
-      ProcessAgentConnection connection = connections.get(process);
+      ProcessConnection connection = connections.get(process);
       
       if(connection != null) {
          Map<String, Map<Integer, Boolean>> breakpoints = command.getBreakpoints();
@@ -72,7 +69,7 @@ public class ProcessEngine {
    }
    
    public boolean browse(BrowseCommand command, String process) {
-      ProcessAgentConnection connection = connections.get(process);
+      ProcessConnection connection = connections.get(process);
       
       if(connection != null) {
          Set<String> expand = command.getExpand();
@@ -83,7 +80,7 @@ public class ProcessEngine {
    }
    
    public boolean step(StepCommand command, String process) {
-      ProcessAgentConnection connection = connections.get(process);
+      ProcessConnection connection = connections.get(process);
       
       if(connection != null) {
          String thread = command.getThread();
@@ -102,7 +99,7 @@ public class ProcessEngine {
    }
    
    public boolean stop(String process) {
-      ProcessAgentConnection connection = connections.remove(process);
+      ProcessConnection connection = connections.remove(process);
       
       if(connection != null) {
          connection.close();
@@ -111,7 +108,7 @@ public class ProcessEngine {
    }
    
    public boolean ping(String process) {
-      ProcessAgentConnection connection = connections.get(process);
+      ProcessConnection connection = connections.get(process);
       
       if(connection != null) {
          return connection.ping();

@@ -9,18 +9,18 @@ import org.simpleframework.http.socket.FrameChannel;
 import org.simpleframework.http.socket.Session;
 import org.simpleframework.http.socket.service.Service;
 import org.simpleframework.transport.Channel;
-import org.snapscript.engine.ProcessEngine;
-import org.snapscript.engine.ProcessEngineScript;
+import org.snapscript.engine.ProcessManager;
+import org.snapscript.engine.ConnectListener;
 import org.snapscript.engine.command.CommandController;
 import org.snapscript.engine.command.CommandListener;
 
 public class ProjectScriptService implements Service {
    
-   private final ProcessEngineScript script;
+   private final ConnectListener script;
    private final ProjectBuilder builder;
-   private final ProcessEngine engine;
+   private final ProcessManager engine;
    
-   public ProjectScriptService(ProcessEngine engine, ProcessEngineScript script, ProjectBuilder builder) {
+   public ProjectScriptService(ProcessManager engine, ConnectListener script, ProjectBuilder builder) {
       this.script = script;
       this.builder = builder;
       this.engine = engine;

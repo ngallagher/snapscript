@@ -2,22 +2,22 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ProcessEngineLoader" class="org.snapscript.engine.ProcessEngineLoader">
+  <bean id="ConfigurationLoader" class="org.snapscript.engine.ConfigurationLoader">
     <constructor-arg value="${directory}" />
   </bean>
 
-  <bean id="ProcessEngine" class="org.snapscript.engine.ProcessEngine">
-    <constructor-arg ref="ProcessEngineLoader" />
+  <bean id="ProcessManager" class="org.snapscript.engine.ProcessManager">
+    <constructor-arg ref="ConfigurationLoader" />
     <constructor-arg value="${agent-port}" />
     <constructor-arg value="${agent-pool}" />
   </bean>
 
-  <bean id="ProcessEngineServer" class="org.snapscript.engine.ProcessEngineServer" init-method="start">
-    <constructor-arg ref="ProcessEngine" />
+  <bean id="ProcessServer" class="org.snapscript.engine.ProcessServer" init-method="start">
+    <constructor-arg ref="ProcessManager" />
     <constructor-arg ref="WebServer" />
   </bean>
 
-  <bean id="ProcessEngineScript" class="org.snapscript.engine.ProcessEngineScript">
+  <bean id="ConnectListener" class="org.snapscript.engine.ConnectListener">
     <constructor-arg ref="ProjectBuilder" />
   </bean>
 
@@ -93,8 +93,8 @@
 
   <bean id="ProjectScriptService" class="org.snapscript.engine.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
-    <constructor-arg ref="ProcessEngineScript" />
-    <constructor-arg ref="ProcessEngine" />
+    <constructor-arg ref="ConnectListener" />
+    <constructor-arg ref="ProcessManager" />
   </bean>
 
   <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">

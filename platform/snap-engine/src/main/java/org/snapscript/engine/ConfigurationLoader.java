@@ -7,29 +7,28 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.Persister;
-import org.snapscript.agent.ProcessAgentConfiguration;
 
-public class ProcessEngineLoader {
+public class ConfigurationLoader {
 
    private static final int DEFAULT_MAX_MEMORY = 200 * 1024 * 1024;
    private static final int DEFAULT_MIN_MEMORY = 10 * 1024 * 1024;
    private static final String CONFIGURATION_FILE = "project.xml";
    
-   private final ProcessEngineFilter filter;
+   private final ConfigurationFilter filter;
    private final Persister persister;
    private final File file;
    
-   public ProcessEngineLoader(File file) {
+   public ConfigurationLoader(File file) {
       this(file, CONFIGURATION_FILE);
    }
    
-   public ProcessEngineLoader(File file, String name) {
-      this.filter = new ProcessEngineFilter();
+   public ConfigurationLoader(File file, String name) {
+      this.filter = new ConfigurationFilter();
       this.persister = new Persister(filter);
       this.file = new File(file, name);
    }
    
-   public void load(ProcessAgentConfiguration configuration) {
+   public void load(ProcessConfiguration configuration) {
       String path = System.getProperty("java.class.path");
       String separator = System.getProperty("path.separator");
       int maxMemory = DEFAULT_MAX_MEMORY;
@@ -37,13 +36,13 @@ public class ProcessEngineLoader {
       
       try {
          if(file.exists()) {
-            ProcessAgentSpecification specification = persister.read(ProcessAgentSpecification.class, file);
+            ConfigurationSchema specification = persister.read(ConfigurationSchema.class, file);
             List<String> paths = specification.getPaths();
             StringBuilder builder = new StringBuilder();
             String delimeter = "";
             
             for(String entry : paths) {
-               List<File> matches = ProcessEngineScanner.scan(entry);
+               List<File> matches = FilePatternScanner.scan(entry);
                
                for(File match : matches) {
                   String normal = match.getCanonicalPath();
@@ -67,7 +66,7 @@ public class ProcessEngineLoader {
    }
 
    @Root
-   private static class ProcessAgentSpecification {
+   private static class ConfigurationSchema {
 
       @Attribute(required=false)
       private int maxMemory;

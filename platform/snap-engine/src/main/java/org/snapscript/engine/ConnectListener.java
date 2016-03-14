@@ -11,21 +11,16 @@ import org.snapscript.engine.command.ExecuteCommand;
 import org.snapscript.engine.http.project.Project;
 import org.snapscript.engine.http.project.ProjectBuilder;
 
-// 1) start engine container on ephemeral port
-// 2) ensure stdout/stderr goes to both client and console
-// 3) once server is running launch the agent with agent-pool=0
-// 4) as soon as the agent is running, issue an ExecuteCommand ---- should be the same process11!
-// 5) once connected the process should suspend
-public class ProcessEngineScript {
+public class ConnectListener {
 
    private final ProjectBuilder builder;
    
-   public ProcessEngineScript(ProjectBuilder builder) {
+   public ConnectListener(ProjectBuilder builder) {
       this.builder = builder;
    }
    
    public void connect(CommandListener listener, Path path) {
-      String script = ProcessEngineArgument.SCRIPT.getValue();
+      String script = CommandLineArgument.SCRIPT.getValue();
       
       if(script != null) {
          try {
