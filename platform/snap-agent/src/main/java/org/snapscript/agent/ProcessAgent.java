@@ -34,8 +34,9 @@ public class ProcessAgent {
       String host = root.getHost();
       
       try {
+         ConnectionChecker checker = new ConnectionChecker(process, system);
          RegisterEvent register = new RegisterEvent(process, system);
-         ProcessEventReceiver listener = new ProcessEventReceiver(context, process, system);
+         ProcessEventReceiver listener = new ProcessEventReceiver(context, checker);
          SocketEventClient client = new SocketEventClient(listener);
          ProcessEventChannel channel = client.connect(host, port);
          SuspendInterceptor suspender = new SuspendInterceptor(channel, matcher, controller, process);
@@ -43,6 +44,7 @@ public class ProcessAgent {
          interceptor.register(profiler);
          interceptor.register(suspender);
          channel.send(register); // send the initial register event
+         checker.start();
       } catch (Exception e) {
          e.printStackTrace();
       }

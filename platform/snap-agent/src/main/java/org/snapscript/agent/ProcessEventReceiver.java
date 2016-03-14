@@ -19,17 +19,15 @@ import org.snapscript.agent.event.StepEvent;
 public class ProcessEventReceiver extends ProcessEventAdapter {
    
    private final AtomicReference<String> reference;
+   private final ConnectionChecker checker;
    private final ResourceExecutor executor;
    private final ProcessContext context;
-   private final String process;
-   private final String system;
    
-   public ProcessEventReceiver(ProcessContext context, String process, String system) throws Exception {
+   public ProcessEventReceiver(ProcessContext context, ConnectionChecker checker) throws Exception {
       this.reference = new AtomicReference<String>();
       this.executor = new ResourceExecutor(context);
+      this.checker = checker;
       this.context = context;
-      this.process = process;
-      this.system = system;
    }
 
    @Override
@@ -89,8 +87,7 @@ public class ProcessEventReceiver extends ProcessEventAdapter {
    @Override
    public void onPing(ProcessEventChannel channel, PingEvent event) throws Exception {
       String resource = reference.get();
-      PongEvent pong = new PongEvent(process, system,  resource, resource != null);
-      channel.send(pong);
+      checker.update(channel, event, resource);
    }
 
    @Override
