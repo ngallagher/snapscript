@@ -45,7 +45,6 @@ public class ConnectionChecker {
       }
    }
    
-   
    private class HealthChecker implements Runnable {
       
       private final long frequency;
