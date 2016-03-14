@@ -33,4 +33,3 @@ b.test(Max.max(23,44,1));
 new Thread(new Task()).start();
 var res = Splat.fun("xx");
 println(res);
-sleep(Short.MAX_VALUE);
