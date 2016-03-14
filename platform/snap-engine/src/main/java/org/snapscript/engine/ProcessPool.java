@@ -279,6 +279,26 @@ public class ProcessPool {
          return false;
       }
       
+      public boolean kill() {
+         try {
+            String system = System.getProperty("os.name"); // kill a host agent
+            String address = location.get();
+
+            if(address != null) {
+               BlockingQueue<ProcessConnection> pool = connections.fetch(system);
+               ProcessConnection connection = pool.poll();
+               
+               if(connection != null) {
+                  connection.close();
+               }
+               return true;
+            }
+         }catch(Exception e) {
+            e.printStackTrace();
+         }
+         return false;
+      }
+      
       private void ping() {
          Set<String> systems = connections.keySet();
          
@@ -304,6 +324,9 @@ public class ProcessPool {
                
                if(remaining > 0) {
                   launch(); // launch a new process at a time
+               }
+               if(remaining < 0) {
+                  kill(); // kill if pool grows too large
                }
                available.addAll(active);
             }
