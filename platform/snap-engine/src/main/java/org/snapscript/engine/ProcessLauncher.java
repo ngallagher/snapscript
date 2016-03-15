@@ -1,6 +1,8 @@
 package org.snapscript.engine;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -17,40 +19,34 @@ public class ProcessLauncher {
    }
 
    public void launch(ProcessConfiguration configuration) throws Exception {
+      int remote = channel.port();
+      long sequence = counter.getAndIncrement();
+      long time = System.currentTimeMillis();
+      String port = String.valueOf(remote);
       String home = System.getProperty("java.home");
+      String name = String.format("agent-%s%s", sequence, time);
+      String java = String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar);
       String classPath = configuration.getClassPath();
       String address = configuration.getAddress();
       Map<String, String> variables = configuration.getVariables();
-      int maxMemoryMegabytes = configuration.getMaxMemory();
-      int minMemoryMegabytes = configuration.getMinMemory();
-      String maxMemory = "-Xmx200m";
-      String minMemory = "-Xms10m";
+      List<String> arguments = configuration.getArguments();
+      String type = ProcessRunner.class.getCanonicalName();
       
       if(classPath == null) {
          classPath = System.getProperty("java.class.path");
       }
-      if(maxMemoryMegabytes > 0) {
-         maxMemory = "-Xmx" + maxMemoryMegabytes + "m";
-      }
-      if(minMemoryMegabytes > 0) {
-         minMemory = "-Xms" + minMemoryMegabytes + "m";
-      }
-      String type = ProcessRunner.class.getCanonicalName();
-      long sequence = counter.getAndIncrement();
-      long time = System.currentTimeMillis();
-      int port = channel.port();
-      ProcessBuilder builder = new ProcessBuilder(
-            String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar), 
-            "-XX:+UnlockCommercialFeatures",
-            "-XX:+FlightRecorder",
-            maxMemory,
-            minMemory,
-            "-cp", 
-            classPath, 
-            type, 
-            address,
-            String.format("agent-%s%s", sequence, time),
-            String.valueOf(port));
+      List<String> command = new ArrayList<String>();
+      
+      command.add(java);
+      command.addAll(arguments);
+      command.add("-cp");
+      command.add(classPath);
+      command.add(type);
+      command.add(address);
+      command.add(name);
+      command.add(port);
+
+      ProcessBuilder builder = new ProcessBuilder(command);
       
       if(!variables.isEmpty()) {
          Map<String, String> environment = builder.environment();
