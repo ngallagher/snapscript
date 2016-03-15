@@ -14,6 +14,7 @@ import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
 import org.snapscript.agent.event.WriteOutputEvent;
 import org.snapscript.agent.profiler.ProfileResult;
+import org.snapscript.engine.common.TextEscaper;
 
 public class CommandEventForwarder extends ProcessEventAdapter {
    
@@ -48,7 +49,7 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          byte[] array = event.getData();
          int length = event.getLength();
          int offset = event.getOffset();
-         String text = new String(array, offset, length, "UTF-8");
+         String text = TextEscaper.escape(array, offset, length);
          client.sendPrintError(process, text);
       }
    }
@@ -60,7 +61,7 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          byte[] array = event.getData();
          int length = event.getLength();
          int offset = event.getOffset();
-         String text = new String(array, offset, length, "UTF-8");
+         String text = TextEscaper.escape(array, offset, length);
          client.sendPrintOutput(process, text);
       }
    }

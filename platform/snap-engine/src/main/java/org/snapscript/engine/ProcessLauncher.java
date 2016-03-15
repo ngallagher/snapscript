@@ -3,7 +3,6 @@ package org.snapscript.engine;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.snapscript.agent.ProcessRunner;
 import org.snapscript.agent.event.ProcessEventChannel;
 
 public class ProcessLauncher {

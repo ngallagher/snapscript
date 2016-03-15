@@ -7,6 +7,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.Persister;
+import org.snapscript.agent.ProcessAgent;
 
 public class ConfigurationLoader {
 
@@ -37,10 +38,19 @@ public class ConfigurationLoader {
       try {
          if(file.exists()) {
             ConfigurationSchema specification = persister.read(ConfigurationSchema.class, file);
+            File file = ClassPathScanner.findLocation(ProcessAgent.class); 
             List<String> paths = specification.getPaths();
             StringBuilder builder = new StringBuilder();
             String delimeter = "";
             
+            if(file.exists()) {
+               String normal = file.getCanonicalPath();
+               
+               System.out.println(normal);
+               builder.append(delimeter);
+               builder.append(normal);
+               delimeter = separator;
+            }
             for(String entry : paths) {
                List<File> matches = FilePatternScanner.scan(entry);
                

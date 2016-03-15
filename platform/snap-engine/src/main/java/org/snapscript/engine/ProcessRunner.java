@@ -1,6 +1,8 @@
-package org.snapscript.agent;
+package org.snapscript.engine;
 
 import java.net.URI;
+
+import org.snapscript.agent.ProcessAgent;
 
 public class ProcessRunner {
 
