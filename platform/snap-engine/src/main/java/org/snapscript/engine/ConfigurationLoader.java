@@ -2,11 +2,18 @@ package org.snapscript.engine;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Text;
+import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.util.Dictionary;
+import org.simpleframework.xml.util.Entry;
 import org.snapscript.agent.ProcessAgent;
 
 public class ConfigurationLoader {
@@ -39,10 +46,13 @@ public class ConfigurationLoader {
       int minMemory = DEFAULT_MIN_MEMORY;
       
       try {
+         StringBuilder builder = new StringBuilder();
+         
          if(file.exists()) {
-            ConfigurationSchema specification = persister.read(ConfigurationSchema.class, file);
-            List<String> paths = specification.getPaths();
-            StringBuilder builder = new StringBuilder();
+            ConfigurationData data = persister.read(ConfigurationData.class, file);
+            Map<String, String> environment = configuration.getVariables();
+            Set<ConfigurationVariable> variables = data.getVariables();
+            List<String> paths = data.getPaths();
             String delimeter = "";
 
             if(!Boolean.getBoolean(IGNORE_SNAP_CLASS_PATH)) { // should we inject to class path
@@ -66,8 +76,12 @@ public class ConfigurationLoader {
                   delimeter = separator;
                }
             }
-            maxMemory = specification.getMaxMemory();
-            minMemory = specification.getMinMemory();
+            for(ConfigurationVariable variable : variables) {
+               environment.put(variable.name, variable.value);
+               
+            }
+            maxMemory = data.getMaxMemory();
+            minMemory = data.getMinMemory();
             path = builder.toString();
          }
       } catch(Exception e) {
@@ -79,16 +93,25 @@ public class ConfigurationLoader {
    }
 
    @Root
-   private static class ConfigurationSchema {
+   private static class ConfigurationData {
 
-      @Attribute(required=false)
+      @Attribute
       private int maxMemory;
       
-      @Attribute(required=false)
+      @Attribute
       private int minMemory;
       
+      @Path("path")
       @ElementList(entry="path", inline=true)
       private List<String> paths;
+      
+      @Path("environment")
+      @ElementList(entry="variable", inline=true, required=false)
+      private Dictionary<ConfigurationVariable> environment;
+      
+      public Set<ConfigurationVariable> getVariables() {
+         return environment;
+      }
       
       public List<String> getPaths() {
          return paths;
@@ -100,6 +123,26 @@ public class ConfigurationLoader {
       
       public int getMinMemory(){
          return minMemory;
+      }
+   }
+   
+   @Root
+   private static class ConfigurationVariable implements Entry {
+      
+      @Attribute
+      private String name;
+      
+      @Text
+      private String value;
+      
+      @Commit
+      public void update(Map session) {
+         session.put(name, value);
+      }
+      
+      @Override
+      public String getName() {
+         return name;
       }
    }
 }

@@ -1,14 +1,26 @@
 package org.snapscript.engine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProcessConfiguration {
 
+   private Map<String, String> variables;
    private String classPath;
    private String address;
    private int maxMemory;
    private int minMemory;
    
    public ProcessConfiguration() {
-      super();
+      this.variables = new HashMap<String, String>();
+   }
+   
+   public Map<String, String> getVariables() {
+      return variables;
+   }
+   
+   public void setVariables(Map<String, String> variables) {
+      this.variables = variables;
    }
 
    public String getClassPath() {

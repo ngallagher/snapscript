@@ -1,6 +1,7 @@
 package org.snapscript.engine;
 
 import java.io.File;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.agent.event.ProcessEventChannel;
@@ -19,6 +20,7 @@ public class ProcessLauncher {
       String home = System.getProperty("java.home");
       String classPath = configuration.getClassPath();
       String address = configuration.getAddress();
+      Map<String, String> variables = configuration.getVariables();
       int maxMemoryMegabytes = configuration.getMaxMemory();
       int minMemoryMegabytes = configuration.getMinMemory();
       String maxMemory = "-Xmx200m";
@@ -49,6 +51,11 @@ public class ProcessLauncher {
             address,
             String.format("agent-%s%s", sequence, time),
             String.valueOf(port));
+      
+      if(!variables.isEmpty()) {
+         Map<String, String> environment = builder.environment();
+         environment.putAll(variables);
+      }
       builder.redirectErrorStream(true);
       builder.start();
    }
