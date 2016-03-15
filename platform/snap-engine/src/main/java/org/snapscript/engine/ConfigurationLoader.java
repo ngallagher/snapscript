@@ -11,9 +11,12 @@ import org.snapscript.agent.ProcessAgent;
 
 public class ConfigurationLoader {
 
+   private static final String IGNORE_SNAP_CLASS_PATH = "ignore.snap.class.path";
+   private static final String CONFIGURATION_FILE = "project.xml";
+   private static final String JAVA_CLASS_PATH = "java.class.path";
+   private static final String PATH_SEPARATOR = "path.separator";
    private static final int DEFAULT_MAX_MEMORY = 200 * 1024 * 1024;
    private static final int DEFAULT_MIN_MEMORY = 10 * 1024 * 1024;
-   private static final String CONFIGURATION_FILE = "project.xml";
    
    private final ConfigurationFilter filter;
    private final Persister persister;
@@ -30,25 +33,25 @@ public class ConfigurationLoader {
    }
    
    public void load(ProcessConfiguration configuration) {
-      String path = System.getProperty("java.class.path");
-      String separator = System.getProperty("path.separator");
+      String path = System.getProperty(JAVA_CLASS_PATH);
+      String separator = System.getProperty(PATH_SEPARATOR);
       int maxMemory = DEFAULT_MAX_MEMORY;
       int minMemory = DEFAULT_MIN_MEMORY;
       
       try {
          if(file.exists()) {
             ConfigurationSchema specification = persister.read(ConfigurationSchema.class, file);
-            File file = ClassPathScanner.findLocation(ProcessAgent.class); 
             List<String> paths = specification.getPaths();
             StringBuilder builder = new StringBuilder();
             String delimeter = "";
-            
-            if(file.exists()) {
+
+            if(!Boolean.getBoolean(IGNORE_SNAP_CLASS_PATH)) { // should we inject to class path
+               File file = ClassPathScanner.findLocation(ProcessAgent.class); // where is the process agent?
                String normal = file.getCanonicalPath();
                
                System.out.println(normal);
                builder.append(delimeter);
-               builder.append(normal);
+               builder.append(normal); // append to class path
                delimeter = separator;
             }
             for(String entry : paths) {
