@@ -25,7 +25,7 @@ public class ProcessAgent {
       this.port = port;
    }
    
-   public void run() throws Exception {
+   public void start() throws Exception {
       BreakpointMatcher matcher = context.getMatcher();
       SuspendController controller = context.getController();
       TraceInterceptor interceptor = context.getInterceptor();

@@ -1,4 +1,4 @@
-package org.snapscript.engine;
+package org.snapscript.engine.http.loader;
 
 import java.io.File;
 import java.net.URI;

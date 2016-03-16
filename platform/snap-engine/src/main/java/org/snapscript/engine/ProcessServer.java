@@ -15,15 +15,14 @@ public class ProcessServer {
    public void start() {
       try {
          int port = server.start();
-         String resource = String.format("http://localhost:%s/resource", port);
-         String project = String.format("http://localhost:%s/project/default", port);
+         String project = String.format("http://localhost:%s/", port);
          String script = CommandLineArgument.SCRIPT.getValue();
             
          if(script != null) {
             engine.launch(); // start a new process
          }
          System.err.println(project);
-         engine.start(resource);
+         engine.start(port);
       } catch(Exception e) {
          e.printStackTrace();
       }

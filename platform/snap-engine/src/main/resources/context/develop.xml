@@ -8,6 +8,7 @@
 
   <bean id="ProcessManager" class="org.snapscript.engine.ProcessManager">
     <constructor-arg ref="ConfigurationLoader" />
+    <constructor-arg value="${directory}" />
     <constructor-arg value="${agent-port}" />
     <constructor-arg value="${agent-pool}" />
   </bean>
@@ -97,6 +98,19 @@
     <constructor-arg ref="ProcessManager" />
   </bean>
 
+  <bean id="ClassResourceLoader" class="org.snapscript.engine.http.loader.ClassResourceLoader">
+    <constructor-arg value="org.snapscript." />
+  </bean>
+
+  <bean id="ClassLoaderResource" class="org.snapscript.engine.http.loader.ClassLoaderResource">
+    <constructor-arg ref="ClassResourceLoader" />
+  </bean>
+
+  <bean id="RemoteProcessBuilder" class="org.snapscript.engine.http.loader.RemoteProcessBuilder" init-method="create">
+    <constructor-arg ref="ClassResourceLoader" />
+    <constructor-arg value="${directory}" />
+  </bean>
+
   <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">
     <constructor-arg value="Resource could not be found!!" />
     <constructor-arg value="text/plain; charset=UTF-8" />
@@ -107,6 +121,7 @@
   <bean id="ResourceMatcher" class="org.snapscript.engine.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
+        <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
         <entry key="/tree.*" value-ref="ProjectTreeResource" />

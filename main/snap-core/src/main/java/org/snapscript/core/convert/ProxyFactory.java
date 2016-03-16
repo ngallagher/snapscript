@@ -2,9 +2,9 @@ package org.snapscript.core.convert;
 
 import java.lang.reflect.Proxy;
 
+import org.snapscript.core.Any;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
-import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
 
 public class ProxyFactory {
@@ -27,13 +27,7 @@ public class ProxyFactory {
          ScopeProxyHandler handler = new ScopeProxyHandler(wrapper, scope);
          
          if(loader == null) {
-            Thread thread = Thread.currentThread();
-            ClassLoader context = thread.getContextClassLoader();
-            
-            if(context == null) {
-               throw new InternalStateException("Thread context class loader was null");
-            }
-            loader = context;
+            loader = Any.class.getClassLoader();
          }
          return Proxy.newProxyInstance(loader, interfaces, handler);
       }
@@ -47,13 +41,7 @@ public class ProxyFactory {
          FunctionProxyHandler handler = new FunctionProxyHandler(wrapper, context, function);
          
          if(loader == null) {
-            Thread thread = Thread.currentThread();
-            ClassLoader context = thread.getContextClassLoader();
-            
-            if(context == null) {
-               throw new InternalStateException("Thread context class loader was null");
-            }
-            loader = context;
+            loader = Any.class.getClassLoader();
          }
          return Proxy.newProxyInstance(loader, interfaces, handler);
       }

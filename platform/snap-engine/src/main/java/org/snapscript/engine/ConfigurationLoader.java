@@ -7,18 +7,15 @@ import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
-import org.snapscript.agent.ProcessAgent;
 
 public class ConfigurationLoader {
 
-   private static final String IGNORE_SNAP_CLASS_PATH = "ignore.snap.class.path";
    private static final String CONFIGURATION_FILE = "project.xml";
    private static final String JAVA_CLASS_PATH = "java.class.path";
    private static final String PATH_SEPARATOR = "path.separator";
@@ -54,15 +51,6 @@ public class ConfigurationLoader {
             String delimeter = "";
 
             if(dependencies != null) {
-               if(!Boolean.getBoolean(IGNORE_SNAP_CLASS_PATH)) { // should we inject to class path
-                  File file = ClassPathScanner.findLocation(ProcessAgent.class); // where is the process agent?
-                  String normal = file.getCanonicalPath();
-                  
-                  System.out.println(normal);
-                  builder.append(delimeter);
-                  builder.append(normal); // append to class path
-                  delimeter = separator;
-               }
                for(String dependency : dependencies) {
                   List<File> matches = FilePatternScanner.scan(dependency);
                   
@@ -97,7 +85,7 @@ public class ConfigurationLoader {
       } catch(Exception e) {
          throw new IllegalStateException("Could not load " + file, e);
       }
-      configuration.setClassPath(path);
+      configuration.setClassPath("." + separator + path);
    }
 
    @Root

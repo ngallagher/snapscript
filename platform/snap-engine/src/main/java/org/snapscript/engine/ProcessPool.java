@@ -1,5 +1,6 @@
 package org.snapscript.engine;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.ExitEvent;
@@ -38,17 +39,17 @@ public class ProcessPool {
    private final SocketEventServer server;
    private final int capacity;
    
-   public ProcessPool(ProcessConfiguration configuration, int port, int capacity) throws IOException {
-      this(configuration, port, capacity, 2000);
+   public ProcessPool(ProcessConfiguration configuration, File directory, int port, int capacity) throws IOException {
+      this(configuration, directory, port, capacity, 2000);
    }
    
-   public ProcessPool(ProcessConfiguration configuration, int port, int capacity, long frequency) throws IOException {
+   public ProcessPool(ProcessConfiguration configuration, File directory, int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessConnection>>();
       this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
       this.server = new SocketEventServer(interceptor, port);
-      this.launcher = new ProcessLauncher(server);
+      this.launcher = new ProcessLauncher(server, directory);
       this.pinger = new ProcessAgentPinger(frequency);
       this.configuration = configuration;
       this.capacity = capacity;
@@ -90,10 +91,10 @@ public class ProcessPool {
       }
    }
    
-   public void start(String address) { // http://host:port/project
+   public void start(int port) { // http://host:port/project
       try {
          server.start();
-         pinger.start(address);
+         pinger.start(port);
       } catch(Exception e) {
          e.printStackTrace();
       }
@@ -228,19 +229,19 @@ public class ProcessPool {
    
    private class ProcessAgentPinger implements Runnable {
    
-      private final AtomicReference<String> location;
+      private final AtomicInteger listen;
       private final Thread thread;
       private final long frequency;
       
       public ProcessAgentPinger(long frequency) {
-         this.location = new AtomicReference<String>();
+         this.listen = new AtomicInteger();
          this.thread = new Thread(this);
          this.frequency = frequency;
       }
       
-      public void start(String address) {
-         if(location.compareAndSet(null, address)) {
-            configuration.setAddress(address);
+      public void start(int port) {
+         if(listen.compareAndSet(0, port)) {
+            configuration.setPort(port);
             thread.start();
             
          }
@@ -267,9 +268,9 @@ public class ProcessPool {
       
       public boolean launch() {
          try {
-            String address = location.get();
+            int port = listen.get();
 
-            if(address != null) {
+            if(port != 0) {
                launcher.launch(configuration);
                return true;
             }
@@ -282,9 +283,9 @@ public class ProcessPool {
       public boolean kill() {
          try {
             String system = System.getProperty("os.name"); // kill a host agent
-            String address = location.get();
+            int port = listen.get();
 
-            if(address != null) {
+            if(port != 0) {
                BlockingQueue<ProcessConnection> pool = connections.fetch(system);
                ProcessConnection connection = pool.poll();
                

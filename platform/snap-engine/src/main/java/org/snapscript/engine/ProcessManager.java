@@ -1,5 +1,6 @@
 package org.snapscript.engine;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,10 +20,10 @@ public class ProcessManager {
    private final ConfigurationLoader loader;
    private final ProcessPool pool;
 
-   public ProcessManager(ConfigurationLoader loader, int port, int capacity) throws Exception {
+   public ProcessManager(ConfigurationLoader loader, File directory, int port, int capacity) throws Exception {
       this.connections = new ConcurrentHashMap<String, ProcessConnection>();
       this.configuration = new ProcessConfiguration();
-      this.pool = new ProcessPool(configuration, port, capacity);
+      this.pool = new ProcessPool(configuration, directory, port, capacity);
       this.loader = loader;
    }
    
@@ -116,10 +117,10 @@ public class ProcessManager {
       return true;
    }
    
-   public void start(String address) {
+   public void start(int port) {
       loader.load(configuration);
-      configuration.setAddress(address);
-      pool.start(address);
+      configuration.setPort(port);
+      pool.start(port);
    }
    
    public void launch() {

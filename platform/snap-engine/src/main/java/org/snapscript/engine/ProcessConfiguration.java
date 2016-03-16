@@ -10,9 +10,7 @@ public class ProcessConfiguration {
    private Map<String, String> variables;
    private List<String> arguments;
    private String classPath;
-   private String address;
-   private int maxMemory;
-   private int minMemory;
+   private int port;
    
    public ProcessConfiguration() {
       this.variables = new HashMap<String, String>();
@@ -43,28 +41,11 @@ public class ProcessConfiguration {
       this.classPath = classPath;
    }
    
-   public String getAddress() {
-      return address;
+   public int getPort() {
+      return port;
    }
 
-   public void setAddress(String address) {
-      this.address = address;
+   public void setPort(int port) {
+      this.port = port;
    }
-
-   public int getMaxMemory() {
-      return maxMemory;
-   }
-
-   public void setMaxMemory(int maxMemory) {
-      this.maxMemory = maxMemory;
-   }
-
-   public int getMinMemory() {
-      return minMemory;
-   }
-
-   public void setMinMemory(int minMemory) {
-      this.minMemory = minMemory;
-   }
- 
 }
