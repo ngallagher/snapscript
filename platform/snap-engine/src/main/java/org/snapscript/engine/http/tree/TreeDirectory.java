@@ -57,39 +57,41 @@ public class TreeDirectory {
       
       if(folderDepth > 0) {
          if(currentFile.isDirectory()) {
-            builder.append(pathIndent);
-            builder.append("<li id=\"");
-            builder.append(idPrefix);
-            builder.append(id);
-            builder.append("\" title=\"");
-            builder.append(currentPath);
-            
-            if(openPath) {
-               builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"expanded folder\">");
-            } else {
-               builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"folder\">");
-            }
-            builder.append(name);
-            builder.append("\n");
-            
-            File[] list = currentFile.listFiles();
-            if(list != null && list.length > 0) {
-               idPrefix = idPrefix + id + ".";
+            if(!name.startsWith(".")) { // ignore directories starting with "."
                builder.append(pathIndent);
-               builder.append("<ul>\n");
-               for(int i = 0; i < list.length; i++) {
-                  File entry = list[i];
-                  String title = entry.getName();
-                  String nextPath = currentPath + "/" + title;
-                  
-                  if(expandPath == null || !expandPath.startsWith(nextPath)) {
-                     buildTree(builder, entry, expandPath, nextPath, pathIndent + "  ", idPrefix, i + 1, foldersOnly, folderDepth -1,false);
-                  } else {
-                     buildTree(builder, entry, expandPath, nextPath, pathIndent + "  ", idPrefix, i + 1, foldersOnly, folderDepth -1, true);
-                  }
+               builder.append("<li id=\"");
+               builder.append(idPrefix);
+               builder.append(id);
+               builder.append("\" title=\"");
+               builder.append(currentPath);
+               
+               if(openPath) {
+                  builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"expanded folder\">");
+               } else {
+                  builder.append("\" data-icon=\"/img/toolbar/fldr_obj.gif\" class=\"folder\">");
                }
-               builder.append(pathIndent);
-               builder.append("</ul>\n");
+               builder.append(name);
+               builder.append("\n");
+               
+               File[] list = currentFile.listFiles();
+               if(list != null && list.length > 0) {
+                  idPrefix = idPrefix + id + ".";
+                  builder.append(pathIndent);
+                  builder.append("<ul>\n");
+                  for(int i = 0; i < list.length; i++) {
+                     File entry = list[i];
+                     String title = entry.getName();
+                     String nextPath = currentPath + "/" + title;
+                     
+                     if(expandPath == null || !expandPath.startsWith(nextPath)) {
+                        buildTree(builder, entry, expandPath, nextPath, pathIndent + "  ", idPrefix, i + 1, foldersOnly, folderDepth -1,false);
+                     } else {
+                        buildTree(builder, entry, expandPath, nextPath, pathIndent + "  ", idPrefix, i + 1, foldersOnly, folderDepth -1, true);
+                     }
+                  }
+                  builder.append(pathIndent);
+                  builder.append("</ul>\n");
+               }
             }
          } else {
             if(!foldersOnly) {
