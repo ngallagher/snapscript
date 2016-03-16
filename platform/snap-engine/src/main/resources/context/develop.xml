@@ -104,6 +104,7 @@
 
   <bean id="ClassLoaderResource" class="org.snapscript.engine.http.loader.ClassLoaderResource">
     <constructor-arg ref="ClassResourceLoader" />
+    <constructor-arg value="${verbose}" />    
   </bean>
 
   <bean id="RemoteProcessBuilder" class="org.snapscript.engine.http.loader.RemoteProcessBuilder" init-method="create">

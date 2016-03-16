@@ -11,18 +11,28 @@ import org.snapscript.engine.http.resource.Resource;
 public class ClassLoaderResource implements Resource {
    
    private final ClassResourceLoader loader;
+   private final boolean verbose;
    
    public ClassLoaderResource(ClassResourceLoader loader) {
+      this(loader, false);
+   }
+   
+   public ClassLoaderResource(ClassResourceLoader loader, boolean verbose) {
+      this.verbose = verbose;
       this.loader = loader;
    }
 
    @Override
    public void handle(Request request, Response response) throws Throwable {
+      String method = request.getMethod();
       Path path = request.getPath(); // /class/com/example/SomeClass.class
       String normal = path.getPath(1); // /com/example/SomeClass.class
       PrintStream output = response.getPrintStream();
       byte[] data = loader.loadClass(normal); 
       
+      if(verbose) {
+         System.out.println(method + ": " + normal);
+      }
       if(data == null) {
          response.setStatus(Status.NOT_FOUND);
          response.setContentType("text/plain");

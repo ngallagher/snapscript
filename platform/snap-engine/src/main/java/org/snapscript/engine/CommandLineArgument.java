@@ -8,6 +8,7 @@ public enum CommandLineArgument {
    PORT("port", "0", "Port for HTTP connections", "\\d+"),
    MODE("mode", "develop", "Mode to start on", "(develop|debug|run)"),
    DIRECTORY("directory", "work", "Directory used for sources", ".*"),
+   VERBOSE("verbose", "false", "Verbosity of logging", "(true|false)"),
    SCRIPT("script", null, "Script to launch", ".*.snap");
    
    public final String description;

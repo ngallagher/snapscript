@@ -49,7 +49,7 @@ function partition(array, left, right) {
 * @param {number} right Right part of the array which should be processed
 */
 function quicksort(array, left, right) {
-    val mid = partition(array, left, right);
+    var mid = partition(array, left, right);
     if (left < mid - 1) {
         quicksort(array, left, mid - 1);
     }
