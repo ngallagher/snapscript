@@ -18,13 +18,10 @@ public class ClassLoaderResource implements Resource {
 
    @Override
    public void handle(Request request, Response response) throws Throwable {
-      String method = request.getMethod();
       Path path = request.getPath(); // /class/com/example/SomeClass.class
       String normal = path.getPath(1); // /com/example/SomeClass.class
       PrintStream output = response.getPrintStream();
       byte[] data = loader.loadClass(normal); 
-      
-      System.out.println(method + ": " + normal);
       
       if(data == null) {
          response.setStatus(Status.NOT_FOUND);
