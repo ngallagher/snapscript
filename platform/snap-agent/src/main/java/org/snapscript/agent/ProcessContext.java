@@ -11,6 +11,7 @@ import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
+import org.snapscript.core.PackageLinker;
 import org.snapscript.core.TraceInterceptor;
 
 public class ProcessContext {
@@ -39,6 +40,10 @@ public class ProcessContext {
       this.profiler = new ProcessProfiler();
       this.model = new EmptyModel();
       this.process = process;
+   }
+   
+   public PackageLinker getLinker() {
+      return context.getLinker();
    }
    
    public TraceInterceptor getInterceptor() {

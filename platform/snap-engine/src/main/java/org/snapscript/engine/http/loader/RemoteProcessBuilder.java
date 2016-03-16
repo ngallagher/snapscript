@@ -6,7 +6,8 @@ import java.io.OutputStream;
 
 public class RemoteProcessBuilder {
    
-   public static final String CLASS_PATH = "/org/snapscript/engine/http/loader/RemoteProcessLauncher.class";
+   public static final String LAUNCHER_CLASS = "/org/snapscript/engine/http/loader/RemoteProcessLauncher.class";
+   public static final String LOADER_CLASS = "/org/snapscript/engine/http/loader/RemoteClassLoader.class";
    public static final String TEMP_PATH = ".temp";
    
    private final ClassResourceLoader loader;
@@ -17,24 +18,33 @@ public class RemoteProcessBuilder {
       this.loader = loader;
    }
    
-   public void create() {
+   public void create() throws Exception {
+      create(LAUNCHER_CLASS);
+      create(LOADER_CLASS);
+   }
+   
+   private void create(String path) throws Exception {
+      File file = new File(directory, path);
+      
+      if(file.exists()) {
+         file.delete();
+      }
+      byte[] data = loader.loadClass(path);
+      
+      if(data == null) {
+         throw new IllegalStateException("Could not create launcher " + file);
+      }
+      File parent = file.getParentFile();
+      
+      if(!parent.exists()) {
+         parent.mkdirs();
+      }
+      OutputStream stream = new FileOutputStream(file);
+      
       try {
-         File file = new File(directory, CLASS_PATH);
-         
-         if(file.exists()) {
-            file.delete();
-         }
-         byte[] data = loader.loadClass(CLASS_PATH);
-         File parent = file.getParentFile();
-         
-         if(!parent.exists()) {
-            parent.mkdirs();
-         }
-         OutputStream stream = new FileOutputStream(file);
          stream.write(data);
+      } finally {
          stream.close();
-      }catch(Exception e) {
-         e.printStackTrace();
       }
    }
 }

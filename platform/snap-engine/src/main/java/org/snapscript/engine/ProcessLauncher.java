@@ -51,6 +51,7 @@ public class ProcessLauncher {
       command.add(launcher);
       command.add(classes);
       command.add(target);
+      command.add("org.snapscript.");
       command.add(resources);
       command.add(name);
       command.add(port);

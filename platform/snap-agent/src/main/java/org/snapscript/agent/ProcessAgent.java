@@ -34,6 +34,7 @@ public class ProcessAgent {
       String host = root.getHost();
       
       try {
+         SystemValidator validator = new SystemValidator(context);
          ConnectionChecker checker = new ConnectionChecker(process, system);
          RegisterEvent register = new RegisterEvent(process, system);
          ProcessEventReceiver listener = new ProcessEventReceiver(context, checker);
@@ -44,6 +45,7 @@ public class ProcessAgent {
          interceptor.register(profiler);
          interceptor.register(suspender);
          channel.send(register); // send the initial register event
+         validator.validate();
          checker.start();
       } catch (Exception e) {
          e.printStackTrace();

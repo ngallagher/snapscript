@@ -11,14 +11,16 @@ public class RemoteProcessLauncher {
    public static void main(String[] list) throws Exception {
       URI classes = URI.create(list[0]);
       String type = list[1];
-      String[] arguments = Arrays.copyOfRange(list, 2, list.length);
+      String prefix = list[2];
+      String[] arguments = Arrays.copyOfRange(list, 3, list.length);
       
-      start(classes, type, arguments);
+      start(classes, type, prefix, arguments);
    }
    
-   public static void start(URI classes, String name, String[] arguments) throws Exception {
+   public static void start(URI classes, String name, String prefix, String[] arguments) throws Exception {
+      ClassLoader parent = RemoteProcessLauncher.class.getClassLoader();
       URL[] path = new URL[]{classes.toURL()};
-      URLClassLoader loader = new URLClassLoader(path);
+      URLClassLoader loader = new RemoteClassLoader(path, parent, prefix);
       Class type = loader.loadClass(name);
       Method method = type.getDeclaredMethod("main", String[].class);
 
