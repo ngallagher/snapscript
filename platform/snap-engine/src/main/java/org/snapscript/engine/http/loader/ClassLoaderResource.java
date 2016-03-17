@@ -6,19 +6,22 @@ import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.simpleframework.http.Status;
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.engine.http.resource.Resource;
 
 public class ClassLoaderResource implements Resource {
    
    private final ClassResourceLoader loader;
+   private final ConsoleLogger logger;
    private final boolean verbose;
-   
-   public ClassLoaderResource(ClassResourceLoader loader) {
-      this(loader, false);
+
+   public ClassLoaderResource(ClassResourceLoader loader, ConsoleLogger logger) {
+      this(loader, logger, false);
    }
    
-   public ClassLoaderResource(ClassResourceLoader loader, boolean verbose) {
+   public ClassLoaderResource(ClassResourceLoader loader, ConsoleLogger logger, boolean verbose) {
       this.verbose = verbose;
+      this.logger = logger;
       this.loader = loader;
    }
 
@@ -31,7 +34,7 @@ public class ClassLoaderResource implements Resource {
       byte[] data = loader.loadClass(normal); 
       
       if(verbose) {
-         System.out.println(method + ": " + normal);
+         logger.log(method + ": " + normal);
       }
       if(data == null) {
          response.setStatus(Status.NOT_FOUND);

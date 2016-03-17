@@ -1,24 +1,26 @@
 package org.snapscript.agent;
 
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.agent.event.PingEvent;
 import org.snapscript.agent.event.PongEvent;
 import org.snapscript.agent.event.ProcessEventChannel;
+import org.snapscript.common.ThreadBuilder;
 
 public class ConnectionChecker {
 
+   private final ThreadFactory factory;
+   private final HealthChecker checker;
    private final AtomicBoolean active;
    private final AtomicLong update;
-   private final HealthChecker checker;
-   private final Thread thread;
    private final String process;
    private final String system;
    
    public ConnectionChecker(String process, String system) {
       this.checker = new HealthChecker(10000);
-      this.thread = new Thread(checker);
+      this.factory = new ThreadBuilder();
       this.active = new AtomicBoolean();
       this.update = new AtomicLong();
       this.process = process;
@@ -41,6 +43,7 @@ public class ConnectionChecker {
    
    public void start() {
       if(active.compareAndSet(false, true)) {
+         Thread thread = factory.newThread(checker);
          thread.start();
       }
    }

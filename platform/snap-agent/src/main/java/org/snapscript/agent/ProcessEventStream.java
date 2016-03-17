@@ -2,6 +2,7 @@ package org.snapscript.agent;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProcessEventType;
@@ -12,11 +13,13 @@ public class ProcessEventStream extends OutputStream {
 
    private final ProcessEventChannel channel;
    private final ProcessEventType type;
+   private final PrintStream stream;
    private final String process;
    
-   public ProcessEventStream(ProcessEventType type, ProcessEventChannel channel, String process) {
+   public ProcessEventStream(ProcessEventType type, ProcessEventChannel channel, PrintStream stream, String process) {
       this.process = process;
       this.channel = channel;
+      this.stream = stream;
       this.type = type;
    }
    
@@ -33,9 +36,11 @@ public class ProcessEventStream extends OutputStream {
          if(type == ProcessEventType.WRITE_ERROR) {
             WriteErrorEvent event = new WriteErrorEvent(process, octets, offset, length);
             channel.send(event);
+            stream.write(octets, offset, length);
          } else {
             WriteOutputEvent event = new WriteOutputEvent(process, octets, offset, length);
             channel.send(event);
+            stream.write(octets, offset, length);
          }
       }catch(Exception e) {
          throw new IOException("Error sending write event", e);

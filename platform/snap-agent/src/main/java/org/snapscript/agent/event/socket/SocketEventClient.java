@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.BreakpointsEvent;
 import org.snapscript.agent.event.BrowseEvent;
@@ -30,9 +31,11 @@ import org.snapscript.agent.event.WriteOutputEvent;
 public class SocketEventClient {
    
    private final ProcessEventListener listener;
+   private final ConsoleLogger logger;
    
-   public SocketEventClient(ProcessEventListener listener) throws IOException {
+   public SocketEventClient(ProcessEventListener listener, ConsoleLogger logger) throws IOException {
       this.listener = listener;
+      this.logger = logger;
    }
    
    public ProcessEventChannel connect(String host, int port) throws Exception {
@@ -61,12 +64,13 @@ public class SocketEventClient {
       @Override
       public boolean send(ProcessEvent event) throws Exception {
          ProcessEventProducer producer = connection.getProducer();
+         String process = event.getProcess();
          
          try {
             producer.produce(event);
             return true;
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log(process + ": Error sending event", e);
             close();
          }
          return false;
@@ -111,7 +115,7 @@ public class SocketEventClient {
                }
             }
          }catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error processing events", e);
          } finally {
             close();
          }
@@ -122,7 +126,7 @@ public class SocketEventClient {
          try {
             return socket.getLocalPort();
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error getting local port", e);
          }
          return -1;
       }
@@ -135,7 +139,7 @@ public class SocketEventClient {
             }
             socket.close();
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error closing client connection", e);
          }
       }
    }

@@ -9,8 +9,9 @@ import org.simpleframework.http.socket.FrameChannel;
 import org.simpleframework.http.socket.Session;
 import org.simpleframework.http.socket.service.Service;
 import org.simpleframework.transport.Channel;
-import org.snapscript.engine.ProcessManager;
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.engine.ConnectListener;
+import org.snapscript.engine.ProcessManager;
 import org.snapscript.engine.command.CommandController;
 import org.snapscript.engine.command.CommandListener;
 
@@ -19,18 +20,21 @@ public class ProjectScriptService implements Service {
    private final ConnectListener script;
    private final ProjectBuilder builder;
    private final ProcessManager engine;
+   private final ConsoleLogger logger;
    
-   public ProjectScriptService(ProcessManager engine, ConnectListener script, ProjectBuilder builder) {
+   public ProjectScriptService(ProcessManager engine, ConnectListener script, ConsoleLogger logger, ProjectBuilder builder) {
       this.script = script;
       this.builder = builder;
+      this.logger = logger;
       this.engine = engine;
    }  
   
    public void connect(Session connection) {
+      Request request = connection.getRequest();    
+      Path path = request.getPath(); // /connect/<project-name>
+      
       try {
          FrameChannel frameChannel = connection.getChannel();
-         Request request = connection.getRequest();    
-         Path path = request.getPath(); // /connect/<project-name>
          Project project = builder.createProject(path);
          File projectPath = project.getProjectPath();
          String projectName = project.getProjectName();
@@ -40,16 +44,16 @@ public class ProjectScriptService implements Service {
          String name = String.valueOf(port);
          
          try {
-            CommandListener listener = new CommandListener(engine, frameChannel, projectPath, projectName, name);
+            CommandListener listener = new CommandListener(engine, frameChannel, logger, projectPath, projectName);
             CommandController controller = new CommandController(listener);
             
             frameChannel.register(controller);
             script.connect(listener, path); // if there is a script then execute it
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Could not connect " + path, e);
          }
       }catch(Exception e){
-         e.printStackTrace();
+         logger.log("Error connecting " + path, e);
       }
       
    }

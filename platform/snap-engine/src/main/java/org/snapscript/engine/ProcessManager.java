@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.ProcessEventFilter;
 import org.snapscript.agent.event.ProcessEventListener;
 import org.snapscript.agent.event.StepEvent;
@@ -20,10 +21,10 @@ public class ProcessManager {
    private final ConfigurationLoader loader;
    private final ProcessPool pool;
 
-   public ProcessManager(ConfigurationLoader loader, File directory, int port, int capacity) throws Exception {
+   public ProcessManager(ConfigurationLoader loader, ConsoleLogger logger, File directory, int port, int capacity) throws Exception {
       this.connections = new ConcurrentHashMap<String, ProcessConnection>();
       this.configuration = new ProcessConfiguration();
-      this.pool = new ProcessPool(configuration, directory, port, capacity);
+      this.pool = new ProcessPool(configuration, logger, directory, port, capacity);
       this.loader = loader;
    }
    

@@ -8,9 +8,11 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.ExitEvent;
 import org.snapscript.agent.event.PongEvent;
@@ -26,6 +28,7 @@ import org.snapscript.agent.event.WriteOutputEvent;
 import org.snapscript.agent.event.socket.SocketEventServer;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
+import org.snapscript.common.ThreadBuilder;
 
 public class ProcessPool {
 
@@ -37,22 +40,30 @@ public class ProcessPool {
    private final ProcessLauncher launcher;
    private final ProcessAgentPinger pinger;
    private final SocketEventServer server;
+   private final ConsoleManager manager;
+   private final ProcessListener listener;
+   private final ConsoleLogger logger;
+   private final ThreadFactory factory;
    private final int capacity;
    
-   public ProcessPool(ProcessConfiguration configuration, File directory, int port, int capacity) throws IOException {
-      this(configuration, directory, port, capacity, 2000);
+   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, File directory, int port, int capacity) throws IOException {
+      this(configuration, logger, directory, port, capacity, 2000);
    }
    
-   public ProcessPool(ProcessConfiguration configuration, File directory, int port, int capacity, long frequency) throws IOException {
+   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, File directory, int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessConnection>>();
       this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
-      this.server = new SocketEventServer(interceptor, port);
-      this.launcher = new ProcessLauncher(server, directory);
+      this.server = new SocketEventServer(interceptor, logger, port);
+      this.launcher = new ProcessLauncher(server, logger, directory);
       this.pinger = new ProcessAgentPinger(frequency);
+      this.listener = new ProcessListener(logger);
+      this.manager = new ConsoleManager(listener, frequency);
+      this.factory = new ThreadBuilder();
       this.configuration = configuration;
       this.capacity = capacity;
+      this.logger = logger;
    }
    
    public ProcessConnection acquire(String system) {
@@ -70,7 +81,7 @@ public class ProcessPool {
          running.offer(connection);
          return connection;
       }catch(Exception e){
-         e.printStackTrace();
+         logger.log("Could not acquire process for '" +system+ "'", e);
       }
       return null;
    }
@@ -79,7 +90,7 @@ public class ProcessPool {
       try {
          listeners.add(listener);
       }catch(Exception e){
-         e.printStackTrace();
+         logger.log("Could not register process listener", e);
       }
    }
    
@@ -87,16 +98,17 @@ public class ProcessPool {
       try {
          listeners.remove(listener);
       }catch(Exception e){
-         e.printStackTrace();
+         logger.log("Could not remove process listener", e);
       }
    }
    
    public void start(int port) { // http://host:port/project
       try {
+         manager.start();
          server.start();
          pinger.start(port);
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Could not start pool on port " + port, e);
       }
    }
    
@@ -104,7 +116,7 @@ public class ProcessPool {
       try {
          pinger.launch();
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Could not launch process", e);
       }
    }
    
@@ -120,7 +132,7 @@ public class ProcessPool {
       public void onRegister(ProcessEventChannel channel, RegisterEvent event) throws Exception {
          String process = event.getProcess();
          String system = event.getSystem();
-         ProcessConnection connection = new ProcessConnection(channel, process);
+         ProcessConnection connection = new ProcessConnection(channel, logger, process);
          BlockingQueue<ProcessConnection> pool = connections.fetch(system);
          
          if(pool == null) {
@@ -132,11 +144,13 @@ public class ProcessPool {
       
       @Override
       public void onExit(ProcessEventChannel channel, ExitEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onExit(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing exit event", e);
                listeners.remove(listener);
             }
          }
@@ -144,11 +158,13 @@ public class ProcessPool {
       
       @Override
       public void onWriteError(ProcessEventChannel channel, WriteErrorEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onWriteError(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing write error event", e);
                listeners.remove(listener);
             }
          }
@@ -156,11 +172,13 @@ public class ProcessPool {
       
       @Override
       public void onWriteOutput(ProcessEventChannel channel, WriteOutputEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onWriteOutput(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing write output event", e);
                listeners.remove(listener);
             }
          }
@@ -168,11 +186,13 @@ public class ProcessPool {
       
       @Override
       public void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onSyntaxError(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing syntax error event", e);
                listeners.remove(listener);
             }
          }
@@ -180,11 +200,13 @@ public class ProcessPool {
       
       @Override
       public void onBegin(ProcessEventChannel channel, BeginEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onBegin(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing begin event", e);
                listeners.remove(listener);
             }
          }
@@ -192,11 +214,13 @@ public class ProcessPool {
       
       @Override
       public void onProfile(ProcessEventChannel channel, ProfileEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onProfile(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing profile event", e);
                listeners.remove(listener);
             }
          }
@@ -204,11 +228,13 @@ public class ProcessPool {
       
       @Override
       public void onPong(ProcessEventChannel channel, PongEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onPong(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing pong event", e);
                listeners.remove(listener);
             }
          }
@@ -216,11 +242,13 @@ public class ProcessPool {
       
       @Override
       public void onScope(ProcessEventChannel channel, ScopeEvent event) throws Exception {
+         String process = event.getProcess();
+         
          for(ProcessEventListener listener : listeners) {
             try {
                listener.onScope(channel, event);
             } catch(Exception e) {
-               e.printStackTrace();
+               logger.log(process + ": Exception processing scope event", e);
                listeners.remove(listener);
             }
          }
@@ -230,20 +258,19 @@ public class ProcessPool {
    private class ProcessAgentPinger implements Runnable {
    
       private final AtomicInteger listen;
-      private final Thread thread;
       private final long frequency;
       
       public ProcessAgentPinger(long frequency) {
          this.listen = new AtomicInteger();
-         this.thread = new Thread(this);
          this.frequency = frequency;
       }
       
       public void start(int port) {
          if(listen.compareAndSet(0, port)) {
+            Thread thread = factory.newThread(this);
+            
             configuration.setPort(port);
             thread.start();
-            
          }
       }
       
@@ -261,7 +288,7 @@ public class ProcessPool {
                Thread.sleep(frequency);
                ping();
             }catch(Exception e) {
-               e.printStackTrace();
+               logger.log("Error pinging agents", e);
             }
          }
       }
@@ -271,11 +298,15 @@ public class ProcessPool {
             int port = listen.get();
 
             if(port != 0) {
-               launcher.launch(configuration);
+               ProcessDefinition definition = launcher.launch(configuration);
+               Process process = definition.getProcess();
+               String name = definition.getName();
+               
+               manager.tail(process, name);
                return true;
             }
          }catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error launching agent", e);
          }
          return false;
       }
@@ -295,7 +326,7 @@ public class ProcessPool {
                return true;
             }
          }catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error killing agent", e);
          }
          return false;
       }
@@ -329,6 +360,7 @@ public class ProcessPool {
                if(remaining < 0) {
                   kill(); // kill if pool grows too large
                }
+               logger.log("Ping has " + pool + " active from " + require);
                available.addAll(active);
             }
             active.clear();
@@ -345,7 +377,7 @@ public class ProcessPool {
             }
             running.addAll(active);
          }catch(Exception e){
-            e.printStackTrace();
+            logger.log("Error pinging agents", e);
          }
       }
    }

@@ -7,8 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.BreakpointsEvent;
 import org.snapscript.agent.event.BrowseEvent;
 import org.snapscript.agent.event.ExecuteEvent;
@@ -24,22 +27,26 @@ import org.snapscript.agent.event.ProcessEventProducer;
 import org.snapscript.agent.event.ProfileEvent;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.agent.event.BeginEvent;
 import org.snapscript.agent.event.StepEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
 import org.snapscript.agent.event.WriteOutputEvent;
+import org.snapscript.common.ThreadBuilder;
 
 public class SocketEventServer implements ProcessEventChannel {
 
    private final Map<String, ProcessEventChannel> receivers;
    private final ProcessEventListener listener;
    private final SocketAcceptor acceptor;
+   private final ConsoleLogger logger;
+   private final ThreadFactory factory;
    
-   public SocketEventServer(ProcessEventListener listener, int port) throws IOException {
+   public SocketEventServer(ProcessEventListener listener, ConsoleLogger logger, int port) throws IOException {
       this.receivers = new ConcurrentHashMap<String, ProcessEventChannel>();
       this.acceptor = new SocketAcceptor(port);
+      this.factory = new ThreadBuilder();
       this.listener = listener;
+      this.logger = logger;
    }
    
    @Override
@@ -70,11 +77,9 @@ public class SocketEventServer implements ProcessEventChannel {
    private class SocketAcceptor implements Runnable {
       
       private final ServerSocket server;
-      private final Thread thread;
       
       public SocketAcceptor(int port) throws IOException {
          this.server = new ServerSocket(port);
-         this.thread = new Thread(this);
       }
       
       @Override
@@ -82,7 +87,7 @@ public class SocketEventServer implements ProcessEventChannel {
          try {
             int port = server.getLocalPort();
             
-            System.err.println("agent-port="+port);
+            logger.log("agent-port="+port);
             
             while(true) {
                Socket socket = server.accept();
@@ -99,7 +104,7 @@ public class SocketEventServer implements ProcessEventChannel {
                }
             }
          }catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error listening for connections", e);
          }
       }
       
@@ -109,9 +114,10 @@ public class SocketEventServer implements ProcessEventChannel {
       
       public void start() {
          try {
+            Thread thread = factory.newThread(this);
             thread.start();
          }catch(Exception e){
-            e.printStackTrace();
+            logger.log("Error starting acceptor", e);
          }
       }
       
@@ -119,20 +125,22 @@ public class SocketEventServer implements ProcessEventChannel {
          try {
             server.close();
          }catch(Exception e){
-            e.printStackTrace();
+            logger.log("Error closing acceptor", e);
          }
       }
    }
    
-   private class SocketConnection extends Thread implements ProcessEventChannel {
+   private class SocketConnection implements ProcessEventChannel, Runnable {
       
       private final ProcessEventConnection connection;
+      private final AtomicBoolean active;
       private final AtomicBoolean open;
       private final Socket socket;
       
       public SocketConnection(Socket socket, InputStream input, OutputStream output) throws IOException {
          this.connection = new ProcessEventConnection(input, output);
          this.open = new AtomicBoolean(true);
+         this.active = new AtomicBoolean();
          this.socket = socket;
       }
       
@@ -145,7 +153,7 @@ public class SocketEventServer implements ProcessEventChannel {
             producer.produce(event);
             return true;
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log(process + ": Error sending event", e);
             receivers.remove(process);
             close();
          }
@@ -194,9 +202,20 @@ public class SocketEventServer implements ProcessEventChannel {
                }
             }
          }catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error listening for events", e);
          }finally {
             close();
+         }
+      }
+      
+      public void start() throws Exception {
+         try {
+            if(active.compareAndSet(false, true)) {
+               Thread thread = factory.newThread(this);
+               thread.start();
+            }
+         }catch(Exception e) {
+            logger.log("Could not start server", e);
          }
       }
       
@@ -205,7 +224,7 @@ public class SocketEventServer implements ProcessEventChannel {
          try {
             return socket.getLocalPort();
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error getting local port", e);
          }
          return -1;
       }
@@ -218,7 +237,7 @@ public class SocketEventServer implements ProcessEventChannel {
             }
             socket.close();
          } catch(Exception e) {
-            e.printStackTrace();
+            logger.log("Error closing socket", e);
          }
       }
    }

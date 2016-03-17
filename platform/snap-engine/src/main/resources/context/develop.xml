@@ -5,9 +5,14 @@
   <bean id="ConfigurationLoader" class="org.snapscript.engine.ConfigurationLoader">
     <constructor-arg value="${directory}" />
   </bean>
+  
+  <bean id="ConsoleLogger" class="org.snapscript.agent.ConsoleLogger">
+    <constructor-arg value="${verbose}" />      
+  </bean>
 
   <bean id="ProcessManager" class="org.snapscript.engine.ProcessManager">
     <constructor-arg ref="ConfigurationLoader" />
+    <constructor-arg ref="ConsoleLogger" />    
     <constructor-arg value="${directory}" />
     <constructor-arg value="${agent-port}" />
     <constructor-arg value="${agent-pool}" />
@@ -95,7 +100,8 @@
   <bean id="ProjectScriptService" class="org.snapscript.engine.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
     <constructor-arg ref="ConnectListener" />
-    <constructor-arg ref="ProcessManager" />
+    <constructor-arg ref="ConsoleLogger" />       
+    <constructor-arg ref="ProcessManager" />  
   </bean>
 
   <bean id="ClassResourceLoader" class="org.snapscript.engine.http.loader.ClassResourceLoader">
@@ -104,7 +110,7 @@
 
   <bean id="ClassLoaderResource" class="org.snapscript.engine.http.loader.ClassLoaderResource">
     <constructor-arg ref="ClassResourceLoader" />
-    <constructor-arg value="${verbose}" />    
+    <constructor-arg ref="ConsoleLogger" />    
   </bean>
 
   <bean id="RemoteProcessBuilder" class="org.snapscript.engine.http.loader.RemoteProcessBuilder" init-method="create">

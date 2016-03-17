@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
 import org.simpleframework.http.socket.FrameChannel;
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.engine.ProcessManager;
 import org.snapscript.engine.http.project.ProjectScriptValidator;
 
@@ -15,25 +16,26 @@ public class CommandListener {
    private final CommandFilter filter;
    private final CommandClient client;
    private final ProcessManager engine;
+   private final ConsoleLogger logger;
    private final String project;
-   private final String name;
    private final File root;
    
-   public CommandListener(ProcessManager engine, FrameChannel channel, File root, String project, String name) {
+   public CommandListener(ProcessManager engine, FrameChannel channel, ConsoleLogger logger, File root, String project) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);
       this.validator = new ProjectScriptValidator();
-      this.project = project;
+      this.logger = logger;
       this.engine = engine;
-      this.name = name;
+      this.project = project;
       this.root = root;
    }
 
    public void onSave(SaveCommand command) {
+      String resource = command.getResource();
+      String source = command.getSource();
+      
       try {
-         String resource = command.getResource();
-         String source = command.getSource();
          //int line = validator.parse(resource, source);
          
          if(!command.isDirectory()) {
@@ -64,14 +66,15 @@ public class CommandListener {
          //   client.sendSyntaxError(resource, line);
          //}
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error saving " + resource, e);
       }
    }
    
    public void onExecute(ExecuteCommand command) {
+      String resource = command.getResource();
+      String source = command.getSource();
+      
       try {
-         String resource = command.getResource();
-         String source = command.getSource();
          int line = validator.parse(resource, source);
          
          if(line == -1) {
@@ -88,13 +91,14 @@ public class CommandListener {
             client.sendSyntaxError(resource, line);
          }
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error executing " + resource, e);
       }
    }
    
    public void onAttach(AttachCommand command) {
+      String process = command.getProcess();
+      
       try {
-         String process = command.getProcess();
          String focus = filter.get();
          
          if(focus == null) { // not focused
@@ -115,25 +119,27 @@ public class CommandListener {
          engine.breakpoints(command, process);
          engine.register(forwarder); // make sure we are registered
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error attaching to process " + process, e);
       }
    }
    
    public void onStep(StepCommand command) {
+      String thread = command.getThread();
+      String focus = filter.get();
+            
       try {
-         String focus = filter.get();
-         
          if(focus != null) {
             engine.step(command, focus);
          }
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error stepping through " + thread +" in process " + focus, e);
       }
    }
    
    public void onDelete(DeleteCommand command) {
+      String resource = command.getResource();
+      
       try {
-         String resource = command.getResource();
          File file = new File(root, "/" + resource);
          
          if(file.exists()) {
@@ -141,52 +147,52 @@ public class CommandListener {
             client.sendReloadTree();
          }
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error deleting " + resource, e);
       }
    }
    
    public void onBreakpoints(BreakpointsCommand command) {
+      String focus = filter.get();
+      
       try {
-         String focus = filter.get();
-         
          if(focus != null) {
             engine.breakpoints(command, focus);
          }
       } catch(Exception e){
-         e.printStackTrace();
+         logger.log("Error setting breakpoints for process " + focus, e);
       }
    }
    
    public void onBrowse(BrowseCommand command) {
+      String focus = filter.get();
+      
       try {
-         String focus = filter.get();
-         
          if(focus != null) {
             engine.browse(command, focus);
          }
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error browsing variables for process " + focus, e);
       }
    }
    
    public void onStop(StopCommand command) {
+      String focus = filter.get();
+      
       try {
-         String focus = filter.get();
-         
          if(focus != null) {
             engine.stop(focus);
             client.sendProcessTerminate(focus);
             filter.clear();
          }
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error stopping process " + focus, e);
       }
    }
    
    public void onPing() {
+      String focus = filter.get();
+      
       try {
-         String focus = filter.get();
-         
          if(focus != null) {
             if(!engine.ping(focus)) {
                client.sendProcessTerminate(focus);
@@ -195,7 +201,7 @@ public class CommandListener {
          }
          engine.register(forwarder); // make sure we are registered
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error pinging process " + focus, e);
       }
    }
    
@@ -204,7 +210,7 @@ public class CommandListener {
          //client.sendProcessTerminate();
          engine.remove(forwarder);
       } catch(Exception e) {
-         e.printStackTrace();
+         logger.log("Error removing listener", e);
       }
    }
 }

@@ -1,6 +1,7 @@
 package org.snapscript.agent;
 
 import java.net.URI;
+import java.util.concurrent.ThreadFactory;
 
 import org.snapscript.agent.debug.BreakpointMatcher;
 import org.snapscript.agent.debug.SuspendController;
@@ -34,11 +35,12 @@ public class ProcessAgent {
       String host = root.getHost();
       
       try {
+         ConsoleLogger logger = new ConsoleLogger();
          SystemValidator validator = new SystemValidator(context);
          ConnectionChecker checker = new ConnectionChecker(process, system);
          RegisterEvent register = new RegisterEvent(process, system);
          ProcessEventReceiver listener = new ProcessEventReceiver(context, checker);
-         SocketEventClient client = new SocketEventClient(listener);
+         SocketEventClient client = new SocketEventClient(listener, logger);
          ProcessEventChannel channel = client.connect(host, port);
          SuspendInterceptor suspender = new SuspendInterceptor(channel, matcher, controller, process);
          

@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.ProcessEventStream;
 import org.snapscript.agent.event.ExitEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
@@ -11,8 +12,6 @@ import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProcessEventType;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
-import org.snapscript.agent.event.socket.SocketEventClient;
-import org.snapscript.agent.event.socket.SocketEventServer;
 
 public class SocketTest extends TestCase {
 
@@ -50,8 +49,9 @@ public class SocketTest extends TestCase {
    }
    
    public void testSocket() throws Exception {
-      SocketEventServer server = new SocketEventServer(new DemoListener("server-listener"), 3344);
-      SocketEventClient client = new SocketEventClient(new DemoListener("client-listener"));
+      ConsoleLogger logger = new ConsoleLogger();
+      SocketEventServer server = new SocketEventServer(new DemoListener("server-listener"), logger, 3344);
+      SocketEventClient client = new SocketEventClient(new DemoListener("client-listener"), logger);
       
       server.start();
       ProcessEventChannel channel = client.connect("localhost", 3344);
@@ -59,7 +59,7 @@ public class SocketTest extends TestCase {
       for(int i = 0; i < 100; i++) {
          channel.send(new RegisterEvent("blah-" + i, System.getProperty("os.name")));
       }
-      ProcessEventStream stream = new ProcessEventStream(ProcessEventType.WRITE_ERROR, channel, "XXX");
+      ProcessEventStream stream = new ProcessEventStream(ProcessEventType.WRITE_ERROR, channel, System.err, "XXX");
       PrintStream printer = new PrintStream(stream, true, "UTF-8");
       printer.println("line-1");
       printer.println("line-2");

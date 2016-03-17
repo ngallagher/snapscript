@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.engine.http.loader.RemoteProcessBuilder;
 import org.snapscript.engine.http.loader.RemoteProcessLauncher;
@@ -13,16 +14,18 @@ import org.snapscript.engine.http.loader.RemoteProcessLauncher;
 public class ProcessLauncher {
    
    private final ProcessEventChannel channel;
+   private final ConsoleLogger logger;
    private final AtomicLong counter;
    private final File directory;
    
-   public ProcessLauncher(ProcessEventChannel channel, File directory) {
+   public ProcessLauncher(ProcessEventChannel channel, ConsoleLogger logger, File directory) {
       this.directory = new File(directory, RemoteProcessBuilder.TEMP_PATH);
       this.counter = new AtomicLong();
       this.channel = channel;
+      this.logger = logger;
    }
 
-   public void launch(ProcessConfiguration configuration) throws Exception {
+   public ProcessDefinition launch(ProcessConfiguration configuration) throws Exception {
       int remote = channel.port();
       long sequence = counter.getAndIncrement();
       long time = System.currentTimeMillis();
@@ -62,9 +65,11 @@ public class ProcessLauncher {
          Map<String, String> environment = builder.environment();
          environment.putAll(variables);
       }
-      System.out.println(command);
+      logger.log(name + ": " +command);
       builder.directory(directory);
       builder.redirectErrorStream(true);
-      builder.start();
+      
+      Process process = builder.start();
+      return new ProcessDefinition(process, name);
    }
 }

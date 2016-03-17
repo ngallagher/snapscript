@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -15,21 +16,15 @@ import java.util.concurrent.TimeoutException;
 public class ThreadPool implements ScheduledExecutorService {
 
    private final ScheduledExecutorService executor;
-
+   private final ThreadFactory factory;
+   
    public ThreadPool() {
       this(1);
    }
-
+   
    public ThreadPool(int threads) {
-      this.executor = Executors.newScheduledThreadPool(threads);
-   }
-
-   public ThreadPool(ThreadFactory factory) {
-      this(factory, 1);
-   }
-
-   public ThreadPool(ThreadFactory factory, int threads) {
-      this.executor = Executors.newScheduledThreadPool(threads, factory);
+      this.factory = new ThreadBuilder();
+      this.executor = new ScheduledThreadPoolExecutor(threads, factory);
    }
 
    @Override
