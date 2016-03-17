@@ -1,0 +1,35 @@
+import io.Goo as Splat; // should module be a type
+import math.stuff.Max;
+import io.Blah;
+import io.Task;
+
+class Foo {
+   var text;
+   new(text){
+      this.text = text;
+   }
+   toString() {
+      return text;
+   }
+}
+
+class Nuh {
+   var foo;
+   new(text){
+      this.foo = new Foo(text);
+   }
+   toString(){
+      return foo.toString();
+   }
+}
+
+var f = new Foo("some text");
+var n = new Nuh("nuh!");
+var b = new Blah();
+
+System.err.println(n);
+System.err.println(f);
+b.test(Max.max(23,44,1));
+new Thread(new Task()).start();
+var res = Splat.fun("xx");
+println(res);

@@ -1,9 +1,0 @@
-var m = 'blah
-
-blah
-blah';
-
-println(m);
-
-println(System.getenv("TEST"));
-println(System.getenv("JAVA_HOME"));

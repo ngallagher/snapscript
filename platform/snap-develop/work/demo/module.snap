@@ -1,0 +1,12 @@
+class X{
+}
+System.err.println(X.class);
+var x=new X();
+var m = x.class;
+var y = m.getModule();
+System.err.println(y==null);
+
+module Y{
+   var x=10;
+}
+println(Y.x);
