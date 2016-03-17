@@ -2,18 +2,22 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ConfigurationLoader" class="org.snapscript.engine.ConfigurationLoader">
+  <bean id="Workspace" class="org.snapscript.engine.Workspace" init-method="create">
     <constructor-arg value="${directory}" />
+  </bean>    
+    
+  <bean id="ConfigurationLoader" class="org.snapscript.engine.ConfigurationLoader">
+    <constructor-arg ref="Workspace" />
   </bean>
-  
+
   <bean id="ConsoleLogger" class="org.snapscript.agent.ConsoleLogger">
-    <constructor-arg value="${verbose}" />      
+    <constructor-arg value="${verbose}" />
   </bean>
 
   <bean id="ProcessManager" class="org.snapscript.engine.ProcessManager">
     <constructor-arg ref="ConfigurationLoader" />
-    <constructor-arg ref="ConsoleLogger" />    
-    <constructor-arg value="${directory}" />
+    <constructor-arg ref="ConsoleLogger" />
+    <constructor-arg ref="Workspace" />
     <constructor-arg value="${agent-port}" />
     <constructor-arg value="${agent-pool}" />
   </bean>
@@ -68,13 +72,9 @@
     <constructor-arg value=".vm" />
   </bean>
 
-  <bean id="ProjectMode" class="org.snapscript.engine.http.project.ProjectMode">
-    <constructor-arg value="${project-mode}" />
-  </bean>
-
   <bean id="ProjectBuilder" class="org.snapscript.engine.http.project.ProjectBuilder">
-    <constructor-arg ref="ProjectMode" />
-    <constructor-arg value="${directory}" />
+    <constructor-arg ref="Workspace" />
+    <constructor-arg value="${project-mode}" />
   </bean>
 
   <bean id="ProjectResource" class="org.snapscript.engine.http.project.ProjectResource">
@@ -83,9 +83,9 @@
   </bean>
 
   <bean id="ProjectOpenDialog" class="org.snapscript.engine.http.project.ProjectOpenDialog">
+    <constructor-arg ref="ProjectBuilder" />      
     <constructor-arg ref="TemplateEngine" />
     <constructor-arg value="start.vm" />
-    <constructor-arg value="${directory}" />
   </bean>
 
   <bean id="ProjectFileResource" class="org.snapscript.engine.http.project.ProjectFileResource">
@@ -100,8 +100,8 @@
   <bean id="ProjectScriptService" class="org.snapscript.engine.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
     <constructor-arg ref="ConnectListener" />
-    <constructor-arg ref="ConsoleLogger" />       
-    <constructor-arg ref="ProcessManager" />  
+    <constructor-arg ref="ConsoleLogger" />
+    <constructor-arg ref="ProcessManager" />
   </bean>
 
   <bean id="ClassResourceLoader" class="org.snapscript.engine.http.loader.ClassResourceLoader">
@@ -110,12 +110,13 @@
 
   <bean id="ClassLoaderResource" class="org.snapscript.engine.http.loader.ClassLoaderResource">
     <constructor-arg ref="ClassResourceLoader" />
-    <constructor-arg ref="ConsoleLogger" />    
+    <constructor-arg ref="ConsoleLogger" />
+    <constructor-arg value="${verbose}" />
   </bean>
 
   <bean id="RemoteProcessBuilder" class="org.snapscript.engine.http.loader.RemoteProcessBuilder" init-method="create">
     <constructor-arg ref="ClassResourceLoader" />
-    <constructor-arg value="${directory}" />
+    <constructor-arg ref="Workspace" />
   </bean>
 
   <bean id="NotFoundResource" class="org.snapscript.engine.http.resource.StringResource">

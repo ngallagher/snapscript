@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import org.snapscript.engine.Workspace;
+
 public class RemoteProcessBuilder {
    
    public static final String LAUNCHER_CLASS = "/org/snapscript/engine/http/loader/RemoteProcessLauncher.class";
@@ -11,10 +13,10 @@ public class RemoteProcessBuilder {
    public static final String TEMP_PATH = ".temp";
    
    private final ClassResourceLoader loader;
-   private final File directory;
+   private final Workspace workspace;
    
-   public RemoteProcessBuilder(ClassResourceLoader loader, File root) {
-      this.directory = new File(root, TEMP_PATH);
+   public RemoteProcessBuilder(ClassResourceLoader loader, Workspace workspace) {
+      this.workspace = workspace;
       this.loader = loader;
    }
    
@@ -24,6 +26,11 @@ public class RemoteProcessBuilder {
    }
    
    private void create(String path) throws Exception {
+      File directory = workspace.create(TEMP_PATH);
+      
+      if(!directory.exists()) {
+         directory.mkdirs();
+      }
       File file = new File(directory, path);
       
       if(file.exists()) {

@@ -16,27 +16,30 @@ import org.simpleframework.xml.util.Entry;
 
 public class ConfigurationLoader {
 
-   private static final String CONFIGURATION_FILE = "project.xml";
+   private static final String CONFIGURATION_FILE = ".project";
    private static final String JAVA_CLASS_PATH = "java.class.path";
    private static final String PATH_SEPARATOR = "path.separator";
    
    private final ConfigurationFilter filter;
    private final Persister persister;
-   private final File file;
+   private final Workspace workspace;
+   private final String name;
    
-   public ConfigurationLoader(File file) {
-      this(file, CONFIGURATION_FILE);
+   public ConfigurationLoader(Workspace workspace) {
+      this(workspace, CONFIGURATION_FILE);
    }
    
-   public ConfigurationLoader(File file, String name) {
+   public ConfigurationLoader(Workspace workspace, String name) {
       this.filter = new ConfigurationFilter();
       this.persister = new Persister(filter);
-      this.file = new File(file, name);
+      this.workspace = workspace;
+      this.name = name;
    }
    
    public void load(ProcessConfiguration configuration) {
       String path = System.getProperty(JAVA_CLASS_PATH);
       String separator = System.getProperty(PATH_SEPARATOR);
+      File file = workspace.create(name);
       
       try {
          StringBuilder builder = new StringBuilder();
@@ -57,7 +60,6 @@ public class ConfigurationLoader {
                   for(File match : matches) {
                      String normal = match.getCanonicalPath();
                      
-                     System.out.println(normal);
                      builder.append(delimeter);
                      builder.append(normal);
                      delimeter = separator;

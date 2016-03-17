@@ -16,11 +16,11 @@ public class ProcessLauncher {
    private final ProcessEventChannel channel;
    private final ConsoleLogger logger;
    private final AtomicLong counter;
-   private final File directory;
+   private final Workspace workspace;
    
-   public ProcessLauncher(ProcessEventChannel channel, ConsoleLogger logger, File directory) {
-      this.directory = new File(directory, RemoteProcessBuilder.TEMP_PATH);
+   public ProcessLauncher(ProcessEventChannel channel, ConsoleLogger logger, Workspace workspace) {
       this.counter = new AtomicLong();
+      this.workspace = workspace;
       this.channel = channel;
       this.logger = logger;
    }
@@ -65,6 +65,8 @@ public class ProcessLauncher {
          Map<String, String> environment = builder.environment();
          environment.putAll(variables);
       }
+      File directory = workspace.create(RemoteProcessBuilder.TEMP_PATH);
+      
       logger.log(name + ": " +command);
       builder.directory(directory);
       builder.redirectErrorStream(true);

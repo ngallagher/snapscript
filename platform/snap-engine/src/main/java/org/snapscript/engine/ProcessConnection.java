@@ -85,6 +85,7 @@ public class ProcessConnection {
    
    public void close() {
       try {
+         logger.log(process + ": Closing connection");
          channel.close();
       } catch (Exception e) {
          logger.log(process + ": Error occured closing channel", e);

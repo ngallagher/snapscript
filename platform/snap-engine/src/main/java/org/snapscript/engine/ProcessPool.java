@@ -46,17 +46,17 @@ public class ProcessPool {
    private final ThreadFactory factory;
    private final int capacity;
    
-   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, File directory, int port, int capacity) throws IOException {
-      this(configuration, logger, directory, port, capacity, 2000);
+   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, Workspace workspace, int port, int capacity) throws IOException {
+      this(configuration, logger, workspace, port, capacity, 2000);
    }
    
-   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, File directory, int port, int capacity, long frequency) throws IOException {
+   public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, Workspace workspace, int port, int capacity, long frequency) throws IOException {
       this.connections = new LeastRecentlyUsedCache<String, BlockingQueue<ProcessConnection>>();
       this.listeners = new CopyOnWriteArraySet<ProcessEventListener>();
       this.running = new LinkedBlockingQueue<ProcessConnection>();
       this.interceptor = new ProcessEventInterceptor(listeners);
       this.server = new SocketEventServer(interceptor, logger, port);
-      this.launcher = new ProcessLauncher(server, logger, directory);
+      this.launcher = new ProcessLauncher(server, logger, workspace);
       this.pinger = new ProcessAgentPinger(frequency);
       this.listener = new ProcessListener(logger);
       this.manager = new ConsoleManager(listener, frequency);
@@ -319,8 +319,11 @@ public class ProcessPool {
             if(port != 0) {
                BlockingQueue<ProcessConnection> pool = connections.fetch(system);
                ProcessConnection connection = pool.poll();
-               
+
                if(connection != null) {
+                  String name = connection.toString();
+                  
+                  logger.log(name + ": Killing process");
                   connection.close();
                }
                return true;

@@ -13,19 +13,20 @@ import org.snapscript.engine.http.resource.template.TemplateModel;
 
 public class ProjectOpenDialog implements Resource {
    
+   private final ProjectBuilder builder;
    private final TemplateEngine engine;
    private final String resource;
-   private final File root;
    
-   public ProjectOpenDialog(TemplateEngine engine, String resource, File root) {
+   public ProjectOpenDialog(ProjectBuilder builder, TemplateEngine engine, String resource) {
+      this.builder = builder;
       this.resource = resource;
       this.engine = engine;
-      this.root = root;
    }
    
    public void handle(Request request, Response response) throws Exception {
       Map<String, Object> map = new HashMap<String, Object>();
       TemplateModel model = new TemplateModel(map);
+      File root = builder.getRoot();
       String name = root.getName();
       map.put("root", name);
       String text = engine.renderTemplate(model, resource);

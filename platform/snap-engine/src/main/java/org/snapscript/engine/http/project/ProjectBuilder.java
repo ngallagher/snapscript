@@ -8,26 +8,26 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.simpleframework.http.Path;
-import org.simpleframework.xml.core.Persister;
+import org.snapscript.engine.Workspace;
 
 public class ProjectBuilder {
    
    private static final String DEFAULT_PROJECT = "default";
-   
+
    private final Map<String, Project> projects;
+   private final Workspace workspace;
    private final ProjectMode mode;
    private final Project single;
-   private final File workPath;
    
-   public ProjectBuilder(ProjectMode mode, File workPath){
+   public ProjectBuilder(Workspace workspace, String mode){
       this.projects = new ConcurrentHashMap<String, Project>();
-      this.single = new Project(workPath, ".", DEFAULT_PROJECT);
-      this.workPath = workPath;
-      this.mode = mode;
+      this.single = new Project(workspace, ".", DEFAULT_PROJECT);
+      this.mode = new ProjectMode(mode);
+      this.workspace = workspace;
    }
    
    public File getRoot() {
-      return workPath;
+      return workspace.create();
    }
    
    public Project createProject(Path path){ // /project/<project-name>/ || /project/default
@@ -37,7 +37,7 @@ public class ProjectBuilder {
          Project project = projects.get(projectName);
          
          if(project == null) {
-            project = new Project(workPath, projectName, projectName);
+            project = new Project(workspace, projectName, projectName);
             projects.put(projectName, project);
          }
          File file = project.getProjectPath();
@@ -53,10 +53,16 @@ public class ProjectBuilder {
    
    private void createDefaultProject(File file) {
       try {
-         File ignore = new File(file, ".gitignore");
+         File directory = file.getCanonicalFile();
+         
+         if(!directory.exists() && !directory.mkdirs()) {
+            throw new IllegalStateException("Could not build project directory " + directory);
+         }
+         File ignore = new File(directory, ".gitignore");
          OutputStream stream = new FileOutputStream(ignore);
          PrintStream print = new PrintStream(stream);
          print.println("/temp/");
+         print.println("/.temp/");         
          print.close();
       }catch(Exception e) {
          e.printStackTrace();

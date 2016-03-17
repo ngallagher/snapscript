@@ -2,20 +2,20 @@ package org.snapscript.engine.http.project;
 
 import java.io.File;
 
+import org.snapscript.engine.Workspace;
+
 public class Project {
    
    private final ProjectFileSystem fileSystem;
-   private final File sourcePath;
-   private final File projectPath;
+   private final Workspace workspace;
    private final String projectName;
    private final String projectDirectory;
 
-   public Project(File rootPath, String projectDirectory, String projectName) {
+   public Project(Workspace workspace, String projectDirectory, String projectName) {
       this.fileSystem = new ProjectFileSystem(this);
-      this.projectPath = new File(rootPath, projectDirectory);
       this.projectDirectory = projectDirectory;
-      this.sourcePath = projectPath;
       this.projectName = projectName;
+      this.workspace = workspace;
    }
 
    public ProjectFileSystem getFileSystem() {
@@ -24,17 +24,17 @@ public class Project {
 
    public File getSourcePath() {
       try {
-         return sourcePath.getCanonicalFile();
+         return workspace.create(projectName);
       } catch (Exception e) {
-         throw new IllegalStateException("Could not get source path for '" + sourcePath + "'");
+         throw new IllegalStateException("Could not get source path for '" + projectName + "'");
       }
    }
 
    public File getProjectPath() {
       try {
-         return projectPath.getCanonicalFile();
+         return workspace.create(projectName);
       } catch (Exception e) {
-         throw new IllegalStateException("Could not get project path for '" + projectPath + "'");
+         throw new IllegalStateException("Could not get project path for '" + projectName + "'");
       }
    }
    
