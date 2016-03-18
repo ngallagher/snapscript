@@ -15,7 +15,7 @@ public class ModuleBody extends Statement {
    
    @Override
    public Result compile(Scope scope) throws Exception {
-      Result last = null;
+      Result last = ResultType.getNormal();
       
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
@@ -25,15 +25,12 @@ public class ModuleBody extends Statement {
          }
          last = result;
       }
-      if(last == null) {
-         return ResultType.getNormal();
-      }
       return last;
    }
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      Result last = null;
+      Result last = ResultType.getNormal();
       
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
@@ -42,9 +39,6 @@ public class ModuleBody extends Statement {
             return result;
          }
          last = result;
-      }
-      if(last == null) {
-         return ResultType.getNormal();
       }
       return last;
    }

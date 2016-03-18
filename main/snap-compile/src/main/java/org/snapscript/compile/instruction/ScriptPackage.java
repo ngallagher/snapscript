@@ -16,7 +16,7 @@ public class ScriptPackage extends Statement {
    
    @Override
    public Result compile(Scope scope) throws Exception {
-      Result last = null;
+      Result last = ResultType.getNormal();
       
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
@@ -25,9 +25,6 @@ public class ScriptPackage extends Statement {
             throw new InternalStateException("Illegal statement");
          }
          last = result;
-      }
-      if(last == null) {
-         return ResultType.getNormal();
       }
       return last;
    }

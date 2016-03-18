@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 
@@ -15,7 +16,7 @@ public class Script extends Statement {
    
    @Override
    public Result compile(Scope scope) throws Exception {
-      Result last = null;
+      Result last = ResultType.getNormal();
       
       for(Statement statement : statements) {
          Result result = statement.compile(scope);
@@ -29,7 +30,7 @@ public class Script extends Statement {
    
    @Override
    public Result execute(Scope scope) throws Exception {
-      Result last = null;
+      Result last = ResultType.getNormal();
       
       for(Statement statement : statements) {
          Result result = statement.execute(scope);
