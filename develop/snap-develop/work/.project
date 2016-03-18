@@ -3,7 +3,7 @@
       <variable name="TEST">${java.home}</variable>
   </environment>    
   <arguments>
-      <argument>-Xms200m</argument>
+      <argument>-Xmx100m</argument>
       <argument>-Xms10m</argument>   
       <argument>-XX:+UnlockCommercialFeatures</argument>
       <argument>-XX:+FlightRecorder</argument>
