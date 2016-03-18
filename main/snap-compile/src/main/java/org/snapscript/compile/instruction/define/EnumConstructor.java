@@ -9,8 +9,8 @@ import org.snapscript.core.Type;
 
 public class EnumConstructor extends ClassConstructor {
 
-   public EnumConstructor(ModifierList modifier, ParameterList parameters, Statement statement) {
-      super(modifier, parameters, statement);
+   public EnumConstructor(ModifierList modifier, ParameterList parameters, Statement body) {
+      super(modifier, parameters, body);
    }
 
    @Override

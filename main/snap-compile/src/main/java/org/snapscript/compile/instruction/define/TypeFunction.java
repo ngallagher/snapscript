@@ -45,7 +45,10 @@ public class TypeFunction implements TypePart {
          list.add(function); // This is VERY STRANGE!!! NEEDED BUT SHOULD NOT BE HERE!!!
       }
       functions.add(function);
-
+      
+      if(body != null) {
+         body.compile(scope);
+      }
       return null; 
    }
 }

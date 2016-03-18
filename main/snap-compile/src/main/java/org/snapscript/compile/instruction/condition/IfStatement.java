@@ -50,6 +50,14 @@ public class IfStatement implements Compilation {
       }
       
       @Override
+      public Result compile(Scope scope) throws Exception {
+         if(negative != null) {
+            negative.compile(scope);
+         }       
+         return positive.compile(scope);
+      }
+      
+      @Override
       public Result execute(Scope scope) throws Exception {
          Value result = condition.evaluate(scope, null);
          Boolean value = result.getBoolean();

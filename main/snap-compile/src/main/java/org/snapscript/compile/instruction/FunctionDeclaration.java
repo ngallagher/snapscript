@@ -16,11 +16,13 @@ public class FunctionDeclaration extends Statement {
    private final ParameterList parameters;
    private final FunctionBuilder builder;
    private final NameExtractor extractor;
+   private final Statement body;
    
-   public FunctionDeclaration(Evaluation identifier, ParameterList parameters, Statement statement){  
+   public FunctionDeclaration(Evaluation identifier, ParameterList parameters, Statement body){  
       this.extractor = new NameExtractor(identifier);
-      this.builder = new FunctionBuilder(statement);
+      this.builder = new FunctionBuilder(body);
       this.parameters = parameters;
+      this.body = body;
    }  
    
    @Override
@@ -32,6 +34,7 @@ public class FunctionDeclaration extends Statement {
       Function function = builder.create(signature, name);
       
       functions.add(function);
+      body.compile(scope);
       
       return ResultType.getNormal(function);
    }

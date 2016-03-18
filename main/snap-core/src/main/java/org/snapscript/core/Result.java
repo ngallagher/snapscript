@@ -2,6 +2,7 @@ package org.snapscript.core;
 
 import static org.snapscript.core.ResultType.BREAK;
 import static org.snapscript.core.ResultType.CONTINUE;
+import static org.snapscript.core.ResultType.DECLARE;
 import static org.snapscript.core.ResultType.NORMAL;
 import static org.snapscript.core.ResultType.RETURN;
 import static org.snapscript.core.ResultType.THROW;
@@ -13,6 +14,7 @@ public class Result {
    public static final Result BREAK_RESULT = new Result(BREAK);
    public static final Result CONTINUE_RESULT = new Result(CONTINUE);
    public static final Result THROW_RESULT = new Result(THROW);
+   public static final Result DECLARE_RESULT = new Result(DECLARE);
    
    private final ResultType type;
    private final Object value;
@@ -26,12 +28,16 @@ public class Result {
       this.type = type;
    }
    
+   public boolean isDeclare() {
+      return type == DECLARE;
+   }
+   
    public boolean isReturn() {
       return type == RETURN;
    }
    
    public boolean isNormal() {
-      return type == NORMAL;
+      return type == NORMAL || type == DECLARE;
    }
    
    public boolean isBreak() {

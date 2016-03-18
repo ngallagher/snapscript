@@ -51,6 +51,11 @@ public class ForInStatement implements Compilation {
          this.collection = collection;
          this.body = body;
       }
+      
+      @Override
+      public Result compile(Scope scope) throws Exception {   
+         return body.compile(scope);
+      }
    
       @Override
       public Result execute(Scope scope) throws Exception { 

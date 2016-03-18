@@ -44,6 +44,11 @@ public class WhileStatement implements Compilation {
       }
       
       @Override
+      public Result compile(Scope scope) throws Exception {   
+         return body.compile(scope);
+      }
+      
+      @Override
       public Result execute(Scope scope) throws Exception {
          while(true) {
             Value result = condition.evaluate(scope, null);

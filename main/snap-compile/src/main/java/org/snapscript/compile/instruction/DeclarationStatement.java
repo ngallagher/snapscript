@@ -42,6 +42,11 @@ public class DeclarationStatement implements Compilation {
       }
       
       @Override
+      public Result compile(Scope scope) throws Exception {
+         return ResultType.getDeclare();
+      }
+      
+      @Override
       public Result execute(Scope scope) throws Exception {
          Value variable = declaration.evaluate(scope, null);              
          Object value = variable.getValue();      

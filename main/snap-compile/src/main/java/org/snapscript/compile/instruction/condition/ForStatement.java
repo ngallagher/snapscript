@@ -52,6 +52,11 @@ public class ForStatement implements Compilation {
       }
       
       @Override
+      public Result compile(Scope scope) throws Exception {   
+         return body.compile(scope);
+      }
+      
+      @Override
       public Result execute(Scope scope) throws Exception {
          Scope compound = scope.getInner();
          

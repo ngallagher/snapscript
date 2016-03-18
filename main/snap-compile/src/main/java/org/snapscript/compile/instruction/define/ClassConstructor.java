@@ -14,14 +14,16 @@ public class ClassConstructor implements TypePart {
    
    private final ConstructorAssembler assembler;
    private final ModifierList list;
-
-   public ClassConstructor(ModifierList list, ParameterList parameters, Statement statement){  
-      this(list, parameters, null, statement);
+   private final Statement body;
+   
+   public ClassConstructor(ModifierList list, ParameterList parameters, Statement body){  
+      this(list, parameters, null, body);
    }  
    
-   public ClassConstructor(ModifierList list, ParameterList parameters, TypePart part, Statement statement){  
-      this.assembler = new ConstructorAssembler(parameters, part, statement);
+   public ClassConstructor(ModifierList list, ParameterList parameters, TypePart part, Statement body){  
+      this.assembler = new ConstructorAssembler(parameters, part, body);
       this.list = list;
+      this.body = body;
    } 
    
    @Override
@@ -36,6 +38,7 @@ public class ClassConstructor implements TypePart {
       List<Function> functions = type.getFunctions();
       
       functions.add(constructor);
+      body.compile(scope);
       
       return null;
    }

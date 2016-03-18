@@ -16,6 +16,14 @@ public class ClosureStatement extends Statement {
       this.evaluation = evaluation;
       this.statement = statement;
    }
+   
+   @Override
+   public Result compile(Scope scope) throws Exception {   
+      if(statement != null) {
+         statement.compile(scope);
+      }
+      return ResultType.getNormal();
+   }
 
    public Result execute(Scope scope) throws Exception {
       if(evaluation != null) {
