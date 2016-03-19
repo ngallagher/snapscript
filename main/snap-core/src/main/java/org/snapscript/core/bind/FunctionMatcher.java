@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.core.EmptyFunction;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Module;
@@ -29,13 +30,13 @@ public class FunctionMatcher {
    private final Function invalid;
    
    public FunctionMatcher(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
-      this.invalid = new Function(null, null, null, null, 0);
       this.instance = new ConcurrentHashMap<Object, Function>();
       this.cache = new ConcurrentHashMap<Object, Function>();
       this.matcher = new ArgumentMatcher(matcher, loader);
       this.builder = new FunctionKeyBuilder(loader);
       this.extractor = new TypeExtractor(loader);
       this.finder = new FunctionPathFinder();
+      this.invalid = new EmptyFunction(null);
       this.stack = stack;
    }
    

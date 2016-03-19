@@ -2,10 +2,8 @@ package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
-import org.snapscript.core.Value;
 
 public class ParameterDeclaration {
    
@@ -43,13 +41,10 @@ public class ParameterDeclaration {
       String name = extractor.extract(scope);
       
       if(constraint != null && name != null) { 
-         Value value = constraint.evaluate(scope, null);  
-         String alias = value.getString();
-         Module module = scope.getModule();
-         Type type = module.getType(alias);
+         Type type = constraint.create(scope);  
          
          if(type == null) {
-            throw new InternalStateException("Constraint '" + alias + "' for '" +name + "' was not imported");
+            throw new InternalStateException("Constraint for '" +name + "' has not been imported");
          }
          return new Parameter(name, type, modifier != null);
       }

@@ -4,6 +4,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -27,7 +28,7 @@ public class MemberFunctionBuilder implements TypeFunctionBuilder {
    @Override
    public Function create(Scope scope, Initializer initializer, Type type){
       Invocation invocation = new InstanceInvocation(signature, body);
-      Function function = new Function(signature, invocation, type, name, modifiers);
+      Function function = new InvocationFunction(signature, invocation, type, name, modifiers);
       
       if(!ModifierType.isAbstract(modifiers)) {
          if(body == null) {

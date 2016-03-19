@@ -7,6 +7,7 @@ import java.util.List;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
@@ -44,7 +45,7 @@ public class FunctionGenerator {
          if(!method.isAccessible()) {
             method.setAccessible(true);
          }
-         return new Function(signature, invocation, type, name, modifiers);
+         return new InvocationFunction(signature, invocation, type, name, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + method, e);
       }

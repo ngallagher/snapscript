@@ -56,13 +56,15 @@ public class TypeCastChecker {
       
       if(Function.class.isInstance(value)) {
          Class real = constraint.getType();
+         Function require = null;
          
          if(real != null) {
-            Function require = finder.find(real);
-            
-            if(require != null) {
-               return comparator.compare((Function)value, require);
-            }
+            require = finder.find(real);
+         } else {
+            require = finder.find(constraint);
+         }
+         if(require != null) {
+            return comparator.compare((Function)value, require);
          }
       }
       return cast(type, constraint);

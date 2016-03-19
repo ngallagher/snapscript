@@ -69,3 +69,4 @@ public class TypeField implements TypePart {
       return declare;
    }
 }
+

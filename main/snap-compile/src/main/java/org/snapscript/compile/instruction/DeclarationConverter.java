@@ -18,7 +18,7 @@ public class DeclarationConverter {
       this.extractor = new ConstraintExtractor(constraint);
    }   
 
-   public Value convert(Scope scope, Object value, String name) throws Exception {
+   public Value convert(Scope scope, Object object, String name) throws Exception {
       Type type = extractor.extract(scope);
       
       if(type != null) {
@@ -26,15 +26,15 @@ public class DeclarationConverter {
          Context context = module.getContext();
          ConstraintMatcher matcher = context.getMatcher();
          ConstraintConverter converter = matcher.match(type);
-         int score = converter.score(value);
+         int score = converter.score(object);
          
          if(score == 0) {
             throw new InternalStateException("Variable '" + name + "' does not match constraint '" + type + "'");
          }
-         if(value != null) {
-            value = converter.convert(value);
+         if(object != null) {
+            object = converter.convert(object);
          }
       }
-      return ValueType.getTransient(value, type);
+      return ValueType.getTransient(object, type);
    }
 }

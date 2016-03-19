@@ -3,9 +3,9 @@ package org.snapscript.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.error.ThreadStack;
-
 import junit.framework.TestCase;
+
+import org.snapscript.core.error.ThreadStack;
 
 public class ThreadStackTest extends TestCase {
 
@@ -63,6 +63,6 @@ public class ThreadStackTest extends TestCase {
       List<String> names = new ArrayList<String>();
       Signature signature = new Signature(names, types);
       
-      stack.before(new Function(signature, null, type, functionName, 11));
+      stack.before(new InvocationFunction(signature, null, type, functionName, 11));
    }
 }

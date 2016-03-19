@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.CompoundStatement;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -29,6 +30,6 @@ public class StaticFunctionBuilder implements TypeFunctionBuilder {
       Statement statement = new CompoundStatement(initialize, body); 
       Invocation invocation = new StaticInvocation(signature, statement, scope);
       
-      return new Function(signature, invocation, type, name, modifiers);
+      return new InvocationFunction(signature, invocation, type, name, modifiers);
    }
 }

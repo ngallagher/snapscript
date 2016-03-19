@@ -1,0 +1,23 @@
+
+
+
+function x(f: (a: String, b)) {
+   prinln("=2");
+   println(f(11,22));
+}
+function x(f: (a: Double, b)) {
+   println("=3");
+   println(f(11,22));
+}
+function x(f: (a, b)) {
+   println("=1");
+   println(f(11,22));
+}
+function x(f: (a)) {
+   println("=4");
+   println(f(113));
+}
+
+x((a,b)->a+b);
+x((a:String, b:String)->"${a}=${b}");
+x((a:Double)->"${a}--");

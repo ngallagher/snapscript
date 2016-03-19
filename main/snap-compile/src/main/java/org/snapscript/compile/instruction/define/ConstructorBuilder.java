@@ -7,6 +7,7 @@ import org.snapscript.compile.instruction.StatementInvocation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
@@ -34,6 +35,6 @@ public class ConstructorBuilder {
       Invocation invocation = new NewInvocation(signature, delegate, construct); 
       Invocation reference = new TypeInvocation(invocation, scope);
       
-      return new Function(signature, reference, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
+      return new InvocationFunction(signature, reference, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
    }
 }

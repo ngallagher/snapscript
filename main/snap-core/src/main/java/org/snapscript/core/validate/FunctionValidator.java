@@ -22,7 +22,7 @@ public class FunctionValidator {
    }
    
    public void validate(Function function) throws Exception {
-      Type type = function.getType();
+      Type type = function.getParent();
       
       if(type == null) {
          throw new InternalStateException("Function '" + function + "' does not have a type");
@@ -31,7 +31,7 @@ public class FunctionValidator {
    }
    
    private void validateModifiers(Function function) throws Exception {
-      Type actual = function.getType();
+      Type actual = function.getParent();
       int modifiers = function.getModifiers();
       
       if(ModifierType.isOverride(modifiers)) {

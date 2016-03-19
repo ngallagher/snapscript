@@ -45,7 +45,7 @@ public class ClosureFunctionFinder {
       return null;
    }
 
-   private Function find(Type type) throws Exception {
+   public Function find(Type type) throws Exception {
       List<Function> functions = type.getFunctions();
       int size = functions.size();
       

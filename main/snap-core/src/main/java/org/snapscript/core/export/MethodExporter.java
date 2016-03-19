@@ -7,6 +7,7 @@ import java.util.List;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -67,7 +68,7 @@ public class MethodExporter {
                names.add("a" + 1);
                types.add(parameter);
             }
-            return new Function(reduced, adapter, null, name, modifiers);
+            return new InvocationFunction(reduced, adapter, null, name, modifiers);
          }
       }
       return null;

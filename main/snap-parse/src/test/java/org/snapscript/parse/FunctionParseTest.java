@@ -1,8 +1,5 @@
 package org.snapscript.parse;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +19,7 @@ public class FunctionParseTest extends TestCase {
       //analyzeScript(tree, 1);
       
       //analyze(tree, "0x01", "number");
+      analyze(tree, "(a,b)", "constraint");
       analyze(tree, "0b01", "number");
       analyze(tree, "(a,b)->{return a+b;}", "closure");
       analyze(tree, "var infinity=Float.POSITIVE_INFINITY;", "statement");

@@ -1,12 +1,12 @@
 package org.snapscript.compile.instruction.define;
 
+import static org.snapscript.core.ModifierType.PUBLIC;
 import static org.snapscript.core.Reserved.ANY_TYPE;
 import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 import static org.snapscript.core.Reserved.METHOD_ARGUMENT;
 import static org.snapscript.core.Reserved.METHOD_EQUALS;
 import static org.snapscript.core.Reserved.METHOD_HASH_CODE;
 import static org.snapscript.core.Reserved.METHOD_TO_STRING;
-import static org.snapscript.core.ModifierType.PUBLIC;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
@@ -59,7 +60,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new HashCodeInvocation();
       
-      return new Function<Object>(signature, invocation, type, METHOD_HASH_CODE, PUBLIC.mask);
+      return new InvocationFunction<Object>(signature, invocation, type, METHOD_HASH_CODE, PUBLIC.mask);
    }
    
    private Function createEquals(Type type) {
@@ -71,7 +72,7 @@ public class AnyDefinition extends Statement {
       types.add(null);
       names.add(METHOD_ARGUMENT);
       
-      return new Function<Object>(signature, invocation, type, METHOD_EQUALS, PUBLIC.mask);
+      return new InvocationFunction<Object>(signature, invocation, type, METHOD_EQUALS, PUBLIC.mask);
    }
    
    private Function createToString(Type type) {
@@ -80,7 +81,7 @@ public class AnyDefinition extends Statement {
       Signature signature = new Signature(names, types);
       Invocation<Object> invocation = new ToStringInvocation();
       
-      return new Function<Object>(signature, invocation, type, METHOD_TO_STRING, PUBLIC.mask);
+      return new InvocationFunction<Object>(signature, invocation, type, METHOD_TO_STRING, PUBLIC.mask);
    }
    
    private static class HashCodeInvocation implements Invocation<Object> {

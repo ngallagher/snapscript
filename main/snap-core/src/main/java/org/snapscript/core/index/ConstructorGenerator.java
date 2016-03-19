@@ -9,6 +9,7 @@ import java.util.List;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
@@ -39,7 +40,7 @@ public class ConstructorGenerator {
          if(!constructor.isAccessible()) {
             constructor.setAccessible(true);
          }
-         return new Function(signature, invocation, type, TYPE_CONSTRUCTOR, modifiers);
+         return new InvocationFunction(signature, invocation, type, TYPE_CONSTRUCTOR, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + constructor, e);
       }
