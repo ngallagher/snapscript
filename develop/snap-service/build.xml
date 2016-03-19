@@ -12,7 +12,7 @@
       </fileset>
     </copy>
         <copy todir="output">
-            <fileset dir="../../platform/snap-graphics/target/classes">
+            <fileset dir="../../develop/snap-graphics/target/classes">
         <include name="**/*.class" />
       </fileset>
     </copy>

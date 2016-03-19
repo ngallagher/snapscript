@@ -21,3 +21,9 @@ assert x ?? z == z;
 assert x ?? z === z;
 assert "test" == "test";
 assert "test" === "test";
+
+function fib(n) {
+    return n < 2 ? 1 : fib(n-1) + fib(n-2);
+}
+assert fib(30)==1346269;
+assert fib(10)==89;
