@@ -45,6 +45,16 @@ public class FunctionConstraintTest extends TestCase {
    "}\n"+     
    "var res = x((a:String)->\"res=${a}\");\n"+
    "println(res);\n";
+   
+   private static final String SOURCE_5=
+   "function x(f: (a: String, b)) {\n"+
+   "   println('x(f: (a: String, b))->' + f(11,22));\n"+
+   "}\n"+
+   "function x(f: (a, b)) {\n"+
+   "   println('x(f: (a, b))->' + f(11,22));\n"+
+   "}\n"+
+   "x((a:String, b:String)->a+'='+b);\n";
+
 
    public void testAnyConstraints() throws Exception {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
@@ -70,6 +80,13 @@ public class FunctionConstraintTest extends TestCase {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile(SOURCE_4);
       System.err.println(SOURCE_4);
+      executable.execute();
+   }   
+   
+   public void testTypeBindingScore() throws Exception {
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      Executable executable = compiler.compile(SOURCE_5);
+      System.err.println(SOURCE_5);
       executable.execute();
    }   
 }

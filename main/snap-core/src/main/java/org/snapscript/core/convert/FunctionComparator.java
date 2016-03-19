@@ -47,23 +47,24 @@ public class FunctionComparator {
       int actualSize = actual.size();
       int requireSize = require.size();
       
-      if(actualSize == requireSize) {
-         int minimum = EXACT;
-         
-         for(int i = 0; i < actualSize; i++) {
-            Type actualType = actual.get(i);
-            Type constraintType = require.get(i);
-            ConstraintConverter converter = matcher.match(constraintType);
-            int score = converter.score(actualType);
+      if(actualSize == requireSize) { 
+         if(actualSize > 0) {
+            int total = 0;
             
-            if(score <= INVALID) { // must check for numbers
-               return INVALID;
+            for(int i = 0; i < actualSize; i++) {
+               Type actualType = actual.get(i);
+               Type constraintType = require.get(i);
+               ConstraintConverter converter = matcher.match(constraintType);
+               int score = converter.score(actualType);
+               
+               if(score <= INVALID) { // must check for numbers
+                  return INVALID;
+               }
+               total += score; // sum for better match
             }
-            if(score < minimum) {
-               minimum = score;
-            }
+            return total;
          }
-         return minimum;
+         return EXACT;
       }
       return INVALID;
    }
