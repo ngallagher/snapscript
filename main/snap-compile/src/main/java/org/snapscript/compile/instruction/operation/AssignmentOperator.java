@@ -59,9 +59,9 @@ public enum AssignmentOperator {
    public static AssignmentOperator resolveOperator(StringToken token) {
       if(token != null) {
          String value = token.getValue();
-         AssignmentOperator[] roperators = AssignmentOperator.values();
+         AssignmentOperator[] operators = AssignmentOperator.values();
          
-         for(AssignmentOperator operator : roperators) {
+         for(AssignmentOperator operator : operators) {
             if(operator.symbol.equals(value)) {
                return operator;
             }

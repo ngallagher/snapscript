@@ -78,7 +78,7 @@ public enum Instruction {
    ARRAY_INDEX(ArrayIndex.class, "array-index"),                
    FUNCTION_INVOCATION(FunctionInvocation.class, "function-invocation"),           
    ARGUMENT_LIST(ArgumentList.class, "argument-list"),     
-   REFERENCE_LIST(ReferenceList.class, "reference-list"),
+   REFERENCE_NAVIGATION(ReferenceNavigation.class, "reference-navigation"),  
    REFERENCE_PART(ReferencePart.class, "reference-part"),
    CALCULATION_LIST(CalculationList.class, "calculation-list"),
    CALCULATION_OPERATOR(CalculationOperator.class, "calculation-operator"),

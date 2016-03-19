@@ -3,7 +3,7 @@ var list = [
    "_id": "56d8892381f1885d1a56a955",
    "index": 0,
    "guid": "8254959b-de2f-40d6-b23e-95f6ef54a66e",
-   "isActive": false,
+   "isActive": false??true,
    "balance": "$3,808.43",
    "picture": "http://placehold.it/32x32",
    "age": 28,
