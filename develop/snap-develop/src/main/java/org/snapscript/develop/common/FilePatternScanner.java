@@ -1,4 +1,4 @@
-package org.snapscript.develop;
+package org.snapscript.develop.common;
 
 import java.io.File;
 import java.util.Collections;
@@ -51,6 +51,7 @@ public class FilePatternScanner {
                   if(list.isEmpty()) {
                      throw new IllegalArgumentException("Could not match file '" + pattern + "'");
                   }
+                  Collections.sort(list);
                   return list;
                }catch(Exception e) {
                   throw new IllegalArgumentException("Could not parse pattern '" +token+ "'", e);

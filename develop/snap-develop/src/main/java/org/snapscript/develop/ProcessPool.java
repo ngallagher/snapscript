@@ -322,7 +322,7 @@ public class ProcessPool {
                if(connection != null) {
                   String name = connection.toString();
                   
-                  logger.log(name + ": Killing process");
+                  logger.debug(name + ": Killing process");
                   connection.close();
                }
                return true;
@@ -334,6 +334,7 @@ public class ProcessPool {
       }
       
       private void ping() {
+         String host = System.getProperty("os.name");
          Set<String> systems = connections.keySet();
          
          try {
@@ -353,18 +354,19 @@ public class ProcessPool {
                      active.add(connection);
                   }
                }
-               int pool = active.size();
-               int remaining = require - pool; 
-               
-               if(remaining > 0) {
-                  launch(); // launch a new process at a time
-               }
-               if(remaining < 0) {
-                  kill(); // kill if pool grows too large
-               }
-               logger.log("Ping has " + pool + " active from " + require);
                available.addAll(active);
             }
+            BlockingQueue<ProcessConnection> available = connections.fetch(host);
+            int pool = available.size();
+            int remaining = require - pool; 
+            
+            if(remaining > 0) {
+               launch(); // launch a new process at a time
+            }
+            if(remaining < 0) {
+               kill(); // kill if pool grows too large
+            }
+            logger.debug("Ping has " + pool + " active from " + require);
             active.clear();
             
             while(!connections.isEmpty()) {

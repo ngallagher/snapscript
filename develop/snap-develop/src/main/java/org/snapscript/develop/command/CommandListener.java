@@ -3,32 +3,40 @@ package org.snapscript.develop.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Set;
 
+import org.simpleframework.http.Path;
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.develop.ProcessManager;
-import org.snapscript.develop.http.project.ProjectScriptValidator;
+import org.snapscript.develop.common.Problem;
+import org.snapscript.develop.common.ProblemFinder;
+import org.snapscript.develop.http.project.ProjectCompiler;
 
 public class CommandListener {
    
-   private final ProjectScriptValidator validator;
    private final CommandEventForwarder forwarder;
+   private final ProjectCompiler compiler;
    private final CommandFilter filter;
    private final CommandClient client;
    private final ProcessManager engine;
    private final ConsoleLogger logger;
+   private final ProblemFinder finder;
    private final String project;
    private final File root;
+   private final Path path;
    
-   public CommandListener(ProcessManager engine, FrameChannel channel, ConsoleLogger logger, File root, String project) {
+   public CommandListener(ProcessManager engine, ProjectCompiler compiler, FrameChannel channel, ConsoleLogger logger, Path path, File root, String project) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);
-      this.validator = new ProjectScriptValidator();
+      this.finder = new ProblemFinder();
+      this.compiler = compiler;
       this.logger = logger;
       this.engine = engine;
       this.project = project;
       this.root = root;
+      this.path = path;
    }
 
    public void onSave(SaveCommand command) {
@@ -75,9 +83,9 @@ public class CommandListener {
       String source = command.getSource();
       
       try {
-         int line = validator.parse(resource, source);
+         Problem problem = finder.parse(project, resource, source);
          
-         if(line == -1) {
+         if(problem == null) {
             File file = new File(root, "/" + resource);
             FileOutputStream out = new FileOutputStream(file);
             OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
@@ -88,7 +96,10 @@ public class CommandListener {
             engine.register(forwarder); // make sure we are registered
             engine.execute(command, filter); 
          } else {
-            client.sendSyntaxError(resource, line);
+            String path = problem.getResource();
+            int line = problem.getLine();
+            
+            client.sendSyntaxError(path, line);
          }
       } catch(Exception e) {
          logger.log("Error executing " + resource, e);
@@ -199,7 +210,15 @@ public class CommandListener {
                filter.clear();
             }
          }
+         Set<Problem> problems = compiler.build(path);
          engine.register(forwarder); // make sure we are registered
+         
+         for(Problem problem : problems) {
+            String path = problem.getResource();
+            int line = problem.getLine();
+            
+            client.sendSyntaxError(path, line);
+         }
       } catch(Exception e) {
          logger.log("Error pinging process " + focus, e);
       }

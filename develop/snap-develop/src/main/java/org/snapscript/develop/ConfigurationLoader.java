@@ -13,6 +13,7 @@ import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
+import org.snapscript.develop.common.FilePatternScanner;
 
 public class ConfigurationLoader {
 

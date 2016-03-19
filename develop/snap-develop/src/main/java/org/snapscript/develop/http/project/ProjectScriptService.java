@@ -17,12 +17,14 @@ import org.snapscript.develop.command.CommandListener;
 
 public class ProjectScriptService implements Service {
    
+   private final ProjectCompiler compiler;
    private final ConnectListener script;
    private final ProjectBuilder builder;
    private final ProcessManager engine;
    private final ConsoleLogger logger;
    
    public ProjectScriptService(ProcessManager engine, ConnectListener script, ConsoleLogger logger, ProjectBuilder builder) {
+      this.compiler = new ProjectCompiler(builder, logger);
       this.script = script;
       this.builder = builder;
       this.logger = logger;
@@ -44,9 +46,9 @@ public class ProjectScriptService implements Service {
          String name = String.valueOf(port);
          
          try {
-            CommandListener listener = new CommandListener(engine, frameChannel, logger, projectPath, projectName);
+            CommandListener listener = new CommandListener(engine, compiler, frameChannel, logger, path, projectPath, projectName);
             CommandController controller = new CommandController(listener);
-            
+
             frameChannel.register(controller);
             script.connect(listener, path); // if there is a script then execute it
          } catch(Exception e) {

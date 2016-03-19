@@ -17,6 +17,18 @@ public class ConsoleLogger {
       this.verbose = verbose;
    }
    
+   public synchronized void debug(String message) {
+      if(verbose) {
+         log(message);
+      }
+   }
+   
+   public synchronized void debug(String message, Throwable cause) {
+      if(verbose) {
+         log(message, cause);
+      }
+   }
+   
    public synchronized void log(String message) {
       long time = System.currentTimeMillis();
       Thread thread = Thread.currentThread();

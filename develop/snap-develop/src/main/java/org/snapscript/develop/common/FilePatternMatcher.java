@@ -1,4 +1,4 @@
-package org.snapscript.develop;
+package org.snapscript.develop.common;
 
 import java.io.File;
 import java.util.ArrayList;

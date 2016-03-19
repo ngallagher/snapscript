@@ -72,7 +72,7 @@ public class ProcessConnection {
          PingEvent event = new PingEvent(process);
          
          if(channel.send(event)) {
-            logger.log(process + ": Ping succeeded");
+            logger.debug(process + ": Ping succeeded");
             return true;
          }
          logger.log(process + ": Ping failed");

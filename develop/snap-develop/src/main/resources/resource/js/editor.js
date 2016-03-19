@@ -255,7 +255,6 @@ function updateEditor(text, resource) {
    editor.setValue(text, 1);
    editor.getSession().setUndoManager(manager); // clear undo history
    clearEditor();
-   clearProblems();
    scrollEditorToTop();
    editorResource = createResourcePath(resource);
    editorMarkers = {};

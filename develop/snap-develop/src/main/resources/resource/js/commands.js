@@ -10,7 +10,6 @@ function newFile() {
             create: true
          });
          clearConsole();
-         clearProblems();
          socket.send("SAVE:" + message);
          updateEditor("", resourceDetails.projectPath);
       }
@@ -28,7 +27,6 @@ function newDirectory() {
             create: true
          });
          clearConsole();
-         clearProblems();
          socket.send("SAVE:" + message);
       }
    });
@@ -50,7 +48,6 @@ function saveFileWithAction(saveCallback, update) {
             create: false
          });
          clearConsole();
-         clearProblems();
          socket.send("SAVE:" + message);
          
          if(update) { // should editor be updated
@@ -69,7 +66,6 @@ function saveFileWithAction(saveCallback, update) {
                create: false
             });
             clearConsole();
-            clearProblems();
             socket.send("SAVE:" + message); 
          
             if(update) { // should the editor be updated?
@@ -79,7 +75,6 @@ function saveFileWithAction(saveCallback, update) {
          });
       } else {
          clearConsole();
-         clearProblems();
          saveCallback();
       }
    }
@@ -96,7 +91,6 @@ function deleteFile(resourceDetails) {
          resource : resourceDetails.filePath
       });
       clearConsole();
-      clearProblems();
       socket.send("DELETE:" + message);
       
       if(editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) { // delete focused file
@@ -112,7 +106,6 @@ function deleteDirectory(resourceDetails) {
          resource : resourceDetails.filePath
       });
       clearConsole();
-      clearProblems();
       socket.send("DELETE:" + message);
    }
 }
