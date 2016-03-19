@@ -39,33 +39,34 @@ public class FunctionComparator {
       Signature requireSignature = require.getSignature();
       List<Type> actualTypes = actualSignature.getTypes();
       List<Type> constraintTypes = requireSignature.getTypes();
+      int actualSize = actualTypes.size();
+      int constraintSize = constraintTypes.size();
       
-      return compare(actualTypes, constraintTypes);
+      if(actualSize == constraintSize) {
+         return compare(actualTypes, constraintTypes);
+      }
+      return INVALID;
    }
    
    private int compare(List<Type> actual, List<Type> require) throws Exception{
       int actualSize = actual.size();
-      int requireSize = require.size();
-      
-      if(actualSize == requireSize) { 
-         if(actualSize > 0) {
-            int total = 0;
+
+      if(actualSize > 0) {
+         int total = 0;
+         
+         for(int i = 0; i < actualSize; i++) {
+            Type actualType = actual.get(i);
+            Type constraintType = require.get(i);
+            ConstraintConverter converter = matcher.match(constraintType);
+            int score = converter.score(actualType);
             
-            for(int i = 0; i < actualSize; i++) {
-               Type actualType = actual.get(i);
-               Type constraintType = require.get(i);
-               ConstraintConverter converter = matcher.match(constraintType);
-               int score = converter.score(actualType);
-               
-               if(score <= INVALID) { // must check for numbers
-                  return INVALID;
-               }
-               total += score; // sum for better match
+            if(score <= INVALID) { // must check for numbers
+               return INVALID;
             }
-            return total;
+            total += score; // sum for better match
          }
-         return EXACT;
+         return total;
       }
-      return INVALID;
+      return EXACT;
    }
 }
