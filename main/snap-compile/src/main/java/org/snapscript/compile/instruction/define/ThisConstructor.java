@@ -25,24 +25,23 @@ public class ThisConstructor implements TypePart {
    @Override
    public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {  
       Statement statement = new StaticBody(initializer, type);
-      Evaluation name = new TypeReference(type);
+      Evaluation name = new TypeValue(type);
       CreateObject evaluation = new CreateObject(name, arguments);
       
       return new ThisInitializer(statement, evaluation);
    }
    
-   private static class TypeReference implements Evaluation {
+   private static class TypeValue implements Evaluation {
       
       private final Type type;
       
-      public TypeReference(Type type) {
+      public TypeValue(Type type) {
          this.type = type;
       }
 
       @Override
       public Value evaluate(Scope scope, Object left) throws Exception {
-         String name = type.getName();
-         return ValueType.getTransient(name);
+         return ValueType.getTransient(type);
       }
    }
 }

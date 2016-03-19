@@ -7,6 +7,37 @@ var y = m.getModule();
 System.err.println(y==null);
 
 module Y{
+   class P {
+      dump(){
+         println("x");
+      }
+   }
    var x=10;
+   var y=22;
+   function dump(){
+      println("${x},${y}");
+   }
 }
 println(Y.x);
+println(Y.y);
+Y.dump();
+
+var p = new Y.P();
+p.dump();
+
+module Blah{
+   class Foo{
+      var a;
+      var b;
+      new(a,b){
+         this.a=a;
+         this.b=b;
+      }
+      toString(){
+         return "${a}=${b}";
+      }
+   }
+}
+var f = new Blah.Foo(1,2);
+println(f);
+

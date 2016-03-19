@@ -5,7 +5,6 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 import java.util.concurrent.Callable;
 
 import org.snapscript.compile.instruction.ArgumentList;
-import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
@@ -19,27 +18,26 @@ import org.snapscript.core.bind.FunctionBinder;
 
 public class CreateObject implements Evaluation {
    
-   private final NameExtractor extractor;
+   private final Evaluation reference;
    private final ArgumentList list;
 
-   public CreateObject(Evaluation type, ArgumentList list) {
-      this.extractor = new NameExtractor(type);
+   public CreateObject(Evaluation reference, ArgumentList list) {
+      this.reference = reference;
       this.list = list;
    }      
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-      String name = extractor.extract(scope);
-      Module module = scope.getModule();
-      Type type = module.getType(name);
-      
-      if(type == null) {
-         throw new InternalStateException("No type found for " + name + " in '" + module + "'"); // class not found
-      }
+      Value value = reference.evaluate(scope, null);
+      Type type = value.getValue();
       Callable<Result> call = bind(scope, type);
            
       if(call == null){
-         throw new InternalStateException("No constructor for " + name);
+         Module module = type.getModule();
+         String resource = module.getName();
+         String name = type.getName();
+         
+         throw new InternalStateException("No constructor for '" + resource + "." + name + "'");
       }
       Result result = call.call();
       Object instance = result.getValue();

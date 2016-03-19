@@ -5,6 +5,7 @@ import org.snapscript.compile.instruction.collection.ArrayIndex;
 import org.snapscript.compile.instruction.collection.Range;
 import org.snapscript.compile.instruction.condition.Choice;
 import org.snapscript.compile.instruction.condition.Comparison;
+import org.snapscript.compile.instruction.condition.ConditionalResult;
 import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
@@ -87,6 +88,7 @@ public enum Instruction {
    CONDITIONAL_LIST(ConditionalList.class, "conditional-list"),
    CONDITIONAL_OPERATOR(ConditionalOperator.class, "conditional-operator"),
    CONDITIONAL_OPERAND(ConditionalOperand.class, "conditional-operand"),   
+   CONDITIONAL_RESULT(ConditionalResult.class, "conditional-result"),      
    POSTFIX_INCREMENT(PostfixIncrement.class, "postfix-increment"),
    POSTFIX_DECREMENT(PostfixDecrement.class, "postfix-decrement"),
    PREFIX_INCREMENT(PrefixIncrement.class, "prefix-increment"),
@@ -95,6 +97,8 @@ public enum Instruction {
    CHOICE(Choice.class, "choice"), 
    NULL_COALESCE(NullCoalesce.class, "null-coalesce"),    
    ASSIGNMENT(Assignment.class, "assignment"),
+   TYPE_REFERENCE(TypeReference.class, "type-reference"),
+   TYPE_REFERENCE_PART(TypeReferencePart.class, "type-reference-part"),   
    CONSTRUCT_ARRAY(ConstructArray.class, "construct-array"),
    CONSTRUCT_LIST(ConstructList.class, "construct-list"),
    CONSTRUCT_OBJECT_ARRAY(ConstructObjectArray.class, "construct-object-array"),

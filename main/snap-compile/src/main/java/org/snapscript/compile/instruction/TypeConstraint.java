@@ -21,7 +21,7 @@ public class TypeConstraint implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       String name = extractor.extract(scope);
       Module module = scope.getModule();
-      Type type = module.addType(name); // XXX is this safe?
+      Type type = module.getType(name); // XXX might need to be addType
       
       if(type == null) {
          throw new InternalStateException("Constraint '" + name +"' has not been imported");

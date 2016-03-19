@@ -21,6 +21,9 @@ public class LexicalAnalyzerTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "(leftIndex < right) && (a[leftIndex] < partionElement)", "conditional");
+      analyze(tree, "Foo", "type-reference-part");
+      analyze(tree, "Foo.Blah", "type-reference");
       analyze(tree, "a.b.c", "reference");
       analyze(tree, "a.func().c", "reference");
       analyze(tree, "a", "reference");

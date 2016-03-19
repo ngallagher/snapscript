@@ -37,20 +37,19 @@ public class ConstructObjectArray implements Compilation {
    private static class CompileResult implements Evaluation {
    
       private final ArrayConverter converter;
-      private final NameExtractor extractor;
       private final Argument[] arguments;
+      private final Evaluation reference;
    
-      public CompileResult(Evaluation type, Argument... arguments) {
-         this.extractor = new NameExtractor(type);
+      public CompileResult(Evaluation reference, Argument... arguments) {
          this.converter = new ArrayConverter();
+         this.reference = reference;
          this.arguments = arguments;
       }      
       
       @Override
       public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-         String name = extractor.extract(scope);
-         Module module = scope.getModule();
-         Type type = module.getType(name);
+         Value value = reference.evaluate(scope, null);
+         Type type = value.getValue();
          Class entry = type.getType();
          
          if(arguments.length > 0) {

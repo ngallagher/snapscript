@@ -42,20 +42,19 @@ public class ConstructArray implements Compilation {
    private static class CompileResult implements Evaluation {
    
       private final ArrayConverter converter;
-      private final NameExtractor extractor;
+      private final Evaluation reference;
       private final ArgumentList list;
       
-      public CompileResult(Evaluation type, ArgumentList list) {
-         this.extractor = new NameExtractor(type);
+      public CompileResult(Evaluation reference, ArgumentList list) {
          this.converter = new ArrayConverter();
+         this.reference = reference;
          this.list = list;
       }      
       
       @Override
       public Value evaluate(Scope scope, Object left) throws Exception { // this is rubbish
-         String name = extractor.extract(scope);
-         Module module = scope.getModule();
-         Type type = module.getType(name);
+         Value value = reference.evaluate(scope, null);
+         Type type = value.getValue();
          Class entry = type.getType();
          
          if(list != null) {

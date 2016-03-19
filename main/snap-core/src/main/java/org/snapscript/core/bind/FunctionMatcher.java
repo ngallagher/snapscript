@@ -114,7 +114,7 @@ public class FunctionMatcher {
       Function function = cache.get(key); // static and module functions
       
       if(function == null) {
-         List<Type> path = finder.findPath(type, name);
+         List<Type> path = finder.findPath(type, name); // should only provide non-abstract methods
          int best = 0;
          
          for(Type entry : path) {
@@ -161,7 +161,7 @@ public class FunctionMatcher {
       Function function = instance.get(key); // all type functions
       
       if(!instance.containsKey(key)) {
-         List<Type> path = finder.findPath(type, name);
+         List<Type> path = finder.findPath(type, name); // should only provide non-abstract methods
          int best = 0;
          
          for(Type entry : path) {
