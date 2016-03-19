@@ -27,7 +27,22 @@ function openTreeFile(resourcePath, afterLoad) {
          
          saveAs(resourceBlob, resourceFile);
       } else {
-         updateEditor(response, resourcePath);
+         if(isEditorChanged()) {
+            var editorData = loadEditor();
+            var editorResource = editorData.resource;
+            var message = "Resource " + editorResource.fileName + " has changed";
+            
+            createConfirmAlert("File Changed", message, "Save", "Ignore", 
+                  function(){
+                     saveFile(); // save the file
+                     updateEditor(response, resourcePath);
+                  },
+                  function(){
+                     updateEditor(response, resourcePath);
+                  });
+         } else {
+            updateEditor(response, resourcePath);
+         }
       }
       afterLoad();
    });

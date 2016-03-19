@@ -62,7 +62,11 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
    }
    w2popup.open({
       title : dialogTitle,
-      body : '<div id="dialogContainer"><div id="dialog"></div></div><div id="dialogFolder">'+dialogExpandPath+'</div><div id="dialogFile" onClick="this.contentEditable=\'true\';"></div>',
+      body : '<div id="dialogContainer">'+
+             '   <div id="dialog"></div>'+
+             '</div>'+
+             '<div id="dialogFolder">'+dialogExpandPath+'</div>'+
+             '<div id="dialogFile" onkeydown="return submitDialog(event);" onclick="this.contentEditable=\'true\';"></div>',
       buttons : '<button id="dialogSave" class="btn">Save</button><button id="dialogCancel" class="btn">Cancel</button>',
       width : 500,
       height : 400,
@@ -131,7 +135,10 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
    };
    w2popup.open({
       title : dialogTitle,
-      body : '<div id="dialogContainerBig"><div id="dialog"></div></div><div id="dialogPath" onClick="this.contentEditable=\'true\';"></div>',
+      body : '<div id="dialogContainerBig">'+
+             '   <div id="dialog"></div>'+
+             '</div>'+
+             '<div id="dialogPath" onkeydown="return submitDialog(event);" onclick="this.contentEditable=\'true\';"></div>',
       buttons : '<button id="dialogSave" class="btn">Open</button>',
       width : 500,
       height : 400,
@@ -171,6 +178,18 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
       }
       $('#dialogPath').html(projectName);
    }, 2);
+}
+
+function submitDialog(e) {
+   var evt = e || window.event
+   // "e" is the standard behavior (FF, Chrome, Safari, Opera),
+   // while "window.event" (or "event") is IE's behavior
+   if ( evt.keyCode === 13 ) {
+      $("#dialogSave").click(); // force the click
+       // Do something
+       // You can disable the form submission this way:
+       return false
+   }
 }
 
 registerModule("dialog", "Dialog module: dialog.js", null, [ "common", "tree" ]);

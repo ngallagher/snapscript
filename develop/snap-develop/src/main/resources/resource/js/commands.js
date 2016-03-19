@@ -35,10 +35,10 @@ function newDirectory() {
 }
 
 function saveFile() {
-   saveFileWithAction(function(){});
+   saveFileWithAction(function(){}, true);
 }
 
-function saveFileWithAction(saveCallback) {
+function saveFileWithAction(saveCallback, update) {
    var editorData = loadEditor();
    if (editorData.resource == null) {
       openTreeDialog(null, false, function(resourceDetails) {
@@ -52,7 +52,10 @@ function saveFileWithAction(saveCallback) {
          clearConsole();
          clearProblems();
          socket.send("SAVE:" + message);
-         updateEditor(editorData.source, resourceDetails.projectPath);
+         
+         if(update) { // should editor be updated
+            updateEditor(editorData.source, resourceDetails.projectPath);
+         }
          saveCallback();
       });
    } else {
@@ -68,7 +71,10 @@ function saveFileWithAction(saveCallback) {
             clearConsole();
             clearProblems();
             socket.send("SAVE:" + message); 
-            updateEditor(editorData.source, resourceDetails.projectPath);
+         
+            if(update) { // should the editor be updated?
+               updateEditor(editorData.source, resourceDetails.projectPath);
+            }
             saveCallback();
          });
       } else {

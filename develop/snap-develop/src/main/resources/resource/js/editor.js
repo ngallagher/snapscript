@@ -249,15 +249,18 @@ function updateEditor(text, resource) {
          v: Date.now() 
       })
    }
+   var manager = new ace.UndoManager();
+
    editor.setReadOnly(false);
    editor.setValue(text, 1);
-   
+   editor.getSession().setUndoManager(manager); // clear undo history
    clearEditor();
    clearProblems();
    scrollEditorToTop();
    editorResource = createResourcePath(resource);
    editorMarkers = {};
    editorText = text;
+   window.location.hash = editorResource.projectPath; // update # anchor
 
    if (resource != null) {
       var breakpoints = editorBreakpoints[editorResource.filePath];
@@ -276,10 +279,13 @@ function updateEditor(text, resource) {
 }
 
 function isEditorChanged() {
-   var editor = ace.edit("editor");
-   var text = editor.getValue();
-
-   return text != editorText;
+   if(editorResource != null) {
+      var editor = ace.edit("editor");
+      var text = editor.getValue();
+   
+      return text != editorText;
+   }
+   return false;
 }
 
 function scrollEditorToTop() {
@@ -324,6 +330,15 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
+   var location = window.location.hash;
+   var hashIndex = location.indexOf('#');
+   
+   if(hashIndex != -1) {
+      var resource = location.substring(hashIndex + 1);
+      var resourceData = createResourcePath(resource);
+      
+      openTreeFile(resourceData.resourcePath, function() {}); // open anchor resource
+   }
    scrollEditorToTop();
    finishedLoading();
 }
