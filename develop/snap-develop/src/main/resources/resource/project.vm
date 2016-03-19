@@ -41,6 +41,7 @@
 <script src="/js/variables.js"></script>
 <script src="/js/dialog.js"></script>
 <script src="/js/common.js"></script>
+<script src="/js/history.js"></script>
 <script src="/js/problem.js"></script>
 <script src="/js/profiler.js"></script>
 <script src="/js/commands.js"></script>

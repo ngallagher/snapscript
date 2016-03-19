@@ -4,7 +4,7 @@ var editorResource = null;
 var editorText = null;
 
 function createEditor() {
-   window.setTimeout(showEditor, 1000);
+   window.setTimeout(showEditor, 100);
 }
 
 function clearEditorHighlights() {
@@ -330,15 +330,6 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
-   var location = window.location.hash;
-   var hashIndex = location.indexOf('#');
-   
-   if(hashIndex != -1) {
-      var resource = location.substring(hashIndex + 1);
-      var resourceData = createResourcePath(resource);
-      
-      openTreeFile(resourceData.resourcePath, function() {}); // open anchor resource
-   }
    scrollEditorToTop();
    finishedLoading();
 }
