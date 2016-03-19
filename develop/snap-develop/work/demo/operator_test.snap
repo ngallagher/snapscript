@@ -1,0 +1,23 @@
+var x = null;
+var y = 11;
+var z = 20;
+
+assert true;
+assert (2**8) == 256; // 256
+assert 2==2;
+assert 2===2;
+assert (2!==2)==false;
+assert 2!==3;
+assert 2**8!==256;
+assert 2**8==256;
+assert null==x; // true
+assert null===x; // true
+assert (null===x??y) == false; // false
+assert 11===x??y; // true
+assert 8%2 == 0; // 0
+assert 7%2 == 1; // 0
+assert x??y==11;
+assert x ?? z == z;
+assert x ?? z === z;
+assert "test" == "test";
+assert "test" === "test";

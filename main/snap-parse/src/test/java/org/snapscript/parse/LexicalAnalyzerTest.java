@@ -21,6 +21,15 @@ public class LexicalAnalyzerTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "assert true;", "assert-statement");
+      analyze(tree, "assert 1==2;", "assert-statement");
+      analyze(tree, "assert 2**8 == 256;", "assert-statement");  
+      analyze(tree, "assert (2!==3);", "assert-statement"); 
+      analyze(tree, "assert false==false;", "assert-statement"); 
+      analyze(tree, "assert false==(false);", "assert-statement");
+      analyze(tree, "assert (false)==(false);", "assert-statement"); 
+      analyze(tree, "(1==2)", "comparison-operand");      
+      analyze(tree, "assert (1==2)==(false);", "assert-statement");  
       analyze(tree, "x", "reference");
       analyze(tree, "map", "reference");
       analyze(tree, "map.get()", "reference");

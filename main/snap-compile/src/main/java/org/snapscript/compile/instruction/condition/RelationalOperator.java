@@ -4,8 +4,31 @@ import org.snapscript.compile.instruction.BooleanValue;
 import org.snapscript.core.Value;
 import org.snapscript.parse.StringToken;
 
-
 public enum RelationalOperator {
+   SAME("==="){
+      @Override
+      public Value operate(Value left, Value right) {
+         Object first = left.getValue();
+         Object second = right.getValue();
+         
+         if(first == second) {
+            return BooleanValue.TRUE;
+         }
+         return BooleanValue.FALSE;
+      }      
+   },   
+   NOT_SAME("!=="){
+      @Override
+      public Value operate(Value left, Value right) {
+         Object first = left.getValue();
+         Object second = right.getValue();
+         
+         if(first != second) {
+            return BooleanValue.TRUE;
+         }
+         return BooleanValue.FALSE;
+      }      
+   },   
    EQUALS("=="){
       @Override
       public Value operate(Value left, Value right) {

@@ -9,9 +9,10 @@ import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
 import org.snapscript.compile.instruction.condition.ForInStatement;
-import org.snapscript.compile.instruction.condition.LoopStatement;
 import org.snapscript.compile.instruction.condition.ForStatement;
 import org.snapscript.compile.instruction.condition.IfStatement;
+import org.snapscript.compile.instruction.condition.LoopStatement;
+import org.snapscript.compile.instruction.condition.NullCoalesce;
 import org.snapscript.compile.instruction.condition.WhileStatement;
 import org.snapscript.compile.instruction.construct.ConstructArray;
 import org.snapscript.compile.instruction.construct.ConstructList;
@@ -92,6 +93,7 @@ public enum Instruction {
    PREFIX_DECREMENT(PrefixDecrement.class, "prefix-decrement"),
    PREFIX_OPERATION(PrefixOperation.class, "prefix-operation"),   
    CHOICE(Choice.class, "choice"), 
+   NULL_COALESCE(NullCoalesce.class, "null-coalesce"),    
    ASSIGNMENT(Assignment.class, "assignment"),
    CONSTRUCT_ARRAY(ConstructArray.class, "construct-array"),
    CONSTRUCT_LIST(ConstructList.class, "construct-list"),
@@ -117,6 +119,7 @@ public enum Instruction {
    BREAK_STATEMENT(BreakStatement.class, "break-statement"),
    CONTINUE_STATEMENT(ContinueStatement.class, "continue-statement"),
    RETURN_STATEMENT(ReturnStatement.class, "return-statement"),      
+   ASSERT_STATEMENT(AssertStatement.class, "assert-statement"),    
    WHILE_STATEMENT(WhileStatement.class, "while-statement"),
    FOR_STATEMENT(ForStatement.class, "for-statement"),
    FOR_IN_STATEMENT(ForInStatement.class, "for-in-statement"),

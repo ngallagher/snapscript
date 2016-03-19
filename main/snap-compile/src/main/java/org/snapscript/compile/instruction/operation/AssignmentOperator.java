@@ -14,6 +14,7 @@ public enum AssignmentOperator {
    EQUAL(NumericOperator.NONE, "="), 
    PLUS_EQUAL(NumericOperator.PLUS, "+="), 
    MINUS_EQUAL(NumericOperator.MINUS, "-="), 
+   POWER_EQUAL(NumericOperator.POWER, "**="),    
    MLTIPLY_EQUAL(NumericOperator.MULTIPLY, "*="), 
    MODULUS_EQUAL(NumericOperator.MODULUS, "%="), 
    DIVIDE_EQUAL(NumericOperator.DIVIDE,"/="),  
