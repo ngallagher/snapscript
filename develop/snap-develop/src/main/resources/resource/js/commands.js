@@ -119,7 +119,7 @@ function runScript() {
          source : editorData.source,
       });
       socket.send("EXECUTE:" + message);
-   });
+   }, true); // save editor
 }
 
 function updateScriptBreakpoints() {
