@@ -35,6 +35,7 @@ public class LexicalAnalyzerTest extends TestCase {
       analyze(tree, "assert false==false;", "assert-statement"); 
       analyze(tree, "assert false==(false);", "assert-statement");
       analyze(tree, "assert (false)==(false);", "assert-statement"); 
+      //analyze(tree, "1==2", "comparison-operand");   
       analyze(tree, "(1==2)", "comparison-operand");      
       analyze(tree, "assert (1==2)==(false);", "assert-statement");  
       analyze(tree, "x", "reference");

@@ -59,7 +59,7 @@ public enum Syntax {
    INCREMENT_DECREMENT_OPERAND("increment-decrement-operand", "<increment-decrement>|'('<increment-decrement>')'"),
    REFERENCE_OPERAND("reference-operand", "<reference>|'('<reference>')'"),
    VALUE_OPERAND("value-operand", "<increment-decrement-operand>|<literal>|<prefix-operand>|<reference-operand>"),
-   COMPARISON_OPERAND("comparison-operand", "<value-operand>|<calculation>|<assignment-operand>|'('<comparison-operand>')'"),
+   COMPARISON_OPERAND("comparison-operand", "<value-operand>|<calculation>|<assignment-operand>|<conditional-result>|'('<comparison-operand>')'"),
    COMPARISON("comparison", "<comparison-operand>?' '<comparison-operator>?' '<comparison-operand>"),
    CONDITIONAL_OPERAND("conditional-operand", "<comparison>|<value-operand>|<assignment-operand>|<boolean>|<conditional-result>|'('<conditional-list>')'"),
    CONDITIONAL_LIST("conditional-list", "<conditional-operand>*(?' '<conditional-operator>?' '<conditional-operand>)"),
