@@ -260,7 +260,7 @@ function updateEditor(text, resource) {
    editorMarkers = {};
    editorText = text;
    window.location.hash = editorResource.projectPath; // update # anchor
-   highlightProblems();
+   highlightProblems(); // higlight problems on this resource
    
    if (resource != null) {
       var breakpoints = editorBreakpoints[editorResource.filePath];
