@@ -170,16 +170,20 @@ public class FunctionMatcher {
             
             for(int i = size - 1; i >= 0; i--) {
                Function next = functions.get(i);
-               String method = next.getName();
+               int modifiers = next.getModifiers();
                
-               if(name.equals(method)) {
-                  Signature signature = next.getSignature();
-                  ArgumentConverter match = matcher.match(signature);
-                  int score = match.score(values);
-   
-                  if(score > best) {
-                     function = next;
-                     best = score;
+               if(!ModifierType.isAbstract(modifiers)) {
+                  String method = next.getName();
+                  
+                  if(name.equals(method)) {
+                     Signature signature = next.getSignature();
+                     ArgumentConverter match = matcher.match(signature);
+                     int score = match.score(values);
+      
+                     if(score > best) {
+                        function = next;
+                        best = score;
+                     }
                   }
                }
             }
