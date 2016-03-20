@@ -13,11 +13,15 @@ function updateEditorFromHistory(){
    if(hashIndex != -1) {
       var resource = location.substring(hashIndex + 1);
       var resourceData = createResourcePath(resource);
+      var editorData = loadEditor();
+      var editorResource = editorData.resource;
       
-      openTreeFile(resourceData.resourcePath, function() {
-         var editor = ace.edit("editor"); // XXX this is the wrong place for this!!
-         editor.setReadOnly(false); // make sure its editable
-      });
+      if(editorResource == null || editorResource.resourcePath != resourceData.resourcePath) { // only if changed
+         openTreeFile(resourceData.resourcePath, function() {
+            var editor = ace.edit("editor"); // XXX this is the wrong place for this!!
+            editor.setReadOnly(false); // make sure its editable
+         });
+      }
    }
 }
 
