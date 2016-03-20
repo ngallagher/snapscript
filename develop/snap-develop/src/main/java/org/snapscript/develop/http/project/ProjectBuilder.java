@@ -30,6 +30,10 @@ public class ProjectBuilder {
       return workspace.create();
    }
    
+   public Project getProject(String name){ 
+      return projects.get(name);
+   }
+   
    public Project createProject(Path path){ // /project/<project-name>/ || /project/default
       if(mode.isMultipleMode()) { // multiple project support
          String projectPrefix = path.getPath(1, 1); // /<project-name>

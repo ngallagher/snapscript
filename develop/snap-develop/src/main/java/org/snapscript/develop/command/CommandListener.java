@@ -218,8 +218,8 @@ public class CommandListener {
                filter.clear();
             }
          }
-         Set<Problem> problems = compiler.build(path);
          engine.register(forwarder); // make sure we are registered
+         Set<Problem> problems = compiler.compileProject(path);
          
          for(Problem problem : problems) {
             String path = problem.getResource();
