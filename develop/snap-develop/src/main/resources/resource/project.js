@@ -216,6 +216,8 @@ function createLayout() {
                var record = grid.get(sel[0]);
                openTreeFile(record.script, function(){}); // open resource
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });
@@ -245,6 +247,8 @@ function createLayout() {
                var record = grid.get(sel[0]);
                toggleExpandVariable(record.path);
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });
@@ -284,6 +288,8 @@ function createLayout() {
                   showEditorLine(record.line);  
                }); 
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });
@@ -314,6 +320,8 @@ function createLayout() {
                   showEditorLine(record.line);  
                }); 
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });
@@ -359,6 +367,8 @@ function createLayout() {
                   });
                }
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });
@@ -413,6 +423,8 @@ function createLayout() {
                   showEditorLine(record.line);  
                });
             }
+            grid.selectNone();
+            grid.refresh();
          }
       }
    });

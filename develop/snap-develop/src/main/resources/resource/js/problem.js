@@ -36,20 +36,25 @@ function clearProblems() {
 	}
 }
 
+function highlightProblems(){
+   var editorData = loadEditor();
+   var editorResource = editorData.resource;
+   
+   if(problemLocation.resourcePath == editorResource.resourcePath) { // highlight error file
+      createEditorHighlight(problemLine, "problemHighlight");
+   }
+}
+
 function updateProblems(socket, type, text) {
 	var problems = w2ui['problems'];
 	var message = JSON.parse(text);
-   var editorData = loadEditor();
-   var editorResource = editorData.resource;
+
    
    problemLine = message.line;
    problemMessage = "<div class='errorDescription'>"+message.description+"</div>";
    problemLocation = createResourcePath(message.resource);
    problemProject = message.project;
-   
-   if(problemLocation.resourcePath == editorResource.resourcePath) { // highlight error file
-      createEditorHighlight(problemLine, "problemHighlight");
-   }
+
 	if(problems != null) {
       problems.records = [{
             recid: 1, // only one problem at a time for now!!!!
@@ -61,6 +66,7 @@ function updateProblems(socket, type, text) {
       }];
    	problems.refresh();
 	}
+	highlightProblems(); // highlight the problems
 }
 
 registerModule("problem", "Problem module: problem.js", registerProblems, ["common", "socket"]);
