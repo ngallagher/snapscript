@@ -120,13 +120,14 @@ public class FileProcessor<T> {
          long last = update.get();
          
          if(file.exists()) {
-            if(last < modified) {
+            if(last <= modified) {
                try {
                   T value = action.execute(reference, file);
                   
                   if(value != null) {
                      results.add(value);
                   }
+                  result.set(value); // cache result
                   update.set(time); // record update
                }catch(Exception e) {
                   referenceBatch.remove(file); // remove file as it caused problem
