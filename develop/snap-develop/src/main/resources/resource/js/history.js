@@ -16,7 +16,7 @@ function updateEditorFromHistory(){
       
       openTreeFile(resourceData.resourcePath, function() {
          var editor = ace.edit("editor"); // XXX this is the wrong place for this!!
-         editor.setReadOnly(true); // make sure its editable
+         editor.setReadOnly(false); // make sure its editable
       });
    }
 }

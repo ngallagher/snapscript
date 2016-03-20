@@ -93,13 +93,14 @@ public class CommandListener {
             encoder.close();
             //client.sendReloadTree();
             
+            client.sendSyntaxError(resource, 0, -1); // clear problem
             engine.register(forwarder); // make sure we are registered
             engine.execute(command, filter); 
          } else {
-            String path = problem.getResource();
             int line = problem.getLine();
+            long time = System.currentTimeMillis();
             
-            client.sendSyntaxError(path, line);
+            client.sendSyntaxError(resource, time, line);
          }
       } catch(Exception e) {
          logger.log("Error executing " + resource, e);
@@ -216,8 +217,8 @@ public class CommandListener {
          for(Problem problem : problems) {
             String path = problem.getResource();
             int line = problem.getLine();
-            
-            client.sendSyntaxError(path, line);
+            long time = System.currentTimeMillis();
+            client.sendSyntaxError(path, time, line);
          }
       } catch(Exception e) {
          logger.log("Error pinging process " + focus, e);

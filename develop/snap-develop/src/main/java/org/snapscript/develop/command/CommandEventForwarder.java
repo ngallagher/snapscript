@@ -71,7 +71,8 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       if(filter.accept(event)) {
          String resource = event.getResource();
          int line = event.getLine();
-         client.sendSyntaxError(resource, line);
+         long time = System.currentTimeMillis();
+         client.sendSyntaxError(resource, time, line);
       }
    }
    

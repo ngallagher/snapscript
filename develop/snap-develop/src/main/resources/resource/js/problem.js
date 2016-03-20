@@ -1,33 +1,62 @@
-var problemLine = -1;
-var problemMessage = null;
-var problemProject = null;
-var problemLocation = null;
+var currentProblems = {};
 
 function registerProblems() {
 	createRoute('PROBLEM', updateProblems);
+   setInterval(refreshProblems, 1000); // refresh the problems systems every 1 second
+}
+
+function refreshProblems() {
+   var timeMillis = currentTime();
+   var activeProblems = {};
+   var expiryCount = 0;
+   
+   for (var currentProblem in currentProblems) {
+      if (currentProblems.hasOwnProperty(currentProblem)) {
+         var problemInfo = currentProblems[currentProblem];
+         
+         if(problemInfo != null) {
+            if(problemInfo.time + 10000 > timeMillis) {
+               activeProblems[currentProblem] = problemInfo;
+            } else {
+               expiryCount++;
+            }
+         }
+      }
+   }
+   currentProblems = activeProblems; // reset refreshed statuses
+   
+   if(expiryCount > 0) {
+      showProblems(); // something expired!
+   }
 }
 
 function showProblems() {
-	var problems = w2ui['problems'];
-	
-	if(problemMessage != null && problems != null) {
-		problems.records = [{ 
-		   recid: 1,
-		   location: "Line " + problemLine, 
-         resource: problemLocation.filePath, // /blah/file.snap 
-         description: problemMessage, 
-         project: problemProject, 
-         script: problemLocation.resourcePath // /resource/<project>/blah/file.snap
-      }];
-		problems.refresh();
-	}
+   var problemRecords = [];
+
+   for (var currentProblem in currentProblems) {
+      if (currentProblems.hasOwnProperty(currentProblem)) {
+         var problemInfo = currentProblems[currentProblem];
+         
+      	if(problemInfo != null) {
+      	   problemRecords.push({ 
+      		   recid: 1,
+      		   location: "Line " + problemInfo.line, 
+               resource: problemInfo.resource.filePath, // /blah/file.snap 
+               description: problemInfo.message, 
+               project: problemInfo.project, 
+               script: problemInfo.resource.resourcePath // /resource/<project>/blah/file.snap
+            });
+      	}
+      }
+   }
+   w2ui['problems'].records = problemRecords;
+   w2ui['problems'].refresh();
 }
 
 function clearProblems() {
 	var problems = w2ui['problems'];
 	
-	problemMessage = null;
-   problemLocation = null;
+	currentProblems = {};
    clearEditorHighlights();
     
 	if(problems != null) {
@@ -40,32 +69,36 @@ function highlightProblems(){
    var editorData = loadEditor();
    var editorResource = editorData.resource;
    
-   if(problemLocation.resourcePath == editorResource.resourcePath) { // highlight error file
-      createEditorHighlight(problemLine, "problemHighlight");
+   if(editorResource != null) {
+      clearEditorHighlights();
+      
+      if (currentProblems.hasOwnProperty(editorResource.resourcePath)) {
+         var problemInfo = currentProblems[editorResource.resourcePath];
+         
+         if(problemInfo != null) {
+            createEditorHighlight(problemInfo.line, "problemHighlight");
+         }
+      }
    }
 }
 
 function updateProblems(socket, type, text) {
 	var problems = w2ui['problems'];
 	var message = JSON.parse(text);
-
-   
-   problemLine = message.line;
-   problemMessage = "<div class='errorDescription'>"+message.description+"</div>";
-   problemLocation = createResourcePath(message.resource);
-   problemProject = message.project;
-
-	if(problems != null) {
-      problems.records = [{
-            recid: 1, // only one problem at a time for now!!!!
-            location: "Line " + problemLine, 
-            resource: problemLocation.filePath, // /blah/file.snap
-            description: problemMessage, 
-            project: problemProject, // <project>
-            script: problemLocation.resourcePath // /resource/<project>/src/blah/file.snap
-      }];
-   	problems.refresh();
+	var resourcePath = createResourcePath(message.resource);
+	var problemInfo = {
+	      line: message.line,
+	      message: "<div class='errorDescription'>"+message.description+"</div>",
+	      resource: resourcePath,
+	      project: message.project,
+	      time: message.time
+	};
+	if(problemInfo.line >= 0) {
+	   currentProblems[resourcePath.resourcePath] = problemInfo;
+	} else {
+	     currentProblems[resourcePath.resourcePath] = null;
 	}
+	showProblems();
 	highlightProblems(); // highlight the problems
 }
 

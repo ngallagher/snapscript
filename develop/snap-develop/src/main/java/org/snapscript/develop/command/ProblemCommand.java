@@ -6,15 +6,17 @@ public class ProblemCommand implements Command {
    private String description;
    private String resource;
    private int line;
+   private long time;
    
    public ProblemCommand() {
       super();
    }
    
-   public ProblemCommand(String project, String description, String resource, int line) {
+   public ProblemCommand(String project, String description, String resource, long time, int line) {
       this.description = description;
       this.resource = resource;
       this.project = project;
+      this.time = time;
       this.line = line;
    }
 
@@ -48,5 +50,13 @@ public class ProblemCommand implements Command {
 
    public void setLine(int line) {
       this.line = line;
+   }
+
+   public long getTime() {
+      return time;
+   }
+
+   public void setTime(long time) {
+      this.time = time;
    }
 } 
