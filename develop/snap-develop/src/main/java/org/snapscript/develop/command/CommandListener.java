@@ -44,12 +44,11 @@ public class CommandListener {
       String source = command.getSource();
       
       try {
-         //int line = validator.parse(resource, source);
-         
          if(!command.isDirectory()) {
+            Problem problem = finder.parse(project, resource, source);
             File file = new File(root, "/" + resource);
             boolean exists = file.exists();
-            
+               
             if(command.isCreate() && exists) {
                client.sendAlert(resource, "Resource " + resource + " already exists");
             } else {
@@ -58,10 +57,18 @@ public class CommandListener {
                encoder.write(source);
                encoder.close();
                
+               if(problem == null) {
+                  client.sendSyntaxError(resource, 0, -1); // clear problem
+               } else {
+                  int line = problem.getLine();
+                  long time = System.currentTimeMillis();
+                  
+                  client.sendSyntaxError(resource, time, line);
+               }
                if(!exists) {
                   client.sendReloadTree();
                }
-            }
+            } 
          } else {
             File file = new File(root, "/"+resource);
             

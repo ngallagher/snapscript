@@ -34,8 +34,7 @@ function openTreeFile(resourcePath, afterLoad) {
             
             createConfirmAlert("File Changed", message, "Save", "Ignore", 
                   function(){
-                     saveFile(); // save the file
-                     updateEditor(response, resourcePath);
+                     saveEditor(true); // save the file
                   },
                   function(){
                      updateEditor(response, resourcePath);

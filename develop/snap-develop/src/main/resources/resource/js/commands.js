@@ -40,42 +40,39 @@ function saveFileWithAction(saveCallback, update) {
    var editorData = loadEditor();
    if (editorData.resource == null) {
       openTreeDialog(null, false, function(resourceDetails) {
-         var message = JSON.stringify({
-            project : document.title,
-            resource : resourceDetails.filePath,
-            source : editorData.source,
-            directory: false,
-            create: false
-         });
-         clearConsole();
-         socket.send("SAVE:" + message);
-         
-         if(update) { // should editor be updated
-            updateEditor(editorData.source, resourceDetails.projectPath);
-         }
+         saveEditor(update);
          saveCallback();
       });
    } else {
       if (isEditorChanged()) {
          openTreeDialog(editorData.resource, true, function(resourceDetails) {
-            var message = JSON.stringify({
-               project : document.title,
-               resource : resourceDetails.filePath,
-               source : editorData.source,
-               directory: false,
-               create: false
-            });
-            clearConsole();
-            socket.send("SAVE:" + message); 
-         
-            if(update) { // should the editor be updated?
-               updateEditor(editorData.source, resourceDetails.projectPath);
-            }
+            saveEditor(update);
             saveCallback();
          });
       } else {
          clearConsole();
          saveCallback();
+      }
+   }
+}
+
+function saveEditor(update) {
+   var editorData = loadEditor();
+   var editorPath = editorData.resource;
+   
+   if(editorPath != null) {
+      var message = JSON.stringify({
+         project : document.title,
+         resource : editorPath.filePath,
+         source : editorData.source,
+         directory: false,
+         create: false
+      });
+      clearConsole();
+      socket.send("SAVE:" + message);
+      
+      if(update) { // should the editor be updated?
+         updateEditor(editorData.source, editorPath.projectPath);
       }
    }
 }
