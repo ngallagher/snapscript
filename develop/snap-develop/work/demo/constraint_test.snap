@@ -40,3 +40,30 @@ const bb = new Byte[10][10];
 
 func(b);
 func(bb);
+
+module Shape {
+   class Point{
+      var x;
+      var y;
+      new(x,y){
+         this.x=x;
+         this.y=y;
+      }
+      toString(){
+         return "${x},${y}";
+      }
+   }
+}
+
+var p1 = new Shape.Point[1];
+var p2: Shape.Point[] = new Shape.Point[1];
+
+p1[0] = new Shape.Point(22,345);
+p2[0] = new Shape.Point(44,55);
+
+func(p1);
+func(p2);
+
+function func(x: Shape.Point[]){
+   println(x[0]);
+}
