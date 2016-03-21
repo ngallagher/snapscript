@@ -7,6 +7,21 @@ function registerConsole() {
 	createRoute('PRINT_ERROR', updateConsole);
 	createRoute('PRINT_OUTPUT', updateConsole);
 	setInterval(showConsole, 200); // prevents reflow overload when console is busy
+	setTimeout(updateConsoleTheme, 400); // update the theme
+}
+
+function updateConsoleTheme() {
+   $.get("/theme/"+document.title, function(response) {
+      //var theme = JSON.parse(response);
+      if(response.font != null && response.size != null) {
+         var consoleElement = document.getElementById("console");
+         
+         if(consoleElement != null) {
+            consoleElement.style.fontFamily = response.font;
+            consoleElement.style.fontSize = response.size;
+         }
+      }
+   });
 }
 
 function clearConsole() {

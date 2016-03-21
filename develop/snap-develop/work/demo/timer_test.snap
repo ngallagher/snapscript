@@ -1,4 +1,4 @@
-function time(name, func){
+function time(name, func: ()){
    var s = System.currentTimeMillis();
    func();
    var f = System.currentTimeMillis();

@@ -96,6 +96,11 @@
   <bean id="ProjectTreeResource" class="org.snapscript.develop.http.project.ProjectTreeResource">
     <constructor-arg ref="ProjectBuilder" />
   </bean>
+  
+  <bean id="ProjectThemeResource" class="org.snapscript.develop.http.project.ProjectThemeResource">
+    <constructor-arg ref="ProjectBuilder" />
+    <constructor-arg value=".theme" />    
+  </bean>  
 
   <bean id="ProjectScriptService" class="org.snapscript.develop.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
@@ -131,6 +136,7 @@
       <map>
         <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
+        <entry key="/theme/.*" value-ref="ProjectThemeResource" />        
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
         <entry key="/tree.*" value-ref="ProjectTreeResource" />
         <entry key="/" value-ref="ProjectOpenDialog" />

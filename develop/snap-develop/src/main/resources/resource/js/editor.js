@@ -330,6 +330,15 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
+   $.get("/theme/"+document.title, function(response) {
+      //var theme = JSON.parse(response);
+      if(response.font != null && response.size != null) {
+         editor.setOptions({
+            fontFamily: response.font,
+            fontSize: response.size
+          });
+      }
+   });
    scrollEditorToTop();
    finishedLoading();
 }

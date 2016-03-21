@@ -34,7 +34,7 @@ module Blah{
          this.b=b;
       }
       toString(){
-         return "${a}=${b}";
+         return "${a}=${b} ${Y.x}";
       }
    }
 }
