@@ -20,3 +20,25 @@ for(var i = 0; i < 10; i++){
 for(var i in arr){
    System.err.println(i.x);
 }
+
+module Blah{
+   class Foo{
+      var x;
+      new(x){
+         this.x=x;
+      }
+   }
+}
+
+var f = new Blah.Foo(11);
+println(f.x);
+
+func(f);
+func("f");
+
+function func(x: Blah.Foo){
+   println(x.x);
+}
+function func(x: String){
+   println("x");
+}

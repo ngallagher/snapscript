@@ -1,0 +1,42 @@
+var xx: []=[2,33,33];
+var yy = {22,22,1,1};
+var zz = {a: 'A', b: 'B', c: 'C'};
+
+println(xx);
+println(yy);
+println(zz);
+
+function func(x: []){
+   println(x);
+}
+
+function func(x: {}){
+   println(x);
+}
+
+function func(x: {:}){
+   println(x);
+}
+
+func((a,b)->println("${a},${b}"));
+func((a:String,b:String)->println("a=${a} b=${b}"));
+
+function func(x: (a,b)) {
+   x(11,22);
+}
+
+println(["a", "b", "c"]);
+
+function func(x: Byte[]){
+   println(x);
+}
+
+function func(x: Byte[][]){
+   println(x);
+}
+
+const b = new Byte[10];
+const bb = new Byte[10][10];
+
+func(b);
+func(bb);

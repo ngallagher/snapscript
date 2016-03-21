@@ -19,3 +19,4 @@ var typed: Integer = 22;
 var coercion: Double = "1.234e2"; // coercion to double
 var instance = new HashMap(); // instantiate object
 var type = coercion.class; // reference type
+

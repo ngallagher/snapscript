@@ -20,13 +20,17 @@ public class TypeReferencePart implements Evaluation {
       Module module = scope.getModule();
       
       if(left != null) {
-         module = (Module)left;
+         return create(scope, (Module)left);
       }
+      return create(scope, module);
+   }
+   
+   private Value create(Scope scope, Module module) throws Exception {
       String name = extractor.extract(scope);
-      Object result = module.getType(name);
+      Object result = module.getModule(name);
       
       if(result == null) {
-         result = module.getModule(name);
+         result = module.addType(name); // we need to add
       }
       if(result == null) {
          throw new InternalStateException("No type found for " + name + " in '" + module + "'"); // class not found

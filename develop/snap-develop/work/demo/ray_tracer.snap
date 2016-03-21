@@ -113,8 +113,8 @@ class Light {
 }
 
 class Scene {
-    var things;//: Thing[];
-    var lights;//: Light[];
+    var things: [];
+    var lights: [];
     var camera: Camera;
     new(things, lights, camera: Camera) {
       this.things = things;

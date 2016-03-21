@@ -1,6 +1,6 @@
 var consoleWindow = [];
 var consoleUpdate = false;
-var consoleCapacity = 1000;
+var consoleCapacity = 2000;
 var consoleProcess = null;
 
 function registerConsole() {
