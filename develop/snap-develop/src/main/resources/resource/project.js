@@ -131,7 +131,7 @@ function createProjectLayout() {
                                "          <option value='11px'>&nbsp;11px</option>\n"+
                                "          <option value='12px'>&nbsp;12px</option>\n"+
                                "          <option value='13px'>&nbsp;13px</option>\n"+
-                               "          <option value='14px' selected='selected'>14px</option>\n"+
+                               "          <option value='14px' selected='selected'>&nbsp;14px</option>\n"+
                                "          <option value='16px'>&nbsp;16px</option>\n"+
                                "          <option value='18px'>&nbsp;18px</option>\n"+
                                "          <option value='20px'>&nbsp;20px</option>\n"+
