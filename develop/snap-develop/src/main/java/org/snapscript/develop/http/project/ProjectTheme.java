@@ -14,7 +14,7 @@ public class ProjectTheme {
 
    @Path("font")
    @Attribute
-   private String size;
+   private int size;
    
    public ProjectTheme(){
       super();
@@ -28,11 +28,11 @@ public class ProjectTheme {
       this.font = font;
    }
 
-   public String getSize() {
+   public int getSize() {
       return size;
    }
 
-   public void setSize(String size) {
+   public void setSize(int size) {
       this.size = size;
    } 
 }

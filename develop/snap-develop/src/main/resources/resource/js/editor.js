@@ -330,17 +330,17 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
-   $.get("/theme/"+document.title, function(response) {
-      //var theme = JSON.parse(response);
-      if(response.font != null && response.size != null) {
-         editor.setOptions({
-            fontFamily: response.font,
-            fontSize: response.size
-          });
-      }
-   });
+   changeFont(); // project.js update font
    scrollEditorToTop();
    finishedLoading();
+}
+
+function updateEditorFont(fontFamily, fontSize) {
+   var editor = ace.edit("editor");
+   editor.setOptions({
+      fontFamily: fontFamily,
+      fontSize: fontSize
+    });
 }
 
 registerModule("editor", "Editor module: editor.js", createEditor, [ "common", "spinner", "tree" ]);

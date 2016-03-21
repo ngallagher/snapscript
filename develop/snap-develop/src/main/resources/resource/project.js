@@ -1,5 +1,33 @@
 
-function createLayout() {
+function changeProjectFont(){
+   var fontFamily = document.getElementById("fontFamily");
+   var fontSize = document.getElementById("fontSize");
+   
+   if(fontSize != null && fontFamily != null) {
+      updateEditorFont(fontFamily.options[fontFamily.selectedIndex].value, fontSize.options[fontSize.selectedIndex].value);
+      updateConsoleFont(fontFamily.options[fontFamily.selectedIndex].value, fontSize.options[fontSize.selectedIndex].value);
+   }
+}
+
+function applyProjectTheme() {
+   $.get("/theme/"+document.title, function(theme) {
+      //var theme = JSON.parse(response);
+      if(theme.font != null && theme.size != null) {
+         var fontFamily = document.getElementById("fontFamily");
+         var fontSize = document.getElementById("fontSize");
+         
+         if(fontSize != null) {
+            fontSize.value = theme.size + "px";
+         }
+         if(fontFamily != null) {
+            fontFamily.value = theme.font;
+         }   
+      }
+      changeProjectFont();// update the fonts
+   });
+}
+
+function createProjectLayout() {
 
    // $('#topLayer').spin({ lines: 10, length: 30, width: 20, radius: 40 });
 
@@ -85,8 +113,32 @@ function createLayout() {
                      size : '20%',
                      style : pstyle,
                      content : "<div class='toolbarTop'>"+
-                               "<table border='0' width='100%'>"+
+                               "<table border='0' width='100%' cellpadding='0'>"+
                                "<tr>"+
+                               "   <td>"+
+                               "        <select class='styledSelect' id='fontFamily' size='1' onchange='changeProjectFont()'>\n"+
+                               "          <option value='Consolas' selected='selected'>&nbsp;Consolas</option>\n"+
+                               "          <option value='Lucida Console'>&nbsp;Lucida Console</option>\n"+
+                               "          <option value='Courier New'>&nbsp;Courier New</option>\n"+       
+                               "          <option value='Courier'>&nbsp;Courier</option>\n"+                                 
+                               "          <option value='Monaco'>&nbsp;Monaco</option>\n"+                               
+                               "        </select>\n"+
+                               "   </td>"+  
+                               "   <td>&nbsp;&nbsp;</td>"+  
+                               "   <td>"+
+                               "        <select class='styledSelect' id='fontSize' size='1' onchange='changeProjectFont()'>\n"+
+                               "          <option value='10px'>&nbsp;10px</option>\n"+
+                               "          <option value='11px'>&nbsp;11px</option>\n"+
+                               "          <option value='12px'>&nbsp;12px</option>\n"+
+                               "          <option value='13px'>&nbsp;13px</option>\n"+
+                               "          <option value='14px' selected='selected'>14px</option>\n"+
+                               "          <option value='16px'>&nbsp;16px</option>\n"+
+                               "          <option value='18px'>&nbsp;18px</option>\n"+
+                               "          <option value='20px'>&nbsp;20px</option>\n"+
+                               "          <option value='24px'>&nbsp;24px</option>\n"+
+                               "        </select>\n"+
+                               "   </td>"+
+                               "   <td>&nbsp;&nbsp;</td>"+  
                                "   <td width='100%'><div id='toolbarSwitch' onclick='switchProject()'></div></td>"+     
                                "   <td>&nbsp;&nbsp;</td>"+                                 
                                "</tr>"+
@@ -436,6 +488,7 @@ function createLayout() {
    w2ui['tabLayout'].content('main', "<div style='overflow: scroll; font-family: monospace;' id='console'></div>");
    w2ui['tabLayout'].refresh();
 
+   setTimeout(applyProjectTheme, 500); // update theme
 }
 
-registerModule("project", "Project module: project.js", createLayout, [ "common", "socket", "console", "problem", "editor", "spinner", "tree", "threads" ]);
+registerModule("project", "Project module: project.js", createProjectLayout, [ "common", "socket", "console", "problem", "editor", "spinner", "tree", "threads" ]);
