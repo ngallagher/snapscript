@@ -5,6 +5,7 @@ var editorText = null;
 
 function createEditor() {
    window.setTimeout(showEditor, 100);
+   createTermination(clearEditorHighlights); // create callback
 }
 
 function clearEditorHighlights() {
@@ -66,6 +67,17 @@ function clearEditorBreakpoint(row) {
       session.clearBreakpoint(row);
    }
    showEditorBreakpoints();
+}
+
+function clearEditorBreakpoints() {
+   var editor = ace.edit("editor");
+   var session = editor.getSession();
+   var breakpoints = session.getBreakpoints();
+   var remove = false;
+
+   for ( var breakpoint in breakpoints) {
+      session.clearBreakpoint(row);
+   }
 }
 
 function showEditorBreakpoints() {

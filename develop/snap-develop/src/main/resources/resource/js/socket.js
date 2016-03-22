@@ -145,23 +145,26 @@ function createRoute(code, method, failure) {
    
    if(route == null) {
       routes[code] = method; // perhaps we should disconnect on every new route?
+      createTermination(failure);
+      refreshSocket();
+   }
+}
+
+function createTermination(failure) {
+   if(failure != null) {
+      var length = disconnect.length;
+      var exists = false;
       
-      if(failure != null) {
-         var length = disconnect.length;
-         var exists = false;
+      for(var i = 0; i < length; i++) {
+         var callback = disconnect[i];
          
-         for(var i = 0; i < length; i++) {
-            var callback = disconnect[i];
-            
-            if(callback == failure) { // don't add twice
-               exists = true;
-            }
-         }
-         if(!exists) {
-            disconnect.push(failure); // add a disconnect listener
+         if(callback == failure) { // don't add twice
+            exists = true;
          }
       }
-      refreshSocket();
+      if(!exists) {
+         disconnect.push(failure); // add a disconnect listener
+      }
    }
 }
 
