@@ -10,7 +10,7 @@ function changeProjectFont(){
 }
 
 function applyProjectTheme() {
-   $.get("/theme/"+document.title, function(theme) {
+   $.get("/display/"+document.title, function(theme) {
       //var theme = JSON.parse(response);
       if(theme.font != null && theme.size != null) {
          var fontFamily = document.getElementById("fontFamily");

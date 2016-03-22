@@ -13,14 +13,14 @@ import org.snapscript.develop.http.resource.Resource;
 import com.google.gson.Gson;
 
 // /theme/<project>
-public class ProjectThemeResource implements Resource {
+public class ProjectDisplayResource implements Resource {
    
    private final ProjectBuilder builder;
    private final Persister persister;
    private final String theme;
    private final Gson gson;
    
-   public ProjectThemeResource(ProjectBuilder builder, String theme) {
+   public ProjectDisplayResource(ProjectBuilder builder, String theme) {
       this.persister = new Persister();
       this.gson = new Gson();
       this.builder = builder;
@@ -40,7 +40,7 @@ public class ProjectThemeResource implements Resource {
          file = new File(root, theme);
       }
       if(file.exists()) {
-         ProjectTheme theme = persister.read(ProjectTheme.class, file);
+         ProjectDisplay theme = persister.read(ProjectDisplay.class, file);
          String text = gson.toJson(theme);
          response.setStatus(Status.OK);
          response.setContentType("application/json");

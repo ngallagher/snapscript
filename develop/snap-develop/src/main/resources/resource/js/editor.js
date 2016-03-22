@@ -195,6 +195,15 @@ function loadEditor() {
    };
 }
 
+function encodeEditorText(text, resource) {
+   var token = resource.toLowerCase();
+   
+   if(token.endsWith(".json")) {
+      return JSON.stringify(text, null, 3);
+   }
+   return text;
+}
+
 function resolveEditorMode(resource) {
    var token = resource.toLowerCase();
    
@@ -242,6 +251,7 @@ function updateEditor(text, resource) {
    var session = editor.getSession();
    var currentMode = session.getMode();
    var actualMode = resolveEditorMode(resource);
+   var text = encodeEditorText(text, resource); // change JSON conversion
    
    if(actualMode != currentMode) {
       session.setMode({
@@ -330,7 +340,7 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
-   changeFont(); // project.js update font
+   changeProjectFont(); // project.js update font
    scrollEditorToTop();
    finishedLoading();
 }

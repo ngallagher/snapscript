@@ -6,7 +6,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 
 @Root
-public class ProjectTheme {
+public class ProjectDisplay {
    
    @Path("font")
    @Text
@@ -16,7 +16,7 @@ public class ProjectTheme {
    @Attribute
    private int size;
    
-   public ProjectTheme(){
+   public ProjectDisplay(){
       super();
    }
 
