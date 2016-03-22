@@ -44,7 +44,7 @@ public class ScopeNodeBuilder {
          
          if(!checker.isPrimitive(type)) { 
             if(type.isArray()) {
-               ValueData data = ValueDataBuilder.createScope(name, object, depth);
+               ValueData data = ValueDataBuilder.createArray(name, object, depth);
                Map<String, String> map = data.getData();
                
                variables.put(path, map); // type rather than value
