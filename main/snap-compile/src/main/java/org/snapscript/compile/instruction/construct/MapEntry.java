@@ -5,11 +5,9 @@ import java.util.Map.Entry;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
-import org.snapscript.core.State;
 import org.snapscript.core.Value;
-import org.snapscript.core.ValueType;
 
-public class MapEntry implements Evaluation {
+public class MapEntry {
    
    private final Evaluation value;
    private final Evaluation key;
@@ -19,27 +17,13 @@ public class MapEntry implements Evaluation {
       this.key = key;
    }
    
-   public Value evaluate(Scope scope, Object left) throws Exception{
-      Value valueResult = value.evaluate(scope, left);
-      Value keyResult = key.evaluate(scope, left);
+   public Entry create(Scope scope) throws Exception{
+      Value valueResult = value.evaluate(scope, null);
+      Value keyResult = key.evaluate(scope, null);
       Object valueObject = valueResult.getValue();
       Object keyObject = keyResult.getValue();
-      State state = scope.getState();
       
-      if(keyObject != null) {
-         Class type = keyObject.getClass();
-         String key = keyObject.toString();
-         
-         if(type == String.class) {
-            Value value = state.getValue(key);
-            
-            if(value != null) {
-               keyObject = value.getValue();
-            }
-         }
-      }
-      Entry entry = new Pair(keyObject, valueObject);
-      return ValueType.getTransient(entry);
+      return new Pair(keyObject, valueObject);
    }
    
    private class Pair implements Entry {

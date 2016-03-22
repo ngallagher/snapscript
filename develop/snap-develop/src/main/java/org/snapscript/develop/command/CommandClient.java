@@ -36,8 +36,8 @@ public class CommandClient {
       channel.send(message);
    }
    
-   public void sendSyntaxError(String resource, long time, int line) throws Exception {
-      ProblemCommand command = new ProblemCommand(project, "Syntax error at line " + line, resource, time, line);
+   public void sendSyntaxError(String resource, String description, long time, int line) throws Exception {
+      ProblemCommand command = new ProblemCommand(project, description, resource, time, line);
       String message = writer.write(command);
       channel.send(message);
    }

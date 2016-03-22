@@ -5,10 +5,10 @@ import org.snapscript.compile.instruction.collection.ArrayIndex;
 import org.snapscript.compile.instruction.collection.Range;
 import org.snapscript.compile.instruction.condition.Choice;
 import org.snapscript.compile.instruction.condition.Comparison;
-import org.snapscript.compile.instruction.condition.ConditionalResult;
 import org.snapscript.compile.instruction.condition.ConditionalList;
 import org.snapscript.compile.instruction.condition.ConditionalOperand;
 import org.snapscript.compile.instruction.condition.ConditionalOperator;
+import org.snapscript.compile.instruction.condition.ConditionalResult;
 import org.snapscript.compile.instruction.condition.ForInStatement;
 import org.snapscript.compile.instruction.condition.ForStatement;
 import org.snapscript.compile.instruction.condition.IfStatement;
@@ -23,6 +23,7 @@ import org.snapscript.compile.instruction.construct.ConstructObjectArray;
 import org.snapscript.compile.instruction.construct.ConstructSet;
 import org.snapscript.compile.instruction.construct.MapEntry;
 import org.snapscript.compile.instruction.construct.MapEntryList;
+import org.snapscript.compile.instruction.construct.MapKey;
 import org.snapscript.compile.instruction.define.ClassConstructor;
 import org.snapscript.compile.instruction.define.ClassDefinition;
 import org.snapscript.compile.instruction.define.EnumConstructor;
@@ -111,6 +112,7 @@ public enum Instruction {
    SET_ENTRY(Argument.class, "set-entry"),
    MAP_ENRTY_LIST(MapEntryList.class, "map-entry-list"),
    MAP_ENTRY(MapEntry.class, "map-entry"),
+   MAP_KEY(MapKey.class, "map-key"),
    DECLARE_VARIABLE(DeclareVariable.class, "declare-variable"),
    DECLARE_CONSTANT(DeclareConstant.class, "declare-constant"),      
    DECLARATION_STATEMENT(DeclarationStatement.class, "declaration-statement"),

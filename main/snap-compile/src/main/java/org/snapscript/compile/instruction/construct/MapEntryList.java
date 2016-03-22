@@ -24,12 +24,11 @@ public class MapEntryList implements Evaluation{
       Map map = new LinkedHashMap();
       
       for(int i = 0; i < list.length; i++){
-         Value entry = list[i].evaluate(scope, left);
+         Entry entry = list[i].create(scope);
          Context context = scope.getContext();
          ProxyWrapper wrapper = context.getWrapper();
-         Entry pair = entry.getValue();
-         Object key = pair.getKey();
-         Object value = pair.getValue();
+         Object key = entry.getKey();
+         Object value = entry.getValue();
          Object keyProxy = wrapper.toProxy(key);
          Object valueProxy = wrapper.toProxy(value);
          

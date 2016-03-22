@@ -1,4 +1,5 @@
 import io.Goo as Splat; // should module be a type
+import constants.Constants;
 import math.stuff.Max;
 import io.Blah;
 import io.Task;
@@ -27,6 +28,7 @@ var f = new Foo("some text");
 var n = new Nuh("nuh!");
 var b = new Blah();
 
+println("x="+Constants.x);
 System.err.println(n);
 System.err.println(f);
 b.test(Max.max(23,44,1));

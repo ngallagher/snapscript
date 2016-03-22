@@ -19,9 +19,10 @@ public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<Syntax
       DataInputStream input = new DataInputStream(buffer);
       String process = input.readUTF();
       String resource = input.readUTF();
+      String description = input.readUTF();
       int line = input.readInt();
       
-      return new SyntaxErrorEvent(process, resource, line);
+      return new SyntaxErrorEvent(process, resource, description, line);
    }
 
    @Override
@@ -30,10 +31,12 @@ public class SyntaxErrorEventMarshaller implements ProcessEventMarshaller<Syntax
       DataOutputStream output = new DataOutputStream(buffer);
       String process = event.getProcess();
       String resource = event.getResource();
+      String description = event.getDescription();
       int line = event.getLine();
       
       output.writeUTF(process);
       output.writeUTF(resource);
+      output.writeUTF(description);
       output.writeInt(line);
       output.flush();
       

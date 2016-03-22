@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
@@ -59,6 +61,7 @@ public class Import implements Compilation {
    
    private static class CompileResult extends Statement {
       
+      private final AtomicReference<Statement> reference;
       private final Package library;
       private final String location;
       private final String target;
@@ -73,6 +76,7 @@ public class Import implements Compilation {
       }
       
       public CompileResult(Package library, String location, String target, String alias) {
+         this.reference = new AtomicReference<Statement>();
          this.location = location;
          this.library = library;
          this.target = target;
@@ -81,21 +85,38 @@ public class Import implements Compilation {
       
       @Override
       public Result compile(Scope scope) throws Exception {
+         Statement statement = create(scope);
+         
+         if(statement != null) {
+            reference.set(statement);
+         }
+         return ResultType.getNormal();
+      }
+      
+      @Override
+      public Result execute(Scope scope) throws Exception {
+         Statement statement = reference.get();
+         
+         if(statement != null) {
+            return statement.execute(scope);
+         }
+         return ResultType.getNormal();
+      }
+      
+      private Statement create(Scope scope) throws Exception {
          Module module = scope.getModule();
          ImportManager manager = module.getManager();
          
          if(target == null) {
             manager.addImport(location); // import game.tetris.*;
-            library.compile(scope);
-         } else {
+         }  else {
             if(alias != null) {
                manager.addImport(location, target, alias); // import game.tetris.Block as Shape;
             } else {
                manager.addImport(location, target); // import game.tetris.Block;
             }
-            library.compile(scope);
          }
-         return ResultType.getNormal();
+         return library.compile(scope);
       }
    }
 

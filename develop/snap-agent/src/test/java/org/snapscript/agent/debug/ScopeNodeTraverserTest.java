@@ -1,10 +1,10 @@
 package org.snapscript.agent.debug;
 
-import static org.snapscript.agent.debug.ScopeNode.DEPTH_KEY;
-import static org.snapscript.agent.debug.ScopeNode.EXPANDABLE_KEY;
-import static org.snapscript.agent.debug.ScopeNode.NAME_KEY;
-import static org.snapscript.agent.debug.ScopeNode.TYPE_KEY;
-import static org.snapscript.agent.debug.ScopeNode.VALUE_KEY;
+import static org.snapscript.agent.debug.ValueData.DEPTH_KEY;
+import static org.snapscript.agent.debug.ValueData.EXPANDABLE_KEY;
+import static org.snapscript.agent.debug.ValueData.NAME_KEY;
+import static org.snapscript.agent.debug.ValueData.TYPE_KEY;
+import static org.snapscript.agent.debug.ValueData.VALUE_KEY;
 
 import java.util.Collections;
 import java.util.HashMap;

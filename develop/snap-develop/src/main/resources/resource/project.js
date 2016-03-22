@@ -72,7 +72,7 @@ function createProjectLayout() {
             panels : [
                   {
                      type : 'left',
-                     size : '60%',
+                     size : '40%',
                      style : pstyle,
                      content : "<div class='toolbarTop'>"
                            + "<table border='0'>"
@@ -110,11 +110,12 @@ function createProjectLayout() {
                      content : "<div class='toolbarTop'></div>"
                   }, {
                      type : 'right',
-                     size : '20%',
+                     size : '40%',
                      style : pstyle,
                      content : "<div class='toolbarTop'>"+
                                "<table border='0' width='100%' cellpadding='0'>"+
                                "<tr>"+
+                               "   <td  width='100%'></td>"+
                                "   <td>"+
                                "        <select class='styledSelect' id='fontFamily' size='1' onchange='changeProjectFont()'>\n"+
                                "          <option value='Consolas' selected='selected'>&nbsp;Consolas</option>\n"+
@@ -139,7 +140,7 @@ function createProjectLayout() {
                                "        </select>\n"+
                                "   </td>"+
                                "   <td>&nbsp;&nbsp;</td>"+  
-                               "   <td width='100%'><div id='toolbarSwitch' onclick='switchProject()'></div></td>"+     
+                               "   <td><div id='toolbarSwitch' onclick='switchProject()'></div></td>"+     
                                "   <td>&nbsp;&nbsp;</td>"+                                 
                                "</tr>"+
                                "</table>"+
@@ -275,6 +276,7 @@ function createProjectLayout() {
    });
 
    $().w2grid({
+      recordTitles: false, // show tooltips
       name : 'variables',
       columns : [ {
          field : 'name',

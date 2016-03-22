@@ -69,10 +69,11 @@ public class CommandEventForwarder extends ProcessEventAdapter {
    @Override
    public void onSyntaxError(ProcessEventChannel channel, SyntaxErrorEvent event) throws Exception {
       if(filter.accept(event)) {
+         String description = event.getDescription();
          String resource = event.getResource();
          int line = event.getLine();
          long time = System.currentTimeMillis();
-         client.sendSyntaxError(resource, time, line);
+         client.sendSyntaxError(resource, description, time, line);
       }
    }
    

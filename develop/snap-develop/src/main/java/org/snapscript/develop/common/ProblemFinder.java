@@ -29,9 +29,9 @@ public class ProblemFinder {
             String match = matcher.group(1);
             int line = Integer.parseInt(match);
             
-            return new Problem(project, resource, line);
+            return new Problem(project, resource, message, line);
          }
-         throw new RuntimeException("Script validation error for '"+resource+"'", cause);
+         return new Problem(project, resource, message, 1);
       }
       return null;
    }

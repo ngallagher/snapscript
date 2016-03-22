@@ -28,4 +28,19 @@ public class ScriptPackage extends Statement {
       }
       return last;
    }
+   
+   @Override
+   public Result execute(Scope scope) throws Exception {
+      Result last = ResultType.getNormal();
+      
+      for(Statement statement : statements) {
+         Result result = statement.execute(scope);
+         
+         if(!result.isNormal()){
+            throw new InternalStateException("Illegal statement");
+         }
+         last = result;
+      }
+      return last;
+   }
 }
