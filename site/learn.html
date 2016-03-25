@@ -64,7 +64,7 @@
                  	<span class="large-heading">Learn</span>
 	<p>Here an overview of the language is provided, the types, control flow statements and the constructs that can be used
    to develop applications are illustrated. In addition to this tutorial many examples can be viewed 
-   <a href='https://github.com/ngallagher/snapscript/blob/master/platform/snap-engine/work/demo'>here</a>.
+   <a href='https://github.com/ngallagher/snapscript/blob/master/develop/snap-develop/work/demo'>here</a>.
    The examples include a wide range scripts from games to basic utilities.</p>
    </div> 
    			<div class="about-desc">
@@ -77,7 +77,7 @@
 	<p>In order to reference values they must be associated with a variable. Variables
 	are declared with the keyword <code>var</code> or <code>const</code>. A variable
 	can have an optional constraint by declaring a type. If constrained a variable
-	can only reference values of the declared type.</code></p>
+	can only reference values of the declared type.</p>
 	<pre>
 		<code class="snapscript">var v = 22; // v can reference any type
 var i: Integer = 22; // i can only reference integers
@@ -143,7 +143,7 @@ var mix = [1, 2, {"a": {"a", "b", [55, 66]}}]; // mix collection types</code>
 	 and then return a result. They are typically used to manipulate or compare values.</p>
 	<span class="small-heading">Arithmetic Operators</span>
 	<p>Arithmetic operators are used in mathematical expressions in the same way that they are used in 
-	algebra.</code></p>
+	algebra.</p>
 	<pre>
 		<code class="snapscript">var a = 10;
 var b = 20;
@@ -160,7 +160,7 @@ var k = ++b; // b is 20 as is k</code>
 	
 		<span class="small-heading">Relational Operators</span>
 	<p>Relational operators are used to make comparisons, such as equal to, not equal to, greater than,
-	less than.</code></p>
+	less than.</p>
 	<pre>
 		<code class="snapscript">var a = 10;
 var b = 20;
@@ -174,7 +174,7 @@ var h = a >= b; // h is true</code>
 	
 		<span class="small-heading">Bitwise Operators</span>
 	<p>Bitwise operators are used to manipulate numbers, typically integers, at the byte level. They
-	do so by change the binary representation of the value.</code></p>
+	do so by change the binary representation of the value.</p>
 	<pre>
 		<code class="snapscript">var a = 0b00111100;
 var b = 0b00001101;
@@ -191,9 +191,11 @@ var i = f >>> 2; // unsigned shift, i is 00110000
 	
 		<span class="small-heading">Logical Operators</span>
 	<p>Logical operators are typically used to combine multiple relational operations in to a single
-	boolean result.</code></p>
-	<pre>
-		<code class="snapscript">var a = 1;
+	boolean result.
+   </p>
+	
+   <pre>
+      <code class="snapscript">var a = 1;
 var b = 3;
 var c = true;
 var d = false;
@@ -203,13 +205,29 @@ var g = !d; // not operator, g is true
 var h = b > a && a == 1; // logical and of, h is true
 var i = b > a && a != 1; // i is false
 </code>
-	</pre>		
+	</pre>
+
+	
+		<span class="small-heading">Existential Operators</span>
+	<p>Existential operators are typically used to determine if a value is null. This ensures references can be navigated without 
+   risking null pointers.</p>
+	<pre>
+		<code class="snapscript">var a = null;
+var b = 11;
+var c = 22;
+var d = a ?? b; // d is 11 as a is null
+var e = b ?? c; // e is 11 as b is not null
+var f = a?.x; // f is null as ?. checks for null
+var g = a?.x?.y.z; // g is null
+var h = a.x; // null pointer exception
+</code>
+	</pre>   
 
 </div>				<div class="about-desc">
 	<span class="large-heading">Conditions</span>
 	<p>Conditional statements are used to perform different actions based on different conditions.</p>
 	<span class="small-heading">If Statement</span>
-	<p>The if statement is used to specify a group of statements to execute if a statement is true.</code></p>
+	<p>The if statement is used to specify a group of statements to execute if a statement is true.</p>
 	<pre>
 		<code class="snapscript">var a = 2;
 var b = 3;
@@ -243,7 +261,7 @@ println(a >= b ? "a >= b" : "a < b"); // prints a < b</code>
 	<p>Loops are used to perform a group of statements a number of times until a condition has been satisfied.</p>
 	<span class="small-heading">While Statement</span>
 	<p>The while statement is the simplest conditional statement. It repeats a group of statements while the condition
-	it evaluates is false.</code></p>
+	it evaluates is false.</p>
 	<pre>
 		<code class="snapscript">var n = 0;
 
@@ -289,6 +307,19 @@ loop { // infinite loop
    }
 }</code>
 	</pre>
+
+			<span class="small-heading">Assert Statement</span>
+	<p>The assert statement offers a way to determine if a condition is true, if it is false an exception
+   is thrown.</p>
+	<pre>
+		<code class="snapscript">assert true;
+assert (2 ** 8) == 256; 
+assert 2 == 2;
+assert 2 === 2;
+assert (2 !== 2) == false;
+assert 2 !== 3;</code>
+	</pre>
+
 </div>				<div class="about-desc">
 	<span class="large-heading">Functions</span>
 	<p>Functions group together control structures,
@@ -298,7 +329,7 @@ loop { // infinite loop
 		having to repeat it within your script.</p>
 	<span class="small-heading">Declaration</span>
 	<p>The most basic type of function is declared with a name and a specific number of parameters. 
-	Such a method can then be called using the declared name by passing in a right number of arguments.</code></p>
+	Such a method can then be called using the declared name by passing in a right number of arguments.</p>
 	<pre>
 		<code class="snapscript">var r = max(11, 3, 67); // r is 67
 
@@ -336,6 +367,27 @@ function f(x: String) {
    println("string ${x}");
 }</code>
 	</pre>
+
+
+	<span class="small-heading">Function Constraints</span>
+   <p>Function constraints provide a way to specify a signature on a parameter to ensure that a function 
+   reference will be passed to the correct function.</p>
+	<pre>
+		<code class="snapscript">function run(func: (a: String, b)) {
+   return func(11, "text");
+}
+
+function run(func: (a, b)) {
+   return func(11, 12);
+}
+
+var result = run((a: String, b: String)-> "${a}, ${b}"); 
+
+assert result == '11, text';
+</code>
+	</pre>
+
+
 		<span class="small-heading">Variable Arguments</span>
 	<p>At times it can be useful to provide a large number of arguments to a function. To achieve this
 	the last parameter can be declared with a variable argument modifier.</p>

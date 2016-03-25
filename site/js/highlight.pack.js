@@ -891,7 +891,7 @@ hljs.registerLanguage('snapscript', function(hljs) {
     keywords: {
       keyword:
         'in of if for while finally var new function do return void else break catch ' +
-        'module with throw case default try override loop this switch continue typeof  ' +
+        'module with throw case default try override loop this switch continue typeof assert  ' +
         'let yield const class trait enum export super debugger as async await static ' +
         // ECMAScript 6 modules import
         'import from as'

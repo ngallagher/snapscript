@@ -10,7 +10,7 @@ function(hljs) {
     keyword:
       'in if for while finally var new function do return void else break catch ' +
       'instanceof with throw case default try this switch continue typeof delete ' +
-      'let yield const class public private protected get set super ' +
+      'let yield const class public private protected get set super assert ' +
       'static implements enum export import declare type namespace abstract',
     literal:
       'true false null undefined NaN Infinity',
