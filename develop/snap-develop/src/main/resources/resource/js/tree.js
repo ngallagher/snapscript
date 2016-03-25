@@ -103,7 +103,7 @@ function createResourcePath(path) {
       //console.log("createResourcePath(" + path + "): " + currentPathText);
       return currentPathDetails;
    }
-   console.log("createResourcePath(" + path + ")");
+   //console.log("createResourcePath(" + path + ")");
    
    if(!path.startsWith("/")) {  // script.snap
       path = "/" + path; // /snap.script

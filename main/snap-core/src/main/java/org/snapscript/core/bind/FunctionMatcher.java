@@ -46,9 +46,12 @@ public class FunctionMatcher {
       if(Function.class.isInstance(object)) {
          Function function = (Function)object;
          Signature signature = function.getSignature();
-         ArgumentConverter converter = matcher.match(signature);
+         ArgumentConverter match = matcher.match(signature);
+         int score = match.score(values);
          
-         return new FunctionPointer(function, converter, stack, values); 
+         if(score > 0) {
+            return new FunctionPointer(function, match, stack, values); 
+         }
       }
       return null;
    }
@@ -63,9 +66,12 @@ public class FunctionMatcher {
          if(Function.class.isInstance(object)) {
             Function function = (Function)object;
             Signature signature = function.getSignature();
-            ArgumentConverter converter = matcher.match(signature);
+            ArgumentConverter match = matcher.match(signature);
+            int score = match.score(values);
             
-            return new FunctionPointer(function, converter, stack, values); 
+            if(score > 0) {
+               return new FunctionPointer(function, match, stack, values);
+            }
          }
       }
       return null;

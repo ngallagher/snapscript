@@ -17,7 +17,12 @@ public class ProjectDisplay {
    private int size;
    
    public ProjectDisplay(){
-      super();
+      this(null, 0);
+   }
+   
+   public ProjectDisplay(String font, int size) {
+      this.font = font;
+      this.size = size;
    }
 
    public String getFont() {
