@@ -4,13 +4,13 @@ import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 
-public class TypeInvocation implements Invocation<Object>{
+public class NewStaticInvocation implements Invocation<Object>{
    
    private final StaticScopeMerger merger;
    private final Invocation invocation;
    private final Scope inner;
    
-   public TypeInvocation(Invocation invocation, Scope inner) {
+   public NewStaticInvocation(Invocation invocation, Scope inner) {
       this.merger = new StaticScopeMerger(inner);
       this.invocation = invocation;
       this.inner = inner;

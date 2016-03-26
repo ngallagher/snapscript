@@ -1,44 +1,61 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.ParameterExtractor;
+import static org.snapscript.core.Reserved.TYPE_THIS;
+
 import org.snapscript.core.Initializer;
-import org.snapscript.core.InternalStateException;
+import org.snapscript.core.InstanceScope;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Model;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Signature;
-import org.snapscript.core.SignatureAligner;
+import org.snapscript.core.State;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class NewInvocation implements Invocation<Scope> {
    
-   private final ParameterExtractor extractor;
-   private final SignatureAligner aligner;
+   private final Initializer initializer;
    private final Invocation constructor;
-   private final Initializer factory;
+   private final Scope outer;
+   private final boolean compile;
    
-   public NewInvocation(Signature signature, Initializer factory, Invocation constructor) {
-      this.extractor = new ParameterExtractor(signature);
-      this.aligner = new SignatureAligner(signature);
-      this.constructor = constructor;
-      this.factory = factory;
+   public NewInvocation(Scope outer, Initializer initializer, Invocation constructor) {
+      this(outer, initializer, constructor, true);
    }
-
+   
+   public NewInvocation(Scope outer, Initializer initializer, Invocation constructor, boolean compile) {
+      this.constructor = constructor;
+      this.initializer = initializer;
+      this.compile = compile;
+      this.outer = outer;
+   }
+   
    @Override
-   public Result invoke(Scope scope, Scope object, Object... list) throws Exception {
+   public Result invoke(Scope scope, Scope instance, Object... list) throws Exception {
       Type real = (Type)list[0];
-      Object[] arguments = aligner.align(list); // combine variable arguments to a single array
-      Scope inner = scope.getInner();
+      Model model = scope.getModel();
+      Class type = instance.getClass();
       
-      if(arguments.length > 0) {
-         extractor.extract(inner, arguments);
+      if(type != InstanceScope.class) {
+         InstanceScope result = new InstanceScope(model, outer, instance, real);// we need to pass the base type up!!
+   
+         State state = result.getState();
+         Value constant = ValueType.getConstant(result, real);
+    
+         state.addConstant(TYPE_THIS, constant); // reference to 'this'
+         instance = result;
+         
+         if(initializer != null) {
+            if(compile) {
+               initializer.compile(scope, real); // static stuff if needed
+            }
+            initializer.execute(instance, real);
+         }
       }
-      Result result = factory.execute(inner, real);
-      Scope instance = result.getValue();
+      constructor.invoke(instance, instance, list);
       
-      if(instance == null) {
-         throw new InternalStateException("Instance could not be created");
-      }
-      return constructor.invoke(scope, instance, list);
+      return ResultType.getNormal(instance);
    }
 }

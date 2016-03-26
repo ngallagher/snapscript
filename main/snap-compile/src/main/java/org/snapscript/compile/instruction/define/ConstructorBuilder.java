@@ -31,9 +31,9 @@ public class ConstructorBuilder {
    
    public Function create(Scope scope, Initializer initializer, Type type, int modifiers, boolean compile) {
       Invocation body = new StatementInvocation(signature, statement);
-      Invocation construct = new ConstructInvocation(scope, initializer, body, compile);
-      Invocation invocation = new NewInvocation(signature, delegate, construct); 
-      Invocation reference = new TypeInvocation(invocation, scope);
+      Invocation construct = new NewInvocation(scope, initializer, body, compile);
+      Invocation invocation = new NewInstanceInvocation(signature, delegate, construct); 
+      Invocation reference = new NewStaticInvocation(invocation, scope);
       
       return new InvocationFunction(signature, reference, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
    }
