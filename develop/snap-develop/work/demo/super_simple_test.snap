@@ -1,14 +1,12 @@
-function print(x){
-   System.err.println(x);
-}
+
 class X{
   f(){
-       print("X.f");
+       println("X.f");
    }
 }
 class Y extends X{
    f(){
-      print("Y.f");
+      println("Y.f");
    }
    t(){
       super.f();
