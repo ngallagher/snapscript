@@ -14,12 +14,12 @@ import org.snapscript.core.ValueType;
 
 public class SuperInitializer extends Initializer {
    
-   private final SuperScopeBuilder builder;
+   private final SuperInstanceBuilder builder;
    private final Evaluation expression;
    private final Type type;
    
    public SuperInitializer(Evaluation expression, Type type) {
-      this.builder = new SuperScopeBuilder(type);
+      this.builder = new SuperInstanceBuilder(type);
       this.expression = expression;
       this.type = type;
    }

@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ParameterExtractor;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.Instance;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
@@ -14,10 +15,10 @@ public class NewInstanceInvocation implements Invocation<Scope> {
    
    private final ParameterExtractor extractor;
    private final SignatureAligner aligner;
-   private final Invocation constructor;
+   private final Constructor constructor;
    private final Initializer factory;
    
-   public NewInstanceInvocation(Signature signature, Initializer factory, Invocation constructor) {
+   public NewInstanceInvocation(Signature signature, Initializer factory, Constructor constructor) {
       this.extractor = new ParameterExtractor(signature);
       this.aligner = new SignatureAligner(signature);
       this.constructor = constructor;
@@ -34,8 +35,8 @@ public class NewInstanceInvocation implements Invocation<Scope> {
          extractor.extract(inner, arguments);
       }
       Result result = factory.execute(inner, real);
-      Scope instance = result.getValue();
-      
+      Instance instance = result.getValue();
+
       if(instance == null) {
          throw new InternalStateException("Instance could not be created");
       }

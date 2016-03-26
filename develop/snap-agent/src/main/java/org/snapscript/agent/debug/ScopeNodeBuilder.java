@@ -4,7 +4,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.InstanceScope;
+import org.snapscript.core.Instance;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Scope;
 import org.snapscript.core.convert.ProxyWrapper;
@@ -31,8 +31,8 @@ public class ScopeNodeBuilder {
          if(object instanceof Proxy) {
             object = wrapper.fromProxy(object);
          }
-         if(object instanceof InstanceScope) {
-            InstanceScope instance = (InstanceScope)object;
+         if(object instanceof Instance) {
+            Instance instance = (Instance)object;
             ValueData data = ValueDataBuilder.createScope(name, instance, depth);
             Map<String, String> map = data.getData();
             

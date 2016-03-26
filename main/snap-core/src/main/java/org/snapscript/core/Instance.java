@@ -1,14 +1,16 @@
 package org.snapscript.core;
 
-public class InstanceScope implements Scope {
+public class Instance implements Scope {
    
+   private final Instance base;
    private final State state;
    private final Scope scope;
    private final Type type;
    
-   public InstanceScope(Model model, Scope scope, Scope base, Type type) {
+   public Instance(Model model, Scope scope, Instance base, Type type) {
       this.state = new InstanceState(model, scope, base);      
       this.scope = scope;
+      this.base = base;
       this.type = type;
    }
    
@@ -21,6 +23,10 @@ public class InstanceScope implements Scope {
    public Scope getOuter() {
       return this;
    } 
+   
+   public Instance getInstance() {
+      return base;
+   }
    
    @Override
    public Type getType(){

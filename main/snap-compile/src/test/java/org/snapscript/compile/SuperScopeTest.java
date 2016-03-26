@@ -35,13 +35,13 @@ public class SuperScopeTest extends TestCase {
    "b.test();\n";
    
    public void testSuperScope() throws Exception{
-//      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-//      System.err.println(SOURCE);
-//      Executable executable = compiler.compile(SOURCE);
-//      long start = System.currentTimeMillis();
-//      
-//      executable.execute();
-//      System.err.println("time="+(System.currentTimeMillis()-start));
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      System.err.println(SOURCE);
+      Executable executable = compiler.compile(SOURCE);
+      long start = System.currentTimeMillis();
+      
+      executable.execute();
+      System.err.println("time="+(System.currentTimeMillis()-start));
    }
    
    public static void main(String[] list) throws Exception {

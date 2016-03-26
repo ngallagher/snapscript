@@ -19,8 +19,8 @@ public class TypeExtractor {
          Type match = types.get(type);
          
          if(match == null) {
-            if(SuperScope.class.isAssignableFrom(type)) {
-               SuperScope scope = (SuperScope)value;
+            if(SuperInstance.class.isAssignableFrom(type)) {
+               SuperInstance scope = (SuperInstance)value;
                return scope.getSuper();
             } 
             if(Scope.class.isAssignableFrom(type)) {

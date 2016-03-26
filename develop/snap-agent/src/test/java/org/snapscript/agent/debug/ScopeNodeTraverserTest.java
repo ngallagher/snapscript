@@ -17,7 +17,7 @@ import java.util.TreeSet;
 import junit.framework.TestCase;
 
 import org.snapscript.core.AccessorProperty;
-import org.snapscript.core.InstanceScope;
+import org.snapscript.core.Instance;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ModelScope;
@@ -67,13 +67,13 @@ public class ScopeNodeTraverserTest extends TestCase {
       instanceValues1.put("address", "Some Street");
       instanceValues1.put("age", 34);
       
-      InstanceScope instance1 = createInstanceScope(instanceValues1, "Person");
+      Instance instance1 = createInstanceScope(instanceValues1, "Person");
       
       instanceValues2.put("companyName", "Some Company");
       instanceValues2.put("companyAddress", "12 Fleet Street, London, UK");
       instanceValues2.put("companyOwner", instance1);
       
-      InstanceScope instance2 = createInstanceScope(instanceValues2, "Company");
+      Instance instance2 = createInstanceScope(instanceValues2, "Company");
       
       instanceValues3.put("invoiceReference", "234437145B");
       instanceValues3.put("invoiceAmount", 12355.55d);
@@ -84,7 +84,7 @@ public class ScopeNodeTraverserTest extends TestCase {
       
       instanceValues3.put("invoiceDetails", example1);
       
-      InstanceScope instance3 = createInstanceScope(instanceValues3, "CompanyInvoice");
+      Instance instance3 = createInstanceScope(instanceValues3, "CompanyInvoice");
       
       rootValues.put("invoice", instance3);
       rootValues.put("example1", example1);
@@ -134,11 +134,11 @@ public class ScopeNodeTraverserTest extends TestCase {
       return scope;
    }
    
-   private static InstanceScope createInstanceScope(Map<String, Object> values, String name) {
+   private static Instance createInstanceScope(Map<String, Object> values, String name) {
       Model model = new MapModel(Collections.EMPTY_MAP);
       Scope scope = new ModelScope(model, null);
       Type type = new ScopeType(null, null, name);
-      InstanceScope instance = new InstanceScope(model, scope, null, type);
+      Instance instance = new Instance(model, scope, null, type);
       List<Property> properties = type.getProperties();
       State state = instance.getState();
       Set<String> keys = values.keySet();

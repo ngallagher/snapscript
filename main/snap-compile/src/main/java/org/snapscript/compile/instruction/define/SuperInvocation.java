@@ -11,12 +11,12 @@ import org.snapscript.core.Value;
 public class SuperInvocation implements Evaluation {
    
    private final InvocationBinder dispatcher;
-   private final SuperScopeBuilder builder;
+   private final SuperInstanceBuilder builder;
    private final ArgumentList arguments;
    private final Evaluation function;
    
    public SuperInvocation(Evaluation function, ArgumentList arguments, Type type) {
-      this.builder = new SuperScopeBuilder(type);
+      this.builder = new SuperInstanceBuilder(type);
       this.dispatcher = new InvocationBinder();
       this.arguments = arguments;
       this.function = function;

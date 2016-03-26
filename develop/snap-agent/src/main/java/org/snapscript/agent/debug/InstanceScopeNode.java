@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.snapscript.core.TypeTraverser;
-import org.snapscript.core.InstanceScope;
+import org.snapscript.core.Instance;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
@@ -23,7 +23,7 @@ public class InstanceScopeNode implements ScopeNode {
    private final String name;
    private final int depth;
    
-   public InstanceScopeNode(ScopeNodeBuilder builder, InstanceScope scope, String path, String name, int depth) {
+   public InstanceScopeNode(ScopeNodeBuilder builder, Instance scope, String path, String name, int depth) {
       this.extractor = new TypeTraverser();
       this.nodes = new ArrayList<ScopeNode>();
       this.builder = builder;

@@ -10,8 +10,8 @@ public class ValueTypeConverter {
       Class type = left.getClass();
       
       if(!Type.class.isInstance(left)) {
-         if(SuperScope.class.isAssignableFrom(type)) {
-            SuperScope reference = (SuperScope)left;
+         if(SuperInstance.class.isAssignableFrom(type)) {
+            SuperInstance reference = (SuperInstance)left;
             return reference.getSuper();
          } 
          if(Scope.class.isAssignableFrom(type)) {

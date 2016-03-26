@@ -2,7 +2,7 @@ package org.snapscript.agent.debug;
 
 import java.util.Arrays;
 
-import org.snapscript.core.InstanceScope;
+import org.snapscript.core.Instance;
 import org.snapscript.core.Type;
 
 public class ValueDataBuilder {
@@ -77,7 +77,7 @@ public class ValueDataBuilder {
    }
    
    public static ValueData createScope(String key, Object value, int depth) {
-      InstanceScope instance = (InstanceScope)value;
+      Instance instance = (Instance)value;
       Type type = instance.getType();
       String name = type.getName();
       return new ValueData(key, name, "", "", true, depth);
