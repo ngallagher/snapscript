@@ -6,6 +6,7 @@ import org.snapscript.core.Initializer;
 import org.snapscript.core.Instance;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Model;
+import org.snapscript.core.ObjectInstance;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -37,9 +38,11 @@ public class NewInvocation implements Constructor {
       Type real = (Type)list[0];
       Model model = scope.getModel();
       Class type = instance.getClass();
+      Scope primitive = instance.getScope();
+      int depth = instance.getDepth();
       
       if(type != Instance.class) {
-         Instance result = new Instance(model, outer, instance, real);// we need to pass the base type up!!
+         Instance result = new ObjectInstance(model, primitive, outer, instance, real, depth + 1);// we need to pass the base type up!!
    
          State state = result.getState();
          Value constant = ValueType.getConstant(result, real);

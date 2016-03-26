@@ -1,16 +1,18 @@
 package org.snapscript.core;
 
-public class PrimitiveInstance implements Instance {
+public class CompoundInstance implements Instance {
    
+   private final Instance outer;
+   private final Scope primitive;
    private final State state;
-   private final Scope scope;
    private final Model model;
    private final Type type;
    private final int depth;
    
-   public PrimitiveInstance(Model model, Scope scope, Type type, int depth) {
-      this.state = new InstanceState(model, scope, null); 
-      this.scope = scope;
+   public CompoundInstance(Model model, Scope primitive, Scope inner, Instance outer, Type type, int depth) {
+      this.state = new MapState(model, inner); 
+      this.primitive = primitive;
+      this.outer = outer;
       this.depth = depth;
       this.model = model;
       this.type = type;
@@ -18,27 +20,27 @@ public class PrimitiveInstance implements Instance {
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, this, this, this, type, depth + 1);
+      return new CompoundInstance(model, primitive, this, outer, type, depth + 1);
    } 
    
    @Override
    public Instance getOuter() {
-      return this; // this is the final one!!
+      return outer; 
    } 
    
    @Override
-   public Instance getScope() {
-      return this;
-   }
+   public Scope getScope() {
+      return primitive; 
+   } 
   
    @Override
    public Module getModule() {
-      return scope.getModule();
+      return outer.getModule();
    }
    
    @Override
    public Context getContext() {
-      return scope.getContext();
+      return outer.getContext();
    }   
    
    @Override

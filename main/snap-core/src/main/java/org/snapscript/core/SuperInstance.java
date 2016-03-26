@@ -1,14 +1,11 @@
 package org.snapscript.core;
 
-import org.snapscript.core.Scope;
-import org.snapscript.core.Type;
-
-public class SuperInstance extends Instance {
+public class SuperInstance extends ObjectInstance {
 
    private final Type base;
    
-   public SuperInstance(Model model, Scope scope, Type type, Type base) {
-      super(model, scope, null, type);
+   public SuperInstance(Model model, Scope primitive, Instance scope, Type type, Type base, int depth) {
+      super(model, primitive, scope, null, type, depth);
       this.base = base;
    }
    

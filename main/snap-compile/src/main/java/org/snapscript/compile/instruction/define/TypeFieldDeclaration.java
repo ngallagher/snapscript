@@ -28,9 +28,9 @@ public class TypeFieldDeclaration {
       Evaluation evaluation = create(scope, initializer);
 
       if (checker.isStatic()) {
-         return new StaticInitializer(evaluation, scope);
+         return new StaticFieldInitializer(identifier, evaluation, scope);
       }
-      return new InstanceInitializer(evaluation);
+      return new InstanceFieldInitializer(identifier, evaluation);
    }
  
    private Evaluation create(Scope scope, Initializer initializer) throws Exception {

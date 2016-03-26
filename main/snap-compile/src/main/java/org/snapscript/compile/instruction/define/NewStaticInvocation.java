@@ -1,24 +1,24 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.Instance;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Type;
 
-public class NewStaticInvocation implements Invocation<Object>{
+public class NewStaticInvocation implements Invocation<Instance>{
    
-   private final StaticScopeMerger merger;
-   private final Invocation invocation;
-   private final Scope inner;
+   private final StaticInstanceBuilder builder;
+   private final Constructor constructor;
    
-   public NewStaticInvocation(Invocation invocation, Scope inner) {
-      this.merger = new StaticScopeMerger(inner);
-      this.invocation = invocation;
-      this.inner = inner;
+   public NewStaticInvocation(Constructor constructor, Scope inner, Type type) {
+      this.builder = new StaticInstanceBuilder(inner, type);
+      this.constructor = constructor;
    }
 
    @Override
-   public Result invoke(Scope scope, Object object, Object... list) throws Exception {
-      Scope result = merger.merge(scope);
-      return invocation.invoke(result, object, list);
+   public Result invoke(Scope scope, Instance object, Object... list) throws Exception {
+      Instance instance = builder.create(scope, object); // merge with static inner scope
+      return constructor.invoke(scope, instance, list);
    }
 }

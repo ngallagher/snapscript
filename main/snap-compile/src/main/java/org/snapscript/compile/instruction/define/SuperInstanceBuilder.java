@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.Instance;
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Model;
 import org.snapscript.core.Scope;
@@ -14,13 +15,18 @@ public class SuperInstanceBuilder {
       this.type = type;
    }
 
-   public Scope create(Scope instance, Object left) throws Exception {
-      Model model = instance.getModel();
+   public Scope create(Scope scope, Object left) throws Exception {
+      Instance instance = (Instance)scope;
       Type real = (Type)left;
       
       if(left == null) {
          throw new InternalArgumentException("Type required for super function call");
       }
-      return new SuperInstance(model, instance, real, type);
+      Instance outer = instance.getOuter();
+      Scope primitive = instance.getScope();
+      Model model = scope.getModel();
+      int depth = outer.getDepth();
+      
+      return new SuperInstance(model, primitive, outer, real, type, depth + 1);
    }
 }

@@ -1,6 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ArgumentList;
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.dispatch.InvocationBinder;
 import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
 import org.snapscript.core.Evaluation;
@@ -9,26 +10,25 @@ import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
 public class SuperInvocation implements Evaluation {
-   
-   private final InvocationBinder dispatcher;
+
    private final SuperInstanceBuilder builder;
+   private final InvocationBinder dispatcher;
+   private final NameExtractor extractor;
    private final ArgumentList arguments;
-   private final Evaluation function;
    
    public SuperInvocation(Evaluation function, ArgumentList arguments, Type type) {
       this.builder = new SuperInstanceBuilder(type);
+      this.extractor = new NameExtractor(function);
       this.dispatcher = new InvocationBinder();
       this.arguments = arguments;
-      this.function = function;
    }
    
    @Override
-   public Value evaluate(Scope instance, Object left) throws Exception {
-      Scope scope = builder.create(instance, left);
+   public Value evaluate(Scope scope, Object left) throws Exception {
+      Scope instance = builder.create(scope, left);
       Type real = scope.getType();
-      InvocationDispatcher handler = dispatcher.bind(scope, null);
-      Value reference = function.evaluate(scope, left);
-      String name = reference.getString();      
+      InvocationDispatcher handler = dispatcher.bind(instance, null);
+      String name = extractor.extract(scope);     
       
       if(arguments != null) {
          Value array = arguments.evaluate(scope, null); // arguments have no left hand side

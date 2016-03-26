@@ -21,6 +21,7 @@ import org.snapscript.core.Instance;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ModelScope;
+import org.snapscript.core.ObjectInstance;
 import org.snapscript.core.Property;
 import org.snapscript.core.Reference;
 import org.snapscript.core.Scope;
@@ -138,7 +139,7 @@ public class ScopeNodeTraverserTest extends TestCase {
       Model model = new MapModel(Collections.EMPTY_MAP);
       Scope scope = new ModelScope(model, null);
       Type type = new ScopeType(null, null, name);
-      Instance instance = new Instance(model, scope, null, type);
+      Instance instance = new ObjectInstance(model, scope, scope, null, type, 0);
       List<Property> properties = type.getProperties();
       State state = instance.getState();
       Set<String> keys = values.keySet();

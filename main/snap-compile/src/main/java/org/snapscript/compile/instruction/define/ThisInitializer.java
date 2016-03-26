@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.Instance;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -30,10 +31,11 @@ public class ThisInitializer extends Initializer {
       }
       return create(instance, real);
    }
-   
-   private Result create(Scope instance, Type real) throws Exception {
-      Value value = expression.evaluate(instance, instance);
-      Scope result = value.getValue();
+
+   private Result create(Scope scope, Type real) throws Exception {
+      Scope inner = scope.getInner();
+      Value value = expression.evaluate(inner, null);
+      Instance result = value.getValue();
       
       return ResultType.getNormal(result); // this will return the instance created!!
    }

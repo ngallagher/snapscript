@@ -26,6 +26,6 @@ public class DelegateInitializer {
       if(base != null) {
          return constructor.define(scope, initializer, type);
       }
-      return new PrimitiveConstructor(type); 
+      return new PrimitiveConstructor(); 
    }
 }
