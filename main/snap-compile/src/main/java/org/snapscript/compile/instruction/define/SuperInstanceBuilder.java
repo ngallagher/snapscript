@@ -18,8 +18,7 @@ public class SuperInstanceBuilder {
       Instance instance = (Instance)scope;
       Instance outer = instance.getOuter();
       Model model = scope.getModel();
-      int depth = outer.getDepth();
       
-      return new SuperInstance(model, outer, type, depth + 1);
+      return new SuperInstance(model, outer, type);
    }
 }

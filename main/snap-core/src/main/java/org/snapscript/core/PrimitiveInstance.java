@@ -9,25 +9,23 @@ public class PrimitiveInstance implements Instance {
    private final Scope scope;
    private final Model model;
    private final Type type;
-   private final int depth;
    
-   public PrimitiveInstance(Model model, Scope scope, Type type, int depth) {
-      this.state = new InstanceState(model, scope, null);
-      this.reference = new AtomicReference<Instance>();
+   public PrimitiveInstance(Model model, Scope scope, Type type) {
+      this.reference = new AtomicReference<Instance>(this);
+      this.state = new MapState(model, scope);
       this.scope = scope;
-      this.depth = depth;
       this.model = model;
       this.type = type;
    }
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, this, this, depth + 1);
+      return new CompoundInstance(model, this, this);
    } 
    
    @Override
    public Instance getOuter() {
-      return this; // this is the final one!!
+      return this;
    } 
    
    @Override
@@ -35,6 +33,7 @@ public class PrimitiveInstance implements Instance {
       return reference.get();
    }
    
+   @Override
    public void setInstance(Instance instance) {
       reference.set(instance);
    }
@@ -62,10 +61,6 @@ public class PrimitiveInstance implements Instance {
    @Override
    public Type getType(){
       return type;
-   }
-   
-   public int getDepth(){
-      return depth;
    }
    
    @Override

@@ -5,18 +5,16 @@ public class CompoundInstance implements Instance {
    private final Instance outer;
    private final State state;
    private final Model model;
-   private final int depth;
    
-   public CompoundInstance(Model model, Scope inner, Instance outer, int depth) {
+   public CompoundInstance(Model model, Scope inner, Instance outer) {
       this.state = new MapState(model, inner); 
       this.outer = outer;
-      this.depth = depth;
       this.model = model;
    }
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, this, outer, depth + 1);
+      return new CompoundInstance(model, this, outer);
    } 
    
    @Override
@@ -26,9 +24,10 @@ public class CompoundInstance implements Instance {
    
    @Override
    public Instance getInstance() {
-      return outer.getInstance(); // this is the final one!!
+      return outer.getInstance(); 
    } 
    
+   @Override
    public void setInstance(Instance instance) {
       outer.setInstance(instance);
    }
@@ -56,11 +55,6 @@ public class CompoundInstance implements Instance {
    @Override
    public State getState() {
       return state;
-   }
-   
-   @Override
-   public int getDepth(){
-      return depth;
    }
    
    @Override

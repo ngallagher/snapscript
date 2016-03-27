@@ -21,10 +21,8 @@ public class StaticInstanceBuilder {
       Model model = scope.getModel();
       
       if(instance != null) { 
-         int depth = instance.getDepth();
-         
-         return new CompoundInstance(model, inner, instance, depth + 1);
+         return new CompoundInstance(model, inner, instance);
       }
-      return new PrimitiveInstance(model, inner, type, 0); // create the first instance
+      return new PrimitiveInstance(model, inner, type); // create the first instance
    }
 }

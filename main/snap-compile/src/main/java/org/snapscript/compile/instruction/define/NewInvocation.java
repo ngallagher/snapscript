@@ -34,10 +34,9 @@ public class NewInvocation implements Constructor {
       Type real = (Type)list[0];
       Model model = scope.getModel();
       Class type = instance.getClass();
-      int depth = instance.getDepth();
       
       if(type != ObjectInstance.class) { 
-         Instance result = new ObjectInstance(model, instance, depth + 1);// we need to pass the base type up!!
+         Instance result = new ObjectInstance(model, instance);// we need to pass the base type up!!
    
          State state = instance.getState();
          Value constant = ValueType.getConstant(result, real);
