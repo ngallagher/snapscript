@@ -6,7 +6,7 @@ println(cube(2));
 
 
 function call(fun){
-   fun(22,33);
+   fun(22,33,1);
 }
 call((a:String,b:String,c:Number)->{ // XXX number of parameters not validated
    println("a=${a}");

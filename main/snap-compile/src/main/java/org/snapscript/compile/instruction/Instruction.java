@@ -15,11 +15,10 @@ import org.snapscript.compile.instruction.condition.IfStatement;
 import org.snapscript.compile.instruction.condition.LoopStatement;
 import org.snapscript.compile.instruction.condition.NullCoalesce;
 import org.snapscript.compile.instruction.condition.WhileStatement;
-import org.snapscript.compile.instruction.construct.ConstructArray;
 import org.snapscript.compile.instruction.construct.ConstructList;
 import org.snapscript.compile.instruction.construct.ConstructMap;
 import org.snapscript.compile.instruction.construct.ConstructObject;
-import org.snapscript.compile.instruction.construct.ConstructObjectArray;
+import org.snapscript.compile.instruction.construct.ConstructArray;
 import org.snapscript.compile.instruction.construct.ConstructSet;
 import org.snapscript.compile.instruction.construct.MapEntry;
 import org.snapscript.compile.instruction.construct.MapEntryList;
@@ -100,14 +99,13 @@ public enum Instruction {
    ASSIGNMENT(Assignment.class, "assignment"),
    TYPE_REFERENCE(TypeReference.class, "type-reference"),
    TYPE_REFERENCE_PART(TypeReferencePart.class, "type-reference-part"),   
-   CONSTRUCT_ARRAY(ConstructArray.class, "construct-array"),
    CONSTRUCT_LIST(ConstructList.class, "construct-list"),
-   CONSTRUCT_OBJECT_ARRAY(ConstructObjectArray.class, "construct-object-array"),
+   CONSTRUCT_ARRAY(ConstructArray.class, "construct-array"),
    CONSTRUCT_OBJECT(ConstructObject.class, "construct-object"),
    CONSTRUCT_MAP(ConstructMap.class, "construct-map"),   
    CONSTRUCT_SET(ConstructSet.class, "construct-set"),
-   ARRAY_ENRTY_LIST(ArgumentList.class, "array-entry-list"),
-   ARRAY_ENTRY(Argument.class, "array-entry"),
+   LIST_ENRTY_LIST(ArgumentList.class, "list-entry-list"),
+   LIST_ENTRY(Argument.class, "list-entry"),
    SET_ENRTY_LIST(ArgumentList.class, "set-entry-list"),
    SET_ENTRY(Argument.class, "set-entry"),
    MAP_ENRTY_LIST(MapEntryList.class, "map-entry-list"),

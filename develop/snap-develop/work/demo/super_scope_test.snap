@@ -7,6 +7,7 @@ class A {
       println("A.fun1(): a="+a);
    }
    test(){
+      println("A.test()");
       fun1();
    }
 }

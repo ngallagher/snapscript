@@ -12,4 +12,5 @@ enum Word{
    }
    static const WORDS =[A,B,C];
 }
+
 System.out.println(Word.WORDS[0]);
