@@ -363,7 +363,7 @@ public class ProcessPool {
             if(remaining > 0) {
                launch(); // launch a new process at a time
             }
-            if(remaining < 0) {
+            if(remaining < 0 && require > 0) {
                kill(); // kill if pool grows too large
             }
             logger.debug("Ping has " + pool + " active from " + require);

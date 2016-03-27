@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ScopeEvent;
+import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
@@ -42,8 +43,9 @@ public class SuspendInterceptor implements TraceListener {
             String thread = Thread.currentThread().getName();
             int count = counter.getAndIncrement();
             int depth = progress.currentDepth();
+            Context context = module.getContext();
             String path = ResourceExtractor.extractResource(resource);
-            ScopeExtractor extractor = new ScopeExtractor(scope);
+            ScopeExtractor extractor = new ScopeExtractor(context, scope);
             ScopeEventBuilder builder = new ScopeEventBuilder(extractor, type, process, thread, path, line, depth, count);
             ScopeNotifier notifier = new ScopeNotifier(builder);
             ScopeEvent suspend = builder.suspendEvent();

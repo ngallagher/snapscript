@@ -5,19 +5,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.Scope;
 
 public class ScopeNodeTraverser {
    
+   private final Context context;
    private final Scope scope;
    
-   public ScopeNodeTraverser(Scope scope) {
+   public ScopeNodeTraverser(Context context, Scope scope) {
+      this.context = context;
       this.scope = scope;
    }
    
    public Map<String, Map<String, String>> expand(Set<String> expand) {
       Map<String, Map<String, String>> variables = new HashMap<String, Map<String, String>>();
-      ScopeNodeBuilder builder = new ScopeNodeBuilder(variables, scope);
+      ScopeNodeBuilder builder = new ScopeNodeBuilder(variables, context);
       ScopeNode node = new ScopeNodeTree(builder, scope);
       
       if(!expand.isEmpty()) {

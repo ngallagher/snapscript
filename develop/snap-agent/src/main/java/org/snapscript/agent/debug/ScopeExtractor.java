@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.Scope;
 
 public class ScopeExtractor implements ScopeBrowser {
@@ -11,8 +12,8 @@ public class ScopeExtractor implements ScopeBrowser {
    private final ScopeNodeTraverser traverser;
    private final Set<String> paths;
    
-   public ScopeExtractor(Scope scope) {
-      this.traverser = new ScopeNodeTraverser(scope);
+   public ScopeExtractor(Context context, Scope scope) {
+      this.traverser = new ScopeNodeTraverser(context, scope);
       this.paths = new CopyOnWriteArraySet<String>();
    }
    

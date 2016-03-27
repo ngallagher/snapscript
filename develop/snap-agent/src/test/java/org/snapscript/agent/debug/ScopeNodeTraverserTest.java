@@ -92,7 +92,7 @@ public class ScopeNodeTraverserTest extends TestCase {
       rootValues.put("example2", example2);
       
       Scope root = createRootScope(rootValues);
-      ScopeNodeTraverser traverser = new ScopeNodeTraverser(root);
+      ScopeNodeTraverser traverser = new ScopeNodeTraverser(null, root);
       TreeSet<String> expand = new TreeSet<String>();
       
       expand.add("invoice.invoiceCompany.invoiceDetails.*");
