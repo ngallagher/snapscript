@@ -3,18 +3,22 @@ package org.snapscript.core;
 public class ObjectInstance implements Instance {
    
    private final Instance outer;
+   private final Module module;
    private final State state;
    private final Model model;
+   private final Type type;
    
-   public ObjectInstance(Model model, Instance outer) {
-      this.state = new MapState(model, outer); 
+   public ObjectInstance(Module module, Model model, Instance outer, Type type) {
+      this.state = new MapState(model, outer);
+      this.module = module;
       this.outer = outer;
       this.model = model;
+      this.type = type;
    }
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, this, this);
+      return new ObjectInstance(module, model, this, type);
    } 
    
    @Override
@@ -34,17 +38,17 @@ public class ObjectInstance implements Instance {
   
    @Override
    public Module getModule() {
-      return outer.getModule();
+      return module;
    }
    
    @Override
    public Context getContext() {
-      return outer.getContext();
+      return module.getContext();
    }
    
    @Override
    public Type getType(){
-      return outer.getType();
+      return type;
    }
    
    @Override

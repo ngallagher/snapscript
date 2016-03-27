@@ -4,8 +4,8 @@ public class SuperInstance extends ObjectInstance {
 
    private final Type base;
    
-   public SuperInstance(Model model, Instance scope, Type base) {
-      super(model, scope);
+   public SuperInstance(Module module, Model model, Instance scope, Type base, Type real) {
+      super(module, model, scope, real);
       this.base = base;
    }
    

@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.core.Instance;
 import org.snapscript.core.Model;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.SuperInstance;
 import org.snapscript.core.Type;
@@ -15,10 +16,12 @@ public class SuperInstanceBuilder {
    }
 
    public Scope create(Scope scope, Object left) throws Exception {
+      Type real = (Type)left;
       Instance instance = (Instance)scope;
       Instance outer = instance.getOuter();
+      Module module = type.getModule();
       Model model = scope.getModel();
       
-      return new SuperInstance(model, outer, type);
+      return new SuperInstance(module, model, outer, type, real);
    }
 }
