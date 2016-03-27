@@ -20,6 +20,7 @@ public class SuperScopeTest extends TestCase {
    "\n"+
    "class B extends A {\n"+
    "   var b;\n"+
+   "   var s = this;\n"+
    "   new(a,b):super(a){\n"+
    "      this.b=b;\n"+
    "   }\n"+

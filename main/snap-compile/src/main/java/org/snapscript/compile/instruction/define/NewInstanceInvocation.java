@@ -25,7 +25,7 @@ public class NewInstanceInvocation implements Constructor {
    }
 
    @Override
-   public Result invoke(Scope scope, Instance object, Object... list) throws Exception {
+   public Instance invoke(Scope scope, Instance object, Object... list) throws Exception {
       Type real = (Type)list[0];
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
       Instance inner = object.getInner();

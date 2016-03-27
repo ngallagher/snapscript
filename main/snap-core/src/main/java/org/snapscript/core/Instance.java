@@ -3,6 +3,7 @@ package org.snapscript.core;
 public interface Instance extends Scope {
    Instance getInner(); 
    Instance getOuter();
-   Scope getScope();
+   Instance getInstance();
+   void setInstance(Instance instance);
    int getDepth();
 }

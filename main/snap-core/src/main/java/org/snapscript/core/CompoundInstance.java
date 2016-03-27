@@ -3,24 +3,20 @@ package org.snapscript.core;
 public class CompoundInstance implements Instance {
    
    private final Instance outer;
-   private final Scope primitive;
    private final State state;
    private final Model model;
-   private final Type type;
    private final int depth;
    
-   public CompoundInstance(Model model, Scope primitive, Scope inner, Instance outer, Type type, int depth) {
+   public CompoundInstance(Model model, Scope inner, Instance outer, int depth) {
       this.state = new MapState(model, inner); 
-      this.primitive = primitive;
       this.outer = outer;
       this.depth = depth;
       this.model = model;
-      this.type = type;
    }
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, primitive, this, outer, type, depth + 1);
+      return new CompoundInstance(model, this, outer, depth + 1);
    } 
    
    @Override
@@ -29,9 +25,13 @@ public class CompoundInstance implements Instance {
    } 
    
    @Override
-   public Scope getScope() {
-      return primitive; 
+   public Instance getInstance() {
+      return outer.getInstance(); // this is the final one!!
    } 
+   
+   public void setInstance(Instance instance) {
+      outer.setInstance(instance);
+   }
   
    @Override
    public Module getModule() {
@@ -44,6 +44,11 @@ public class CompoundInstance implements Instance {
    }   
    
    @Override
+   public Type getType(){
+      return outer.getType();
+   }
+   
+   @Override
    public Model getModel() {
       return model;
    }
@@ -54,16 +59,12 @@ public class CompoundInstance implements Instance {
    }
    
    @Override
-   public Type getType(){
-      return type;
-   }
-   
    public int getDepth(){
       return depth;
    }
    
    @Override
    public String toString(){
-      return type.toString();
+      return outer.toString();
    }
 }

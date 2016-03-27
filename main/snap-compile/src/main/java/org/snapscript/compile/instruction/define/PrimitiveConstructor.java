@@ -9,8 +9,9 @@ import org.snapscript.core.Type;
 public class PrimitiveConstructor extends Initializer {
 
    @Override
-   public Result execute(Scope scope, Type type) throws Exception {    
-      return ResultType.getNormal(scope);
+   public Result execute(Scope scope, Type type) throws Exception {  
+      Scope outer = scope.getOuter();
+      return ResultType.getNormal(outer);
    }
 
 }

@@ -2,25 +2,21 @@ package org.snapscript.core;
 
 public class ObjectInstance implements Instance {
    
-   private final Scope primitive;
+   private final Instance outer;
    private final State state;
-   private final Scope scope;
    private final Model model;
-   private final Type type;
    private final int depth;
    
-   public ObjectInstance(Model model, Scope primitive, Scope scope, Instance base, Type type, int depth) {
-      this.state = new InstanceState(model, scope, base); 
-      this.primitive = primitive;
-      this.scope = scope;
+   public ObjectInstance(Model model, Instance outer, int depth) {
+      this.state = new MapState(model, outer); 
+      this.outer = outer;
       this.depth = depth;
       this.model = model;
-      this.type = type;
    }
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, primitive, this, this, type, depth + 1);
+      return new CompoundInstance(model, this, this, depth + 1);
    } 
    
    @Override
@@ -29,19 +25,29 @@ public class ObjectInstance implements Instance {
    } 
    
    @Override
-   public Scope getScope() {
-      return primitive; // this is the final one!!
+   public Instance getInstance() {
+      return outer.getInstance(); // this is the final one!!
    } 
+   
+   @Override
+   public void setInstance(Instance instance) {
+      outer.setInstance(instance);
+   }
   
    @Override
    public Module getModule() {
-      return scope.getModule();
+      return outer.getModule();
    }
    
    @Override
    public Context getContext() {
-      return scope.getContext();
-   }   
+      return outer.getContext();
+   }
+   
+   @Override
+   public Type getType(){
+      return outer.getType();
+   }
    
    @Override
    public Model getModel() {
@@ -53,17 +59,12 @@ public class ObjectInstance implements Instance {
       return state;
    }
    
-   @Override
-   public Type getType(){
-      return type;
-   }
-   
    public int getDepth(){
       return depth;
    }
    
    @Override
    public String toString(){
-      return type.toString();
+      return outer.toString();
    }
 }

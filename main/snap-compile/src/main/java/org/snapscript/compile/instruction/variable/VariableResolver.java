@@ -24,7 +24,7 @@ public class VariableResolver {
       ValueResolver resolver = resolvers.get(key);
       
       if(resolver == null) { 
-         resolver = binder.bind(left, name);
+         resolver = binder.bind(scope, left, name);
          resolvers.put(key, resolver);
       }
       return resolver.resolve(scope, left);

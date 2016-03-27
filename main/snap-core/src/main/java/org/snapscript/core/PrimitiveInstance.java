@@ -1,7 +1,10 @@
 package org.snapscript.core;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class PrimitiveInstance implements Instance {
    
+   private final AtomicReference<Instance> reference;
    private final State state;
    private final Scope scope;
    private final Model model;
@@ -9,7 +12,8 @@ public class PrimitiveInstance implements Instance {
    private final int depth;
    
    public PrimitiveInstance(Model model, Scope scope, Type type, int depth) {
-      this.state = new InstanceState(model, scope, null); 
+      this.state = new InstanceState(model, scope, null);
+      this.reference = new AtomicReference<Instance>();
       this.scope = scope;
       this.depth = depth;
       this.model = model;
@@ -18,7 +22,7 @@ public class PrimitiveInstance implements Instance {
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(model, this, this, this, type, depth + 1);
+      return new CompoundInstance(model, this, this, depth + 1);
    } 
    
    @Override
@@ -27,8 +31,12 @@ public class PrimitiveInstance implements Instance {
    } 
    
    @Override
-   public Instance getScope() {
-      return this;
+   public Instance getInstance() {
+      return reference.get();
+   }
+   
+   public void setInstance(Instance instance) {
+      reference.set(instance);
    }
   
    @Override

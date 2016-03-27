@@ -2,10 +2,12 @@ package org.snapscript.compile.instruction.variable;
 
 import java.util.Map;
 
+import org.snapscript.core.Instance;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
+
 
 public class VariableBinder {
    
@@ -15,7 +17,7 @@ public class VariableBinder {
       this.traverser = new TypeTraverser();
    }
    
-   public ValueResolver bind(Object left, String name) {
+   public ValueResolver bind(Scope scope, Object left, String name) {
       if(left != null) {
          if(Scope.class.isInstance(left)) {
             return new ScopeResolver(name);
@@ -30,6 +32,9 @@ public class VariableBinder {
             return new TypeResolver(traverser, name);
          }
          return new ObjectResolver(traverser, name);
+      }
+      if(Instance.class.isInstance(scope)) {
+         return new InstanceResolver(name);
       }
       return new LocalResolver(name);
    }
