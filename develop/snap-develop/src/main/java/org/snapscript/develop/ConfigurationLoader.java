@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.core.Commit;
@@ -58,6 +59,9 @@ public class ConfigurationLoader {
                for(String dependency : dependencies) {
                   List<File> matches = FilePatternScanner.scan(dependency);
                   
+                  if(data.isValidate() && matches.isEmpty()) {
+                     throw new IllegalStateException("Could not find dependency " + dependency);
+                  }
                   for(File match : matches) {
                      String normal = match.getCanonicalPath();
                      
@@ -94,7 +98,12 @@ public class ConfigurationLoader {
    @Root
    private static class ConfigurationData {
       
-      @ElementList(entry="dependency", required=false)
+      @Path("dependencies")
+      @Attribute(name="validate", required=false)
+      private Boolean validate;
+      
+      @Path("dependencies")
+      @ElementList(entry="dependency", required=false, inline=true)
       private List<String> dependencies;
       
       @ElementList(entry="argument", required=false)
@@ -102,6 +111,10 @@ public class ConfigurationLoader {
       
       @ElementList(entry="variable", required=false)
       private Dictionary<ConfigurationVariable> environment;
+      
+      public boolean isValidate() {
+         return Boolean.TRUE.equals(validate);
+      }
       
       public Set<ConfigurationVariable> getVariables() {
          return environment;

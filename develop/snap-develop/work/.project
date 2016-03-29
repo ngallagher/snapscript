@@ -8,7 +8,7 @@
       <argument>-XX:+UnlockCommercialFeatures</argument>
       <argument>-XX:+FlightRecorder</argument>
   </arguments>
-  <dependencies>
+  <dependencies validate='true'>
     <!-- dependency>${user.dir}\..\..\**\target\classes</dependency--> <!-- ** is recursive -->
     <dependency>${user.home}\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar</dependency>
     <dependency>${user.home}\.m2\repository\stax\stax-api\1.0.1\*-1.0.1.jar</dependency> <!-- * is a single file or directory -->

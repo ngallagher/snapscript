@@ -24,7 +24,7 @@ public class FilePatternMatcher {
                matcher = pattern.matcher(normal);
                
                if(matcher.matches()) {
-                  if(entry.isFile()) {
+                  if(entry.exists() && entry.isFile()) {
                      files.add(entry);
                   }
                }

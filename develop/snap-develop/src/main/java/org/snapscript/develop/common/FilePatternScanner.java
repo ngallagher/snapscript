@@ -48,9 +48,6 @@ public class FilePatternScanner {
                   Pattern pattern = Pattern.compile(expression);
                   List<File> list = FilePatternMatcher.scan(pattern, directory);
                   
-                  if(list.isEmpty()) {
-                     throw new IllegalArgumentException("Could not match file '" + pattern + "'");
-                  }
                   Collections.sort(list);
                   return list;
                }catch(Exception e) {
@@ -59,9 +56,9 @@ public class FilePatternScanner {
             }
          }
       }
-      if(!file.exists()) {
-         throw new IllegalArgumentException("Could not match file '" + token + "'");
+      if(file.exists()) {
+         return Collections.singletonList(file);
       }
-      return Collections.singletonList(file);
+      return Collections.emptyList();
    }
 }
