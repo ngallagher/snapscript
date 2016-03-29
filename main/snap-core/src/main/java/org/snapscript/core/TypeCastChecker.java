@@ -4,10 +4,8 @@ import static org.snapscript.core.convert.ConstraintConverter.EXACT;
 import static org.snapscript.core.convert.ConstraintConverter.INVALID;
 import static org.snapscript.core.convert.ConstraintConverter.SIMILAR;
 
-import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FunctionComparator;
 

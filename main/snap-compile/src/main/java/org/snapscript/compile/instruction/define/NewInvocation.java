@@ -18,8 +18,9 @@ public class NewInvocation implements Invocation<Instance>{
    }
 
    @Override
-   public Result invoke(Scope scope, Instance object, Object... list) throws Exception {
-      Instance instance = builder.create(scope, object); // merge with static inner scope
+   public Result invoke(Scope scope, Instance base, Object... list) throws Exception {
+      Type real = (Type)list[0];
+      Instance instance = builder.create(scope, base, real); // merge with static inner scope
       
       if(instance != null) {
          instance.setInstance(instance); // set temporary instance
@@ -27,10 +28,10 @@ public class NewInvocation implements Invocation<Instance>{
       return create(scope, instance, list);
    }
    
-   private Result create(Scope scope, Instance object, Object... list) throws Exception {
-      Instance result = allocator.allocate(scope, object, list);
+   private Result create(Scope scope, Instance base, Object... list) throws Exception {
+      Instance result = allocator.allocate(scope, base, list);
       
-      if(object != null) {
+      if(result != null) {
          result.setInstance(result); // set instance
       }
       return ResultType.getNormal(result);

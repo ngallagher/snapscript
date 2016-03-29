@@ -18,13 +18,13 @@ public class StaticInstanceBuilder {
       this.type = type;
    }
 
-   public Instance create(Scope scope, Instance instance) throws Exception {
+   public Instance create(Scope scope, Instance base, Type real) throws Exception {
       Module module = type.getModule();
       Model model = scope.getModel();
       
-      if(instance != null) { 
-         return new CompoundInstance(module, model, inner, instance, type);
+      if(base != null) { 
+         return new CompoundInstance(module, model, inner, base, real);
       }
-      return new PrimitiveInstance(module, model, inner, type); // create the first instance
+      return new PrimitiveInstance(module, model, inner, real); // create the first instance
    }
 }

@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction.define;
 import org.snapscript.compile.instruction.ParameterExtractor;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Instance;
-import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -34,11 +33,8 @@ public class SuperAllocator implements Allocator {
          extractor.extract(inner, arguments);
       }
       Result result = initializer.execute(inner, real);
-      Instance instance = result.getValue();
-
-      if(instance == null) {
-         throw new InternalStateException("Instance could not be created");
-      }
-      return allocator.allocate(scope, instance, list);
+      Instance base = result.getValue();
+      
+      return allocator.allocate(scope, base, list);
    }
 }
