@@ -10,22 +10,22 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
 import org.snapscript.core.Type;
 
-public class NewInstanceInvocation implements Constructor {
+public class SuperAllocator implements Allocator {
    
    private final ParameterExtractor extractor;
    private final SignatureAligner aligner;
-   private final Constructor constructor;
-   private final Initializer factory;
+   private final Initializer initializer;
+   private final Allocator allocator;
    
-   public NewInstanceInvocation(Signature signature, Initializer factory, Constructor constructor) {
+   public SuperAllocator(Signature signature, Initializer initializer, Allocator allocator) {
       this.extractor = new ParameterExtractor(signature);
       this.aligner = new SignatureAligner(signature);
-      this.constructor = constructor;
-      this.factory = factory;
+      this.initializer = initializer;
+      this.allocator = allocator;
    }
 
    @Override
-   public Instance invoke(Scope scope, Instance object, Object... list) throws Exception {
+   public Instance allocate(Scope scope, Instance object, Object... list) throws Exception {
       Type real = (Type)list[0];
       Object[] arguments = aligner.align(list); // combine variable arguments to a single array
       Instance inner = object.getInner();
@@ -33,12 +33,12 @@ public class NewInstanceInvocation implements Constructor {
       if(arguments.length > 0) {
          extractor.extract(inner, arguments);
       }
-      Result result = factory.execute(inner, real);
+      Result result = initializer.execute(inner, real);
       Instance instance = result.getValue();
 
       if(instance == null) {
          throw new InternalStateException("Instance could not be created");
       }
-      return constructor.invoke(scope, instance, list);
+      return allocator.allocate(scope, instance, list);
    }
 }

@@ -1,60 +1,38 @@
 package org.snapscript.compile.instruction.define;
 
-import static org.snapscript.core.Reserved.TYPE_THIS;
-
-import org.snapscript.core.Initializer;
 import org.snapscript.core.Instance;
 import org.snapscript.core.Invocation;
-import org.snapscript.core.Model;
-import org.snapscript.core.Module;
-import org.snapscript.core.ObjectInstance;
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
-import org.snapscript.core.State;
 import org.snapscript.core.Type;
-import org.snapscript.core.Value;
-import org.snapscript.core.ValueType;
 
-public class NewInvocation implements Constructor {
+public class NewInvocation implements Invocation<Instance>{
    
-   private final Initializer initializer;
-   private final Invocation body;
-   private final boolean compile;
+   private final StaticInstanceBuilder builder;
+   private final Allocator allocator;
    
-   public NewInvocation(Initializer initializer, Invocation body) {
-      this(initializer, body, true);
+   public NewInvocation(Allocator allocator, Scope inner, Type type) {
+      this.builder = new StaticInstanceBuilder(inner, type);
+      this.allocator = allocator;
    }
-   
-   public NewInvocation(Initializer initializer, Invocation body, boolean compile) {
-      this.initializer = initializer;
-      this.compile = compile;
-      this.body = body;
-   }
-   
+
    @Override
-   public Instance invoke(Scope scope, Instance instance, Object... list) throws Exception {
-      Type real = (Type)list[0];
-      Model model = scope.getModel();
-      Module module = real.getModule();
-      Class type = instance.getClass();
+   public Result invoke(Scope scope, Instance object, Object... list) throws Exception {
+      Instance instance = builder.create(scope, object); // merge with static inner scope
       
-      if(type != ObjectInstance.class) { 
-         Instance result = new ObjectInstance(module, model, instance, real);// we need to pass the base type up!!
-   
-         State state = instance.getState();
-         Value constant = ValueType.getConstant(result, real);
-    
-         state.addConstant(TYPE_THIS, constant); // reference to 'this'
-         instance = result;
-         
-         if(initializer != null) {
-            if(compile) {
-               initializer.compile(scope, real); // static stuff if needed
-            }
-            initializer.execute(instance, real);
-         }
+      if(instance != null) {
+         instance.setInstance(instance); // set temporary instance
       }
-      body.invoke(instance, instance, list);
+      return create(scope, instance, list);
+   }
+   
+   private Result create(Scope scope, Instance object, Object... list) throws Exception {
+      Instance result = allocator.allocate(scope, object, list);
       
-      return instance;
+      if(object != null) {
+         result.setInstance(result); // set instance
+      }
+      return ResultType.getNormal(result);
    }
 }
