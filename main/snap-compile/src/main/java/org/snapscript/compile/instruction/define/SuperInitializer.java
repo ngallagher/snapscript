@@ -28,7 +28,7 @@ public class SuperInitializer extends Initializer {
    public Result execute(Scope instance, Type real) throws Exception {
       Value reference = expression.evaluate(instance, real);
       Scope value = reference.getValue();
-      Scope base = builder.create(value, real); 
+      Scope base = builder.create(value, real); // XXX this is redundant?
       Value constant = ValueType.getConstant(base, type);
       State state = base.getState();
       
