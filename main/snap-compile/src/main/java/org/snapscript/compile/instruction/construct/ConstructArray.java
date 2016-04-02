@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction.construct;
 
 import org.snapscript.compile.instruction.Argument;
-import org.snapscript.compile.instruction.collection.ArrayConverter;
+import org.snapscript.compile.instruction.collection.ArrayBuilder;
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
@@ -35,12 +35,12 @@ public class ConstructArray implements Compilation {
    
    private static class CompileResult implements Evaluation {
    
-      private final ArrayConverter converter;
+      private final ArrayBuilder builder;
       private final Argument[] arguments;
       private final Evaluation reference;
    
       public CompileResult(Evaluation reference, Argument... arguments) {
-         this.converter = new ArrayConverter();
+         this.builder = new ArrayBuilder();
          this.reference = reference;
          this.arguments = arguments;
       }      
@@ -63,14 +63,14 @@ public class ConstructArray implements Compilation {
             }
             if(arguments.length == 1) {
                int size = dimensions[0];   
-               Object array = converter.create(entry, size);
+               Object array = builder.create(entry, size);
                
                return ValueType.getTransient(array);
             }
             if(arguments.length == 2) {
                int first = dimensions[0]; 
                int second = dimensions[1];
-               Object array = converter.create(entry, first, second);
+               Object array = builder.create(entry, first, second);
                
                return ValueType.getTransient(array);
             }
@@ -78,13 +78,13 @@ public class ConstructArray implements Compilation {
                int first = dimensions[0]; 
                int second = dimensions[1];
                int third = dimensions[2];
-               Object array = converter.create(entry, first, second, third);
+               Object array = builder.create(entry, first, second, third);
                
                return ValueType.getTransient(array);
             }
             throw new InternalArgumentException("Maximum or three dimensions exceeded");
          }
-         Object array = converter.create(entry, 0);
+         Object array = builder.create(entry, 0);
          return ValueType.getTransient(array);
       }
    }

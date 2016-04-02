@@ -6,10 +6,10 @@ import org.snapscript.core.InternalArgumentException;
 
 public class ListConverter {
 
-   private final ArrayConverter converter;
+   private final ArrayBuilder builder;
    
    public ListConverter() {
-      this.converter = new ArrayConverter();
+      this.builder = new ArrayBuilder();
    }
    
    public boolean accept(Object value) throws Exception {
@@ -31,7 +31,7 @@ public class ListConverter {
          Class type = value.getClass();
          
          if(type.isArray()) {
-            return converter.convert(value);
+            return builder.convert(value);
          }
          if(List.class.isAssignableFrom(type)) {
             return (List)value;

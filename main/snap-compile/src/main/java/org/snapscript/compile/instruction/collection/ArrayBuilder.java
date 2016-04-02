@@ -3,9 +3,9 @@ package org.snapscript.compile.instruction.collection;
 import java.lang.reflect.Array;
 import java.util.List;
 
-public class ArrayConverter {
+public class ArrayBuilder {
    
-   public ArrayConverter() {
+   public ArrayBuilder() {
       super();
    }
 

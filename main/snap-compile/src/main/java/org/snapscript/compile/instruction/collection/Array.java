@@ -7,11 +7,11 @@ import org.snapscript.core.ValueType;
 
 public class Array implements Evaluation {
    
-   private final ArrayConverter converter;
+   private final ArrayBuilder builder;
    private final Evaluation variable;
    
    public Array(Evaluation variable) {
-      this.converter = new ArrayConverter();
+      this.builder = new ArrayBuilder();
       this.variable = variable;
    }
    
@@ -22,7 +22,7 @@ public class Array implements Evaluation {
       Class type = list.getClass();
       
       if(type.isArray()) {
-         list = converter.convert(list);
+         list = builder.convert(list);
       }     
       return ValueType.getTransient(list);
    }  

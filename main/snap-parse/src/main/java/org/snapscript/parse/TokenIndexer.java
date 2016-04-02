@@ -187,13 +187,16 @@ public class TokenIndexer {
             if (identifier(next) && identifier(peek)) {
                reader.reset(mark);
             } else {
+               if(identifier(next) && brace(peek)) {
+                  return new StringToken(token, line, LITERAL.mask | IDENTIFIER.mask);
+               }
                return new StringToken(token, line, LITERAL.mask);
             }
          }
       }
       return null;
    }
-
+   
    private boolean identifier(Character value) {
       if (value != null) {
          if (Character.isLetter(value)) {
@@ -202,6 +205,13 @@ public class TokenIndexer {
          if (Character.isDigit(value)) {
             return true;
          }
+      }
+      return false;
+   }
+   
+   private boolean brace(Character value) {
+      if(value != null) {
+         return value.equals('(');
       }
       return false;
    }

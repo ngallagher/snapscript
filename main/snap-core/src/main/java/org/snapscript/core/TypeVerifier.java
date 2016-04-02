@@ -12,7 +12,7 @@ public class TypeVerifier {
       this.loader = loader;
    }
 
-   public boolean same(Class require, Type type) throws Exception {
+   public boolean isSame(Class require, Type type) throws Exception {
       Type actual = loader.loadType(require);
       
       if(actual == type) {
@@ -21,7 +21,7 @@ public class TypeVerifier {
       return false;
    }
    
-   public boolean like(Class require, Type type) throws Exception {
+   public boolean isLike(Class require, Type type) throws Exception {
       Type actual = loader.loadType(require);
       int score = checker.cast(type, actual);
       

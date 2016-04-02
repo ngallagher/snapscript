@@ -59,7 +59,7 @@ public class CompoundScope implements Scope {
       private final Model model;
       
       public StateScope(Model model, Scope inner, Scope outer) {
-         this.state = new MapState(model, inner);
+         this.state = new MapState(null, inner); // ignore model
          this.outer = outer;
          this.model = model;
       }

@@ -17,10 +17,10 @@ import org.snapscript.core.convert.ProxyWrapper;
 
 public class IterationConverter {
 
-   private final ArrayConverter converter;
+   private final ArrayBuilder builder;
    
    public IterationConverter() {
-      this.converter = new ArrayConverter();
+      this.builder = new ArrayBuilder();
    }
    
    public Iteration convert(Scope scope, Object value) throws Exception {
@@ -62,7 +62,7 @@ public class IterationConverter {
       }
       
       public Iterable getIterable(Scope scope) throws Exception {
-         List list = converter.convert(value);
+         List list = builder.convert(value);
          
          if(!list.isEmpty()) {
             return new ProxyIterable(wrapper, list);

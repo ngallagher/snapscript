@@ -3,7 +3,7 @@ package org.snapscript.compile.instruction.dispatch;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.snapscript.compile.instruction.collection.ArrayConverter;
+import org.snapscript.compile.instruction.collection.ArrayBuilder;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
@@ -18,12 +18,12 @@ import org.snapscript.core.bind.FunctionBinder;
 public class ArrayDispatcher implements InvocationDispatcher {
    
    private final ValueTypeExtractor extractor;
-   private final ArrayConverter converter;
+   private final ArrayBuilder builder;
    private final Object object;
    private final Scope scope;      
    
    public ArrayDispatcher(ValueTypeExtractor extractor, Scope scope, Object object) {
-      this.converter = new ArrayConverter();
+      this.builder = new ArrayBuilder();
       this.extractor = extractor;
       this.object = object;
       this.scope = scope;
@@ -33,7 +33,7 @@ public class ArrayDispatcher implements InvocationDispatcher {
    public Value dispatch(String name, Object... arguments) throws Exception {
       Context context = scope.getContext();
       FunctionBinder binder = context.getBinder();
-      List list = converter.convert(object);
+      List list = builder.convert(object);
       Callable<Result> call = binder.bind(scope, list, name, arguments);
       
       if(call == null) {

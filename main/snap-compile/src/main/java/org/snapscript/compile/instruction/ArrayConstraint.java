@@ -2,7 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.lang.reflect.Array;
 
-import org.snapscript.compile.instruction.collection.ArrayConverter;
+import org.snapscript.compile.instruction.collection.ArrayBuilder;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalArgumentException;
@@ -15,12 +15,12 @@ import org.snapscript.parse.StringToken;
 
 public class ArrayConstraint implements Evaluation {
 
-   private final ArrayConverter converter;
    private final TypeReference reference;
+   private final ArrayBuilder builder;
    private final StringToken[] bounds;
    
    public ArrayConstraint(TypeReference reference, StringToken... bounds) {
-      this.converter = new ArrayConverter();
+      this.builder = new ArrayBuilder();
       this.reference = reference;
       this.bounds = bounds;
    }
@@ -47,13 +47,13 @@ public class ArrayConstraint implements Evaluation {
       Class real = entry.getType();
       
       if(bounds.length == 1) {  
-         return converter.create(real, 0);
+         return builder.create(real, 0);
       }
       if(bounds.length == 2) {
-         return converter.create(real, 0, 0);
+         return builder.create(real, 0, 0);
       }
       if(bounds.length == 2) {
-         return converter.create(real, 0, 0, 0);
+         return builder.create(real, 0, 0, 0);
       }
       throw new InternalArgumentException("Maximum or three dimensions exceeded");
    }
