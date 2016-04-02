@@ -10,12 +10,10 @@ import org.snapscript.core.TypeLoader;
 public class ArrayConverter extends ConstraintConverter {
 
    private final ConstraintMatcher matcher;
-   private final ProxyWrapper wrapper;
    private final TypeLoader loader;
    private final Type type;
    
-   public ArrayConverter(TypeLoader loader, ConstraintMatcher matcher, ProxyWrapper wrapper, Type type) {
-      this.wrapper = wrapper;
+   public ArrayConverter(TypeLoader loader, ConstraintMatcher matcher, Type type) {
       this.matcher = matcher;
       this.loader = loader;
       this.type = type;
