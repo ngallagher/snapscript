@@ -1,7 +1,10 @@
 package org.snapscript.core;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ObjectInstance implements Instance {
    
+   private final AtomicReference<Instance> reference;
    private final Instance outer;
    private final Module module;
    private final State state;
@@ -9,6 +12,7 @@ public class ObjectInstance implements Instance {
    private final Type type;
    
    public ObjectInstance(Module module, Model model, Instance outer, Type type) {
+      this.reference = new AtomicReference<Instance>(this);
       this.state = new MapState(model, outer);
       this.module = module;
       this.outer = outer;
@@ -28,11 +32,12 @@ public class ObjectInstance implements Instance {
    
    @Override
    public Instance getInstance() {
-      return outer.getInstance(); 
+      return reference.get(); 
    } 
    
    @Override
    public void setInstance(Instance instance) {
+      reference.set(instance);
       outer.setInstance(instance);
    }
   
