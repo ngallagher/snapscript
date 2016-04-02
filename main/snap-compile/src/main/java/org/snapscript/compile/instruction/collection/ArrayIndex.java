@@ -12,13 +12,13 @@ import org.snapscript.core.convert.ProxyWrapper;
 
 public class ArrayIndex implements Evaluation {
    
-   private final ListConverter converter;
+   private final ArrayListConverter converter;
    private final Argument[] list;
    private final Argument first;
    private final Array array;
   
    public ArrayIndex(Array array, Argument first, Argument... list) {
-      this.converter = new ListConverter();
+      this.converter = new ArrayListConverter();
       this.array = array;        
       this.first = first;
       this.list = list;

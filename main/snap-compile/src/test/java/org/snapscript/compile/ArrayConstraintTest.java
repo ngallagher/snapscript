@@ -46,14 +46,7 @@ public class ArrayConstraintTest extends TestCase {
       System.err.println(SOURCE_2);
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile(SOURCE_2);
-      boolean failure = false;
-      try {
-         executable.execute();
-      }catch(Exception e){
-         failure =true;
-         e.printStackTrace();
-      }
-      assertTrue(failure);
+      executable.execute();
    }
    
    public void testListConstraint() throws Exception {

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.snapscript.core.InternalArgumentException;
 
-public class ListConverter {
+public class ArrayListConverter {
 
    private final ArrayBuilder builder;
    
-   public ListConverter() {
+   public ArrayListConverter() {
       this.builder = new ArrayBuilder();
    }
    
