@@ -4,13 +4,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.instance.Instance;
 
 public class ThisInitializer extends Initializer {
    

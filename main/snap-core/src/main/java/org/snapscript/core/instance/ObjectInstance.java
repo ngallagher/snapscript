@@ -1,15 +1,25 @@
-package org.snapscript.core;
+package org.snapscript.core.instance;
 
-public class StaticInstance implements Instance {
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.snapscript.core.Context;
+import org.snapscript.core.Model;
+import org.snapscript.core.Module;
+import org.snapscript.core.State;
+import org.snapscript.core.Type;
+
+public class ObjectInstance implements Instance {
    
+   private final AtomicReference<Instance> reference;
    private final Instance outer;
    private final Module module;
    private final State state;
    private final Model model;
    private final Type type;
    
-   public StaticInstance(Module module, Model model, Scope inner, Instance outer, Type type) {
-      this.state = new MapState(model, inner);
+   public ObjectInstance(Module module, Model model, Instance outer, Type type) {
+      this.reference = new AtomicReference<Instance>(this);
+      this.state = new InstanceState(outer);
       this.module = module;
       this.outer = outer;
       this.model = model;
@@ -18,21 +28,27 @@ public class StaticInstance implements Instance {
    
    @Override
    public Instance getInner() {
-      return new StaticInstance(module, model, this, outer, type);
+      return new CompoundInstance(module, model, this, type);
    } 
    
    @Override
    public Instance getOuter() {
-      return outer; 
+      return this; 
    } 
    
    @Override
+   public Context getContext() {
+      return module.getContext();
+   }
+   
+   @Override
    public Instance getInstance() {
-      return outer.getInstance(); 
+      return reference.get(); 
    } 
    
    @Override
    public void setInstance(Instance instance) {
+      reference.set(instance);
       outer.setInstance(instance);
    }
   
@@ -40,11 +56,6 @@ public class StaticInstance implements Instance {
    public Module getModule() {
       return module;
    }
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
-   }   
    
    @Override
    public Type getType(){

@@ -1,4 +1,10 @@
-package org.snapscript.core;
+package org.snapscript.core.instance;
+
+import org.snapscript.core.Context;
+import org.snapscript.core.Model;
+import org.snapscript.core.Module;
+import org.snapscript.core.State;
+import org.snapscript.core.Type;
 
 public class SuperInstance implements Instance {
 

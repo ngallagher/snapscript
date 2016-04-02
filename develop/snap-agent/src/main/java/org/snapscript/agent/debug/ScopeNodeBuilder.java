@@ -4,9 +4,9 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Instance;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.convert.ProxyWrapper;
+import org.snapscript.core.instance.Instance;
 
 public class ScopeNodeBuilder {
    

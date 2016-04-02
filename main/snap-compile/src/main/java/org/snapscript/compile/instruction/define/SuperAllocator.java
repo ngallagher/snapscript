@@ -2,12 +2,12 @@ package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.ParameterExtractor;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
 import org.snapscript.core.Type;
+import org.snapscript.core.instance.Instance;
 
 public class SuperAllocator implements Allocator {
    

@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.snapscript.core.TypeTraverser;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.instance.Instance;
 
 public class InstanceScopeNode implements ScopeNode {
    

@@ -1,4 +1,6 @@
-package org.snapscript.core;
+package org.snapscript.core.instance;
+
+import org.snapscript.core.Scope;
 
 public interface Instance extends Scope {
    Instance getInstance();

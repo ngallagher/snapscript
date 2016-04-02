@@ -2,11 +2,11 @@ package org.snapscript.compile.instruction.variable;
 
 import java.util.Map;
 
-import org.snapscript.core.Instance;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
+import org.snapscript.core.instance.Instance;
 
 
 public class VariableBinder {

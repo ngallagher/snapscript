@@ -3,16 +3,16 @@ package org.snapscript.compile.instruction.define;
 import static org.snapscript.core.Reserved.TYPE_THIS;
 
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
-import org.snapscript.core.ObjectInstance;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
+import org.snapscript.core.instance.Instance;
+import org.snapscript.core.instance.ObjectInstance;
 
 public class InstanceAllocator implements Allocator {
    

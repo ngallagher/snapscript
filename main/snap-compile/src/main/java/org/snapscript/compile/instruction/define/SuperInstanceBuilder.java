@@ -1,11 +1,11 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.core.Instance;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.SuperInstance;
 import org.snapscript.core.Type;
+import org.snapscript.core.instance.Instance;
+import org.snapscript.core.instance.SuperInstance;
 
 public class SuperInstanceBuilder {
    

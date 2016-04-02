@@ -1,8 +1,8 @@
 package org.snapscript.agent.debug;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Type;
+import org.snapscript.core.instance.Instance;
 
 public class ValueDataBuilder {
    

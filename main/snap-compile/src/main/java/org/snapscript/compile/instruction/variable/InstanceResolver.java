@@ -1,8 +1,8 @@
 package org.snapscript.compile.instruction.variable;
 
-import org.snapscript.core.Instance;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.instance.Instance;
 
 public class InstanceResolver implements ValueResolver<Object> {
    

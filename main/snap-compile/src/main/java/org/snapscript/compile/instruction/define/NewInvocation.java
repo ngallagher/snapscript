@@ -1,12 +1,12 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Instance;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.instance.Instance;
 
 public class NewInvocation implements Invocation<Instance>{
    
