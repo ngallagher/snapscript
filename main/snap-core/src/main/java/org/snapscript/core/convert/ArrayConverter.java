@@ -132,7 +132,6 @@ public class ArrayConverter extends ConstraintConverter {
                   throw new InternalStateException("Array element is not " + require);
                }
                element = converter.convert(element);
-               element = wrapper.toProxy(element);
             }
             Array.set(array, i, element);
          }
@@ -159,7 +158,6 @@ public class ArrayConverter extends ConstraintConverter {
                   throw new InternalStateException("Array element is not " + require);
                }
                element = converter.convert(element);
-               element = wrapper.toProxy(element);
             }
             Array.set(array, i, element);
          }
