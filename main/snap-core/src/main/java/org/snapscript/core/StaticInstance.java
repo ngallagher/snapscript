@@ -1,6 +1,6 @@
 package org.snapscript.core;
 
-public class CompoundInstance implements Instance {
+public class StaticInstance implements Instance {
    
    private final Instance outer;
    private final Module module;
@@ -8,7 +8,7 @@ public class CompoundInstance implements Instance {
    private final Model model;
    private final Type type;
    
-   public CompoundInstance(Module module, Model model, Scope inner, Instance outer, Type type) {
+   public StaticInstance(Module module, Model model, Scope inner, Instance outer, Type type) {
       this.state = new MapState(model, inner);
       this.module = module;
       this.outer = outer;
@@ -18,7 +18,7 @@ public class CompoundInstance implements Instance {
    
    @Override
    public Instance getInner() {
-      return new CompoundInstance(module, model, this, outer, type);
+      return new StaticInstance(module, model, this, outer, type);
    } 
    
    @Override

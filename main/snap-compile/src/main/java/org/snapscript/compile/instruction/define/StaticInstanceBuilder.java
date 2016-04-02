@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.core.CompoundInstance;
+import org.snapscript.core.StaticInstance;
 import org.snapscript.core.Instance;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
@@ -23,7 +23,7 @@ public class StaticInstanceBuilder {
       Model model = scope.getModel();
       
       if(base != null) { 
-         return new CompoundInstance(module, model, inner, base, real);
+         return new StaticInstance(module, model, inner, base, real);
       }
       return new PrimitiveInstance(module, model, inner, real); // create the first instance
    }
