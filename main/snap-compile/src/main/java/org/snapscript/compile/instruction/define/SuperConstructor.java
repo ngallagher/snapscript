@@ -35,7 +35,7 @@ public class SuperConstructor implements TypePart {
       }     
       StringToken name = new StringToken(TYPE_CONSTRUCTOR);
       Evaluation literal = new TextLiteral(name);
-      Evaluation evaluation = new SuperInvocation(literal, arguments, base);
+      Evaluation evaluation = new SuperInvocation(literal, arguments, scope, base);
       
       return new SuperInitializer(evaluation, base);
    }

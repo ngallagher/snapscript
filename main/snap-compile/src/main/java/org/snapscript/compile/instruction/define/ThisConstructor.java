@@ -25,8 +25,8 @@ public class ThisConstructor implements TypePart {
    @Override
    public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {  
       Statement statement = new StaticBody(initializer, type);
-      Evaluation name = new TypeValue(type);
-      CreateObject evaluation = new CreateObject(name, arguments);
+      Evaluation reference = new TypeValue(type);
+      CreateObject evaluation = new CreateObject(reference, arguments);
       
       return new ThisInitializer(statement, evaluation);
    }

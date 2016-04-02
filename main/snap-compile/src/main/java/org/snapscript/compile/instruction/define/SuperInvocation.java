@@ -6,6 +6,7 @@ import org.snapscript.compile.instruction.dispatch.InvocationBinder;
 import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeCombiner;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
@@ -15,12 +16,14 @@ public class SuperInvocation implements Evaluation {
    private final InvocationBinder dispatcher;
    private final NameExtractor extractor;
    private final ArgumentList arguments;
+   private final Scope outer;
    
-   public SuperInvocation(Evaluation function, ArgumentList arguments, Type type) {
+   public SuperInvocation(Evaluation function, ArgumentList arguments, Scope outer, Type type) {
       this.builder = new SuperInstanceBuilder(type);
       this.extractor = new NameExtractor(function);
       this.dispatcher = new InvocationBinder();
       this.arguments = arguments;
+      this.outer = outer;
    }
    
    @Override
@@ -31,7 +34,8 @@ public class SuperInvocation implements Evaluation {
       String name = extractor.extract(scope);     
       
       if(arguments != null) {
-         Value array = arguments.evaluate(scope, null); // arguments have no left hand side
+         Scope compound = ScopeCombiner.combine(scope, outer);
+         Value array = arguments.evaluate(compound, null); // arguments have no left hand side
          Object[] list = array.getValue();
          
          if(list.length > 0) {

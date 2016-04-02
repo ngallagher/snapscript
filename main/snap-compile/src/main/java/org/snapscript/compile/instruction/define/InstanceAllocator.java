@@ -18,16 +18,10 @@ public class InstanceAllocator implements Allocator {
    
    private final Initializer initializer;
    private final Invocation invocation;
-   private final boolean compile;
    
    public InstanceAllocator(Initializer initializer, Invocation invocation) {
-      this(initializer, invocation, true);
-   }
-   
-   public InstanceAllocator(Initializer initializer, Invocation invocation, boolean compile) {
       this.initializer = initializer;
       this.invocation = invocation;
-      this.compile = compile;
    }
    
    @Override
@@ -47,9 +41,6 @@ public class InstanceAllocator implements Allocator {
          instance = result;
          
          if(initializer != null) {
-            if(compile) {
-               initializer.compile(scope, real); // static stuff if needed
-            }
             initializer.execute(instance, real);
          }
       }
