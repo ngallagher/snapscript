@@ -1,0 +1,14 @@
+
+func([1,2,3,4]);
+func([1,2,3,'4']);
+func([1,2L,3.3d]);
+func([1,2L,'foo']);
+func(['blah',2L,'foo']);
+
+function func(x: String[]){
+   println("String[]"+x);
+}
+
+function func(x: Integer[]){
+   println("Iteger[]"+x);
+}
