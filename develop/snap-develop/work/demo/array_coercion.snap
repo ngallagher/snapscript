@@ -7,28 +7,28 @@ println(x.class.getEntry().getEntry());
 var s : String[][] = [['a','b'],[]];
 var i : Integer[][] = [['1','2', 3.0d, 11L],[2]];
 
-func(s);
-func(i);
+function(s);
+function(i);
 
-function func(s: String[][]){
+function function(s: String[][]){
    for(var e in s){
-      func(e);
+      function(e);
    }
 }
 
-function func(s: String[]){
+function function(s: String[]){
    for(var e in s){
       println("e=${e}");
    }
 }
 
-function func(s: Float[][]){
+function function(s: Float[][]){
    for(var e in s){
-      func(e);
+      function(e);
    }
 }
 
-function func(s: Float[]){
+function function(s: Float[]){
    for(var e in s){
       println("e=${e}");
    }

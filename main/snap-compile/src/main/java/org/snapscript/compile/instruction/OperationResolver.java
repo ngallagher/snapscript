@@ -1,7 +1,7 @@
 package org.snapscript.compile.instruction;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Type;
@@ -13,22 +13,28 @@ public class OperationResolver {
    private final Context context;
 
    public OperationResolver(Context context) {
-      this.registry = new HashMap<String, Operation>();
+      this.registry = new ConcurrentHashMap<String, Operation>();
       this.context = context;
    }
 
    public Operation resolve(String name) throws Exception {
-      if(registry.isEmpty()) {
-         Instruction[] list = Instruction.values();       
+      Operation current = registry.get(name);
       
-         for(Instruction instruction :list){
-            Operation operation = create(instruction);
-            String grammar = instruction.getName();
-            
-            registry.put(grammar, operation);
-         }  
-      } 
-      return registry.get(name);
+      if(current == null) {
+         Instruction[] list = Instruction.values();       
+         int size = registry.size();
+         
+         if(size < list.length) { // have they all been done?
+            for(Instruction instruction :list){
+               Operation operation = create(instruction);
+               String grammar = instruction.getName();
+               
+               registry.put(grammar, operation);
+            }  
+         } 
+         return registry.get(name);
+      }
+      return current;
    }
    
    private Operation create(Instruction instruction) throws Exception{
