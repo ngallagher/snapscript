@@ -2,7 +2,7 @@ package org.snapscript.core.convert;
 
 import static org.snapscript.core.convert.Score.EXACT;
 import static org.snapscript.core.convert.Score.INVALID;
-import static org.snapscript.core.convert.Score.POSSIBLE;
+import static org.snapscript.core.convert.Score.SIMILAR;
 import static org.snapscript.core.convert.Score.TRANSIENT;
 
 import java.lang.reflect.Array;
@@ -64,15 +64,21 @@ public class ArrayConverter extends ConstraintConverter {
          Type require = loader.loadType(entry);
          ConstraintConverter converter = matcher.match(require);
          
-         for(int i = 0; i < length; i++) {
-            Object element = Array.get(list, i);
-            Score score = converter.score(element);
-
-            if(score.compareTo(INVALID) == 0) {
-               return INVALID;
+         if(length > 0) {
+            Score total = TRANSIENT; // temporary
+            
+            for(int i = 0; i < length; i++) {
+               Object element = Array.get(list, i);
+               Score score = converter.score(element);
+   
+               if(score.compareTo(INVALID) == 0) {
+                  return INVALID;
+               }
+               total = Score.average(score, total);
             }
+            return total;
          }
-         return POSSIBLE;
+         return SIMILAR;
       }
       return INVALID;
    }
@@ -84,15 +90,21 @@ public class ArrayConverter extends ConstraintConverter {
          Type require = loader.loadType(entry);
          ConstraintConverter converter = matcher.match(require);
          
-         for(int i = 0; i < length; i++) {
-            Object element = list.get(i);
-            Score score = converter.score(element);
-
-            if(score.compareTo(INVALID) == 0) {
-               return INVALID;
+         if(length > 0) {
+            Score total = TRANSIENT; // temporary
+            
+            for(int i = 0; i < length; i++) {
+               Object element = list.get(i);
+               Score score = converter.score(element);
+   
+               if(score.compareTo(INVALID) == 0) {
+                  return INVALID;
+               }
+               total = Score.average(score, total);
             }
+            return total;
          }
-         return TRANSIENT; // temporary
+         return SIMILAR; 
       }
       return INVALID;
    }

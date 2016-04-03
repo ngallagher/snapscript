@@ -6,17 +6,17 @@ public class Score implements Comparable<Score> {
    public static final Score SIMILAR = new Score(70, true);
    public static final Score COMPATIBLE = new Score(20, true);
    public static final Score POSSIBLE = new Score(10, true);
-   public static final Score TRANSIENT = new Score(10, false);
+   public static final Score TRANSIENT = new Score(20, false);
    public static final Score INVALID = new Score(0, true);
 
    private final boolean cache;
-   private final Integer score;
+   private final Double score;
    
-   public Score(int score) {
+   public Score(double score) {
       this(score, true);
    }
    
-   public Score(int score, boolean cache) {
+   public Score(double score, boolean cache) {
       this.score = score;
       this.cache = cache;
    }
@@ -37,5 +37,9 @@ public class Score implements Comparable<Score> {
    
    public static Score sum(Score left, Score right) {
       return new Score(left.score + right.score, left.cache && right.cache);
+   }
+   
+   public static Score average(Score left, Score right) {
+      return new Score((left.score + right.score) / 2, left.cache && right.cache);
    }
 }
