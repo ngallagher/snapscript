@@ -1,5 +1,10 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
+import static org.snapscript.core.convert.Score.POSSIBLE;
+import static org.snapscript.core.convert.Score.SIMILAR;
+
 import org.snapscript.core.Type;
 
 public class EnumConverter extends ConstraintConverter {
@@ -11,7 +16,7 @@ public class EnumConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Type actual) throws Exception {
+   public Score score(Type actual) throws Exception {
       if(actual != null) {
          Class real = actual.getType();
          Class require = type.getType();
@@ -31,7 +36,7 @@ public class EnumConverter extends ConstraintConverter {
    }
 
    @Override
-   public int score(Object value) throws Exception {
+   public Score score(Object value) throws Exception {
       if(value != null) {
          Class real = value.getClass();
          Class require = type.getType();

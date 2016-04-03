@@ -1,5 +1,7 @@
 package org.snapscript.core.validate;
 
+import static org.snapscript.core.convert.Score.INVALID;
+
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FunctionComparator;
+import org.snapscript.core.convert.Score;
 
 public class FunctionValidator {
    
@@ -41,9 +44,9 @@ public class FunctionValidator {
          for(Type type : types) {
             if(type != actual) {
                List<Function> functions = type.getFunctions();
-               int score = comparator.compare(function, functions);
+               Score score = comparator.compare(function, functions);
                
-               if(score != 0) {
+               if(score.compareTo(INVALID) != 0) {
                   matches++;
                   break;
                }

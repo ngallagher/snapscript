@@ -1,5 +1,9 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.convert.Score.INVALID;
+import static org.snapscript.core.convert.Score.POSSIBLE;
+import static org.snapscript.core.convert.Score.SIMILAR;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,7 +27,7 @@ public class NumberConverter extends ConstraintConverter {
       BigDecimal.class
    };
    
-   private static final int[] NUMBER_SCORES = {
+   private static final Score[] NUMBER_SCORES = {
       SIMILAR,
       SIMILAR,
       SIMILAR,
@@ -44,21 +48,19 @@ public class NumberConverter extends ConstraintConverter {
       this(type, NUMBER_TYPES, NUMBER_SCORES);
    }
    
-   public NumberConverter(Type type, Class[] types, int[] scores) {
+   public NumberConverter(Type type, Class[] types, Score[] scores) {
       this.checker = new ScoreChecker(types, scores);
       this.matcher = new NumberMatcher();
       this.type = type;
    }
    
    @Override
-   public int score(Type actual) throws Exception {
-      Class require = type.getType();
-      
+   public Score score(Type actual) throws Exception {
       if(actual != null) {
          Class real = actual.getType();
          
          if(real != null) {
-            Integer score = checker.score(real);
+            Score score = checker.score(real);
             
             if(score != null) {
                return score;
@@ -73,12 +75,12 @@ public class NumberConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Object value) throws Exception {
+   public Score score(Object value) throws Exception {
       Class require = type.getType();
       
       if(value != null) {
          Class actual = value.getClass();
-         Integer score = checker.score(actual);
+         Score score = checker.score(actual);
          
          if(score == null) {
             if(actual == String.class) {

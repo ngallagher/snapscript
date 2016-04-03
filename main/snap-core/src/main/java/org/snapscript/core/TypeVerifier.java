@@ -1,6 +1,8 @@
 package org.snapscript.core;
 
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+import static org.snapscript.core.convert.Score.INVALID;
+
+import org.snapscript.core.convert.Score;
 
 public class TypeVerifier {
    
@@ -23,9 +25,9 @@ public class TypeVerifier {
    
    public boolean isLike(Type type, Class require) throws Exception {
       Type actual = loader.loadType(require);
-      int score = checker.cast(type, actual);
+      Score score = checker.cast(type, actual);
       
-      return score > INVALID;
+      return score.compareTo(INVALID) > 0;
    }
    
    public boolean isArray(Type type) throws Exception {

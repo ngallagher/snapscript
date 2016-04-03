@@ -1,5 +1,10 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
+import static org.snapscript.core.convert.Score.POSSIBLE;
+import static org.snapscript.core.convert.Score.TRANSIENT;
+
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -20,7 +25,7 @@ public class ArrayConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Type actual) throws Exception {
+   public Score score(Type actual) throws Exception {
       if(type != null) {
          Class require = type.getType();
          Class real = actual.getType();
@@ -33,7 +38,7 @@ public class ArrayConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Object object) throws Exception {
+   public Score score(Object object) throws Exception {
       if(object != null) {
          Class require = type.getType();
          Class actual = object.getClass();
@@ -52,7 +57,7 @@ public class ArrayConverter extends ConstraintConverter {
       return EXACT;
    }
    
-   private int score(Object list, Class type) throws Exception {
+   private Score score(Object list, Class type) throws Exception {
       if(type.isArray()) {   
          int length = Array.getLength(list);
          Class entry = type.getComponentType(); 
@@ -61,9 +66,9 @@ public class ArrayConverter extends ConstraintConverter {
          
          for(int i = 0; i < length; i++) {
             Object element = Array.get(list, i);
-            int score = converter.score(element);
+            Score score = converter.score(element);
 
-            if(score == INVALID) {
+            if(score.compareTo(INVALID) == 0) {
                return INVALID;
             }
          }
@@ -72,7 +77,7 @@ public class ArrayConverter extends ConstraintConverter {
       return INVALID;
    }
    
-   private int score(List list, Class type) throws Exception {
+   private Score score(List list, Class type) throws Exception {
       if(type.isArray()) {   
          int length = list.size();
          Class entry = type.getComponentType(); 
@@ -81,13 +86,13 @@ public class ArrayConverter extends ConstraintConverter {
          
          for(int i = 0; i < length; i++) {
             Object element = list.get(i);
-            int score = converter.score(element);
+            Score score = converter.score(element);
 
-            if(score == INVALID) {
+            if(score.compareTo(INVALID) == 0) {
                return INVALID;
             }
          }
-         return POSSIBLE;
+         return TRANSIENT; // temporary
       }
       return INVALID;
    }
@@ -124,9 +129,9 @@ public class ArrayConverter extends ConstraintConverter {
             Object element = Array.get(list, i);
             
             if(element != null) {
-               int score = converter.score(element);
+               Score score = converter.score(element);
    
-               if(score == INVALID) {
+               if(score.compareTo(INVALID) == 0) {
                   throw new InternalStateException("Array element is not " + require);
                }
                element = converter.convert(element);
@@ -150,9 +155,9 @@ public class ArrayConverter extends ConstraintConverter {
             Object element = list.get(i);
             
             if(element != null) {
-               int score = converter.score(element);
+               Score score = converter.score(element);
    
-               if(score == INVALID) {
+               if(score.compareTo(INVALID) == 0) {
                   throw new InternalStateException("Array element is not " + require);
                }
                element = converter.convert(element);

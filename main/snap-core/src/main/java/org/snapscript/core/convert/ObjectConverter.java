@@ -1,7 +1,9 @@
 package org.snapscript.core.convert;
 
-import org.snapscript.core.TypeCastChecker;
+import static org.snapscript.core.convert.Score.EXACT;
+
 import org.snapscript.core.Type;
+import org.snapscript.core.TypeCastChecker;
 import org.snapscript.core.TypeExtractor;
 
 public class ObjectConverter extends ConstraintConverter {
@@ -19,7 +21,7 @@ public class ObjectConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Type actual) throws Exception {
+   public Score score(Type actual) throws Exception {
       if(actual != null) {
          Class real = actual.getType();
          Class require = constraint.getType();
@@ -33,7 +35,7 @@ public class ObjectConverter extends ConstraintConverter {
    }
 
    @Override
-   public int score(Object value) throws Exception { // argument type
+   public Score score(Object value) throws Exception { // argument type
       Type match = extractor.extract(value);
       
       if(match != null) {

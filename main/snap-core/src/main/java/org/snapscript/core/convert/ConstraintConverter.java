@@ -12,12 +12,6 @@ import org.snapscript.core.Type;
 
 public abstract class ConstraintConverter  {
    
-   public static final int EXACT = 100;
-   public static final int SIMILAR = 70;
-   public static final int COMPATIBLE = 20;
-   public static final int POSSIBLE = 10;
-   public static final int INVALID = 0;
-   
    protected final PrimitivePromoter promoter;
    protected final ConstraintAdapter adapter;
    
@@ -121,7 +115,7 @@ public abstract class ConstraintConverter  {
       throw new InternalArgumentException("Could not convert '" + number + "' to " + actual);
    }
    
-   public abstract int score(Type type) throws Exception;
-   public abstract int score(Object type) throws Exception;
+   public abstract Score score(Type type) throws Exception;
+   public abstract Score score(Object type) throws Exception;
    public abstract Object convert(Object value) throws Exception;
 }

@@ -1,5 +1,7 @@
 package org.snapscript.core.bind;
 
+import static org.snapscript.core.convert.Score.INVALID;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,6 +18,7 @@ import org.snapscript.core.TypeExtractor;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.convert.Score;
 import org.snapscript.core.error.ThreadStack;
 
 public class FunctionMatcher {
@@ -47,9 +50,9 @@ public class FunctionMatcher {
          Function function = (Function)object;
          Signature signature = function.getSignature();
          ArgumentConverter match = matcher.match(signature);
-         int score = match.score(values);
+         Score score = match.score(values);
          
-         if(score > 0) {
+         if(score.compareTo(INVALID) > 0) {
             return new FunctionPointer(function, match, stack, values); 
          }
       }
@@ -67,9 +70,9 @@ public class FunctionMatcher {
             Function function = (Function)object;
             Signature signature = function.getSignature();
             ArgumentConverter match = matcher.match(signature);
-            int score = match.score(values);
+            Score score = match.score(values);
             
-            if(score > 0) {
+            if(score.compareTo(INVALID) > 0) {
                return new FunctionPointer(function, match, stack, values);
             }
          }
@@ -84,7 +87,7 @@ public class FunctionMatcher {
       if(function == null) {
          List<Function> functions = module.getFunctions();
          int size = functions.size();
-         int best = 0;
+         Score best = INVALID;
    
          for(int i = size - 1; i >= 0; i--) { 
             Function next = functions.get(i);
@@ -93,18 +96,20 @@ public class FunctionMatcher {
             if(name.equals(method)) {
                Signature signature = next.getSignature();
                ArgumentConverter match = matcher.match(signature);
-               int score = match.score(values);
+               Score score = match.score(values);
    
-               if(score > best) {
+               if(score.compareTo(best) > 0) {
                   function = next;
                   best = score;
                }
             }
          }
-         if(function == null) {
-            function = invalid;
+         if(best.isFinal()) {
+            if(function == null) {
+               function = invalid;
+            }
+            cache.put(key, function);
          }
-         cache.put(key, function);
       }
       if(function != invalid) {
          Signature signature = function.getSignature();
@@ -121,7 +126,7 @@ public class FunctionMatcher {
       
       if(function == null) {
          List<Type> path = finder.findPath(type, name); // should only provide non-abstract methods
-         int best = 0;
+         Score best = Score.INVALID;
          
          for(Type entry : path) {
             List<Function> functions = entry.getFunctions();
@@ -137,9 +142,9 @@ public class FunctionMatcher {
                   if(name.equals(method)) {
                      Signature signature = next.getSignature();
                      ArgumentConverter match = matcher.match(signature);
-                     int score = match.score(values);
+                     Score score = match.score(values);
       
-                     if(score > best) {
+                     if(score.compareTo(best) > 0) {
                         function = next;
                         best = score;
                      }
@@ -147,10 +152,12 @@ public class FunctionMatcher {
                }
             }
          }
-         if(function == null) {
-            function = invalid;
+         if(best.isFinal()) {
+            if(function == null) {
+               function = invalid;
+            }
+            cache.put(key, function);
          }
-         cache.put(key, function);
       }  
       if(function != invalid) {
          Signature signature = function.getSignature();
@@ -168,7 +175,7 @@ public class FunctionMatcher {
       
       if(!instance.containsKey(key)) {
          List<Type> path = finder.findPath(type, name); // should only provide non-abstract methods
-         int best = 0;
+         Score best = INVALID;
          
          for(Type entry : path) {
             List<Function> functions = entry.getFunctions();
@@ -184,9 +191,9 @@ public class FunctionMatcher {
                   if(name.equals(method)) {
                      Signature signature = next.getSignature();
                      ArgumentConverter match = matcher.match(signature);
-                     int score = match.score(values);
+                     Score score = match.score(values);
       
-                     if(score > best) {
+                     if(score.compareTo(best) > 0) {
                         function = next;
                         best = score;
                      }
@@ -194,10 +201,12 @@ public class FunctionMatcher {
                }
             }
          }
-         if(function == null) {
-            function = invalid;
+         if(best.isFinal()) {
+            if(function == null) {
+               function = invalid;
+            }
+            cache.put(key, function);
          }
-         instance.put(key, function); // this could be null?
       }      
       if(function != invalid) {
          Signature signature = function.getSignature();

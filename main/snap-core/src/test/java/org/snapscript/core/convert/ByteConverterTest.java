@@ -15,14 +15,14 @@ public class ByteConverterTest extends TestCase {
       Type type = new TestType(null, null, null, Byte.class);
       ByteConverter converter = new ByteConverter(type);
       
-      assertEquals(converter.score((byte)11), ConstraintConverter.EXACT);
-      assertEquals(converter.score(new BigDecimal("0.11")), ConstraintConverter.COMPATIBLE);
-      assertEquals(converter.score(new AtomicLong(234L)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new AtomicInteger(222)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new Integer(33211)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score("0.12"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score("-.012e+12"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score((Object)null), ConstraintConverter.POSSIBLE);
+      assertEquals(converter.score((byte)11), Score.EXACT);
+      assertEquals(converter.score(new BigDecimal("0.11")), Score.COMPATIBLE);
+      assertEquals(converter.score(new AtomicLong(234L)), Score.SIMILAR);
+      assertEquals(converter.score(new AtomicInteger(222)), Score.SIMILAR);
+      assertEquals(converter.score(new Integer(33211)), Score.SIMILAR);
+      assertEquals(converter.score("0.12"), Score.POSSIBLE);
+      assertEquals(converter.score("-.012e+12"), Score.POSSIBLE);
+      assertEquals(converter.score((Object)null), Score.POSSIBLE);
       
       assertEquals(converter.convert(11.2d), new Byte((byte)11));
       assertEquals(converter.convert(new BigDecimal("0.11")), new Byte((byte)0));
@@ -38,11 +38,11 @@ public class ByteConverterTest extends TestCase {
       Type type = new TestType(null, null, null, byte.class);
       ByteConverter converter = new ByteConverter(type);
       
-      assertEquals(converter.score((byte)11), ConstraintConverter.EXACT);
-      assertEquals(converter.score(new BigDecimal("0.11")), ConstraintConverter.COMPATIBLE);
-      assertEquals(converter.score(new AtomicLong(234L)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new AtomicInteger(222)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new Integer(33211)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score((Object)null), ConstraintConverter.INVALID);
+      assertEquals(converter.score((byte)11), Score.EXACT);
+      assertEquals(converter.score(new BigDecimal("0.11")), Score.COMPATIBLE);
+      assertEquals(converter.score(new AtomicLong(234L)), Score.SIMILAR);
+      assertEquals(converter.score(new AtomicInteger(222)), Score.SIMILAR);
+      assertEquals(converter.score(new Integer(33211)), Score.SIMILAR);
+      assertEquals(converter.score((Object)null), Score.INVALID);
    }
 }

@@ -1,5 +1,9 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
+import static org.snapscript.core.convert.Score.POSSIBLE;
+
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Type;
 
@@ -14,9 +18,7 @@ public class CharacterConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Type actual) throws Exception {
-      Class require = type.getType();
-      
+   public Score score(Type actual) throws Exception {
       if(actual != null) {
          Class real = actual.getType();
          
@@ -34,7 +36,7 @@ public class CharacterConverter extends ConstraintConverter {
    }
    
    @Override
-   public int score(Object value) throws Exception {
+   public Score score(Object value) throws Exception {
       Class require = type.getType();
       
       if(value != null) {

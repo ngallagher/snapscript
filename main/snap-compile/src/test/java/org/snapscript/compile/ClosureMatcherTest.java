@@ -14,6 +14,7 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.convert.Score;
 import org.snapscript.core.store.ClassPathStore;
 import org.snapscript.core.store.Store;
 
@@ -29,7 +30,7 @@ public class ClosureMatcherTest extends TestCase {
       Type type = new EmptyFunction(signature).getType();
       ConstraintConverter converter = matcher.match(type);
       Function function = new InvocationFunction(signature, null, type, "xx");
-      int score = converter.score(function);
+      Score score = converter.score(function);
       
       System.err.println(score);
    }

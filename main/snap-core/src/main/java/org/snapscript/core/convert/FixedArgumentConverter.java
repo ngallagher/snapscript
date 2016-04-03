@@ -1,7 +1,7 @@
 package org.snapscript.core.convert;
 
-import static org.snapscript.core.convert.ConstraintConverter.EXACT;
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
 
 import org.snapscript.core.bind.ArgumentConverter;
 
@@ -13,22 +13,22 @@ public class FixedArgumentConverter implements ArgumentConverter {
       this.converters = converters;
    }
    
-   public int score(Object... list) throws Exception {
+   public Score score(Object... list) throws Exception {
       if(list.length != converters.length) {
          return INVALID;
       }
       if(list.length > 0) {
-         int total = 0; 
+         Score total = INVALID; 
       
          for(int i = 0; i < list.length; i++){
             ConstraintConverter converter = converters[i];
             Object value = list[i];
-            int score = converter.score(value);
-         
-            if(score == 0) {
+            Score score = converter.score(value);
+            
+            if(score.compareTo(INVALID) == 0) {
                return INVALID;
             }
-            total += score;
+            total = Score.sum(total, score);
             
          }
          return total;

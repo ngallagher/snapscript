@@ -1,14 +1,14 @@
 package org.snapscript.core.convert;
 
-import static org.snapscript.core.convert.ConstraintConverter.EXACT;
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
 
 import org.snapscript.core.bind.ArgumentConverter;
 
 public class NoArgumentConverter implements ArgumentConverter {
 
    @Override
-   public int score(Object... list) throws Exception {
+   public Score score(Object... list) throws Exception {
       if(list.length == 0) {
          return EXACT;
       }

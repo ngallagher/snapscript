@@ -1,13 +1,14 @@
 package org.snapscript.core;
 
-import static org.snapscript.core.convert.ConstraintConverter.EXACT;
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
-import static org.snapscript.core.convert.ConstraintConverter.SIMILAR;
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
+import static org.snapscript.core.convert.Score.SIMILAR;
 
 import java.util.Set;
 
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FunctionComparator;
+import org.snapscript.core.convert.Score;
 
 public class TypeCastChecker {
 
@@ -25,7 +26,7 @@ public class TypeCastChecker {
       this.loader = loader;
    }
    
-   public int cast(Class actual, Type constraint) throws Exception {
+   public Score cast(Class actual, Type constraint) throws Exception {
       Type type = loader.loadType(actual);
 
       if(!actual.equals(constraint)) {
@@ -34,7 +35,7 @@ public class TypeCastChecker {
       return EXACT;
    }
    
-   public int cast(Type actual, Type constraint) throws Exception {
+   public Score cast(Type actual, Type constraint) throws Exception {
       if(!actual.equals(constraint)) {
          Set<Type> list = traverser.traverse(actual);
          
@@ -49,7 +50,7 @@ public class TypeCastChecker {
       return EXACT;
    }
    
-   public int cast(Object value, Type constraint) throws Exception {
+   public Score cast(Object value, Type constraint) throws Exception {
       Type type = extractor.extract(value);
       
       if(Function.class.isInstance(value)) {

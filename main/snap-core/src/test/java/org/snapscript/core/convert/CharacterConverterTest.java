@@ -11,10 +11,10 @@ public class CharacterConverterTest extends TestCase {
       Type type = new TestType(null, null, null, Character.class);
       CharacterConverter converter = new CharacterConverter(type);
       
-      assertEquals(converter.score('s'), ConstraintConverter.EXACT);
-      assertEquals(converter.score("s"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score("ss"), ConstraintConverter.INVALID);
-      assertEquals(converter.score((Object)null), ConstraintConverter.POSSIBLE);
+      assertEquals(converter.score('s'), Score.EXACT);
+      assertEquals(converter.score("s"), Score.POSSIBLE);
+      assertEquals(converter.score("ss"), Score.INVALID);
+      assertEquals(converter.score((Object)null), Score.POSSIBLE);
       
       assertEquals(converter.convert('s'), 's');
       assertEquals(converter.convert("s"), 's');
@@ -25,10 +25,10 @@ public class CharacterConverterTest extends TestCase {
       Type type = new TestType(null, null, null, char.class);
       CharacterConverter converter = new CharacterConverter(type);
       
-      assertEquals(converter.score('s'), ConstraintConverter.EXACT);
-      assertEquals(converter.score("s"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score("ss"), ConstraintConverter.INVALID);
-      assertEquals(converter.score((Object)null), ConstraintConverter.INVALID);
+      assertEquals(converter.score('s'), Score.EXACT);
+      assertEquals(converter.score("s"), Score.POSSIBLE);
+      assertEquals(converter.score("ss"), Score.INVALID);
+      assertEquals(converter.score((Object)null), Score.INVALID);
       
       assertEquals(converter.convert('s'), 's');
       assertEquals(converter.convert("s"), 's');

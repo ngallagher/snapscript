@@ -1,7 +1,7 @@
 package org.snapscript.core.convert;
 
-import static org.snapscript.core.convert.ConstraintConverter.EXACT;
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.INVALID;
 
 import java.util.List;
 
@@ -17,16 +17,16 @@ public class FunctionComparator {
       this.matcher = matcher;
    }
    
-   public int compare(Function actual, List<Function> require) throws Exception{
+   public Score compare(Function actual, List<Function> require) throws Exception{
       String name = actual.getName();
       
       for(Function function : require) {
          String match = function.getName();
          
          if(name.equals(match)) {
-            int compare = compare(actual, function);
+            Score compare = compare(actual, function);
             
-            if(compare != 0) {
+            if(compare != INVALID) {
                return compare;
             }
          }
@@ -34,7 +34,7 @@ public class FunctionComparator {
       return INVALID;
    }
 
-   public int compare(Function actual, Function require) throws Exception{
+   public Score compare(Function actual, Function require) throws Exception{
       Signature actualSignature = actual.getSignature();
       Signature requireSignature = require.getSignature();
       List<Type> actualTypes = actualSignature.getTypes();
@@ -48,22 +48,22 @@ public class FunctionComparator {
       return INVALID;
    }
    
-   private int compare(List<Type> actual, List<Type> require) throws Exception{
+   private Score compare(List<Type> actual, List<Type> require) throws Exception{
       int actualSize = actual.size();
 
       if(actualSize > 0) {
-         int total = 0;
+         Score total = INVALID;
          
          for(int i = 0; i < actualSize; i++) {
             Type actualType = actual.get(i);
             Type constraintType = require.get(i);
             ConstraintConverter converter = matcher.match(constraintType);
-            int score = converter.score(actualType);
+            Score score = converter.score(actualType);
             
-            if(score <= INVALID) { // must check for numbers
+            if(score.compareTo(INVALID) <= 0) { // must check for numbers
                return INVALID;
             }
-            total += score; // sum for better match
+            total = Score.sum(total, score); // sum for better match
          }
          return total;
       }

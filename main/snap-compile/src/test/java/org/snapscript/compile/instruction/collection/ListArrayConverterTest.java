@@ -11,6 +11,7 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.convert.Score;
 import org.snapscript.core.store.ClassPathStore;
 import org.snapscript.core.store.Store;
 
@@ -111,6 +112,6 @@ public class ListArrayConverterTest extends TestCase {
       ConstraintMatcher matcher = context.getMatcher();
       ConstraintConverter converter = matcher.match(match);
       
-      return converter.score(object) > ConstraintConverter.INVALID;
+      return converter.score(object).compareTo(Score.INVALID) > 0;
    }
 }

@@ -15,14 +15,14 @@ public class ShortConverterTest extends TestCase {
       Type type = new TestType(null, null, null, Short.class);
       ShortConverter converter = new ShortConverter(type);
       
-      assertEquals(converter.score((short)11), ConstraintConverter.EXACT);
-      assertEquals(converter.score(new BigDecimal("0.11")), ConstraintConverter.COMPATIBLE);
-      assertEquals(converter.score(new AtomicLong(234L)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new AtomicInteger(222)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new Integer(33211)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score("0.12"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score("-.012e+12"), ConstraintConverter.POSSIBLE);
-      assertEquals(converter.score((Object)null), ConstraintConverter.POSSIBLE);
+      assertEquals(converter.score((short)11), Score.EXACT);
+      assertEquals(converter.score(new BigDecimal("0.11")), Score.COMPATIBLE);
+      assertEquals(converter.score(new AtomicLong(234L)), Score.SIMILAR);
+      assertEquals(converter.score(new AtomicInteger(222)), Score.SIMILAR);
+      assertEquals(converter.score(new Integer(33211)), Score.SIMILAR);
+      assertEquals(converter.score("0.12"), Score.POSSIBLE);
+      assertEquals(converter.score("-.012e+12"), Score.POSSIBLE);
+      assertEquals(converter.score((Object)null), Score.POSSIBLE);
       
       assertEquals(converter.convert(11.2d), new Short((short)11));
       assertEquals(converter.convert(new BigDecimal("0.11")), new Short((short)0));
@@ -38,11 +38,11 @@ public class ShortConverterTest extends TestCase {
       Type type = new TestType(null, null, null, short.class);
       ShortConverter converter = new ShortConverter(type);
       
-      assertEquals(converter.score((short)11), ConstraintConverter.EXACT);
-      assertEquals(converter.score(new BigDecimal("0.11")), ConstraintConverter.COMPATIBLE);
-      assertEquals(converter.score(new AtomicLong(234L)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new AtomicInteger(222)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score(new Integer(33211)), ConstraintConverter.SIMILAR);
-      assertEquals(converter.score((Object)null), ConstraintConverter.INVALID);
+      assertEquals(converter.score((short)11), Score.EXACT);
+      assertEquals(converter.score(new BigDecimal("0.11")), Score.COMPATIBLE);
+      assertEquals(converter.score(new AtomicLong(234L)), Score.SIMILAR);
+      assertEquals(converter.score(new AtomicInteger(222)), Score.SIMILAR);
+      assertEquals(converter.score(new Integer(33211)), Score.SIMILAR);
+      assertEquals(converter.score((Object)null), Score.INVALID);
    }
 }

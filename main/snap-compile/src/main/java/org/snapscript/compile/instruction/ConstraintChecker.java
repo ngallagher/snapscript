@@ -1,6 +1,6 @@
 package org.snapscript.compile.instruction;
 
-import static org.snapscript.core.convert.ConstraintConverter.INVALID;
+import static org.snapscript.core.convert.Score.INVALID;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
@@ -8,6 +8,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.convert.Score;
 
 public class ConstraintChecker {
    
@@ -31,9 +32,9 @@ public class ConstraintChecker {
          Context context = module.getContext();
          ConstraintMatcher matcher = context.getMatcher();
          ConstraintConverter converter = matcher.match(type);
-         int score = converter.score(value);
+         Score score = converter.score(value);
          
-         return score > INVALID;
+         return score.compareTo(INVALID) > 0;
       }
       return true;
    }

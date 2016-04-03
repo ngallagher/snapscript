@@ -1,5 +1,9 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.convert.Score.COMPATIBLE;
+import static org.snapscript.core.convert.Score.EXACT;
+import static org.snapscript.core.convert.Score.SIMILAR;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,7 +26,7 @@ public class IntegerConverter extends NumberConverter {
       Byte.class
    };
    
-   private static final int[] INTEGER_SCORES = {
+   private static final Score[] INTEGER_SCORES = {
       EXACT,
       SIMILAR,
       SIMILAR,
