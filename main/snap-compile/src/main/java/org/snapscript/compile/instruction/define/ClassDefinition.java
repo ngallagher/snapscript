@@ -11,12 +11,14 @@ import org.snapscript.core.Type;
 
 public class ClassDefinition extends Statement {   
    
+   private final FunctionPropertyGenerator generator;
    private final DefaultConstructor constructor;
    private final AtomicBoolean define;
    private final ClassBuilder builder;
    private final TypePart[] parts;
    
    public ClassDefinition(TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
+      this.generator = new FunctionPropertyGenerator(); 
       this.builder = new ClassBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor();
       this.define = new AtomicBoolean(true);
@@ -36,6 +38,7 @@ public class ClassDefinition extends Statement {
             collector.update(initializer);
          } 
          constructor.define(other, collector, type);
+         generator.generate(type);
          
          return ResultType.getNormal(type);
       }

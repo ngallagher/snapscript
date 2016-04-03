@@ -15,6 +15,7 @@ import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleScope;
+import org.snapscript.core.Property;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -42,6 +43,9 @@ public class ClassDefinitionTest extends TestCase {
       ModuleScope scope = new ModuleScope(module);
       Type type = definer.compile(scope).getValue();
 
+      for(Property property : type.getProperties()) {
+         System.err.println(property.getName());
+      }
       assertEquals(type.getName(), "Test");
       assertEquals(type.getProperties().size(), 5);//include 'this' and 'class' 'super'
       

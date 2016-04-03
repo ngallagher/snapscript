@@ -8,7 +8,6 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
 import org.snapscript.core.instance.Instance;
 
-
 public class VariableBinder {
    
    private final TypeTraverser traverser;
@@ -19,14 +18,14 @@ public class VariableBinder {
    
    public ValueResolver bind(Scope scope, Object left, String name) {
       if(left != null) {
-         if(Scope.class.isInstance(left)) {
-            return new ScopeResolver(name);
-         }
          if(Map.class.isInstance(left)) {
             return new MapResolver(name);
          }
          if(Module.class.isInstance(left)) {
             return new ModuleResolver(name);
+         }
+         if(Scope.class.isInstance(left)) {
+            return new ScopeResolver(traverser, name);
          }
          if(Type.class.isInstance(left)) {
             return new TypeResolver(traverser, name);

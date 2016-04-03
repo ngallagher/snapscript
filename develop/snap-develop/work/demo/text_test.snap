@@ -4,3 +4,14 @@ blah
 
 println(b);
 
+class Blah{
+   var x = 0;
+   getText(){
+      return "text=${x}";
+   }
+}
+var x = new Blah();
+println(x.text);
+
+var l = [1,2,3];
+println(l.size);

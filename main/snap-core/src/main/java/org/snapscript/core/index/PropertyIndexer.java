@@ -11,6 +11,7 @@ import java.util.Set;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
+import org.snapscript.core.PropertyNameExtractor;
 import org.snapscript.core.Type;
 
 public class PropertyIndexer {
@@ -46,6 +47,7 @@ public class PropertyIndexer {
                Type type = indexer.loadType(declaration);
                Property property = generator.generate(field, type, name, modifiers); 
                
+               done.add(name);
                properties.add(property);
             }
          }
@@ -54,9 +56,10 @@ public class PropertyIndexer {
             
             if(ModifierType.isPublic(modifiers) && !ModifierType.isStatic(modifiers)) {
                Class[] parameters = method.getParameterTypes();
+               Class returns = method.getReturnType();
                
-               if(parameters.length == 0) {
-                  String name = PropertyType.getPropertyName(method);
+               if(parameters.length == 0 && returns != void.class) {
+                  String name = PropertyNameExtractor.getProperty(method);
                   
                   if(done.add(name)){
                      Class declaration = method.getReturnType();
@@ -97,7 +100,7 @@ public class PropertyIndexer {
                   if(actual == require) {
                      String property = type.getProperty(method);
       
-                     if(property.equalsIgnoreCase(name)) {
+                     if(property.equals(name)) {
                         return method;
                      }
                   }
