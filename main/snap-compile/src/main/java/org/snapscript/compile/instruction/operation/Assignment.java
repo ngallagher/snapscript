@@ -26,18 +26,15 @@ public class Assignment implements Evaluation {
       if(operator != AssignmentOperator.EQUAL) {
          Object leftValue = leftResult.getValue();
          
-         if(!Number.class.isInstance(leftValue)) {           
-            StringBuilder builder = new StringBuilder();
-     
+         if(!Number.class.isInstance(leftValue)) { 
+            Object rightValue = rightResult.getValue();
+            
             if(operator != AssignmentOperator.PLUS_EQUAL) {
                throw new InternalStateException("Operator " + operator + " is illegal");         
             }
-            Object rightValue = rightResult.getValue();
-            
-            builder.append(leftValue);
-            builder.append(rightValue);
-            
-            String text = builder.toString();
+            String leftText = StringBuilder.create(scope, leftValue);
+            String rightText = StringBuilder.create(scope, rightValue);
+            String text = leftText.concat(rightText);
             
             leftResult.setValue(text);
             return leftResult;

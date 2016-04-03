@@ -27,8 +27,8 @@ public class CalculationOperation implements Evaluation {
          Object rightValue = rightResult.getValue();
          
          if(!NumericChecker.bothNumeric(leftValue, rightValue)) {
-            String leftText = String.valueOf(leftValue);
-            String rightText = String.valueOf(rightValue);            
+            String leftText = StringBuilder.create(scope, leftValue);
+            String rightText = StringBuilder.create(scope, rightValue);            
             String text = leftText.concat(rightText);
             
             return ValueType.getTransient(text);

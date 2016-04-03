@@ -1,4 +1,10 @@
 
+var a: Double[] = [1,2,3,4L];
+var b = [1,2,3,4L];
+
+println(a.class);
+println(b.class);
+
 func([1,2,3,4]);
 func([1,2,3,'4']);
 func([1,2L,3.3d]);
@@ -12,4 +18,3 @@ function func(x: Integer[]){
 function func(x: String[]){
    println("String[]"+x);
 }
-
