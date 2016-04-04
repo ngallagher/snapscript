@@ -38,7 +38,7 @@ public class SuspendInterceptor implements TraceListener {
       String resource = module.getPath();
       int line = trace.getLine();
       
-      if(matcher.match(resource, line) || progress.suspend()) { 
+      if(matcher.match(resource, line) || progress.suspend(type)) { 
          try {
             String thread = Thread.currentThread().getName();
             int count = counter.getAndIncrement();

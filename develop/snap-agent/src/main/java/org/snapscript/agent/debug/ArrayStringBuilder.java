@@ -113,7 +113,7 @@ public class ArrayStringBuilder {
          done.add(array);
          buffer.append('[');
 
-         for (int i = 0; i < limit; i++) {
+         for (int i = 0; i < Math.min(array.length, limit); i++) {
             Object element = array[i];
             int length = buffer.length();
             

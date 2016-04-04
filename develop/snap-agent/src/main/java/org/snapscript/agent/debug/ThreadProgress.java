@@ -21,18 +21,18 @@ public class ThreadProgress {
       return depth.get();
    }
    
-   public void beforeInstruction(TraceType type) {
-      if(type == TraceType.CONSTRUCT) {
+   public void beforeInstruction(TraceType trace) {
+      if(trace == TraceType.CONSTRUCT) {
          depth.getAndIncrement();
-      } else if(type == TraceType.INVOKE) {
+      } else if(trace == TraceType.INVOKE) {
          depth.getAndIncrement();
       }
    }
    
-   public void afterInstruction(TraceType type) {
-      if(type == TraceType.CONSTRUCT) {
+   public void afterInstruction(TraceType trace) {
+      if(trace == TraceType.CONSTRUCT) {
          depth.getAndDecrement();
-      } else if(type == TraceType.INVOKE) {
+      } else if(trace == TraceType.INVOKE) {
          depth.getAndDecrement();
       }
    }
@@ -52,22 +52,24 @@ public class ThreadProgress {
       resume.set(type);
    }
    
-   public boolean suspend() {
-      ResumeType type = resume.get();
-      int require = match.get();
-      int actual = depth.get();
-      
-      if(type != null) {
-         if(type == ResumeType.RUN) {
-            return false;
-         } else if(type == ResumeType.STEP_IN) {
-            return true; // always step in
-         } else if(type == ResumeType.STEP_OUT) {
-            return actual <= require;
-         } else if(type == ResumeType.STEP_OVER) {
-            return actual <= require;
-         } 
-         return require == actual;
+   public boolean suspend(TraceType trace) {
+      if(trace == TraceType.NORMAL) {
+         ResumeType type = resume.get();
+         int require = match.get();
+         int actual = depth.get();
+         
+         if(type != null) {
+            if(type == ResumeType.RUN) {
+               return false;
+            } else if(type == ResumeType.STEP_IN) {
+               return true; // always step in
+            } else if(type == ResumeType.STEP_OUT) {
+               return actual <= require;
+            } else if(type == ResumeType.STEP_OVER) {
+               return actual <= require;
+            } 
+            return require == actual;
+         }
       }
       return false;
    }
