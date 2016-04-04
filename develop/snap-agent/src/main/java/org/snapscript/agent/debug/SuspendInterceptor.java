@@ -11,6 +11,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceListener;
 import org.snapscript.core.TraceType;
+import org.snapscript.core.error.ThreadStack;
 
 public class SuspendInterceptor implements TraceListener {
 
@@ -44,9 +45,12 @@ public class SuspendInterceptor implements TraceListener {
             int count = counter.getAndIncrement();
             int depth = progress.currentDepth();
             Context context = module.getContext();
+            ThreadStack stack = context.getStack();
             String path = ResourceExtractor.extractResource(resource);
+            ThreadStackGenerator generator = new ThreadStackGenerator(stack);
+            String threads = generator.generate();
             ScopeExtractor extractor = new ScopeExtractor(context, scope);
-            ScopeEventBuilder builder = new ScopeEventBuilder(extractor, type, process, thread, path, line, depth, count);
+            ScopeEventBuilder builder = new ScopeEventBuilder(extractor, type, process, thread, threads, path, line, depth, count);
             ScopeNotifier notifier = new ScopeNotifier(builder);
             ScopeEvent suspend = builder.suspendEvent();
             ScopeEvent resume = builder.resumeEvent();

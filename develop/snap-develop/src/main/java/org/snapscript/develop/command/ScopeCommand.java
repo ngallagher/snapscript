@@ -9,6 +9,7 @@ public class ScopeCommand implements Command {
    private String resource;
    private String status;
    private String thread;
+   private String stack;
    private int depth;
    private int line;
    private int key;
@@ -17,12 +18,13 @@ public class ScopeCommand implements Command {
       super();
    }
 
-   public ScopeCommand(String thread, String instruction, String status, String resource, int line, int depth, int key, Map<String, Map<String, String>> variables) {
+   public ScopeCommand(String thread, String stack, String instruction, String status, String resource, int line, int depth, int key, Map<String, Map<String, String>> variables) {
       this.variables = variables;
       this.instruction = instruction;
       this.thread = thread;
       this.resource = resource;
       this.status = status;
+      this.stack = stack;
       this.depth = depth;
       this.line = line;
       this.key = key;
@@ -66,6 +68,14 @@ public class ScopeCommand implements Command {
 
    public void setThread(String thread) {
       this.thread = thread;
+   }
+
+   public String getStack() {
+      return stack;
+   }
+
+   public void setStack(String stack) {
+      this.stack = stack;
    }
 
    public int getDepth() {

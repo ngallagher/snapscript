@@ -32,13 +32,14 @@ public class CommandEventForwarder extends ProcessEventAdapter {
       if(filter.accept(event)) {
          Map<String, Map<String, String>> variables = event.getVariables();
          String thread = event.getThread();
+         String stack = event.getStack();
          String instruction = event.getInstruction();
          String status = event.getStatus();
          String resource = event.getResource();
          int depth = event.getDepth();
          int line = event.getLine();
          int key = event.getKey();
-         client.sendScope(thread, instruction, status, resource, line, depth, key, variables);
+         client.sendScope(thread, stack, instruction, status, resource, line, depth, key, variables);
       }
    }
    

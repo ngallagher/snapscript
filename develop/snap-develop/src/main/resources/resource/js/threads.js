@@ -175,7 +175,7 @@ function showThreads() {
          if(threadScope.status != 'SUSPENDED') {
             displayStyle = 'threadRunning';
          }
-         var displayName = "<div class='"+displayStyle+"'>"+threadName+"</div>";
+         var displayName = "<div title='"+threadScope.stack+"' class='"+displayStyle+"'>"+threadName+"</div>";
          var resourcePathDetails = createResourcePath(threadScope.resource);
          
          threadRecords.push({
