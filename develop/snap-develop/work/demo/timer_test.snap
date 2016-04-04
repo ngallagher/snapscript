@@ -33,3 +33,4 @@ time("compound(i)", ->{
       compound(i);
    }
 });
+sleep(10000);

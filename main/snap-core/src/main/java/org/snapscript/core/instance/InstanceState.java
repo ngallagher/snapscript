@@ -1,9 +1,9 @@
 package org.snapscript.core.instance;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.State;
@@ -15,7 +15,7 @@ public class InstanceState implements State {
    private final Instance instance;
 
    public InstanceState(Instance instance) {
-      this.values = new HashMap<String, Value>();
+      this.values = new ConcurrentHashMap<String, Value>();
       this.instance = instance;
    }
    
