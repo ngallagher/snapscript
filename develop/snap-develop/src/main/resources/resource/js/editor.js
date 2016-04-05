@@ -316,7 +316,50 @@ function scrollEditorToTop() {
    session.setScrollTop(0);
 }
 
+function createAutoComplete() {
+   return {
+      getCompletions: function createAutoComplete(editor, session, pos, prefix, callback) {
+          if (prefix.length === 0) { 
+             callback(null, []); 
+             return; 
+          }
+          var text = editor.getValue();
+          var message = JSON.stringify({
+             resource: editorResource.projectPath,
+             source: text,
+             prefix: prefix
+          });
+          $.ajax({
+             contentType: 'application/json',
+             data: message,
+             dataType: 'json',
+             success: function(list){
+                var tokens = list.tokens;
+                var length = tokens.length;
+                var suggestions = [];
+                
+                console.log("response: " +tokens);
+                
+                for(var i = 0; i < length; i++) {
+                   var word = tokens[i];
+                   suggestions.push({name: word, value: word, score: 300, meta: "token" });
+                }
+                callback(null, suggestions);
+             },
+             error: function(){
+                 console.log("Completion control failed");
+             },
+             processData: false,
+             type: 'POST',
+             url: '/complete/' + document.title
+         });
+      }
+   }
+}
+
+
 function showEditor() {
+   var langTools = ace.require("ace/ext/language_tools");
    var editor = ace.edit("editor");
    // editor.setTheme("ace/theme/monokai");
    editor.getSession().setMode("ace/mode/snapscript");
@@ -324,6 +367,11 @@ function showEditor() {
    editor.setReadOnly(true);
    editor.getSession().setUseSoftTabs(true);
    editor.setShowPrintMargin(false);
+   editor.setOptions({
+      enableBasicAutocompletion: true
+    });
+   var autoComplete = createAutoComplete();
+   langTools.addCompleter(autoComplete);
    editor.commands.addCommand({
       name : 'run',
       bindKey : {
@@ -360,6 +408,7 @@ function showEditor() {
 function updateEditorFont(fontFamily, fontSize) {
    var editor = ace.edit("editor");
    editor.setOptions({
+      enableBasicAutocompletion: true,
       fontFamily: fontFamily,
       fontSize: fontSize
     });

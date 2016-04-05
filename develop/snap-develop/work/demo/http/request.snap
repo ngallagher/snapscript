@@ -1,0 +1,5 @@
+module Client{
+   function get(address){
+      return null;
+   }
+}

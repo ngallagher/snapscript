@@ -71,6 +71,10 @@
     <constructor-arg value="/" />
     <constructor-arg value=".vm" />
   </bean>
+  
+  <bean id="AutoCompleteResource" class="org.snapscript.develop.complete.AutoCompleteResource">
+    <constructor-arg ref="ProjectBuilder" />   
+  </bean>
 
   <bean id="ProjectBuilder" class="org.snapscript.develop.http.project.ProjectBuilder">
     <constructor-arg ref="Workspace" />
@@ -134,6 +138,7 @@
   <bean id="ResourceMatcher" class="org.snapscript.develop.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
+        <entry key="/complete.*" value-ref="AutoCompleteResource" />          
         <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
         <entry key="/display/.*" value-ref="ProjectDisplayResource" />        

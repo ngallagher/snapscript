@@ -23,6 +23,7 @@
 <link href="/css/alert.css" rel="stylesheet" />
 <link href="/css/project.css" rel="stylesheet" />
 <script src="/js/external/ace/ace.js"></script>
+<script src="/js/external/ace/ext-language_tools.js"></script>
 <script src="/js/external/jquery.js"></script>
 <script src="/js/external/jquery-ui.js"></script>
 <script src="/js/external/jquery-context-menu.js"></script>
