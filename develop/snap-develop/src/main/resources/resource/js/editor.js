@@ -316,7 +316,7 @@ function scrollEditorToTop() {
    session.setScrollTop(0);
 }
 
-function createAutoComplete() {
+function createEditorAutoComplete() {
    return {
       getCompletions: function createAutoComplete(editor, session, pos, prefix, callback) {
           if (prefix.length === 0) { 
@@ -357,6 +357,52 @@ function createAutoComplete() {
    }
 }
 
+function formatEditorSource() {
+   var editor = ace.edit("editor");
+   var text = editor.getValue();
+   $.ajax({
+      contentType: 'text/plain',
+      data: text,
+      success: function(result){
+         editor.setReadOnly(false);
+         editor.setValue(result, 1);
+      },
+      error: function(){
+          console.log("Format failed");
+      },
+      processData: false,
+      type: 'POST',
+      url: '/format/' + document.title
+  });
+}
+
+function registerEditorBindings() {
+   var editor = ace.edit("editor");
+   editor.commands.addCommand({
+      name : 'run',
+      bindKey : {
+         win : 'Ctrl-R',
+         mac : 'Command-R'
+      },
+      exec : function(editor) {
+         runScript();
+      },
+      readOnly : true
+   // false if this command should not apply in readOnly mode
+   });
+   editor.commands.addCommand({
+      name : 'format',
+      bindKey : {
+         win : 'Ctrl-Shift-F',
+         mac : 'Command-Shift-F'
+      },
+      exec : function(editor) {
+         formatEditorSource();
+      },
+      readOnly : true
+   // false if this command should not apply in readOnly mode
+   });
+}
 
 function showEditor() {
    var langTools = ace.require("ace/ext/language_tools");
@@ -370,20 +416,9 @@ function showEditor() {
    editor.setOptions({
       enableBasicAutocompletion: true
     });
-   var autoComplete = createAutoComplete();
+   var autoComplete = createEditorAutoComplete();
    langTools.addCompleter(autoComplete);
-   editor.commands.addCommand({
-      name : 'run',
-      bindKey : {
-         win : 'Ctrl-R',
-         mac : 'Command-R'
-      },
-      exec : function(editor) {
-         runScript();
-      },
-      readOnly : true
-   // false if this command should not apply in readOnly mode
-   });
+   
    editor.on("guttermousedown", function(e) {
       var target = e.domEvent.target;
       if (target.className.indexOf("ace_gutter-cell") == -1) {
@@ -400,6 +435,7 @@ function showEditor() {
       toggleEditorBreakpoint(row);
       e.stop()
    });
+   registerEditorBindings();
    changeProjectFont(); // project.js update font
    scrollEditorToTop();
    finishedLoading();

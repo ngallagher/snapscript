@@ -4,8 +4,8 @@
 
   <bean id="Workspace" class="org.snapscript.develop.Workspace" init-method="create">
     <constructor-arg value="${directory}" />
-  </bean>    
-    
+  </bean>
+
   <bean id="ConfigurationLoader" class="org.snapscript.develop.ConfigurationLoader">
     <constructor-arg ref="Workspace" />
   </bean>
@@ -71,9 +71,13 @@
     <constructor-arg value="/" />
     <constructor-arg value=".vm" />
   </bean>
-  
+
   <bean id="AutoCompleteResource" class="org.snapscript.develop.complete.AutoCompleteResource">
-    <constructor-arg ref="ProjectBuilder" />   
+    <constructor-arg ref="ProjectBuilder" />
+  </bean>
+
+  <bean id="AutoFormatResource" class="org.snapscript.develop.complete.AutoFormatResource">
+    <constructor-arg ref="ProjectBuilder" />
   </bean>
 
   <bean id="ProjectBuilder" class="org.snapscript.develop.http.project.ProjectBuilder">
@@ -87,7 +91,7 @@
   </bean>
 
   <bean id="ProjectOpenDialog" class="org.snapscript.develop.http.project.ProjectOpenDialog">
-    <constructor-arg ref="ProjectBuilder" />      
+    <constructor-arg ref="ProjectBuilder" />
     <constructor-arg ref="TemplateEngine" />
     <constructor-arg value="start.vm" />
   </bean>
@@ -100,11 +104,11 @@
   <bean id="ProjectTreeResource" class="org.snapscript.develop.http.project.ProjectTreeResource">
     <constructor-arg ref="ProjectBuilder" />
   </bean>
-  
+
   <bean id="ProjectDisplayResource" class="org.snapscript.develop.http.project.ProjectDisplayResource">
     <constructor-arg ref="ProjectBuilder" />
-    <constructor-arg value=".display" />    
-  </bean>  
+    <constructor-arg value=".display" />
+  </bean>
 
   <bean id="ProjectScriptService" class="org.snapscript.develop.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
@@ -138,10 +142,11 @@
   <bean id="ResourceMatcher" class="org.snapscript.develop.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/complete.*" value-ref="AutoCompleteResource" />          
+        <entry key="/format.*" value-ref="AutoFormatResource" />          
+        <entry key="/complete.*" value-ref="AutoCompleteResource" />
         <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
-        <entry key="/display/.*" value-ref="ProjectDisplayResource" />        
+        <entry key="/display/.*" value-ref="ProjectDisplayResource" />
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
         <entry key="/tree.*" value-ref="ProjectTreeResource" />
         <entry key="/" value-ref="ProjectOpenDialog" />

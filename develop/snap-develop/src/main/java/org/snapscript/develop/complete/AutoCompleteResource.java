@@ -12,7 +12,7 @@ import org.snapscript.develop.http.resource.Resource;
 
 import com.google.gson.Gson;
 
-// /theme/<project>
+// /complete/<project>
 public class AutoCompleteResource implements Resource {
 
    private final ProjectBuilder builder;
