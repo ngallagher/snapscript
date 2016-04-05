@@ -152,7 +152,9 @@ public class TokenScanner implements LexicalAnalyzer {
    
    @Override
    public Line line(int position) {
-      Token token = tokens.get(position);
+      int length = tokens.size();
+      int index = Math.min(length -1 , position);
+      Token token = tokens.get(index);
       
       if(token != null) {
          return token.getLine();

@@ -15,3 +15,7 @@ println(x.text);
 
 var l = [1,2,3];
 println(l.size);
+
+var port = 443;
+var host = "localhost";
+println("Host: ${host}${port == 443 ? '' : ':' + port}\r\n");
