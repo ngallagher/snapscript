@@ -391,6 +391,30 @@ function registerEditorBindings() {
    // false if this command should not apply in readOnly mode
    });
    editor.commands.addCommand({
+      name : 'save',
+      bindKey : {
+         win : 'Ctrl-S',
+         mac : 'Command-S'
+      },
+      exec : function(editor) {
+         saveFile();
+      },
+      readOnly : true
+   // false if this command should not apply in readOnly mode
+   });
+   editor.commands.addCommand({
+      name : 'new',
+      bindKey : {
+         win : 'Ctrl-N',
+         mac : 'Command-N'
+      },
+      exec : function(editor) {
+         newFile();
+      },
+      readOnly : true
+   // false if this command should not apply in readOnly mode
+   });
+   editor.commands.addCommand({
       name : 'format',
       bindKey : {
          win : 'Ctrl-Shift-F',

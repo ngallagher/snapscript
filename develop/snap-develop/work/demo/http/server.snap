@@ -39,7 +39,7 @@ class Subscription {
    }
    match(req){
       if(filter.accept(req)){
-         return address;
+            return address;
       }
       return null;
    }
@@ -73,22 +73,23 @@ class SubscriptionHandler with HttpHandler {
       output.write(message.getBytes());
       output.close();
    }
-  
-  parse(query){
-    var result = {:};
-    
-    if(query != null) {
-       var params = query.split('&');
-       for (var param in params) {
-           var pair = param.split("=");
-           if (pair.size()>1) {
+   
+   parse(query){
+      var result = {:};
+      
+      if(query != null) {
+         var params = query.split('&');
+         for (var param in params) {
+            var pair = param.split("=");
+            if (pair.size()>1) {
                result.put(pair[0], pair[1]);
-           }else{
+            }else{
                result.put(pair[0], "");
-           }
-       }
-    }
-    return result;
+            }
+         }
+      }
+      return result;
    }
 
 }
+
