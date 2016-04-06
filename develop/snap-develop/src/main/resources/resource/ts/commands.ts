@@ -94,7 +94,7 @@ function deleteFile(resourceDetails) {
          resetEditor();
       }
    }
-}
+} 
 
 function deleteDirectory(resourceDetails) {
    if(resourceDetails != null) {

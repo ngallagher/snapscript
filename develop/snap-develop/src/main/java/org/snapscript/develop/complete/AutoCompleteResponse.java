@@ -1,20 +1,20 @@
 package org.snapscript.develop.complete;
 
-import java.util.Set;
+import java.util.Map;
 
 public class AutoCompleteResponse {
 
-   private Set<String> tokens;
+   private Map<String, String> tokens;
    
    public AutoCompleteResponse() {
       super();
    }
 
-   public Set<String> getTokens() {
+   public Map<String, String> getTokens() {
       return tokens;
    }
 
-   public void setTokens(Set<String> tokens) {
+   public void setTokens(Map<String, String> tokens) {
       this.tokens = tokens;
    }
 }

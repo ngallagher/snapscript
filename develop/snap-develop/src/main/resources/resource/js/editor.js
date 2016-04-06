@@ -294,14 +294,15 @@ function createEditorAutoComplete() {
                 contentType: 'application/json',
                 data: message,
                 dataType: 'json',
-                success: function (list) {
-                    var tokens = list.tokens;
+                success: function (response) {
+                    var tokens = response.tokens;
                     var length = tokens.length;
                     var suggestions = [];
-                    console.log("response: " + tokens);
-                    for (var i = 0; i < length; i++) {
-                        var word = tokens[i];
-                        suggestions.push({ name: word, value: word, score: 300, meta: "token" });
+                    for (var token in tokens) {
+                        if (tokens.hasOwnProperty(token)) {
+                            var type = tokens[token];
+                            suggestions.push({ name: token, value: token, score: 300, meta: type });
+                        }
                     }
                     callback(null, suggestions);
                 },
@@ -383,7 +384,8 @@ function registerEditorBindings() {
 function showEditor() {
     var langTools = ace.require("ace/ext/language_tools");
     var editor = ace.edit("editor");
-    // editor.setTheme("ace/theme/monokai");
+    var autoComplete = createEditorAutoComplete();
+    editor.completers = [autoComplete];
     editor.getSession().setMode("ace/mode/snapscript");
     editor.getSession().setTabSize(3);
     editor.setReadOnly(true);
@@ -392,8 +394,6 @@ function showEditor() {
     editor.setOptions({
         enableBasicAutocompletion: true
     });
-    var autoComplete = createEditorAutoComplete();
-    langTools.addCompleter(autoComplete);
     editor.on("guttermousedown", function (e) {
         var target = e.domEvent.target;
         if (target.className.indexOf("ace_gutter-cell") == -1) {
@@ -416,7 +416,10 @@ function showEditor() {
     finishedLoading();
 }
 function updateEditorFont(fontFamily, fontSize) {
+    var langTools = ace.require("ace/ext/language_tools");
     var editor = ace.edit("editor");
+    var autoComplete = createEditorAutoComplete();
+    editor.completers = [autoComplete];
     editor.setOptions({
         enableBasicAutocompletion: true,
         fontFamily: fontFamily,

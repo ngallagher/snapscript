@@ -1,6 +1,6 @@
 package org.snapscript.develop.complete;
 
-import java.util.Set;
+import java.util.Map;
 
 import org.snapscript.develop.common.TokenFinder;
 import org.snapscript.develop.common.TokenFinderBuilder;
@@ -14,7 +14,7 @@ public class AutoCompleter {
       this.builder = new TokenFinderBuilder();
    }
 
-   public Set<String> complete(Project project, String text, String resource, String prefix) {
+   public Map<String, String> complete(Project project, String text, String resource, String prefix) {
       TokenFinder finder = builder.compile();
       return finder.findTokens(text, resource, prefix);
    }

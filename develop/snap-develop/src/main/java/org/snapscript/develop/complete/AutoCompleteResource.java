@@ -1,7 +1,7 @@
 package org.snapscript.develop.complete;
 
 import java.io.PrintStream;
-import java.util.Set;
+import java.util.Map;
 
 import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
@@ -36,7 +36,7 @@ public class AutoCompleteResource implements Resource {
       String prefix = context.getPrefix();
       String source = context.getSource();
       String resource = context.getResource();
-      Set<String> tokens = completer.complete(project, source, resource, prefix);
+      Map<String, String> tokens = completer.complete(project, source, resource, prefix);
       result.setTokens(tokens);
       String text = gson.toJson(result);
       response.setContentType("application/json");
