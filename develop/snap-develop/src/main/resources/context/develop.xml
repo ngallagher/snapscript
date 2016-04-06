@@ -72,6 +72,23 @@
     <constructor-arg value=".vm" />
   </bean>
 
+  <bean id="TypeScriptCompiler" class="org.snapscript.develop.typescript.TypeScriptCompiler">
+    <constructor-arg value="src/main/typescript/tsc.js" />
+    <constructor-arg value="C:/Program Files/nodejs/node.exe" />    
+  </bean>
+  
+  <bean id="TypeScriptResource" class="org.snapscript.develop.typescript.TypeScriptResource">
+    <constructor-arg ref="TypeScriptCompiler" />
+    <constructor-arg ref="FileMatcher"/>
+    <constructor-arg value="src/main/resources/resource/ts" />
+    <constructor-arg>
+        <list>
+            <value>src/main/resources/resource/js</value>
+            <value>target/classes/resource/js</value>            
+        </list>
+    </constructor-arg>     
+  </bean>  
+
   <bean id="AutoCompleteResource" class="org.snapscript.develop.complete.AutoCompleteResource">
     <constructor-arg ref="ProjectBuilder" />
   </bean>
@@ -142,7 +159,7 @@
   <bean id="ResourceMatcher" class="org.snapscript.develop.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/format.*" value-ref="AutoFormatResource" />          
+        <entry key="/format.*" value-ref="AutoFormatResource" />
         <entry key="/complete.*" value-ref="AutoCompleteResource" />
         <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
@@ -150,6 +167,7 @@
         <entry key="/resource/.*" value-ref="ProjectFileResource" />
         <entry key="/tree.*" value-ref="ProjectTreeResource" />
         <entry key="/" value-ref="ProjectOpenDialog" />
+        <entry key="/.*.js" value-ref="TypeScriptResource" />
       </map>
     </constructor-arg>
   </bean>

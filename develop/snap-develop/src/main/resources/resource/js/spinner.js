@@ -1,53 +1,47 @@
 var spinnerHiding = false;
 var spinner = null;
-
 function finishedLoading() {
-   if(spinnerHiding == false) {     
-      var func = function(){
-         hideSpinner();
-      }
-      window.setTimeout(func, 1000);
-   }
-
+    if (spinnerHiding == false) {
+        var func = function () {
+            hideSpinner();
+        };
+        window.setTimeout(func, 1000);
+    }
 }
-
-function showSpinner(){
-   if(spinnerHiding == true) {  
-      spinnerHiding = false;
-      document.getElementById("overlay").style.visibility = 'visible';      
-   }
+function showSpinner() {
+    if (spinnerHiding == true) {
+        spinnerHiding = false;
+        document.getElementById("overlay").style.visibility = 'visible';
+    }
 }
-
-function hideSpinner(){
-   if(spinnerHiding == false) {  
-      window.setTimeout(function(){
-         spinnerHiding = true;
-         document.getElementById("overlay").style.visibility = 'hidden'; 
-      }, 1000);      
-   }
+function hideSpinner() {
+    if (spinnerHiding == false) {
+        window.setTimeout(function () {
+            spinnerHiding = true;
+            document.getElementById("overlay").style.visibility = 'hidden';
+        }, 1000);
+    }
 }
-
 function createSpinner() {
-   var opts = {
-         lines: 13, // The number of lines to draw
-         length: 30, // The length of each line
-         width: 15, // The line thickness
-         radius: 40, // The radius of the inner circle
-         corners: 1, // Corner roundness (0..1)
-         rotate: 0, // The rotation offset
-         direction: 1, // 1: clockwise, -1: counterclockwise
-         color: '#ffffff', // #rgb or #rrggbb or array of colors
-         speed: 1, // Rounds per second
-         trail: 60, // Afterglow percentage
-         shadow: false, // Whether to render a shadow
-         hwaccel: false, // Whether to use hardware acceleration
-         className: 'spinner', // The CSS class to assign to the spinner
-         zIndex: 2e9, // The z-index (defaults to 2000000000)
-         top: '50%', // Top position relative to parent
-         left: '50%' // Left position relative to parent
-       };
-       var target = document.getElementById('spin');
-       spinner = new Spinner(opts).spin(target);
+    var opts = {
+        lines: 13,
+        length: 30,
+        width: 15,
+        radius: 40,
+        corners: 1,
+        rotate: 0,
+        direction: 1,
+        color: '#ffffff',
+        speed: 1,
+        trail: 60,
+        shadow: false,
+        hwaccel: false,
+        className: 'spinner',
+        zIndex: 2e9,
+        top: '50%',
+        left: '50%' // Left position relative to parent
+    };
+    var target = document.getElementById('spin');
+    spinner = new Spinner(opts).spin(target);
 }
-
 registerModule("spinner", "Spinner module: spinner.js", createSpinner, []);
