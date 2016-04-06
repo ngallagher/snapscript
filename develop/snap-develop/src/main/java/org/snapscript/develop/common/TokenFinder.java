@@ -49,7 +49,7 @@ public class TokenFinder {
          String text = String.valueOf(value);
          String lowerCaseText = text.toLowerCase();
          
-         if(lowerCaseText.startsWith(lowerCasePrefix)) {
+         if(!prefix.equals(text) && lowerCaseText.startsWith(lowerCasePrefix)) {
             String type = TOKEN;
             
             if(isClass(tokens, i)) {
