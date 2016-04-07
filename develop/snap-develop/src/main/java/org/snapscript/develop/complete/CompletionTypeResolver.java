@@ -1,6 +1,56 @@
 package org.snapscript.develop.complete;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.CharArrayReader;
+import java.io.CharArrayWriter;
+import java.io.Closeable;
+import java.io.Console;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilePermission;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.FilterInputStream;
+import java.io.FilterOutputStream;
+import java.io.FilterReader;
+import java.io.FilterWriter;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.PushbackInputStream;
+import java.io.PushbackReader;
+import java.io.RandomAccessFile;
+import java.io.Reader;
+import java.io.SequenceInputStream;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +65,6 @@ import java.util.Deque;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Enumeration;
-import java.util.EventListener;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
@@ -69,7 +118,6 @@ import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
-import org.snapscript.core.PathConverter;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.store.FileStore;
@@ -149,56 +197,79 @@ public class CompletionTypeResolver {
       RandomAccess.class,
       Set.class,
       SortedMap.class,
-      SortedSet.class      
+      SortedSet.class,
+      IOException.class,
+      BufferedInputStream.class,
+      BufferedOutputStream.class,
+      BufferedReader.class,
+      BufferedWriter.class,
+      ByteArrayInputStream.class,
+      ByteArrayOutputStream.class,
+      CharArrayReader.class,
+      CharArrayWriter.class,
+      Console.class,
+      DataInputStream.class,
+      DataOutputStream.class,
+      File.class,
+      FileDescriptor.class,
+      FileInputStream.class,
+      FileOutputStream.class,
+      FilePermission.class,
+      FileReader.class,
+      FileWriter.class,
+      FilterInputStream.class,
+      FilterOutputStream.class,
+      FilterReader.class,
+      FilterWriter.class,
+      InputStream.class,
+      InputStreamReader.class,
+      LineNumberReader.class,
+      ObjectInputStream.class,
+      ObjectOutputStream.class,
+      OutputStream.class,
+      OutputStreamWriter.class,
+      PipedInputStream.class,
+      PipedOutputStream.class,
+      PipedReader.class,
+      PipedWriter.class,
+      PrintStream.class,
+      PrintWriter.class,
+      PushbackInputStream.class,
+      PushbackReader.class,
+      RandomAccessFile.class,
+      Reader.class,
+      SequenceInputStream.class,
+      StreamTokenizer.class,
+      StringReader.class,
+      StringWriter.class,
+      Writer.class,
+      Closeable.class,
+      FileFilter.class,
+      FilenameFilter.class,
+      FileNotFoundException.class,
+      Flushable.class,
+      EOFException.class
    };
 
-   private final PathConverter converter;
+   private final Map<String, Type> cache;
    private final ConsoleLogger logger;
    
    public CompletionTypeResolver(ConsoleLogger logger) {
-      this.converter = new PathConverter();
+      this.cache = new ConcurrentHashMap<String, Type>();
       this.logger = logger;
    }
    
    public Map<String, Type> resolveTypes(File root, String text, String resource) {
       Store store = new FileStore(root);
       Context context = new StoreContext(store);
-      StringBuilder builder = new StringBuilder();
-      Map<String, Type> types = new HashMap<String, Type>();
       Compiler compiler = new StringCompiler(context);
-      List<String> imports = new ArrayList<String>();
-      String lines[] = text.split("\\r?\\n");
-      Pattern pattern = Pattern.compile("^import (.*);.*");
-      
-      for(String line : lines) {
-         String token = line.trim();
-        
-         if(token.startsWith("import ")) {
-            Matcher matcher = pattern.matcher(token);
-            
-            if(matcher.matches()) {
-               String module = matcher.group(1);
-               
-               imports.add(module);
-               builder.append(token);
-               builder.append("\n");
-            }
-         }
-      }
+      String source = parseSource(context, text, resource);
+      Map<String, Type> types = importTypes(context, resource);
       ModuleRegistry registry = context.getRegistry();
       List<Module> modules = registry.getModules();
       
       try {
-         String source = builder.toString();
          Executable executable = compiler.compile(source);
-         TypeLoader loader = context.getLoader();
-         
-         for(Class defaultType : DEFAULT_TYPES) {
-            Type type = loader.loadType(defaultType);
-            String name = type.getName();
-            
-            types.put(name, type);
-         }
          executable.execute();
       } catch(Exception e) {
          logger.log("Error compiling " + resource, e);
@@ -215,5 +286,58 @@ public class CompletionTypeResolver {
         }
       }
       return types;
+   }
+   
+   private Map<String, Type> importTypes(Context context, String resource) {
+      Map<String, Type> types = new HashMap<String, Type>();
+      Set<String> names = new HashSet<String>();
+      
+      for(Class real : DEFAULT_TYPES) {
+         String name = real.getSimpleName();
+         names.add(name);
+      }
+      try {
+         TypeLoader loader = context.getLoader();
+         int require = names.size();
+         int actual = cache.size();
+         
+         if(actual < require) {
+            for(Class real : DEFAULT_TYPES) {
+               Type type = loader.loadType(real);
+               String name = type.getName();
+               
+               cache.put(name, type);
+               types.put(name, type);
+            }
+         }
+         types.putAll(cache);
+      } catch(Exception e) {
+         logger.log("Error compiling " + resource, e);
+      }
+      return types;
+   }
+   
+   private String parseSource(Context context, String text, String resource) {
+      List<String> imports = new ArrayList<String>();
+      StringBuilder builder = new StringBuilder();
+      String lines[] = text.split("\\r?\\n");
+      Pattern pattern = Pattern.compile("^import (.*);.*");
+
+      for(String line : lines) {
+         String token = line.trim();
+        
+         if(token.startsWith("import ")) {
+            Matcher matcher = pattern.matcher(token);
+            
+            if(matcher.matches()) {
+               String module = matcher.group(1);
+               
+               imports.add(module);
+               builder.append(token);
+               builder.append("\n");
+            }
+         }
+      }
+      return builder.toString();
    }
 }
