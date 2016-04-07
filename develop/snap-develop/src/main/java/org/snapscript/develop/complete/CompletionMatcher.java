@@ -75,7 +75,11 @@ public class CompletionMatcher {
                   }
                } else {
                   if(filter.acceptInternal(text, type)) {
-                     strings.put(text, type);
+                     if(type.equals(FUNCTION)) {
+                        strings.put(text + "()", type);
+                     }  else {
+                        strings.put(text, type);
+                     }
                   }  
                }
             }
