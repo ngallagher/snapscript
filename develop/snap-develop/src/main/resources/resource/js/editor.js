@@ -285,8 +285,12 @@ function createEditorAutoComplete() {
                 return;
             }
             var text = editor.getValue();
+            var line = editor.session.getLine(pos.row);
+            var complete = line.substring(0, pos.column - prefix.length);
             var message = JSON.stringify({
                 resource: editorResource.projectPath,
+                line: line,
+                complete: complete,
                 source: text,
                 prefix: prefix
             });

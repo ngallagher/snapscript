@@ -1,31 +1,32 @@
-package org.snapscript.develop.common;
+package org.snapscript.develop.complete;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.parse.Grammar;
 import org.snapscript.parse.GrammarCompiler;
 import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 import org.snapscript.parse.Syntax;
 
-public class TokenFinderBuilder {
+public class CompletionMatcherBuilder {
    
    private final Map<String, Grammar> grammars;
    private final GrammarCompiler compiler;
    private final GrammarResolver resolver;
    private final GrammarIndexer indexer;
-   private final TokenFinder finder;
+   private final CompletionMatcher matcher;
 
-   public TokenFinderBuilder() {
+   public CompletionMatcherBuilder(ConsoleLogger logger) {
       this.grammars = new LinkedHashMap<String, Grammar>();      
       this.resolver = new GrammarResolver(grammars);
       this.indexer = new GrammarIndexer();
-      this.finder = new TokenFinder(resolver, indexer);      
+      this.matcher = new CompletionMatcher(resolver, indexer, logger);      
       this.compiler = new GrammarCompiler(resolver, indexer);      
    } 
 
-   public synchronized TokenFinder compile() {
+   public synchronized CompletionMatcher compile() {
       if(grammars.isEmpty()) {
          Syntax[] language = Syntax.values();
          
@@ -37,6 +38,6 @@ public class TokenFinderBuilder {
             grammars.put(name, grammar);
          }
       }
-      return finder;
+      return matcher;
    }
 }

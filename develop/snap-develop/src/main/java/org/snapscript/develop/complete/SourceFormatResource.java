@@ -11,15 +11,15 @@ import org.snapscript.develop.http.project.ProjectBuilder;
 import org.snapscript.develop.http.resource.Resource;
 
 // /format/<project>
-public class AutoFormatResource implements Resource {
+public class SourceFormatResource implements Resource {
    
    private static final int DEFAULT_INDENT = 3;
 
-   private final AutoFormatter formatter;
+   private final SourceFormatter formatter;
    private final ProjectBuilder builder;
    
-   public AutoFormatResource(ProjectBuilder builder) {
-      this.formatter = new AutoFormatter();
+   public SourceFormatResource(ProjectBuilder builder) {
+      this.formatter = new SourceFormatter();
       this.builder = builder;
    }
 

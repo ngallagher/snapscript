@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 
 import org.snapscript.develop.http.project.Project;
 
-public class AutoFormatter {
+public class SourceFormatter {
 
    private final Pattern pattern;
    
-   public AutoFormatter(){
+   public SourceFormatter(){
       this.pattern = Pattern.compile("^(\\s+)(.*)$");
    }
    

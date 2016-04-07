@@ -89,11 +89,12 @@
     </constructor-arg>     
   </bean>  
 
-  <bean id="AutoCompleteResource" class="org.snapscript.develop.complete.AutoCompleteResource">
+  <bean id="CompletionResource" class="org.snapscript.develop.complete.CompletionResource">
     <constructor-arg ref="ProjectBuilder" />
+    <constructor-arg ref="ConsoleLogger" />
   </bean>
 
-  <bean id="AutoFormatResource" class="org.snapscript.develop.complete.AutoFormatResource">
+  <bean id="SourceFormatResource" class="org.snapscript.develop.complete.SourceFormatResource">
     <constructor-arg ref="ProjectBuilder" />
   </bean>
 
@@ -159,8 +160,8 @@
   <bean id="ResourceMatcher" class="org.snapscript.develop.http.resource.RegularExpressionMatcher">
     <constructor-arg>
       <map>
-        <entry key="/format.*" value-ref="AutoFormatResource" />
-        <entry key="/complete.*" value-ref="AutoCompleteResource" />
+        <entry key="/format.*" value-ref="SourceFormatResource" />
+        <entry key="/complete.*" value-ref="CompletionResource" />
         <entry key="/class/.*" value-ref="ClassLoaderResource" />
         <entry key="/project/.*" value-ref="ProjectResource" />
         <entry key="/display/.*" value-ref="ProjectDisplayResource" />

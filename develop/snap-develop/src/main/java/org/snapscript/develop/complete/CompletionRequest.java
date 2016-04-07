@@ -1,13 +1,22 @@
 package org.snapscript.develop.complete;
 
-public class AutoCompleteRequest {
+public class CompletionRequest {
 
    private String resource;
    private String source;
    private String prefix;
+   private String complete;
    
-   public AutoCompleteRequest() {
+   public CompletionRequest() {
       super();
+   }
+
+   public String getComplete() {
+      return complete;
+   }
+   
+   public void setComplete(String complete) {
+      this.complete = complete;
    }
 
    public String getResource() {

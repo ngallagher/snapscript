@@ -2,11 +2,11 @@ package org.snapscript.develop.complete;
 
 import java.util.Map;
 
-public class AutoCompleteResponse {
+public class CompletionResponse {
 
    private Map<String, String> tokens;
    
-   public AutoCompleteResponse() {
+   public CompletionResponse() {
       super();
    }
 
