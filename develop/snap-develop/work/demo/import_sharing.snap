@@ -19,3 +19,5 @@ module Child{
 
 }
 Child.testImportInheritance();
+
+Child.testImportInheritance();

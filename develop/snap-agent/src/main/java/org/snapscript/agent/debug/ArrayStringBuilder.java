@@ -120,6 +120,9 @@ public class ArrayStringBuilder {
             if(length > limit) {
                return buffer.toString();
             }
+            if(i > 0) {
+               buffer.append(", ");  
+            }
             if (element == null) {
                buffer.append("null");
             } else {
@@ -164,7 +167,6 @@ public class ArrayStringBuilder {
                   }
                }
             }
-            buffer.append(", ");
          }
          buffer.append(']');
          done.remove(array);
