@@ -34,16 +34,7 @@ public class CompletionExpressionParser {
          tokens.add(CONSTANT);
          tokens.add(VARIABLE);
       } else {
-         if(trim.endsWith("(")) {
-            tokens.add(FUNCTION);
-            tokens.add(CONSTANT);
-            tokens.add(VARIABLE);
-            tokens.add(MODULE);
-            tokens.add(TRAIT);
-            tokens.add(CLASS);
-            tokens.add(ENUMERATION);
-            tokens.add(TOKEN);
-         } else if(complete.matches(".*new\\s+")) {
+         if(complete.matches(".*new\\s+")) {
             tokens.add(CLASS);
          } else if(complete.matches(".*\\s+extends\\s+")) {
             tokens.add(TRAIT);
@@ -52,45 +43,260 @@ public class CompletionExpressionParser {
             tokens.add(TRAIT);
          } else if(complete.matches(".*module\\s+")) {
             tokens.add(MODULE);
+         } else {
+            tokens.add(FUNCTION);
+            tokens.add(CONSTANT);
+            tokens.add(VARIABLE);
+            tokens.add(MODULE);
+            tokens.add(TRAIT);
+            tokens.add(CLASS);
+            tokens.add(ENUMERATION);
+            tokens.add(TOKEN);
          }
       }
-      Pattern typePattern = Pattern.compile("([a-zA-Z0-9_]+).$"); // Identifier. function  
-      Matcher typeMatcher = typePattern.matcher(trim);
-      CompletionType type = null;
-      String constraint = null;
-      
-      if(typeMatcher.matches()) {
-         constraint = typeMatcher.group(1);
+      CompletionType constraint = parseHint(types, complete);
+
+      if(constraint != null) {
+         logger.log(complete + " is constrained to " + constraint);
       } else {
-         Pattern functionParameterPattern = Pattern.compile("([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\).$"); // function(a,b,c).  
-         Matcher functionParameterMatcher = functionParameterPattern.matcher(trim);
+         logger.log(complete + " has no known constraints");
+      }
+      return new CompletionExpression(complete, constraint, tokens);
+   }
+   
+   private CompletionType parseHint(Map<String, CompletionType> types, String complete) {
+      ConstraintHint[] hints = ConstraintHint.values();
+      
+      for(ConstraintHint hint : hints) {
+         String constraint = hint.parse(complete);
          
-         if(functionParameterMatcher.matches()) {
-            String function = functionParameterMatcher.group(1);
-            String parameters = functionParameterMatcher.group(2);
-            String[] parameterList = parameters.split(",");
-            int count = parameterList.length;
+         if(constraint != null) {
+            CompletionType type = types.get(constraint);
             
-            constraint = function + "(" + count + ")";
-         } else {
-            Pattern functionPattern = Pattern.compile("([a-zA-Z0-9_]+)\\(\\).$"); // function(a,b,c).  
-            Matcher functionMatcher = functionPattern.matcher(trim);
-            
-            if(functionMatcher.matches()) {
-               String function = functionMatcher.group(1);
-               constraint = function + "(" + 0 + ")";
+            if(type != null){
+               logger.log("match was " + constraint);
+               return type;
             }
          }
       }
-      if(constraint != null) {
-         type = types.get(constraint);
-         
-         if(type != null) {
-            logger.log(complete + " is constrained to " + type);
-         } else {
-            logger.log(complete + " has no known constraints");
+      return null;
+   }
+   
+   private static enum ConstraintHint {
+      CONSTRUCTOR_WITH_PARAMS("new\\s+([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               return matcher.group(1);
+            }
+            return null;
          }
+      },
+      CONSTRUCTOR("new\\s+([a-zA-Z0-9_]+)\\(\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               return matcher.group(1);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_PARAMS_PROPERTY("new\\s+([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.([a-zA-Z0-9_,\\s]+)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String property = matcher.group(3);
+               
+               return String.format("%s.%s", type, property);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_PROPERTY("new\\s+([a-zA-Z0-9_]+)\\(\\)\\.([a-zA-Z0-9_,\\s]+)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String property = matcher.group(2);
+               
+               return String.format("%s.%s", type, property);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_PARAMS_FUNCTION_WITH_PARAMS("new\\s+([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String function = matcher.group(3);
+               String parameters = matcher.group(4);
+               String[] names = parameters.split(",");
+               String invocation = String.format("%s(%s)", function, names.length);
+               
+               return String.format("%s.%s", type, invocation);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_PARAMS_FUNCTION("new\\s+([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.([a-zA-Z0-9_]+)\\(\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String invocation = matcher.group(3);
+               
+               return String.format("%s.%s", type, invocation);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_FUNCTION_WITH_PARAMS("new\\s+([a-zA-Z0-9_]+)\\(\\)\\.([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String function = matcher.group(2);
+               String parameters = matcher.group(3);
+               String[] names = parameters.split(",");
+               String invocation = String.format("%s(%s)", function, names.length);
+               
+               return String.format("%s.%s", type, invocation);
+            }
+            return null;
+         }
+      },
+      CONSTRUCTOR_WITH_FUNCTION("new\\s+([a-zA-Z0-9_]+)\\(\\)\\.([a-zA-Z0-9_]+)\\(\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String invocation = matcher.group(2);
+               
+               return String.format("%s.%s(0)", type, invocation);
+            }
+            return null;
+         }
+      },
+      TYPE_WITH_FUNCTION_WITH_PARAMS("([a-zA-Z0-9_]+)\\.([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String function = matcher.group(2);
+               String parameters = matcher.group(3);
+               String[] names = parameters.split(",");
+               String invocation = String.format("%s(%s)", function, names.length);
+               
+               return String.format("%s.%s", type, invocation);
+            }
+            return null;
+         }
+      },
+      TYPE_WITH_FUNCTION("([a-zA-Z0-9_]+)\\.([a-zA-Z0-9_]+)\\(\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String function = matcher.group(2);
+               String invocation = String.format("%s(0)", function);
+               
+               return String.format("%s.%s", type, invocation);
+            }
+            return null;
+         }
+      },
+      TYPE_WITH_PROPERTY("([a-zA-Z0-9_]+)\\.([a-zA-Z0-9_]+)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String property = matcher.group(2);
+               
+               return String.format("%s.%s", type, property);
+            }
+            return null;
+         }
+      },
+      FUNCTION_WITH_PARAMS("([a-zA-Z0-9_]+)\\(([a-zA-Z0-9_,\\s]+)\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String function = matcher.group(1);
+               String parameters = matcher.group(2);
+               String[] names = parameters.split(",");
+               
+               return String.format("%s(%s)", function, names.length);
+            }
+            return null;
+         }
+      },
+      FUNCTION("([a-zA-Z0-9_]+)\\(\\)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               String function = matcher.group(1);
+               return String.format("%s(0)", function);
+            }
+            return null;
+         }
+      },
+      TYPE("([a-zA-Z0-9_]+)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               return matcher.group(1);
+            }
+            return null;
+         }
+      },
+      PROPERTY("([a-zA-Z0-9_]+)\\.$"){
+         @Override
+         public String parse(String complete) {
+            Matcher matcher = pattern.matcher(complete);
+            
+            if(matcher.matches()) {
+               return matcher.group(1);
+            }
+            return null;
+         }
+      };
+      
+      public final Pattern pattern;
+      
+      private ConstraintHint(String pattern) {
+         this.pattern = Pattern.compile(".*?" + pattern);
       }
-      return new CompletionExpression(complete, type, tokens);
+      
+      public abstract String parse(String complete);
    }
 }

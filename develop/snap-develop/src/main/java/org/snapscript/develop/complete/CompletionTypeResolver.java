@@ -352,29 +352,14 @@ public class CompletionTypeResolver {
             Type constraint = function.getConstraint();
            
             if(constraint != null) {
-               String returns = constraint.getName();
                Signature signature = function.getSignature();
                List<String> parameters = signature.getNames();
-               CompletionType match = types.get(returns);
+               CompletionType match = resolveType(types, constraint);
                int count = parameters.size();
                
-               if(match == null) {
-                  Class real = constraint.getType();
-                  
-                  if(real != null) { 
-                     real = promoter.promote(real);
-                  }
-                  if(real != null) {
-                     String identifier = real.getSimpleName();
-                     match = types.get(identifier);
-                  }
-                  if(match == null) {
-                     match = new CompletionType(constraint, returns);
-                     types.put(returns, match);
-                  }
-               }
                if(match != null) {
-                  types.put(key+"(" + count +")", match);
+                  types.put(name + "." + key + "(" + count + ")", match);
+                  types.put(key + "(" + count +")", match);
                }
             }
          }
@@ -383,31 +368,38 @@ public class CompletionTypeResolver {
             Type constraint = property.getConstraint();
             
             if(constraint != null) {
-               String declaration = constraint.getName();
-               CompletionType match = types.get(declaration);
-            
-               if(match == null) {
-                  Class real = constraint.getType();
-                  
-                  if(real != null) { 
-                     real = promoter.promote(real);
-                  }
-                  if(real != null) {
-                     String identifier = real.getSimpleName();
-                     match = types.get(identifier);
-                  }
-                  if(match == null) {
-                     match = new CompletionType(constraint, declaration);
-                     types.put(declaration, match);
-                  }
-               }
+               CompletionType match = resolveType(types, constraint);
+               
                if(match != null) {
-                  types.put(key, match);
+                  //types.put(key, match);
+                  types.put(name + "." + key, match);
                }
             }
          }
       }
       return types;
+   }
+   
+   private CompletionType resolveType(Map<String, CompletionType> types, Type constraint) {
+      String name = constraint.getName();
+      CompletionType match = types.get(name);
+   
+      if(match == null) {
+         Class real = constraint.getType();
+         
+         if(real != null) { 
+            real = promoter.promote(real);
+         }
+         if(real != null) {
+            String identifier = real.getSimpleName();
+            match = types.get(identifier);
+         }
+         if(match == null) {
+            match = new CompletionType(constraint, name);
+            types.put(name, match);
+         }
+      }
+      return match;
    }
    
    private Map<String, CompletionType> importTypes(Context context, String resource, String prefix) {

@@ -15,8 +15,6 @@ public class CompletionFilter {
    public boolean acceptExternal(String text, String type) {
       if(text.startsWith(prefix)) {
          Set<String> types = complete.getTypes();
-         CompletionType constraint = complete.getConstraint();
-         
          return types.contains(type);
       }
       return false;
@@ -25,8 +23,6 @@ public class CompletionFilter {
    public boolean acceptInternal(String text, String type) {
       if(text.startsWith(prefix)) {
          Set<String> types = complete.getTypes();
-         CompletionType constraint = complete.getConstraint();
-         
          return types.contains(type);
       }
       return false;
