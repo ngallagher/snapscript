@@ -30,7 +30,7 @@ public class TypeReferencePart implements Evaluation {
       Object result = module.getModule(name);
       
       if(result == null) {
-         result = module.addType(name); // we need to add
+         result = module.addType(name); // XXX this can cause an error in modules for constraints not yet defined
       }
       if(result == null) {
          throw new InternalStateException("No type found for " + name + " in '" + module + "'"); // class not found

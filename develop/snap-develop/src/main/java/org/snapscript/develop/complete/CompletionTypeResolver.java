@@ -1,5 +1,7 @@
 package org.snapscript.develop.complete;
 
+import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -116,8 +118,20 @@ import org.snapscript.compile.Executable;
 import org.snapscript.compile.StoreContext;
 import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
+import org.snapscript.core.EmptyModel;
+import org.snapscript.core.Function;
+import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
+import org.snapscript.core.Package;
+import org.snapscript.core.PackageLinker;
+import org.snapscript.core.PathConverter;
+import org.snapscript.core.PrimitivePromoter;
+import org.snapscript.core.Property;
+import org.snapscript.core.Scope;
+import org.snapscript.core.ScopeMerger;
+import org.snapscript.core.Signature;
+import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.store.FileStore;
@@ -132,6 +146,7 @@ public class CompletionTypeResolver {
       Thread.class,
       Runnable.class,
       Integer.class,
+      Boolean.class,
       Number.class,
       Double.class,
       Float.class,
@@ -264,44 +279,138 @@ public class CompletionTypeResolver {
    };
 
    private final Map<String, CompletionType> cache;
+   private final PrimitivePromoter promoter;
+   private final PathConverter converter;
    private final ConsoleLogger logger;
    
    public CompletionTypeResolver(ConsoleLogger logger) {
       this.cache = new ConcurrentHashMap<String, CompletionType>();
+      this.promoter = new PrimitivePromoter();
+      this.converter = new PathConverter();
       this.logger = logger;
    }
    
-   public Map<String, CompletionType> resolveTypes(File root, String text, String resource) {
+   public Map<String, CompletionType> resolveTypes(File root, String text, String resource, String prefix, String complete) {
+      Model model = new EmptyModel();
       Store store = new FileStore(root);
       Context context = new StoreContext(store);
       Compiler compiler = new StringCompiler(context);
-      String source = parseSource(context, text, resource);
-      Map<String, CompletionType> types = importTypes(context, resource);
+      ScopeMerger merger = new ScopeMerger(context);
+      Map<String, CompletionType> types = importTypes(context, resource, prefix);
       ModuleRegistry registry = context.getRegistry();
       List<Module> modules = registry.getModules();
       
       try {
-         Executable executable = compiler.compile(source);
-         executable.execute();
+         String source = parseSource(context, text, resource, complete);
+         String module = converter.createModule(resource);
+         PackageLinker linker = context.getLinker();
+         Package library = linker.link(module, source, SCRIPT.name);
+         Scope scope = merger.merge(model, module);
+         
+         library.compile(scope);
       } catch(Exception e) {
-         logger.log("Error compiling " + resource, e);
+         logger.log("Error compiling " + resource + ", parsing imports only for " + complete);
+         
+         try {
+            String source = parseImportsOnly(context, text, resource);
+            Executable executable = compiler.compile(source);
+            executable.execute();
+         }catch(Exception fatal) {
+            logger.log("Error compiling imports for " + resource, fatal);
+         }
       }
       for(Module imported : modules) {
         List<Type> accessible = imported.getTypes();
+        String module = imported.getName();
         
         for(Type type : accessible) {
            String name = type.getName();
-         
+
            if(name != null) {
               CompletionType value = new CompletionType(type, name);
               types.put(name, value);
            }
         }
+        if(module != null){
+           CompletionType value = new CompletionType(imported, module);
+           types.put(module, value);
+        }
+      }
+      return expandFunctions(types, prefix);
+   }
+   
+   private Map<String, CompletionType> expandFunctions(Map<String, CompletionType> types, String prefix) {
+      Set<String> names = new HashSet<String>(types.keySet());
+      
+      for(String name : names) {
+         CompletionType type = types.get(name);
+         List<Function> functions = type.getFunctions();
+         List<Property> properties = type.getProperties();
+         
+         for(Function function : functions) {
+            String key = function.getName();
+            Type constraint = function.getConstraint();
+           
+            if(constraint != null) {
+               String returns = constraint.getName();
+               Signature signature = function.getSignature();
+               List<String> parameters = signature.getNames();
+               CompletionType match = types.get(returns);
+               int count = parameters.size();
+               
+               if(match == null) {
+                  Class real = constraint.getType();
+                  
+                  if(real != null) { 
+                     real = promoter.promote(real);
+                  }
+                  if(real != null) {
+                     String identifier = real.getSimpleName();
+                     match = types.get(identifier);
+                  }
+                  if(match == null) {
+                     match = new CompletionType(constraint, returns);
+                     types.put(returns, match);
+                  }
+               }
+               if(match != null) {
+                  types.put(key+"(" + count +")", match);
+               }
+            }
+         }
+         for(Property property : properties) {
+            String key = property.getName();
+            Type constraint = property.getConstraint();
+            
+            if(constraint != null) {
+               String declaration = constraint.getName();
+               CompletionType match = types.get(declaration);
+            
+               if(match == null) {
+                  Class real = constraint.getType();
+                  
+                  if(real != null) { 
+                     real = promoter.promote(real);
+                  }
+                  if(real != null) {
+                     String identifier = real.getSimpleName();
+                     match = types.get(identifier);
+                  }
+                  if(match == null) {
+                     match = new CompletionType(constraint, declaration);
+                     types.put(declaration, match);
+                  }
+               }
+               if(match != null) {
+                  types.put(key, match);
+               }
+            }
+         }
       }
       return types;
    }
    
-   private Map<String, CompletionType> importTypes(Context context, String resource) {
+   private Map<String, CompletionType> importTypes(Context context, String resource, String prefix) {
       Map<String, CompletionType> types = new HashMap<String, CompletionType>();
       Set<String> names = new HashSet<String>();
       
@@ -318,20 +427,34 @@ public class CompletionTypeResolver {
             for(Class real : DEFAULT_TYPES) {
                Type type = loader.loadType(real);
                String name = type.getName();
-               CompletionType value = new CompletionType(type, name);
                
-               cache.put(name, value);
-               types.put(name, value);
+               if(name != null) {
+                  CompletionType value = new CompletionType(type, name);
+                  cache.put(name, value);
+               }
             }
          }
-         types.putAll(cache);
+         types.putAll(cache);   
       } catch(Exception e) {
          logger.log("Error compiling " + resource, e);
       }
       return types;
    }
    
-   private String parseSource(Context context, String text, String resource) {
+   private String parseSource(Context context, String text, String resource, String complete) {
+      StringBuilder builder = new StringBuilder();
+      String lines[] = text.split("\\r?\\n");
+
+      for(String line : lines) {
+         if(!line.contains(complete)) {
+            builder.append(line);
+            builder.append("\n");
+         }
+      }
+      return builder.toString();
+   }
+   
+   private String parseImportsOnly(Context context, String text, String resource) {
       List<String> imports = new ArrayList<String>();
       StringBuilder builder = new StringBuilder();
       String lines[] = text.split("\\r?\\n");

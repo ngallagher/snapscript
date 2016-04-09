@@ -13,7 +13,12 @@ public class CompletionType {
    private final Object value;
    private final String name;
    
-   public CompletionType(Object value, String name) {
+   public CompletionType(Type value, String name) {
+      this.value = value;
+      this.name = name;
+   }
+   
+   public CompletionType(Module value, String name) {
       this.value = value;
       this.name = name;
    }
@@ -52,5 +57,10 @@ public class CompletionType {
    
    public boolean isType() {
       return Type.class.isInstance(value);
+   }
+   
+   @Override
+   public String toString() {
+      return name;
    }
 }

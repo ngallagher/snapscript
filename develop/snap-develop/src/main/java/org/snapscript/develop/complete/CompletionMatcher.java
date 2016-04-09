@@ -11,6 +11,7 @@ import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,30 +31,42 @@ import org.snapscript.parse.TokenIndexer;
 
 public class CompletionMatcher {
    
+   private final CompletionExpressionParser parser;
    private final CompletionTypeResolver resolver;
    private final SourceProcessor processor;
    private final GrammarIndexer indexer;
    
    public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConsoleLogger logger) {
+      this.parser = new CompletionExpressionParser(logger);
       this.resolver = new CompletionTypeResolver(logger);
       this.processor = new SourceProcessor(100);
       this.indexer = indexer;
    }
    
    public Map<String, String> findTokens(File root, String source, String resource, String prefix, String complete) {
-      Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource);
-      Map<String, String> externalTokens = extractExternal(types, source, resource, prefix, complete);
-      Map<String, String> internalTokens = extractInternal(types, source, resource, prefix, complete);
+      Map<String, String> resultTokens = new TreeMap<String, String>();
+      Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource, prefix, complete);
+      CompletionExpression expression = parser.parse(types, complete);
+      CompletionType type = expression.getConstraint();
       
-      externalTokens.putAll(internalTokens);
-      
-      return externalTokens;
+      //if(type == null) {
+         Map<String, String> externalTokens = extractExternal(types, expression, source, resource, prefix);
+         Map<String, String> internalTokens = extractInternal(types, expression, source, resource, prefix);
+         
+         resultTokens.putAll(externalTokens);
+         resultTokens.putAll(internalTokens);
+      //} else {
+      //   // XXX this needs to consider the type hierarchy
+      //   Map<String, String> constraintTokens = extractTypedTokens(type, expression, source, resource, prefix);
+      //   resultTokens.putAll(constraintTokens);
+      //}
+      return resultTokens;
    }
    
-   private Map<String, String> extractInternal(Map<String, CompletionType> types, String source, String resource, String prefix, String complete) {
+   private Map<String, String> extractInternal(Map<String, CompletionType> types, CompletionExpression complete, String source, String resource, String prefix) {
       List<Token> tokens = new ArrayList<Token>();
-      Map<String, String> strings = new TreeMap<String,String>();
-      CompleteFilter filter = new CompleteFilter(prefix, complete);
+      Map<String, String> strings = new HashMap<String,String>();
+      CompletionFilter filter = new CompletionFilter(complete, prefix);
       
       if(!source.isEmpty()) {
          TokenIndexer indexer = createIndexer(source, resource);
@@ -100,58 +113,65 @@ public class CompletionMatcher {
       return strings;
    }
    
-   private Map<String, String> extractExternal(Map<String, CompletionType> types, String source, String resource, String prefix, String complete) {
-      Map<String, String> strings = new TreeMap<String,String>();
-      CompleteFilter filter = new CompleteFilter(prefix, complete);
+   private Map<String, String> extractExternal(Map<String, CompletionType> types, CompletionExpression complete, String source, String resource, String prefix) {
+      Map<String, String> strings = new HashMap<String,String>();
       Set<Entry<String, CompletionType>> entries = types.entrySet();
       
       for(Entry<String, CompletionType> entry : entries) {
          CompletionType type = entry.getValue();
-         List<Function> functions = type.getFunctions();
-         List<Property> properties = type.getProperties();
+         Map<String, String> result = extractTypedTokens(type, complete, source, resource, prefix);
+         strings.putAll(result);
+      }
+      return strings;
+   }
+   
+   private Map<String, String> extractTypedTokens(CompletionType type, CompletionExpression complete, String source, String resource, String prefix) {
+      Map<String, String> strings = new HashMap<String,String>();
+      CompletionFilter filter = new CompletionFilter(complete, prefix);
+      List<Function> functions = type.getFunctions();
+      List<Property> properties = type.getProperties();
+      
+      for(Function function : functions) {
+         String name = function.getName();
          
-         for(Function function : functions) {
-            String name = function.getName();
-            
-            if(filter.acceptExternal(name, FUNCTION)) {
-               strings.put(name + "()", FUNCTION);
+         if(filter.acceptExternal(name, FUNCTION)) {
+            strings.put(name + "()", FUNCTION);
+         }
+      }
+      for(Property property : properties) {
+         String name = property.getName();
+         int modifiers = property.getModifiers();
+         
+         if(ModifierType.isConstant(modifiers)) {
+            if(filter.acceptExternal(name, CONSTANT)) {
+               strings.put(name, CONSTANT);
+            }
+         } else {
+            if(filter.acceptExternal(name, VARIABLE)) {
+               strings.put(name, VARIABLE);
             }
          }
-         for(Property property : properties) {
-            String name = property.getName();
-            int modifiers = property.getModifiers();
-            
-            if(ModifierType.isConstant(modifiers)) {
-               if(filter.acceptExternal(name, CONSTANT)) {
-                  strings.put(name, CONSTANT);
-               }
-            } else {
-               if(filter.acceptExternal(name, VARIABLE)) {
-                  strings.put(name, VARIABLE);
-               }
+      }
+      String name = type.getName();
+      Class real = type.getType();
+      
+      if(real != null) {
+         if(real.isInterface()) {
+            if(filter.acceptExternal(name, TRAIT)) {
+               strings.put(name, TRAIT);
             }
-         }
-         String name = type.getName();
-         Class real = type.getType();
-         
-         if(real != null) {
-            if(real.isInterface()) {
-               if(filter.acceptExternal(name, TRAIT)) {
-                  strings.put(name, TRAIT);
-               }
-            } else if(real.isEnum()){
-               if(filter.acceptExternal(name, ENUMERATION)) {
-                  strings.put(name, ENUMERATION);
-               }
-            } else {
-               if(filter.acceptExternal(name, CLASS)) {
-                  strings.put(name, CLASS);
-               }
+         } else if(real.isEnum()){
+            if(filter.acceptExternal(name, ENUMERATION)) {
+               strings.put(name, ENUMERATION);
             }
          } else {
             if(filter.acceptExternal(name, CLASS)) {
                strings.put(name, CLASS);
             }
+         }
+      } else {
+         if(filter.acceptExternal(name, CLASS)) {
+            strings.put(name, CLASS);
          }
       }
       return strings;
