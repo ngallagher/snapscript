@@ -17,10 +17,10 @@ public class TypeResolver implements ValueResolver<Type> {
    private final ObjectResolver resolver;
    private final String name;
    
-   public TypeResolver(TypeTraverser extractor, String name) {
-      this.resolver = new ObjectResolver(extractor, name);
+   public TypeResolver(TypeTraverser traverser, String name) {
+      this.resolver = new ObjectResolver(traverser, name);
       this.reference = new AtomicReference<Property>();
-      this.traverser = extractor;
+      this.traverser = traverser;
       this.name = name;
    }
    

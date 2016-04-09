@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.variable;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.snapscript.core.Module;
@@ -18,6 +19,8 @@ public class VariableBinder {
    
    public ValueResolver bind(Scope scope, Object left, String name) {
       if(left != null) {
+         Class type = left.getClass();
+         
          if(Map.class.isInstance(left)) {
             return new MapResolver(name);
          }
@@ -29,6 +32,12 @@ public class VariableBinder {
          }
          if(Type.class.isInstance(left)) {
             return new TypeResolver(traverser, name);
+         }
+         if(Collection.class.isInstance(left)) {
+            return new CollectionResolver(traverser, name);
+         }
+         if(type.isArray()) {
+            return new ArrayResolver(traverser, name);
          }
          return new ObjectResolver(traverser, name);
       }

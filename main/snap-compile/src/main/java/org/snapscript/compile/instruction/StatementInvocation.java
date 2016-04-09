@@ -2,12 +2,17 @@ package org.snapscript.compile.instruction;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.core.Context;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
 import org.snapscript.core.SignatureAligner;
 import org.snapscript.core.Statement;
+import org.snapscript.core.Type;
+import org.snapscript.core.convert.ConstraintConverter;
+import org.snapscript.core.convert.ConstraintMatcher;
 
 public class StatementInvocation implements Invocation<Object> {
 
@@ -15,17 +20,20 @@ public class StatementInvocation implements Invocation<Object> {
    private final SignatureAligner aligner;
    private final AtomicBoolean compile;
    private final Statement statement;
+   private final Type constraint;
    
-   public StatementInvocation(Signature signature, Statement statement) {
+   public StatementInvocation(Signature signature, Statement statement, Type constraint) {
       this.extractor = new ParameterExtractor(signature);
       this.aligner = new SignatureAligner(signature);
       this.compile = new AtomicBoolean();
+      this.constraint = constraint;
       this.statement = statement;
    }
    
    @Override
    public Result invoke(Scope scope, Object object, Object... list) throws Exception {
       Object[] arguments = aligner.align(list); 
+      Context context = scope.getContext();
       Scope outer = scope.getOuter(); 
       Scope inner = outer.getInner();
       
@@ -34,8 +42,15 @@ public class StatementInvocation implements Invocation<Object> {
       }
       if(compile.compareAndSet(false, true)) {
          statement.compile(inner);
+      } 
+      ConstraintMatcher matcher = context.getMatcher();
+      ConstraintConverter converter = matcher.match(constraint);
+      Result result = statement.execute(inner);
+      Object value = result.getValue();
+      
+      if(value != null) {
+         value = converter.convert(value);
       }
-      return statement.execute(inner);
+      return ResultType.getNormal(value); 
    }
-
 }

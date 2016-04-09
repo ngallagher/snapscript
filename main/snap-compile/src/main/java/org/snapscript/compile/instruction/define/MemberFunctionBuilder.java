@@ -29,7 +29,7 @@ public class MemberFunctionBuilder implements TypeFunctionBuilder {
    
    @Override
    public Function create(Scope scope, Initializer initializer, Type type){
-      Invocation invocation = new InstanceInvocation(signature, body);
+      Invocation invocation = new InstanceInvocation(signature, body, constraint);
       Function function = new InvocationFunction(signature, invocation, type, constraint, name, modifiers);
       
       if(!ModifierType.isAbstract(modifiers)) {

@@ -11,7 +11,13 @@ public class ExpressionParseTest extends TestCase {
       SyntaxParser tree = LexerBuilder.create();
 
       assertNotNull(tree);
-
+      
+      analyze(tree, "addr = \"${host}:${port}\".getBytes();", "assignment-statement");
+      analyze(tree, "this.addr = \"${host}:${port}\".getBytes();", "assignment-statement");
+      analyze(tree, "{this.addr = \"${host}:${port}\".getBytes();}", "compound-statement");
+      analyze(tree, "{this.addr = \"${host}:${port}\".getBytes();}", "group-statement");
+      analyze(tree, "new(a,b,c){this.addr = \"${host}:${port}\".getBytes();}", "member-constructor");
+      analyze(tree, "class Blah with Runnable{new(a,b,c){this.addr = \"${host}:${port}\".getBytes();}}", "script");
       analyze(tree, "count = source.read(buffer)", "assignment");
       analyze(tree, "(count = source.read(buffer))", "assignment-operand");
       analyze(tree, "(count = source.read(buffer)) != -1", "conditional");

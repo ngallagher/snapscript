@@ -30,7 +30,7 @@ public class ConstructorBuilder {
    }
    
    public Function create(Scope scope, Initializer initializer, Type type, int modifiers, boolean compile) {
-      Invocation body = new StatementInvocation(signature, statement);
+      Invocation body = new StatementInvocation(signature, statement, null);
       Allocator instance = new InstanceAllocator(initializer, body);
       Allocator base = new SuperAllocator(signature, delegate, instance); 
       Invocation constructor = new NewInvocation(initializer, base, scope, type, compile);

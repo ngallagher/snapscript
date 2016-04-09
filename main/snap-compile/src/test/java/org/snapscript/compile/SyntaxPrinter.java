@@ -19,6 +19,14 @@ public class SyntaxPrinter {
       return writer.toString();
    }
    
+   public static String print(SyntaxNode token) throws Exception {
+      StringWriter writer = new StringWriter();
+      PrintWriter printer = new PrintWriter(writer);
+      print(printer, token, 0, 0);
+      printer.close();
+      return writer.toString();
+   }
+   
    private static void print(PrintWriter builder, SyntaxNode token, int parent, int depth) throws Exception{ 
       String grammar = token.getGrammar();
       List<SyntaxNode> children = token.getNodes();

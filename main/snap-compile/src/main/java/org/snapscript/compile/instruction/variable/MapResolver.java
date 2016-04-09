@@ -8,7 +8,7 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyWrapper;
 
-public class MapResolver implements ValueResolver<Object> {
+public class MapResolver implements ValueResolver<Map> {
    
    private final String name;
    
@@ -17,11 +17,10 @@ public class MapResolver implements ValueResolver<Object> {
    }
    
    @Override
-   public Value resolve(Scope scope, Object left) {
-      Map map = (Map)left;
+   public Value resolve(Scope scope, Map left) {
       Context context = scope.getContext();
       ProxyWrapper wrapper = context.getWrapper();
       
-      return new MapValue(wrapper, map, name);
+      return new MapValue(wrapper, left, name);
    }
 }

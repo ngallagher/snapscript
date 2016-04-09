@@ -14,13 +14,11 @@ import org.snapscript.core.bind.FunctionBinder;
 public class ModuleDispatcher implements InvocationDispatcher {
    
    private final ObjectDispatcher handler;
-   private final Module module;
-   private final Scope scope;      
+   private final Module module;   
    
    public ModuleDispatcher(ValueTypeExtractor extractor, Scope scope, Object object) {
       this.handler = new ObjectDispatcher(extractor, scope, object);
       this.module = (Module)object;
-      this.scope = scope;
    }
 
    @Override

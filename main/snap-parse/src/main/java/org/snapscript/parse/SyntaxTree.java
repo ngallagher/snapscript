@@ -290,5 +290,10 @@ public class SyntaxTree {
       public int getStart() {
          return start;
       }
+      
+      @Override
+      public String toString(){
+         return indexer.value(grammar);
+      }
    } 
 }

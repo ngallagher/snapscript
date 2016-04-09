@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.operation;
 
-import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
@@ -8,7 +7,6 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
-import org.snapscript.core.State;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Trace;
 import org.snapscript.core.TraceInterceptor;
@@ -16,13 +14,14 @@ import org.snapscript.core.TraceStatement;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 import org.snapscript.core.error.ErrorHandler;
+import org.snapscript.parse.StringToken;
 
 public class AssignmentStatement implements Compilation {
    
    private final Statement assignment;
    
-   public AssignmentStatement(Evaluation identifier, Evaluation value) {
-      this.assignment = new CompileResult(identifier, value);
+   public AssignmentStatement(Evaluation reference, StringToken token, Evaluation value) {
+      this.assignment = new CompileResult(reference, token, value);
    }
    
    @Override
@@ -37,23 +36,18 @@ public class AssignmentStatement implements Compilation {
 
    private static class CompileResult extends Statement {
       
-      private final NameExtractor extractor;
-      private final Evaluation value;
+      private final Evaluation assignment;
       
-      public CompileResult(Evaluation identifier, Evaluation value) {
-         this.extractor = new NameExtractor(identifier);
-         this.value = value;
+      public CompileResult(Evaluation left, StringToken token, Evaluation right) {
+         this.assignment = new Assignment(left, token, right);
       }
       
       @Override
       public Result execute(Scope scope) throws Exception {
-         Value result = value.evaluate(scope, null);
-         String name = extractor.extract(scope);
-         State state = scope.getState();
+         Value reference = assignment.evaluate(scope, null);
+         Object value = reference.getValue();
          
-         state.setValue(name, result);
-         
-         return ResultType.getNormal();
+         return ResultType.getNormal(value);
       }
    }
 }

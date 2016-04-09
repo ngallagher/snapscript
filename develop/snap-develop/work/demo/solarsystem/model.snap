@@ -139,7 +139,7 @@ class Satellite with Host{
      * 
      * @return boolean
      */
-    probOneHalf() : Double {
+    probOneHalf() {
         return Math.random() > 0.5;
     }
     /**

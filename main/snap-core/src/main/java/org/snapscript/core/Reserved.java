@@ -9,6 +9,7 @@ public interface Reserved {
    String ENUM_VALUES = "values";
    String ENUM_ORDINAL = "ordinal";
    String ENUM_NAME = "name";
+   String PROPERTY_LENGTH = "length";
    String METHOD_CLOSURE = "anonymous";
    String METHOD_HASH_CODE = "hashCode";
    String METHOD_EQUALS = "equals";

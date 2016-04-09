@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
+import org.snapscript.compile.SyntaxPrinter;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
@@ -55,11 +56,11 @@ public class InstructionAssembler implements Assembler {
       
       if(size > 0) {
          Object[] arguments = new Object[size];
-   
+
          for (int i = 0; i < size; i++) {
             SyntaxNode child = children.get(i);
             Object argument = create(child, name, depth+1);
-            
+
             arguments[i] = argument;
          }
          return builder.create(type, arguments, line);

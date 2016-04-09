@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class ReturnConstraintTest extends TestCase {
 
-   private static final String SOURCE =
+   private static final String SOURCE_1 =
    "class Blah{\n"+
    "   get():Blah{\n"+
    "      return this;\n"+
@@ -15,10 +15,29 @@ public class ReturnConstraintTest extends TestCase {
    "}\n"+
    "var b = new Blah();\n"+
    "func(b);\n";   
+   
+   private static final String SOURCE_2 =
+   "class Blah{\n"+
+   "   blah():Byte[] {\n"+
+   "      return [1,2,3,4];\n"+
+   "   }\n"+
+   "}\n"+
+   "\n"+
+   "var object = new Blah();\n"+
+   "var list = object.blah();\n"+
+   "\n"+
+   "println(list.class);\n";
 
-   public void testMap() throws Exception {
+
+   public void testReturnConstraint() throws Exception {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-      Executable executable = compiler.compile(SOURCE);
+      Executable executable = compiler.compile(SOURCE_1);
+      executable.execute();
+   }
+   
+   public void testConstraintConversion() throws Exception {
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      Executable executable = compiler.compile(SOURCE_2);
       executable.execute();
    }
 }
