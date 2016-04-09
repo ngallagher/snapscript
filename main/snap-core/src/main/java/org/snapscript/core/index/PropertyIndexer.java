@@ -34,6 +34,7 @@ public class PropertyIndexer {
       List<Property> properties = builder.create(source);
       Method[] methods = source.getDeclaredMethods();
       Field[] fields = source.getDeclaredFields();
+      Type type = indexer.loadType(source);
 
       if(fields.length > 0 || methods.length > 0) {
          Set<String> done = new HashSet<String>();
@@ -44,8 +45,8 @@ public class PropertyIndexer {
             if(ModifierType.isPublic(modifiers)) {
                String name = field.getName();
                Class declaration = field.getType();
-               Type type = indexer.loadType(declaration);
-               Property property = generator.generate(field, type, name, modifiers); 
+               Type constraint = indexer.loadType(declaration);
+               Property property = generator.generate(field, type, constraint, name, modifiers); 
                
                done.add(name);
                properties.add(property);
@@ -69,8 +70,8 @@ public class PropertyIndexer {
                         modifiers |= CONSTANT.mask;
                      }
                      Class normal = promoter.promote(declaration);
-                     Type type = indexer.loadType(normal);
-                     Property property = generator.generate(method, write, type, name, modifiers);                
+                     Type constraint = indexer.loadType(normal);
+                     Property property = generator.generate(method, write, type, constraint, name, modifiers);                
                      
                      if(write != null){
                         write.setAccessible(true);

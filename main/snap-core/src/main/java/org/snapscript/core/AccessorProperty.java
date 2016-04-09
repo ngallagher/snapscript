@@ -3,11 +3,13 @@ package org.snapscript.core;
 public class AccessorProperty<T> implements Property<T> {
 
    private final Accessor<T> accessor;
-   private final String name;
+   private final Type constraint;
    private final Type type;
+   private final String name;
    private final int modifiers;
    
-   public AccessorProperty(String name, Type type, Accessor<T> accessor, int modifiers){
+   public AccessorProperty(String name, Type type, Type constraint, Accessor<T> accessor, int modifiers){
+      this.constraint = constraint;
       this.modifiers = modifiers;
       this.accessor = accessor;
       this.name = name;
@@ -17,6 +19,11 @@ public class AccessorProperty<T> implements Property<T> {
    @Override
    public Type getType(){
       return type;
+   }
+   
+   @Override
+   public Type getConstraint() {
+      return constraint;
    }
    
    @Override

@@ -27,7 +27,7 @@ public class FunctionConstraint implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       Signature signature = list.create(scope);
       Function function = builder.create(signature, scope, ABSTRACT.mask);
-      Type type = function.getType();
+      Type type = function.getDefinition();
       
       return ValueType.getTransient(type);
    }

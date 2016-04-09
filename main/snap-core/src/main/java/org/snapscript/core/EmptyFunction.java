@@ -25,30 +25,42 @@ public class EmptyFunction<T> implements Function<T> {
       this.name = name;
    }
    
+   @Override
    public int getModifiers(){
       return modifiers;
    }
    
+   @Override
+   public Type getDefinition() {
+      return null;
+   }
+   
+   @Override
+   public Type getConstraint() {
+      return null;
+   }
+   
+   @Override
    public Type getType() {
       return null;
    }
    
-   public Type getParent() {
-      return null;
-   }
-   
+   @Override
    public String getName(){
       return name;
    }
    
+   @Override
    public Signature getSignature(){
       return signature;
    }
    
+   @Override
    public Invocation<T> getInvocation(){
       return null;
    }
    
+   @Override
    public String getDescription() {
       return description.getDescription();
    }

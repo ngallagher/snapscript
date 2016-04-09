@@ -22,7 +22,7 @@ public class ClosureFunctionFinderTest extends TestCase {
       TypeLoader loader = context.getLoader();
       ClosureFunctionFinder finder = new ClosureFunctionFinder(loader);
       Signature signature = new Signature(Arrays.asList("n"), Arrays.asList(loader.loadType(String.class)));
-      Type type = new InvocationFunction(signature, null, null, "xx").getType();
+      Type type = new InvocationFunction(signature, null, null, null, "xx").getDefinition();
       Function function = finder.find(type);
       
       assertNotNull(function);

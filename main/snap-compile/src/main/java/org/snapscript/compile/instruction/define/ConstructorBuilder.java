@@ -35,6 +35,6 @@ public class ConstructorBuilder {
       Allocator base = new SuperAllocator(signature, delegate, instance); 
       Invocation constructor = new NewInvocation(initializer, base, scope, type, compile);
       
-      return new InvocationFunction(signature, constructor, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
+      return new InvocationFunction(signature, constructor, type, type, TYPE_CONSTRUCTOR, modifiers | STATIC.mask, 1);
    }
 }

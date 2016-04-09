@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Evaluation;
@@ -19,11 +20,19 @@ public class TypeFunction implements TypePart {
    protected final Statement body;
    
    public TypeFunction(ModifierList list, Evaluation identifier, ParameterList parameters){
-      this(list, identifier, parameters, null);
+      this(list, identifier, parameters, null, null);
+   }
+   
+   public TypeFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint){
+      this(list, identifier, parameters, constraint, null);
    }
    
    public TypeFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Statement body){  
-      this.assembler = new TypeFunctionAssembler(list, identifier, parameters, body);
+      this(list, identifier, parameters, null, body);
+   }
+   
+   public TypeFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
+      this.assembler = new TypeFunctionAssembler(list, identifier, parameters, constraint, body);
       this.body = body;
    } 
 

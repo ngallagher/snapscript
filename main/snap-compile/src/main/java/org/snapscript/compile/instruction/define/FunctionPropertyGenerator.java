@@ -43,7 +43,7 @@ public class FunctionPropertyGenerator {
    
             if(done.add(name)) {
                FunctionAccessor accessor = new FunctionAccessor(function);
-               AccessorProperty property = new AccessorProperty(name, type, accessor, modifiers);
+               AccessorProperty property = new AccessorProperty(name, type, null, accessor, modifiers);
          
                properties.add(property);
             }

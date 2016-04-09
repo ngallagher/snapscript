@@ -23,6 +23,6 @@ public class ClosureBuilder {
    
    public Function create(Signature signature, Scope scope, int modifiers) {
       Invocation invocation = new ClosureInvocation(signature, statement, scope);
-      return new InvocationFunction(signature, invocation, null, METHOD_CLOSURE, modifiers);
+      return new InvocationFunction(signature, invocation, null, null, METHOD_CLOSURE, modifiers);
    }
 }

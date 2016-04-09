@@ -263,20 +263,20 @@ public class CompletionTypeResolver {
       EOFException.class
    };
 
-   private final Map<String, Type> cache;
+   private final Map<String, CompletionType> cache;
    private final ConsoleLogger logger;
    
    public CompletionTypeResolver(ConsoleLogger logger) {
-      this.cache = new ConcurrentHashMap<String, Type>();
+      this.cache = new ConcurrentHashMap<String, CompletionType>();
       this.logger = logger;
    }
    
-   public Map<String, Type> resolveTypes(File root, String text, String resource) {
+   public Map<String, CompletionType> resolveTypes(File root, String text, String resource) {
       Store store = new FileStore(root);
       Context context = new StoreContext(store);
       Compiler compiler = new StringCompiler(context);
       String source = parseSource(context, text, resource);
-      Map<String, Type> types = importTypes(context, resource);
+      Map<String, CompletionType> types = importTypes(context, resource);
       ModuleRegistry registry = context.getRegistry();
       List<Module> modules = registry.getModules();
       
@@ -293,15 +293,16 @@ public class CompletionTypeResolver {
            String name = type.getName();
          
            if(name != null) {
-              types.put(name, type);
+              CompletionType value = new CompletionType(type, name);
+              types.put(name, value);
            }
         }
       }
       return types;
    }
    
-   private Map<String, Type> importTypes(Context context, String resource) {
-      Map<String, Type> types = new HashMap<String, Type>();
+   private Map<String, CompletionType> importTypes(Context context, String resource) {
+      Map<String, CompletionType> types = new HashMap<String, CompletionType>();
       Set<String> names = new HashSet<String>();
       
       for(Class real : DEFAULT_TYPES) {
@@ -317,9 +318,10 @@ public class CompletionTypeResolver {
             for(Class real : DEFAULT_TYPES) {
                Type type = loader.loadType(real);
                String name = type.getName();
+               CompletionType value = new CompletionType(type, name);
                
-               cache.put(name, type);
-               types.put(name, type);
+               cache.put(name, value);
+               types.put(name, value);
             }
          }
          types.putAll(cache);

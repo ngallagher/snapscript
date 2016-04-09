@@ -14,10 +14,12 @@ public class StaticFunctionBuilder implements TypeFunctionBuilder {
    
    private final Signature signature;
    private final Statement body;
+   private final Type constraint;
    private final String name;
    private final int modifiers;
 
-   public StaticFunctionBuilder(Signature signature, Statement body, String name, int modifiers) {
+   public StaticFunctionBuilder(Signature signature, Statement body, Type constraint, String name, int modifiers) {
+      this.constraint = constraint;
       this.signature = signature;
       this.modifiers = modifiers;
       this.body = body;
@@ -30,6 +32,6 @@ public class StaticFunctionBuilder implements TypeFunctionBuilder {
       Statement statement = new CompoundStatement(initialize, body); 
       Invocation invocation = new StaticInvocation(signature, statement, scope);
       
-      return new InvocationFunction(signature, invocation, type, name, modifiers);
+      return new InvocationFunction(signature, invocation, type, constraint, name, modifiers);
    }
 }

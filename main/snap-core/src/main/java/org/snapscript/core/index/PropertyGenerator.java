@@ -15,7 +15,7 @@ public class PropertyGenerator {
       super();
    }
    
-   public Property generate(Field field, Type type, String name, int modifiers) {
+   public Property generate(Field field, Type type, Type constraint, String name, int modifiers) {
       try {
          if(ModifierType.isConstant(modifiers)) {
             FinalFieldAccessor accessor = new FinalFieldAccessor(field);
@@ -23,20 +23,20 @@ public class PropertyGenerator {
             if(!field.isAccessible()) {
                field.setAccessible(true);
             }
-            return new AccessorProperty(name, type, accessor, modifiers); 
+            return new AccessorProperty(name, type, constraint, accessor, modifiers); 
          }
          FieldAccessor accessor = new FieldAccessor(field);
          
          if(!field.isAccessible()) {
             field.setAccessible(true);
          }
-         return new AccessorProperty(name, type, accessor, modifiers); 
+         return new AccessorProperty(name, type, constraint, accessor, modifiers); 
       } catch(Exception e) {
          throw new InternalStateException("Could not create property from " + field);
       }
    }
    
-   public Property generate(Method read, Method write, Type type, String name, int modifiers) {
+   public Property generate(Method read, Method write, Type type, Type constraint, String name, int modifiers) {
       try {
          MethodAccessor accessor = new MethodAccessor(type, read, write);
          
@@ -48,7 +48,7 @@ public class PropertyGenerator {
                write.setAccessible(true);
             }
          }
-         return new AccessorProperty(name, type, accessor, modifiers);  
+         return new AccessorProperty(name, type, constraint, accessor, modifiers);  
       } catch(Exception e) {
          throw new InternalStateException("Could not create property from " + read);
       }

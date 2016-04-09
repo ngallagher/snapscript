@@ -20,6 +20,11 @@ public class ThisProperty implements Property {
    public Type getType() {
       return type;
    }
+   
+   @Override
+   public Type getConstraint() {
+      return type;
+   }
 
    @Override
    public String getName() {

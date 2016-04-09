@@ -63,6 +63,6 @@ public class ThreadStackTest extends TestCase {
       List<String> names = new ArrayList<String>();
       Signature signature = new Signature(names, types);
       
-      stack.before(new InvocationFunction(signature, null, type, functionName, 11));
+      stack.before(new InvocationFunction(signature, null, type, null, functionName, 11));
    }
 }

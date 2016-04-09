@@ -33,7 +33,7 @@ public class StackElement {
    private StackTraceElement create(String path, String module, int line) {
       if(function != null) {
          String name = function.getName();
-         Type type = function.getParent();
+         Type type = function.getType();
          
          if(type != null) {
             Module parent = type.getModule();

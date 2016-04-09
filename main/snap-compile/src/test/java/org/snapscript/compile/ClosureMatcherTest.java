@@ -27,9 +27,9 @@ public class ClosureMatcherTest extends TestCase {
       TypeLoader loader = context.getLoader();
       ClosureFunctionFinder finder = new ClosureFunctionFinder(loader);
       Signature signature = new Signature(Arrays.asList("n"), Arrays.asList(loader.loadType(String.class)));
-      Type type = new EmptyFunction(signature).getType();
+      Type type = new EmptyFunction(signature).getDefinition();
       ConstraintConverter converter = matcher.match(type);
-      Function function = new InvocationFunction(signature, null, type, "xx");
+      Function function = new InvocationFunction(signature, null, type, null, "xx");
       Score score = converter.score(function);
       
       System.err.println(score);

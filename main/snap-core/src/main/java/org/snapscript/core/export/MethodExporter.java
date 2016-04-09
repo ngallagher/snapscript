@@ -52,6 +52,7 @@ public class MethodExporter {
       if(!parameters.isEmpty()) {
          Type start = parameters.get(0); 
          Class type = start.getType();
+         Type constraint = function.getConstraint();
          boolean variable = signature.isVariable();
          int modifiers = function.getModifiers();
          int length = parameters.size();
@@ -68,7 +69,7 @@ public class MethodExporter {
                names.add("a" + 1);
                types.add(parameter);
             }
-            return new InvocationFunction(reduced, adapter, null, name, modifiers);
+            return new InvocationFunction(reduced, adapter, null, constraint, name, modifiers);
          }
       }
       return null;

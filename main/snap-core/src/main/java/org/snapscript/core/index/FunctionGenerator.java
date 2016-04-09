@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Any;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
@@ -22,6 +23,7 @@ public class FunctionGenerator {
    }
    
    public Function generate(Type type, Method method, Class[] parameters, String name, int modifiers) {
+      Class real = method.getReturnType();
       boolean variable = method.isVarArgs();
       
       try {
@@ -42,10 +44,15 @@ public class FunctionGenerator {
          } else {
             invocation = new MethodInvocation(method);
          }
+         Type returns = indexer.loadType(real);
+         
          if(!method.isAccessible()) {
             method.setAccessible(true);
          }
-         return new InvocationFunction(signature, invocation, type, name, modifiers);
+         if(real != void.class && real != Any.class && real != Object.class) {
+            return new InvocationFunction(signature, invocation, type, returns, name, modifiers);
+         }
+         return new InvocationFunction(signature, invocation, type, null, name, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + method, e);
       }

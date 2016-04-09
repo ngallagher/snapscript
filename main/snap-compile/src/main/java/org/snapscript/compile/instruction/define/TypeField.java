@@ -57,12 +57,12 @@ public class TypeField implements TypePart {
       
       if (checker.isStatic()) {
          Accessor accessor = new StaticAccessor(initializer, scope, type, name);
-         Property property = new AccessorProperty(name, constraint, accessor, modifiers);
+         Property property = new AccessorProperty(name, type, constraint, accessor, modifiers);
          
          properties.add(property);
       } else {
          Accessor accessor = new ScopeAccessor(name);
-         Property property = new AccessorProperty(name, constraint, accessor, modifiers); // is this the correct type!!??
+         Property property = new AccessorProperty(name, type, constraint, accessor, modifiers); // is this the correct type!!??
          
          properties.add(property);
       }

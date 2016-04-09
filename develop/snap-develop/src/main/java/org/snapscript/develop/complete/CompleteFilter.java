@@ -1,12 +1,13 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionTokenClassifier.CLASS;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.CONSTANT;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.ENUMERATION;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.FUNCTION;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.TOKEN;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.TRAIT;
-import static org.snapscript.develop.complete.CompletionTokenClassifier.VARIABLE;
+import static org.snapscript.develop.complete.CompletionToken.CLASS;
+import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
+import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
+import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
+import static org.snapscript.develop.complete.CompletionToken.MODULE;
+import static org.snapscript.develop.complete.CompletionToken.TOKEN;
+import static org.snapscript.develop.complete.CompletionToken.TRAIT;
+import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
 public class CompleteFilter {
 
@@ -47,6 +48,8 @@ public class CompleteFilter {
             return !complete.endsWith("new ") && !complete.endsWith("extends ") && !complete.endsWith("with ");
          } else if(type.equals(CONSTANT)) {
             return !complete.endsWith("new ") && !complete.endsWith("extends ") && !complete.endsWith("with ");
+         } else if(type.equals(MODULE)) {
+            return trim.endsWith("(") || (!trim.endsWith(".") && !complete.endsWith("with ") && !complete.endsWith("extends ") && !complete.endsWith("new ")); 
          } else if(type.equals(CLASS)) {
             return trim.endsWith("(") || (!trim.endsWith(".") && !complete.endsWith("with "));
          } else if(type.equals(ENUMERATION)) {

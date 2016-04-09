@@ -139,7 +139,7 @@ class Satellite with Host{
      * 
      * @return boolean
      */
-    probOneHalf() {
+    probOneHalf() : Double {
         return Math.random() > 0.5;
     }
     /**
@@ -561,7 +561,7 @@ class Planet extends Satellite {
      * @return Area A semi-circular area used to draw the day-time or
      *         night-time part of the planet.
      */
-    semiCircle(x, y, dia, theta) {
+    semiCircle(x, y, dia, theta): Area {
         var xp = x - dia/2;
         var yp = y - dia/2;
         var circle = new Ellipse2D$Double(xp, yp, dia, dia);

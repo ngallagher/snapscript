@@ -20,6 +20,11 @@ public class ScopeProperty implements Property<Scope> {
    }
    
    @Override
+   public Type getConstraint() {
+      return null;
+   }
+   
+   @Override
    public String getName(){
       return name;
    }

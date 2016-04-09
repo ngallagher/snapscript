@@ -3,12 +3,14 @@ package org.snapscript.core;
 public class ConstantProperty implements Property<Object> {
 
    private final Constant constant;
-   private final String name;
+   private final Type constraint;
    private final Type type;
+   private final String name;
    private final int modifiers;
    
-   public ConstantProperty(String name, Type type, Object value, int modifiers){
+   public ConstantProperty(String name, Type type, Type constraint, Object value, int modifiers){
       this.constant = new Constant(value, type);
+      this.constraint = constraint;
       this.modifiers = modifiers;
       this.name = name;
       this.type = type;
@@ -17,6 +19,11 @@ public class ConstantProperty implements Property<Object> {
    @Override
    public Type getType(){
       return type;
+   }
+   
+   @Override
+   public Type getConstraint() {
+      return constraint;
    }
    
    @Override

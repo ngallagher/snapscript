@@ -5,23 +5,25 @@ public class InvocationFunction<T> implements Function<T> {
    private final FunctionDescription description;
    private final Invocation<T> invocation;
    private final Signature signature;
-   private final String name;
+   private final Type definition;
+   private final Type constraint;
    private final Type parent;
-   private final Type type;
+   private final String name;
    private final int modifiers;
 
-   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, String name){
-      this(signature, invocation, parent, name, 0);
+   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, Type constraint, String name){
+      this(signature, invocation, parent, constraint, name, 0);
    }
    
-   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, String name, int modifiers){
-      this(signature, invocation, parent, name, modifiers, 0);
+   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, Type constraint, String name, int modifiers){
+      this(signature, invocation, parent, constraint, name, modifiers, 0);
    }
    
-   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, String name, int modifiers, int start){
+   public InvocationFunction(Signature signature, Invocation<T> invocation, Type parent, Type constraint, String name, int modifiers, int start){
       this.description = new FunctionDescription(signature, parent, name, start);
-      this.type = new FunctionType(signature);
+      this.definition = new FunctionType(signature);
       this.invocation = invocation;
+      this.constraint = constraint;
       this.signature = signature;
       this.modifiers = modifiers;
       this.parent = parent;
@@ -33,11 +35,15 @@ public class InvocationFunction<T> implements Function<T> {
    }
    
    public Type getType() {
-      return type;
+      return parent;
    }
    
-   public Type getParent() {
-      return parent;
+   public Type getDefinition() {
+      return definition;
+   }
+   
+   public Type getConstraint() {
+      return constraint;
    }
    
    public String getName(){

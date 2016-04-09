@@ -17,13 +17,14 @@ public class ClassPropertyBuilder {
 
    public List<Property> create(Class source) throws Exception {
       Type type = indexer.loadType(source);
+      Type constraint = indexer.loadType(Type.class);
       
       if(type == null) {
          throw new InternalStateException("Could not load type for " + source);
       }
       List<Property> properties = new ArrayList<Property>();
       Property thisProperty = new ThisProperty(type);
-      Property classProperty = new ClassProperty(type);
+      Property classProperty = new ClassProperty(type, constraint);
       
       properties.add(thisProperty);
       properties.add(classProperty);

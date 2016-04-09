@@ -31,7 +31,7 @@ public class TypeExtractor {
             } 
             if(Function.class.isAssignableFrom(type)) {
                Function function = (Function)value;
-               return function.getType(); // used as an adapter;
+               return function.getDefinition(); // used as an adapter;
             }             
             Type actual = loader.loadType(type);
             

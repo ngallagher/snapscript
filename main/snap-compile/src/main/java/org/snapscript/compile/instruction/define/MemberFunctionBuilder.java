@@ -15,20 +15,22 @@ public class MemberFunctionBuilder implements TypeFunctionBuilder {
       
    private final Signature signature;
    private final Statement body;
+   private final Type constraint;
    private final String name;
    private final int modifiers;
 
-   public MemberFunctionBuilder(Signature signature, Statement body, String name, int modifiers) {
+   public MemberFunctionBuilder(Signature signature, Statement body, Type constraint, String name, int modifiers) {
+      this.constraint = constraint;
+      this.modifiers = modifiers;
       this.signature = signature;
       this.body = body;
-      this.modifiers = modifiers;
       this.name = name;
    }
    
    @Override
    public Function create(Scope scope, Initializer initializer, Type type){
       Invocation invocation = new InstanceInvocation(signature, body);
-      Function function = new InvocationFunction(signature, invocation, type, name, modifiers);
+      Function function = new InvocationFunction(signature, invocation, type, constraint, name, modifiers);
       
       if(!ModifierType.isAbstract(modifiers)) {
          if(body == null) {

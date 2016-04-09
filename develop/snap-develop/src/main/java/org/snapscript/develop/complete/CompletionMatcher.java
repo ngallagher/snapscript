@@ -1,6 +1,13 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionTokenClassifier.*;
+import static org.snapscript.develop.complete.CompletionToken.CLASS;
+import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
+import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
+import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
+import static org.snapscript.develop.complete.CompletionToken.MODULE;
+import static org.snapscript.develop.complete.CompletionToken.TOKEN;
+import static org.snapscript.develop.complete.CompletionToken.TRAIT;
+import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +21,6 @@ import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
-import org.snapscript.core.Type;
 import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 import org.snapscript.parse.SourceCode;
@@ -35,7 +41,7 @@ public class CompletionMatcher {
    }
    
    public Map<String, String> findTokens(File root, String source, String resource, String prefix, String complete) {
-      Map<String, Type> types = resolver.resolveTypes(root, source, resource);
+      Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource);
       Map<String, String> externalTokens = extractExternal(types, source, resource, prefix, complete);
       Map<String, String> internalTokens = extractInternal(types, source, resource, prefix, complete);
       
@@ -44,7 +50,7 @@ public class CompletionMatcher {
       return externalTokens;
    }
    
-   private Map<String, String> extractInternal(Map<String, Type> types, String source, String resource, String prefix, String complete) {
+   private Map<String, String> extractInternal(Map<String, CompletionType> types, String source, String resource, String prefix, String complete) {
       List<Token> tokens = new ArrayList<Token>();
       Map<String, String> strings = new TreeMap<String,String>();
       CompleteFilter filter = new CompleteFilter(prefix, complete);
@@ -66,11 +72,17 @@ public class CompletionMatcher {
          
             if(previous == null || previous.equals(TOKEN)) {
                if(type.equals(TOKEN)) {
-                  Type match = types.get(text);
+                  CompletionType match = types.get(text);
                   
                   if(match != null) {
-                     if(filter.acceptInternal(text, CLASS)) {
-                        strings.put(text, CLASS);
+                     if(match.isModule()) {
+                        if(filter.acceptInternal(text, MODULE)) {
+                           strings.put(text, MODULE);
+                        }
+                     } else {
+                        if(filter.acceptInternal(text, CLASS)) {
+                           strings.put(text, CLASS);
+                        }
                      }
                   }
                } else {
@@ -88,13 +100,13 @@ public class CompletionMatcher {
       return strings;
    }
    
-   private Map<String, String> extractExternal(Map<String, Type> types, String source, String resource, String prefix, String complete) {
+   private Map<String, String> extractExternal(Map<String, CompletionType> types, String source, String resource, String prefix, String complete) {
       Map<String, String> strings = new TreeMap<String,String>();
       CompleteFilter filter = new CompleteFilter(prefix, complete);
-      Set<Entry<String, Type>> entries = types.entrySet();
+      Set<Entry<String, CompletionType>> entries = types.entrySet();
       
-      for(Entry<String, Type> entry : entries) {
-         Type type = entry.getValue();
+      for(Entry<String, CompletionType> entry : entries) {
+         CompletionType type = entry.getValue();
          List<Function> functions = type.getFunctions();
          List<Property> properties = type.getProperties();
          

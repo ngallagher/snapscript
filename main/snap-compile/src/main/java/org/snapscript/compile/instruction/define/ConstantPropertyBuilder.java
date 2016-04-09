@@ -13,6 +13,6 @@ public class ConstantPropertyBuilder {
    }
 
    public Property createConstant(String name, Object value) {
-      return new ConstantProperty(name, null, value, CONSTANT.mask);
+      return new ConstantProperty(name, null, null, value, CONSTANT.mask);
    }
 }

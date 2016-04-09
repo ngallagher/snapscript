@@ -1,20 +1,20 @@
 package org.snapscript.develop.complete;
 
+import static org.snapscript.develop.complete.CompletionToken.CLASS;
+import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
+import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
+import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
+import static org.snapscript.develop.complete.CompletionToken.MODULE;
+import static org.snapscript.develop.complete.CompletionToken.STRING;
+import static org.snapscript.develop.complete.CompletionToken.TOKEN;
+import static org.snapscript.develop.complete.CompletionToken.TRAIT;
+import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
+
 import java.util.List;
 
 import org.snapscript.parse.Token;
 
 public class CompletionTokenClassifier {
-
-   public static final String CLASS = "class";
-   public static final String TRAIT = "trait";
-   public static final String MODULE = "module";
-   public static final String FUNCTION = "function";
-   public static final String VARIABLE = "var";
-   public static final String CONSTANT = "const";
-   public static final String ENUMERATION = "enum";
-   public static final String STRING = "string";
-   public static final String TOKEN = "token";
    
    public static String classify(List<Token> tokens, int i) {
       if(isClass(tokens, i)) {

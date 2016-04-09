@@ -40,7 +40,7 @@ public class ConstructorGenerator {
          if(!constructor.isAccessible()) {
             constructor.setAccessible(true);
          }
-         return new InvocationFunction(signature, invocation, type, TYPE_CONSTRUCTOR, modifiers);
+         return new InvocationFunction(signature, invocation, type, type, TYPE_CONSTRUCTOR, modifiers);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + constructor, e);
       }

@@ -5,6 +5,7 @@ import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Statement;
+import org.snapscript.core.Type;
 
 public class FunctionBuilder {
 
@@ -14,8 +15,8 @@ public class FunctionBuilder {
       this.statement = statement;
    }
 
-   public Function create(Signature signature, String name) {
+   public Function create(Signature signature, Type constraint, String name) {
       Invocation invocation = new StatementInvocation(signature, statement);
-      return new InvocationFunction(signature, invocation, null, name, 0);
+      return new InvocationFunction(signature, invocation, null, constraint, name, 0);
    }
 }
