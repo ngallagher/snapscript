@@ -2,7 +2,6 @@ package org.snapscript.compile.instruction;
 
 import java.util.List;
 
-import org.snapscript.compile.SyntaxPrinter;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Type;
