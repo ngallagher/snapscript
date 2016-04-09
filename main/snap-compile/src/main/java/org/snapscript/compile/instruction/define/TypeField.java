@@ -47,7 +47,7 @@ public class TypeField implements TypePart {
    }
 
    @Override
-   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
+   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
       Initializer declare = declaration.declare(scope, initializer);
       List<Property> properties = type.getProperties();
       Value value = identifier.evaluate(scope, null);

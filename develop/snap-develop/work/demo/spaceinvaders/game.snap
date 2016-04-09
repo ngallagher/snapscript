@@ -47,7 +47,7 @@ module SpriteStore {
       if (sprites.get(ref) != null) {
          return sprites.get(ref);
       }
-      toString().in
+      
       // otherwise, go away and grab the sprite from the resource
       // loader
       var sourceImage = null;
@@ -95,6 +95,7 @@ module SpriteStore {
       System.exit(0);
    }
 }
+
 /**
  * A sprite to be displayed on the screen. Note that a sprite
  * contains no state information, i.e. its just the image and 
@@ -144,6 +145,7 @@ class Sprite {
       g.drawImage(image,x,y,null);
    }
 }
+
 /**
  * An entity representing a shot fired by the player's ship
  */

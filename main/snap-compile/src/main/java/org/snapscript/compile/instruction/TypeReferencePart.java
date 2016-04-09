@@ -30,7 +30,7 @@ public class TypeReferencePart implements Evaluation {
       Object result = module.getModule(name);
       
       if(result == null) {
-         result = module.addType(name); 
+         result = module.getType(name); 
       }
       if(result == null) {
          throw new InternalStateException("No type found for " + name + " in '" + module + "'"); // class not found

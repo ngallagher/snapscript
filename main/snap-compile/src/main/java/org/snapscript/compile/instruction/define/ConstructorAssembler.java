@@ -22,7 +22,7 @@ public class ConstructorAssembler {
    } 
    
    public ConstructorBuilder assemble(Scope scope, Initializer initializer, Type type) throws Exception {
-      Initializer factory = delegate.define(scope, initializer, type);
+      Initializer factory = delegate.compile(scope, initializer, type);
       Signature signature = parameters.create(scope, TYPE_CLASS);
       
       return new ConstructorBuilder(signature, body, factory);

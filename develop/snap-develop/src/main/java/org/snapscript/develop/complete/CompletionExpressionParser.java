@@ -86,7 +86,7 @@ public class CompletionExpressionParser {
          type = types.get(constraint);
          
          if(type != null) {
-            logger.log(complete + " is constraint to " + type);
+            logger.log(complete + " is constrained to " + type);
          } else {
             logger.log(complete + " has no known constraints");
          }

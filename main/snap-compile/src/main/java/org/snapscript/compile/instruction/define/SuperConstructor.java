@@ -27,7 +27,7 @@ public class SuperConstructor implements TypePart {
    }
 
    @Override
-   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
+   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
       Type base = extractor.extractor(type);
       
       if(base == null) {

@@ -5,5 +5,5 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
 public interface TypePart {
-   Initializer define(Scope scope, Initializer initializer, Type type) throws Exception;
+   Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception;
 }

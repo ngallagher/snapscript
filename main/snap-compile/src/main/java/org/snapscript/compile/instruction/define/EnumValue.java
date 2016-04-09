@@ -19,7 +19,7 @@ public class EnumValue {
       this.key = key;
    }
 
-   public Initializer define(Scope scope, Type type, int index) throws Exception { 
+   public Initializer compile(Scope scope, Type type, int index) throws Exception { 
       return new EnumInitializer(key, list, index);
    }
 }

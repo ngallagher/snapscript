@@ -17,14 +17,14 @@ public class DelegateInitializer {
       this.part = part;
    } 
 
-   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
+   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
       Type base = extractor.extractor(type);
       
       if(part != null){
-         return part.define(scope, initializer, type);              
+         return part.compile(scope, initializer, type);              
       }
       if(base != null) {
-         return constructor.define(scope, initializer, type);
+         return constructor.compile(scope, initializer, type);
       }
       return new PrimitiveConstructor(); 
    }

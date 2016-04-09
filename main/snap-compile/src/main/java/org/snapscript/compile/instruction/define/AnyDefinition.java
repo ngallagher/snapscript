@@ -52,7 +52,7 @@ public class AnyDefinition extends Statement {
          functions.add(hashCode);
          functions.add(equals);
          functions.add(toString);
-         constructor.define(value, null, type);
+         constructor.compile(value, null, type);
       }
       return ResultType.getNormal(type);
    }

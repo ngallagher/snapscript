@@ -27,11 +27,11 @@ public class ClassConstructor implements TypePart {
    } 
    
    @Override
-   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
-      return define(scope, initializer, type, true);
+   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
+      return compile(scope, initializer, type, true);
    }
    
-   protected Initializer define(Scope scope, Initializer initializer, Type type, boolean compile) throws Exception {
+   protected Initializer compile(Scope scope, Initializer initializer, Type type, boolean compile) throws Exception {
       int modifiers = list.getModifiers();
       ConstructorBuilder builder = assembler.assemble(scope, initializer, type);
       Function constructor = builder.create(scope, initializer, type, modifiers, compile);

@@ -37,7 +37,7 @@ public class TypeFunction implements TypePart {
    } 
 
    @Override
-   public Initializer define(Scope scope, Initializer initializer, Type type) throws Exception {
+   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
       return define(scope, initializer, type, 0);
    }
    

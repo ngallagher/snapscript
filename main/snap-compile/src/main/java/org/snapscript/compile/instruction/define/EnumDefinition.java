@@ -45,13 +45,13 @@ public class EnumDefinition extends Statement {
       
       if(!define.compareAndSet(false, true)) {
          Type type = builder.create(other);
-         Initializer keys = list.define(other, collector, type);
+         Initializer keys = list.compile(other, collector, type);
    
          for(TypePart part : parts) {
-            Initializer initializer = part.define(other, collector, type);
+            Initializer initializer = part.compile(other, collector, type);
             collector.update(initializer);
          }  
-         constructor.define(other, collector, type); 
+         constructor.compile(other, collector, type); 
          keys.execute(other, type);
          collector.compile(other, type); 
          

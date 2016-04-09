@@ -30,7 +30,7 @@ public class DefaultConstructor implements TypePart {
    } 
    
    @Override
-   public Initializer define(Scope scope, Initializer statements, Type type) throws Exception {
+   public Initializer compile(Scope scope, Initializer statements, Type type) throws Exception {
       List<Function> functions = type.getFunctions();
       
       for(Function function : functions) {
@@ -47,6 +47,6 @@ public class DefaultConstructor implements TypePart {
       Statement statement = new NoStatement();
       ClassConstructor constructor = new ClassConstructor(modifiers, parameters, statement);
       
-      return constructor.define(scope, statements, type, compile);
+      return constructor.compile(scope, statements, type, compile);
    }
 }
