@@ -49,17 +49,16 @@ public class CompletionMatcher {
       CompletionExpression expression = parser.parse(types, complete);
       CompletionType type = expression.getConstraint();
       
-      //if(type == null) {
+      if(type == null) {
          Map<String, String> externalTokens = extractExternal(types, expression, source, resource, prefix);
          Map<String, String> internalTokens = extractInternal(types, expression, source, resource, prefix);
          
          resultTokens.putAll(externalTokens);
          resultTokens.putAll(internalTokens);
-      //} else {
-      //   // XXX this needs to consider the type hierarchy
-      //   Map<String, String> constraintTokens = extractTypedTokens(type, expression, source, resource, prefix);
-      //   resultTokens.putAll(constraintTokens);
-      //}
+      } else {
+         Map<String, String> constraintTokens = extractTypedTokens(type, expression, source, resource, prefix);
+         resultTokens.putAll(constraintTokens);
+      }
       return resultTokens;
    }
    

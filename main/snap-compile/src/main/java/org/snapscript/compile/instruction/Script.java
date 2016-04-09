@@ -15,6 +15,20 @@ public class Script extends Statement {
    }
    
    @Override
+   public Result define(Scope scope) throws Exception {
+      Result last = ResultType.getNormal();
+      
+      for(Statement statement : statements) {
+         Result result = statement.define(scope);
+         
+         if(!result.isNormal()){
+            throw new InternalStateException("Illegal statement");
+         }
+      }
+      return last;
+   }
+   
+   @Override
    public Result compile(Scope scope) throws Exception {
       Result last = ResultType.getNormal();
       

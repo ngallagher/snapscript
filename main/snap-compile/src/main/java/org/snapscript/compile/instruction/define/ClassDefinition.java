@@ -2,7 +2,9 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -13,7 +15,8 @@ public class ClassDefinition extends Statement {
    
    private final FunctionPropertyGenerator generator;
    private final DefaultConstructor constructor;
-   private final AtomicBoolean define;
+   private final NameExtractor extractor;
+   private final AtomicBoolean compile;
    private final ClassBuilder builder;
    private final TypePart[] parts;
    
@@ -21,8 +24,18 @@ public class ClassDefinition extends Statement {
       this.generator = new FunctionPropertyGenerator(); 
       this.builder = new ClassBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor();
-      this.define = new AtomicBoolean(true);
+      this.extractor = new NameExtractor(name);
+      this.compile = new AtomicBoolean(true);
       this.parts = parts;
+   }
+   
+   @Override
+   public Result define(Scope scope) throws Exception {
+      Module module = scope.getModule();
+      String name = extractor.extract(scope);
+      Type type = module.addType(name);
+      
+      return ResultType.getNormal(type);
    }
 
    @Override
@@ -30,7 +43,7 @@ public class ClassDefinition extends Statement {
       StaticScope other = new StaticScope(scope);
       InitializerCollector collector = new InitializerCollector();
       
-      if(!define.compareAndSet(false, true)) {
+      if(!compile.compareAndSet(false, true)) {
          Type type = builder.create(other);
          
          for(TypePart part : parts) {

@@ -27,6 +27,7 @@ public class StatementPackage implements Package {
             Module library = registry.addModule(name);
             Scope inner = library.getScope();
            
+            statement.define(inner);
             statement.compile(inner); 
          } catch(Exception e) {
             if(path != null) {

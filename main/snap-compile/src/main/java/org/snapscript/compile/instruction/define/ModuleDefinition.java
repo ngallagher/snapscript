@@ -23,6 +23,11 @@ public class ModuleDefinition extends Statement {
       this.builder = new ModuleBuilder(module);
       this.body = new ModuleBody(body);
    }
+   
+   @Override
+   public Result define(Scope scope) throws Exception {
+      return body.define(scope); 
+   }
 
    @Override
    public Result compile(Scope scope) throws Exception {

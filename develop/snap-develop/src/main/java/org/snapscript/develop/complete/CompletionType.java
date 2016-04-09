@@ -1,11 +1,13 @@
 package org.snapscript.develop.complete;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
+import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
 
 public class CompletionType {
@@ -39,14 +41,32 @@ public class CompletionType {
          return ((Module)value).getFunctions();
       }
       if(Type.class.isInstance(value)) {
-         return ((Type)value).getFunctions();
+         List<Function> total = new ArrayList<Function>();
+         SuperExtractor extractor = new SuperExtractor();
+         Type type = (Type)value;
+         
+         while(type != null) {
+            List<Function> functions = type.getFunctions();
+            total.addAll(functions);
+            type = extractor.extractor(type);
+         }
+         return total;
       }
       return Collections.emptyList();
    }
    
    public List<Property> getProperties(){
       if(Type.class.isInstance(value)) {
-         return ((Type)value).getProperties();
+         List<Property> total = new ArrayList<Property>();
+         SuperExtractor extractor = new SuperExtractor();
+         Type type = (Type)value;
+         
+         while(type != null) {
+            List<Property> functions = type.getProperties();
+            total.addAll(functions);
+            type = extractor.extractor(type);
+         }
+         return total;
       }
       return Collections.emptyList();
    }
