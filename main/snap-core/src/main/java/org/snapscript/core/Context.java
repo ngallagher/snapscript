@@ -7,7 +7,7 @@ import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.validate.ExecutableValidator;
 
-public interface Context{
+public interface Context extends Any {
    ThreadStack getStack();
    ErrorHandler getHandler();
    ResourceManager getManager();

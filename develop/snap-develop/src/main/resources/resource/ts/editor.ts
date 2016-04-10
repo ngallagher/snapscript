@@ -413,7 +413,7 @@ function registerEditorBindings() {
          mac : 'Command-N'
       },
       exec : function(editor) {
-         newFile();
+         newFile(null);
       },
       readOnly : true
    // false if this command should not apply in readOnly mode

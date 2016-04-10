@@ -46,10 +46,10 @@ function handleTreeMenu(resourcePath, commandName, elementId) {
         });
     }
     else if (commandName == "newFile") {
-        newFile();
+        newFile(resourcePath);
     }
     else if (commandName == "newDirectory") {
-        newDirectory();
+        newDirectory(resourcePath);
     }
     else if (commandName == "saveFile") {
         openTreeFile(resourcePath.resourcePath, function () {

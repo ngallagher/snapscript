@@ -1,6 +1,6 @@
 package org.snapscript.core;
 
-public interface Property<T> {
+public interface Property<T> extends Any {
    Type getType(); // declaring type
    Type getConstraint();
    String getName();

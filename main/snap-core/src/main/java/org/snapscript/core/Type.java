@@ -2,7 +2,7 @@ package org.snapscript.core;
 
 import java.util.List;
 
-public interface Type {
+public interface Type extends Any {
    List<Property> getProperties();
    List<Function> getFunctions();
    List<Type> getTypes();

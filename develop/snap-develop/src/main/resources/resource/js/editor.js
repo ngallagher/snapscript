@@ -369,7 +369,7 @@ function registerEditorBindings() {
             mac: 'Command-N'
         },
         exec: function (editor) {
-            newFile();
+            newFile(null);
         },
         readOnly: true
     });

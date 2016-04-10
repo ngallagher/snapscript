@@ -3,7 +3,7 @@ package org.snapscript.core;
 import java.io.InputStream;
 import java.util.List;
 
-public interface Module {
+public interface Module extends Any{
    Scope getScope();
    Context getContext();
    ImportManager getManager();
