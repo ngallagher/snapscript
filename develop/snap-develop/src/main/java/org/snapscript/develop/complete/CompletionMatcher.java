@@ -17,6 +17,7 @@ import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
+import org.snapscript.core.Signature;
 import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 
@@ -60,7 +61,25 @@ public class CompletionMatcher {
          String name = function.getName();
          
          if(filter.acceptExternal(name, FUNCTION)) {
-            strings.put(name + "()", FUNCTION);
+            Signature signature = function.getSignature();
+            List<String> parameters = signature.getNames();
+            int count = parameters.size();
+            
+            if(count > 0) {
+               StringBuilder builder = new StringBuilder();
+               
+               for(int i = 0; i < count; i++) {
+                  String parameter = parameters.get(i);
+                  
+                  if(i > 0) {
+                     builder.append(", ");
+                  }
+                  builder.append(parameter);
+               }
+               strings.put(name + "(" + builder + ")", FUNCTION);
+            } else {
+               strings.put(name + "()", FUNCTION);
+            }
          }
       }
       for(Property property : properties) {

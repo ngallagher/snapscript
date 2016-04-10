@@ -3,6 +3,10 @@
     box-shadow: 0px 0px 1px 1px orange inset; 
     background: rgba(255,215,0,0.3)
 }
+.ace_editor.ace_autocomplete {
+	width: 400px !important;
+	/*resize: both !important;*/
+}
 #editor {
     font-family: "Consolas",Monaco,"Andale Mono","Lucida Console","Bitstream Vera Sans Mono","Courier New",Courier,monospace; 
     font-size: 1em;   
