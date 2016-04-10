@@ -4,6 +4,7 @@ import static org.snapscript.develop.complete.CompletionToken.CLASS;
 import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
 import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
 import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
+import static org.snapscript.develop.complete.CompletionToken.MODULE;
 import static org.snapscript.develop.complete.CompletionToken.TRAIT;
 import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
@@ -155,8 +156,14 @@ public class CompletionMatcher {
                }
             }
          } else {
-            if(filter.acceptToken(name, CLASS)) {
-               strings.put(name, CLASS);
+            if(type.isType()) {
+               if(filter.acceptToken(name, CLASS)) {
+                  strings.put(name, CLASS);
+               }
+            } else if(type.isModule()) {
+               if(filter.acceptToken(name, MODULE)) {
+                  strings.put(name, MODULE);
+               }
             }
          }
       }
