@@ -14,7 +14,7 @@ class FilePatternScanner {
       this.directory = directory;
    }
    
-   function scan(pattern): [] {
+   scan(pattern): [] {
       var file = new File(directory, pattern);
       
       if(pattern.contains("*")) {
