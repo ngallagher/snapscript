@@ -3,7 +3,16 @@ package org.snapscript.core;
 public enum ValueType {
    CONSTANT,
    REFERENCE,
-   TRANSIENT;
+   TRANSIENT,
+   BLANK;
+   
+   public static Value getBlank() {
+      return new Blank();
+   }
+   
+   public static Value getBlank(Type type) {
+      return new Blank(type);
+   }
    
    public static Value getConstant(Object value) {
       return new Constant(value);

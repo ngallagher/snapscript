@@ -1,0 +1,15 @@
+
+function testClosure() {
+   var list = ["a1", "a2", "b1", "c2", "c1"];
+   var result = [];
+   
+   list.stream()
+       .filter((s) -> s.startsWith("c"))
+       .map(s -> s.toUpperCase())
+       .sorted()
+       .forEach(s: String -> result.add(s));
+   
+   assert result.length == 2;
+   assert result[0] == 'C1';
+   assert result[1] == 'C2';
+}
