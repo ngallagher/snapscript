@@ -14,10 +14,10 @@ public class CompletionProcessor {
       this.builder = new CompletionMatcherBuilder(logger);
    }
 
-   public Map<String, String> complete(Project project, String text, String resource, String prefix, String complete) {
+   public Map<String, String> complete(Project project, String text, String resource, String prefix, String complete, int line) {
       CompletionMatcher finder = builder.compile();
       File root = project.getProjectPath();
       
-      return finder.findTokens(root, text, resource, prefix, complete);
+      return finder.findTokens(root, text, resource, prefix, complete, line);
    }
 }

@@ -1,5 +1,7 @@
 package org.snapscript.develop.complete;
 
+import static org.snapscript.develop.complete.CompletionBraceCounter.CLOSE_BRACE;
+import static org.snapscript.develop.complete.CompletionBraceCounter.OPEN_BRACE;
 import static org.snapscript.develop.complete.CompletionToken.CLASS;
 import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
 import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
@@ -9,23 +11,32 @@ import static org.snapscript.develop.complete.CompletionToken.TOKEN;
 import static org.snapscript.develop.complete.CompletionToken.TRAIT;
 import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.parse.GrammarIndexer;
+import org.snapscript.parse.GrammarResolver;
+import org.snapscript.parse.Line;
+import org.snapscript.parse.SourceCode;
+import org.snapscript.parse.SourceProcessor;
+import org.snapscript.parse.Token;
+import org.snapscript.parse.TokenIndexer;
 
 public class CompletionExpressionParser {
-   
+
    private final ConsoleLogger logger;
    
    public CompletionExpressionParser(ConsoleLogger logger) {
       this.logger = logger;
    }
 
-   public CompletionExpression parse(Map<String, CompletionType> types, String complete) {
+   public CompletionExpression parse(Map<String, CompletionType> types, CompletionType context, String complete) {
       Set<String> tokens = new HashSet<String>();
       String trim = complete.trim();
       
@@ -55,13 +66,13 @@ public class CompletionExpressionParser {
          }
       }
       CompletionType constraint = parseHint(types, complete);
-
+      
       if(constraint != null) {
          logger.log(complete + " is constrained to " + constraint);
       } else {
          logger.log(complete + " has no known constraints");
       }
-      return new CompletionExpression(complete, constraint, tokens);
+      return new CompletionExpression(complete, constraint, context, tokens);
    }
    
    private CompletionType parseHint(Map<String, CompletionType> types, String complete) {

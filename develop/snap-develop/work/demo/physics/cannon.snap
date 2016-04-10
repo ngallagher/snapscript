@@ -234,13 +234,14 @@ class PhysicsCannon {
 
     var timeInMsForRenderUpdate = 40;
 
-    var data = new CannonLogic(this);
+    var data:CannonLogic = new CannonLogic(this);
 
    
     /**
      * Launch the 2D frame window.
      */
     invokeLater() {
+    data.t
         SwingUtilities.invokeLater(new InitializerTask(this));
     }
 

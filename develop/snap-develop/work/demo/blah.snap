@@ -9,6 +9,9 @@ class Foo {
    new(text){
       this.text = text;
    }
+   dump():Nuh{
+      return new Nuh(text);
+   }
    toString() {
       return text;
    }

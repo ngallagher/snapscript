@@ -6,9 +6,18 @@ public class CompletionRequest {
    private String source;
    private String prefix;
    private String complete;
+   private int line;
    
    public CompletionRequest() {
       super();
+   }
+
+   public int getLine() {
+      return line;
+   }
+
+   public void setLine(int line) {
+      this.line = line;
    }
 
    public String getComplete() {

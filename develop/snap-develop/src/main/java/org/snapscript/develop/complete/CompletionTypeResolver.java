@@ -290,7 +290,7 @@ public class CompletionTypeResolver {
       this.logger = logger;
    }
    
-   public Map<String, CompletionType> resolveTypes(File root, String text, String resource, String prefix, String complete) {
+   public Map<String, CompletionType> resolveTypes(File root, String text, String resource, String prefix, String complete, int line) {
       Model model = new EmptyModel();
       Store store = new FileStore(root);
       Context context = new StoreContext(store);
@@ -301,7 +301,7 @@ public class CompletionTypeResolver {
       List<Module> modules = registry.getModules();
       
       try {
-         String source = parseSource(context, text, resource, complete);
+         String source = parseSource(context, text, resource, complete, line);
          String module = converter.createModule(resource);
          PackageLinker linker = context.getLinker();
          Package library = linker.link(module, source, SCRIPT.name);
@@ -309,7 +309,7 @@ public class CompletionTypeResolver {
          
          library.compile(scope);
       } catch(Exception e) {
-         logger.log("Error compiling " + resource + ", parsing imports only for " + complete);
+         logger.log("Error compiling " + resource + ", parsing imports only for " + complete + " at " + line, e);
          
          try {
             String source = parseImportsOnly(context, text, resource);
@@ -332,8 +332,14 @@ public class CompletionTypeResolver {
            }
         }
         if(module != null){
-           CompletionType value = new CompletionType(imported, module);
-           types.put(module, value);
+           Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\.]+\\.([a-zA-Z0-9]+)$");
+           Matcher matcher = pattern.matcher(module);
+           
+           if(matcher.matches()) {
+              String name = matcher.group(1);
+              CompletionType value = new CompletionType(imported, name);
+              types.put(name, value);
+           }
         }
       }
       return expandFunctions(types, prefix);
@@ -371,7 +377,7 @@ public class CompletionTypeResolver {
                CompletionType match = resolveType(types, constraint);
                
                if(match != null) {
-                  //types.put(key, match);
+                  types.put(key, match);
                   types.put(name + "." + key, match);
                }
             }
@@ -433,14 +439,18 @@ public class CompletionTypeResolver {
       return types;
    }
    
-   private String parseSource(Context context, String text, String resource, String complete) {
+   private String parseSource(Context context, String text, String resource, String complete, int line) {
       StringBuilder builder = new StringBuilder();
       String lines[] = text.split("\\r?\\n");
 
-      for(String line : lines) {
-         if(!line.contains(complete)) {
-            builder.append(line);
+      for(int i = 0; i < lines.length; i++){
+         String token = lines[i];
+         
+         if(i != line) {
+            builder.append(token);
             builder.append("\n");
+         } else {
+            builder.append("\n"); // empty line
          }
       }
       return builder.toString();

@@ -5,13 +5,19 @@ import java.util.Set;
 public class CompletionExpression {
    
    private final CompletionType constraint;
+   private final CompletionType context;
    private final Set<String> tokens;
    private final String complete;
    
-   public CompletionExpression(String complete, CompletionType constraint, Set<String> tokens) {
+   public CompletionExpression(String complete, CompletionType constraint, CompletionType context, Set<String> tokens) {
       this.constraint = constraint;
+      this.context = context;
       this.complete = complete;
       this.tokens = tokens;
+   }
+   
+   public CompletionType getContext(){
+      return context;
    }
    
    public CompletionType getConstraint() {

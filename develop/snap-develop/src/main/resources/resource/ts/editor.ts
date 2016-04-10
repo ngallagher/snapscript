@@ -11,7 +11,7 @@ function createEditor() {
 function clearEditorHighlights() {
    var editor = ace.edit("editor");
    var session = editor.getSession();
-
+    
    for ( var editorLine in editorMarkers) {
       if (editorMarkers.hasOwnProperty(editorLine)) {
          var marker = editorMarkers[editorLine];
@@ -328,7 +328,7 @@ function createEditorAutoComplete() {
           var complete = line.substring(0, pos.column - prefix.length);
           var message = JSON.stringify({
              resource: editorResource.projectPath,
-             line: line,
+             line: pos.row,
              complete: complete,
              source: text,
              prefix: prefix

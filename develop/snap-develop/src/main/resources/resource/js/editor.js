@@ -289,7 +289,7 @@ function createEditorAutoComplete() {
             var complete = line.substring(0, pos.column - prefix.length);
             var message = JSON.stringify({
                 resource: editorResource.projectPath,
-                line: line,
+                line: pos.row,
                 complete: complete,
                 source: text,
                 prefix: prefix

@@ -45,9 +45,6 @@ public class CompletionTokenClassifier {
          if(space.equals(" ") && literal.equals("class")) {
             return true;
          }
-         if(space.equals(" ") && literal.equals("new")) {
-            return true;
-         }
       }
       return false;
    }
@@ -70,9 +67,6 @@ public class CompletionTokenClassifier {
          String literal = tokens.get(index-2).getValue().toString();
          
          if(space.equals(" ") && literal.equals("trait")) {
-            return true;
-         }
-         if(space.equals(" ") && literal.equals("with")) {
             return true;
          }
       }
