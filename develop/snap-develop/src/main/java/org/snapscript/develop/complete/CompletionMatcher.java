@@ -30,42 +30,53 @@ public class CompletionMatcher {
    private final CompletionExpressionParser parser;
    private final CompletionTypeResolver resolver;
    private final PathConverter converter;
+   private final ConsoleLogger logger;
    
    public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConsoleLogger logger) {
       this.extractor = new CompletionContextExtractor(resolver, indexer);
       this.parser = new CompletionExpressionParser(logger);
       this.resolver = new CompletionTypeResolver(logger);
       this.converter = new PathConverter();
+      this.logger = logger;
    }
    
    public Map<String, String> findTokens(File root, String source, String resource, String prefix, String complete, int line) {
       Map<String, String> resultTokens = new TreeMap<String, String>();
-      Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource, prefix, complete, line);
-      CompletionContext context = extractor.extractContext(types, source, resource, prefix, line);
-      CompletionExpression expression = parser.parse(types, context, complete);
-      CompletionType type = expression.getConstraint();
-      String module = converter.createModule(resource);
+      long start = System.currentTimeMillis();
       
-      if(type != null) {
-         Map<String, String> availableTokens = extractTypeTokens(type, expression, source, resource, prefix);
-         resultTokens.putAll(availableTokens);
+      try {
+         Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource, prefix, complete, line);
+         CompletionContext context = extractor.extractContext(types, source, resource, prefix, line);
+         CompletionExpression expression = parser.parse(types, context, complete);
+         CompletionType type = expression.getConstraint();
+         String module = converter.createModule(resource);
+         
+         if(type != null) {
+            Map<String, String> availableTokens = extractTypeTokens(type, expression, source, resource, prefix);
+            resultTokens.putAll(availableTokens);
+         }
+         CompletionType thisType = context.getType();
+         CompletionType thisModule = types.get(module);
+         Map<String, String> thisTokens = context.getTokens();
+         
+         if(thisType != null) {
+            Map<String, String> availableTokens = extractTypeTokens(thisType, expression, source, resource, prefix);
+            resultTokens.putAll(availableTokens);
+         }
+         if(thisModule != null) {
+            Map<String, String> availableTokens = extractTypeTokens(thisModule, expression, source, resource, prefix);
+            resultTokens.putAll(availableTokens);
+         }
+         Map<String, String> globalTokens = extractGlobalTokens(types, expression, source, resource, prefix);
+         resultTokens.putAll(globalTokens);
+         resultTokens.putAll(thisTokens);
+         return resultTokens;
+      } finally {
+         long finish = System.currentTimeMillis();
+         long duration = finish - start;
+         
+         logger.log("Time taken to find tokens " + duration);
       }
-      CompletionType thisType = context.getType();
-      CompletionType thisModule = types.get(module);
-      Map<String, String> thisTokens = context.getTokens();
-      
-      if(thisType != null) {
-         Map<String, String> availableTokens = extractTypeTokens(thisType, expression, source, resource, prefix);
-         resultTokens.putAll(availableTokens);
-      }
-      if(thisModule != null) {
-         Map<String, String> availableTokens = extractTypeTokens(thisModule, expression, source, resource, prefix);
-         resultTokens.putAll(availableTokens);
-      }
-      Map<String, String> globalTokens = extractGlobalTokens(types, expression, source, resource, prefix);
-      resultTokens.putAll(globalTokens);
-      resultTokens.putAll(thisTokens);
-      return resultTokens;
    }
    
    private Map<String, String> extractTypeTokens(CompletionType type, CompletionExpression complete, String source, String resource, String prefix) {

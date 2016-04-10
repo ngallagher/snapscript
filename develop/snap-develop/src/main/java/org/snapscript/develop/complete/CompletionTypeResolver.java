@@ -113,6 +113,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.common.ThreadPool;
 import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
 import org.snapscript.compile.StoreContext;
@@ -131,7 +132,6 @@ import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Signature;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.store.FileStore;
@@ -282,18 +282,20 @@ public class CompletionTypeResolver {
    private final PrimitivePromoter promoter;
    private final PathConverter converter;
    private final ConsoleLogger logger;
+   private final ThreadPool pool;
    
    public CompletionTypeResolver(ConsoleLogger logger) {
       this.cache = new ConcurrentHashMap<String, CompletionType>();
       this.promoter = new PrimitivePromoter();
       this.converter = new PathConverter();
+      this.pool = new ThreadPool(6);
       this.logger = logger;
    }
    
    public Map<String, CompletionType> resolveTypes(File root, String text, String resource, String prefix, String complete, int line) {
       Model model = new EmptyModel();
       Store store = new FileStore(root);
-      Context context = new StoreContext(store);
+      Context context = new StoreContext(store, pool);
       Compiler compiler = new StringCompiler(context);
       ScopeMerger merger = new ScopeMerger(context);
       Map<String, CompletionType> types = importTypes(context, resource, prefix);
