@@ -30,6 +30,10 @@ function testArrayCounter() {
    for(var c in arr){
       println("${c.id}=${c.x}");
    }
+   arr.forEach(c -> {
+      assert c.x == 4950;
+   });
+   assert 20 == arr.length;
 }
 
 function testArraySort(){
@@ -49,3 +53,5 @@ function testArraySort(){
    //Arrays.sort(arr[i], (a, b)->a.compareTo(b));
    println(set);
 }
+
+//testArrayCounter();

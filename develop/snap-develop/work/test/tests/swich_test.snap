@@ -1,0 +1,15 @@
+
+function testSwitch() {
+   var x ="test";
+   switch(x){
+   case "blah":
+      println("blah");
+      break;
+   case "test":
+      println("test-");
+   case "foo":
+      println("foo");
+   }
+}
+
+testSwitch();

@@ -1,6 +1,7 @@
 <project>
   <environment>
       <variable name="TEST">${java.home}</variable>
+      <variable name="PROJECT_ROOT">C:\Work\development\github\snapscript\develop\snap-develop\work</variable>
   </environment>    
   <arguments>
       <argument>-Xmx200m</argument>

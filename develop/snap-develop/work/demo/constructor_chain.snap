@@ -27,6 +27,7 @@ function blah() {
 function foo(x) {
    return new D(x);
 }
+
 class Vec{
    var x:Number;
    var y:Number;
