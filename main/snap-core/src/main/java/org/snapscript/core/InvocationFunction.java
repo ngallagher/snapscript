@@ -30,34 +30,42 @@ public class InvocationFunction<T> implements Function<T> {
       this.name = name;
    }
    
+   @Override
    public int getModifiers(){
       return modifiers;
    }
    
+   @Override
    public Type getType() {
       return parent;
    }
    
+   @Override
    public Type getDefinition() {
       return definition;
    }
    
+   @Override
    public Type getConstraint() {
       return constraint;
    }
    
+   @Override
    public String getName(){
       return name;
    }
    
+   @Override
    public Signature getSignature(){
       return signature;
    }
    
+   @Override
    public Invocation<T> getInvocation(){
       return invocation;
    }
    
+   @Override
    public String getDescription() {
       return description.getDescription();
    }

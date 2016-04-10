@@ -29,8 +29,20 @@ for(var script in scripts) {
    
    for(var test in tests){
       if(test.name.startsWith("test")) {
-         System.err.println("${test.name}() in [${script}]");
-         test.invocation.invoke(scope, scope);
+         executeTest(-> test.invocation.invoke(scope, scope), script, test.name);
       }
+   }
+}
+
+function executeTest(func, script, name) {
+   var start = System.currentTimeMillis();
+   
+   try {
+      func();
+   } finally {
+      var finish = System.currentTimeMillis();
+      var duration = finish - start;
+      
+      System.err.println("${name}() in [${script}] in ${duration} ms");
    }
 }
