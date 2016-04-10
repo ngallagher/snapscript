@@ -1,0 +1,22 @@
+
+function testThrowString(){
+	try {
+		throw "A string";
+	}catch(e){
+	   println(e);
+	   println(e.class);
+		println(e.message);
+		//assert e.message == "A string";
+	}
+}
+
+function testThrowException() {
+	try {
+		throw new IllegalStateException("Some text");
+	} catch(e) {
+		println(e);
+	   println(e.class);
+		println(e.message);
+		//assert e.message == "Some text";
+	}
+}

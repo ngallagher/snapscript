@@ -1,0 +1,36 @@
+import find.FilePatternScanner;
+import core.PathConverter;
+import core.store.FileStore;
+import compile.StoreContext;
+import compile.ResourceCompiler;
+
+const directory = "C:\\Work\\development\\github\\snapscript\\develop\\snap-develop\\work\\test";
+const scanner = new FilePatternScanner(directory);
+const scripts = scanner.scan("**/*_test.snap");
+const converter = new PathConverter();
+const root = new File(directory);
+const store = new FileStore(root);
+const context = new StoreContext(store);
+const compiler = new ResourceCompiler(context);
+      
+for(var script in scripts) {
+   var executable = compiler.compile(script);
+   var package = converter.createModule(script);
+   
+   try {
+      executable.execute();
+   }catch(e) {
+      System.err.println("Failure for ${script}");
+   }
+   var registry = context.getRegistry();
+   var container = registry.getModule(package);
+   var tests = container.getFunctions();
+   var scope = container.getScope();
+   
+   for(var test in tests){
+      if(test.name.startsWith("test")) {
+         System.err.println("${test.name}() in [${script}]");
+         test.invocation.invoke(scope, scope);
+      }
+   }
+}
