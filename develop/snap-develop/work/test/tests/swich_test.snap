@@ -1,4 +1,22 @@
 
+module FindColor {
+
+   function find(i){
+      switch(i){
+      case 0:
+         return "red";
+      case 1:
+         return "blue";
+      case 2:
+         return "green";
+      case 3:
+         return "yellow";
+      default:
+         return "white";
+      }
+   }
+}
+
 function testSwitch() {
    var x ="test";
    var r = [];
@@ -64,3 +82,14 @@ function testSwitchCalculation() {
    assert r.contains("case 4");
    assert r.contains("default");
 }
+
+function testSwitchReturn() {
+   assert FindColor.find(0) == "red";
+   assert FindColor.find(1) == "blue";
+   assert FindColor.find(2) == "green";
+   assert FindColor.find(3) == "yellow";
+   assert FindColor.find(4) == "white"; 
+   assert FindColor.find(5) == "white";      
+}
+
+testSwitchReturn();
