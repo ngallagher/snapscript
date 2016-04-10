@@ -15,6 +15,10 @@ import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
 public class MethodExporter {
+   
+   private static final String[] PREFIX = {
+   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 
    private final Context context;
    
@@ -65,8 +69,12 @@ public class MethodExporter {
          
             for(int i = 1; i < length; i++) {
                Type parameter = parameters.get(i);
+               String prefix = PREFIX[i % PREFIX.length];
                
-               names.add("a" + 1);
+               if(i > PREFIX.length) {
+                  prefix += i / PREFIX.length;
+               }
+               names.add(prefix);
                types.add(parameter);
             }
             return new InvocationFunction(reduced, adapter, null, constraint, name, modifiers);

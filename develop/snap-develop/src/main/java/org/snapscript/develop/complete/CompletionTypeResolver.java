@@ -334,12 +334,14 @@ public class CompletionTypeResolver {
         if(module != null){
            Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\.]+\\.([a-zA-Z0-9]+)$");
            Matcher matcher = pattern.matcher(module);
+           String name = module;
            
            if(matcher.matches()) {
-              String name = matcher.group(1);
-              CompletionType value = new CompletionType(imported, name);
-              types.put(name, value);
+              name = matcher.group(1);
            }
+           CompletionType value = new CompletionType(imported, name);
+           types.put(module, value);
+           types.put(name, value);
         }
       }
       return expandFunctions(types, prefix);

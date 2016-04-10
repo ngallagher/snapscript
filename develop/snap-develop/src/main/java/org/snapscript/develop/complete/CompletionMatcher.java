@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
+import org.snapscript.core.PathConverter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
@@ -28,11 +29,13 @@ public class CompletionMatcher {
    private final CompletionContextExtractor extractor;
    private final CompletionExpressionParser parser;
    private final CompletionTypeResolver resolver;
+   private final PathConverter converter;
    
    public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConsoleLogger logger) {
       this.extractor = new CompletionContextExtractor(resolver, indexer);
       this.parser = new CompletionExpressionParser(logger);
       this.resolver = new CompletionTypeResolver(logger);
+      this.converter = new PathConverter();
    }
    
    public Map<String, String> findTokens(File root, String source, String resource, String prefix, String complete, int line) {
@@ -41,16 +44,22 @@ public class CompletionMatcher {
       CompletionContext context = extractor.extractContext(types, source, resource, prefix, line);
       CompletionExpression expression = parser.parse(types, context, complete);
       CompletionType type = expression.getConstraint();
+      String module = converter.createModule(resource);
       
       if(type != null) {
          Map<String, String> availableTokens = extractTypeTokens(type, expression, source, resource, prefix);
          resultTokens.putAll(availableTokens);
       }
       CompletionType thisType = context.getType();
+      CompletionType thisModule = types.get(module);
       Map<String, String> thisTokens = context.getTokens();
       
       if(thisType != null) {
          Map<String, String> availableTokens = extractTypeTokens(thisType, expression, source, resource, prefix);
+         resultTokens.putAll(availableTokens);
+      }
+      if(thisModule != null) {
+         Map<String, String> availableTokens = extractTypeTokens(thisModule, expression, source, resource, prefix);
          resultTokens.putAll(availableTokens);
       }
       Map<String, String> globalTokens = extractGlobalTokens(types, expression, source, resource, prefix);
