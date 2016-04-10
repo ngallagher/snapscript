@@ -14,6 +14,10 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
 public class ConstructorGenerator {
+   
+   private static final String[] PREFIX = {
+   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 
    private final TypeIndexer indexer;
    
@@ -30,9 +34,13 @@ public class ConstructorGenerator {
    
          for(int i = 0; i < parameters.length; i++){
             Type parameter = indexer.loadType(parameters[i]);
-   
+            String prefix = PREFIX[i % PREFIX.length];
+            
+            if(i > PREFIX.length) {
+               prefix += i / PREFIX.length;
+            }
             types.add(parameter);
-            names.add("a" + i);
+            names.add(prefix);
          }
          Signature signature = new Signature(names, types, variable);
          Invocation invocation = new ConstructorInvocation(constructor);
