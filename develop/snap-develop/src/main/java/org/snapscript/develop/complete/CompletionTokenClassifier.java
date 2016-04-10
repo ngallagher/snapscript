@@ -97,10 +97,10 @@ public class CompletionTokenClassifier {
          }
       }
       if(index > 1 && index + 1 < length) {
-         String brace = tokens.get(index-1).getValue().toString();
+         String previous = tokens.get(index-1).getValue().toString();
          String next = tokens.get(index+1).getValue().toString();
          
-         if(brace.equals("(") && (next.equals(",") || next.equals(":") || next.equals(")"))) {
+         if((previous.equals("(") || previous.equals(",")) && (next.equals(",") || next.equals(":") || next.equals(")"))) {
             return true;
          }
       }
