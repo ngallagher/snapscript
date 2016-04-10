@@ -241,7 +241,6 @@ class PhysicsCannon {
      * Launch the 2D frame window.
      */
     invokeLater() {
-    data.t
         SwingUtilities.invokeLater(new InitializerTask(this));
     }
 

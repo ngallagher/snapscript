@@ -94,7 +94,7 @@ public enum Syntax {
    CONTROL_STATEMENT("control-statement", "{<return-statement>|<throw-statement>|<break-statement>|<continue-statement>}"),
    STATEMENT("statement", "{<control-statement>|<try-statement>|<assert-statement>|<assignment-statement>|<expression-statement>|<conditional-statement>|<declaration-statement>|<group-statement>|<terminal-statement>}"),
    ASSIGNMENT_VARIABLE("assignment-variable", "[identifier]"),
-   ASSIGNMENT_EXPRESSION("assignment-expression", "(<literal>|<reference>|<calculation>|<choice>|<conditional>)"),
+   ASSIGNMENT_EXPRESSION("assignment-expression", "(<value-operand>|<reference>|<calculation>|<choice>|<conditional>)"),
    ASSIGNMENT_STATEMENT("assignment-statement", "<reference><assignment-operator><assignment-expression>';'"),   
    DECLARE_VARIABLE("declare-variable", "'var'' '<assignment-variable>?(':'<constraint>)?('='<assignment-expression>)"),
    DECLARE_CONSTANT("declare-constant", "'const'' '<assignment-variable>?(':'<constraint>)?('='<assignment-expression>)"),

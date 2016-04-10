@@ -12,6 +12,10 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
       
+      analyze(tree, "-blah", "value-operand");
+      analyze(tree, "-blah", "calculation-operand");
+      analyze(tree, "-blah", "assignment-expression");
+      analyze(tree, "this.addr = -blah;", "assignment-statement");
       analyze(tree, "addr = \"${host}:${port}\".getBytes();", "assignment-statement");
       analyze(tree, "this.addr = \"${host}:${port}\".getBytes();", "assignment-statement");
       analyze(tree, "{this.addr = \"${host}:${port}\".getBytes();}", "compound-statement");
