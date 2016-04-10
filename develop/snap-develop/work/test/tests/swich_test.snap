@@ -1,15 +1,66 @@
 
 function testSwitch() {
    var x ="test";
+   var r = [];
    switch(x){
    case "blah":
-      println("blah");
+      r.add("blah");
       break;
    case "test":
-      println("test-");
+      r.add("test");
    case "foo":
-      println("foo");
+      r.add("foo");
+      break;
+   default:
+      r.add("default");
    }
+   assert r.contains("test");
+   assert r.contains("foo");
+   assert !r.contains("default");
+   assert !r.contains("blah");
 }
 
-testSwitch();
+function testSwitchDefault() {
+   var x ="huh";
+   var r = [];
+   switch(x){
+   case "blah":
+      r.add("blah");
+      break;
+   case "test":
+      r.add("test");
+   case "foo":
+      r.add("foo");
+      break;
+   default:
+      r.add("default");
+   }
+   assert !r.contains("test");
+   assert !r.contains("foo");
+   assert r.contains("default");
+   assert !r.contains("blah");
+}
+
+function testSwitchCalculation() {
+   var x ="huh";
+   var r = [];
+   switch(4){
+   case 3:
+      r.add("case 3");
+      break;
+   case 1:
+      r.add("case 1");
+   case "foo":
+      r.add("case foo");
+      break;
+   case 4:
+      r.add("case 4");
+   default:
+      r.add("default");
+   }
+   assert !r.contains("case 3");
+   assert !r.contains("case 1");
+   assert !r.contains("case foo");
+   assert r.contains("case 4");
+   assert r.contains("default");
+}
