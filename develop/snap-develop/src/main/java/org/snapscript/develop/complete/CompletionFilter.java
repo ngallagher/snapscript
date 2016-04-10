@@ -12,15 +12,7 @@ public class CompletionFilter {
       this.prefix = prefix;
    }
    
-   public boolean acceptExternal(String text, String type) {
-      if(text.startsWith(prefix)) {
-         Set<String> types = complete.getTypes();
-         return types.contains(type);
-      }
-      return false;
-   }
-   
-   public boolean acceptInternal(String text, String type) {
+   public boolean acceptToken(String text, String type) {
       if(text.startsWith(prefix)) {
          Set<String> types = complete.getTypes();
          return types.contains(type);

@@ -96,10 +96,11 @@ public class CompletionTokenClassifier {
             return true;
          }
       }
-      if(index + 1  < length) {
+      if(index > 1 && index + 1 < length) {
+         String brace = tokens.get(index-1).getValue().toString();
          String next = tokens.get(index+1).getValue().toString();
          
-         if(next.equals(".")) {
+         if(brace.equals("(") && (next.equals(",") || next.equals(":") || next.equals(")"))) {
             return true;
          }
       }

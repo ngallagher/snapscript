@@ -25,7 +25,7 @@ public class CompletionExpressionParser {
       this.logger = logger;
    }
 
-   public CompletionExpression parse(Map<String, CompletionType> types, CompletionType context, String complete) {
+   public CompletionExpression parse(Map<String, CompletionType> types, CompletionContext context, String complete) {
       Set<String> tokens = new HashSet<String>();
       String trim = complete.trim();
       
@@ -57,9 +57,9 @@ public class CompletionExpressionParser {
       CompletionType constraint = parseHint(types, complete);
       
       if(constraint != null) {
-         logger.log(complete + " is constrained to " + constraint);
+         logger.log("'" + complete + "' is constrained to " + constraint);
       } else {
-         logger.log(complete + " has no known constraints");
+         logger.log("'" + complete + "' has no known constraints");
       }
       return new CompletionExpression(complete, constraint, context, tokens);
    }

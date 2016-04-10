@@ -3,9 +3,11 @@ package org.snapscript.develop.complete;
 import static org.snapscript.develop.complete.CompletionBraceCounter.CLOSE_BRACE;
 import static org.snapscript.develop.complete.CompletionBraceCounter.OPEN_BRACE;
 import static org.snapscript.develop.complete.CompletionToken.CLASS;
+import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
 import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
 import static org.snapscript.develop.complete.CompletionToken.MODULE;
 import static org.snapscript.develop.complete.CompletionToken.TRAIT;
+import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +20,20 @@ import org.snapscript.parse.SourceCode;
 import org.snapscript.parse.SourceProcessor;
 import org.snapscript.parse.Token;
 import org.snapscript.parse.TokenIndexer;
+import org.snapscript.parse.TokenType;
 
 public class CompletionContextExtractor {
 
-   private final CompletionBraceCounter counter;
    private final SourceProcessor processor;
    private final GrammarIndexer indexer;
    
    public CompletionContextExtractor(GrammarResolver resolver, GrammarIndexer indexer) {
-      this.counter = new CompletionBraceCounter();
       this.processor = new SourceProcessor(100);
       this.indexer = indexer;
    }
    
-   public CompletionType extractType(Map<String, CompletionType> types, String source, String resource, String prefix, int line) {
+   public CompletionContext extractContext(Map<String, CompletionType> types, String source, String resource, String prefix, int line) {
+      CompletionBraceCounter counter = new CompletionBraceCounter();
       List<Token> tokens = new ArrayList<Token>();
 
       if(!source.isEmpty()) {
@@ -44,12 +46,15 @@ public class CompletionContextExtractor {
          Token token = tokens.get(i);
          Object value = token.getValue();
          String text = String.valueOf(value);
-         String context = counter.getType();
          Line current = token.getLine();
          int number = current.getNumber();
          
          if(number > line) {
-            return types.get(context);
+            String context = counter.getType();
+            CompletionType type = types.get(context);
+            Map<String, String> strings = counter.getTokens(prefix);
+            
+            return new CompletionContext(type, strings);
          }
          if(text.equals(OPEN_BRACE) || text.equals(CLOSE_BRACE)) {
             counter.setBrace(text);
@@ -58,9 +63,18 @@ public class CompletionContextExtractor {
       
          if(type.equals(CLASS) || type.equals(TRAIT) || type.equals(ENUMERATION) || type.equals(MODULE)) {
             counter.setType(text);
+         } else {
+            if(type.equals(CONSTANT) || type.equals(VARIABLE)) {
+               int category = token.getType();
+               
+               if(category != TokenType.TEXT.mask) {
+                  counter.addToken(text, type);
+               }
+            }
          }
       }
-      return null;
+      Map<String, String> strings = counter.getTokens(prefix);
+      return new CompletionContext(null, strings);
    }
    
    private TokenIndexer createIndexer(String text, String resource) {
