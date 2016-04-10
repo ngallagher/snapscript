@@ -23,6 +23,9 @@ public class CommandWriter {
       Class type = object.getClass();
       CommandMarshaller marshaller = marshallers.get(type);
       
+      if(marshaller == null) {
+         throw new IllegalStateException("Could not find marshaller for " + type);
+      }
       return marshaller.fromCommand(object);
    }
 }

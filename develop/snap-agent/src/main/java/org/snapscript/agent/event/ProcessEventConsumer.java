@@ -26,6 +26,9 @@ public class ProcessEventConsumer {
       int code = message.getCode();
       ProcessEventMarshaller marshaller = marshallers.get(code);
       
+      if(marshaller == null) {
+         throw new IllegalStateException("Could not find marshaller for " + code);
+      }
       return (ProcessEvent)marshaller.fromMessage(message);
    }
 
