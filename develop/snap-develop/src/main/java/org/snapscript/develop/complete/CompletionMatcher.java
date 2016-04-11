@@ -41,7 +41,7 @@ public class CompletionMatcher {
    }
    
    public Map<String, String> findTokens(CompletionState state) {
-      Map<String, String> resultTokens = new TreeMap<String, String>();
+      Map<String, String> resultTokens = state.getTokens();
       long start = System.currentTimeMillis();
       
       try {
