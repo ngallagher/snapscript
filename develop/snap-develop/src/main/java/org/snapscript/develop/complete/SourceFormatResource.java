@@ -1,7 +1,6 @@
 package org.snapscript.develop.complete;
 
 import java.io.PrintStream;
-import java.util.Set;
 
 import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
