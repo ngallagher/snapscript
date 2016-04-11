@@ -14,9 +14,9 @@ import java.util.List;
 
 import org.snapscript.parse.Token;
 
-public class CompletionTokenClassifier {
+public class CompletionTokenProcessor {
    
-   public static String classify(List<Token> tokens, int i) {
+   public static String getType(List<Token> tokens, int i) {
       if(isClass(tokens, i)) {
          return  CLASS;
       } else if(isTrait(tokens, i)) {

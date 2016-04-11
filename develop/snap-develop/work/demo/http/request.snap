@@ -1,4 +1,4 @@
-module Client{
+module RequestBuilder {
    function get(address){
       return null;
    }

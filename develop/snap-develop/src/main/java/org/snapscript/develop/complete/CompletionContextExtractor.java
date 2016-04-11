@@ -32,10 +32,15 @@ public class CompletionContextExtractor {
       this.indexer = indexer;
    }
    
-   public CompletionContext extractContext(Map<String, CompletionType> types, String source, String resource, String prefix, int line) {
+   public CompletionContext extractContext(CompletionState event) {
       CompletionBraceCounter counter = new CompletionBraceCounter();
       List<Token> tokens = new ArrayList<Token>();
-
+      Map<String, CompletionType> types = event.getTypes();
+      String source = event.getSource();
+      String resource = event.getResource();
+      String prefix = event.getPrefix();
+      int line = event.getLine();
+      
       if(!source.isEmpty()) {
          TokenIndexer indexer = createIndexer(source, resource);
          indexer.index(tokens);
@@ -59,7 +64,7 @@ public class CompletionContextExtractor {
          if(text.equals(OPEN_BRACE) || text.equals(CLOSE_BRACE)) {
             counter.setBrace(text);
          }
-         String type = CompletionTokenClassifier.classify(tokens, i);
+         String type = CompletionTokenProcessor.getType(tokens, i);
       
          if(type.equals(CLASS) || type.equals(TRAIT) || type.equals(ENUMERATION) || type.equals(MODULE)) {
             counter.setType(text);

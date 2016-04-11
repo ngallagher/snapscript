@@ -34,12 +34,7 @@ public class CompletionResource implements Resource {
       Path path = request.getPath();
       Project project = builder.createProject(path);
       CompletionRequest context = gson.fromJson(content, CompletionRequest.class);
-      String prefix = context.getPrefix();
-      String source = context.getSource();
-      String resource = context.getResource();
-      String complete = context.getComplete();
-      int line = context.getLine();
-      Map<String, String> tokens = completer.complete(project, source, resource, prefix, complete, line);
+      Map<String, String> tokens = completer.createTokens(context, project);
       result.setTokens(tokens);
       String text = gson.toJson(result);
       response.setContentType("application/json");

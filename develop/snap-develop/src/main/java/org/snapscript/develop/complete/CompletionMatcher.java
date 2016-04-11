@@ -8,7 +8,6 @@ import static org.snapscript.develop.complete.CompletionToken.MODULE;
 import static org.snapscript.develop.complete.CompletionToken.TRAIT;
 import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,19 +40,20 @@ public class CompletionMatcher {
       this.logger = logger;
    }
    
-   public Map<String, String> findTokens(File root, String source, String resource, String prefix, String complete, int line) {
+   public Map<String, String> findTokens(CompletionState state) {
       Map<String, String> resultTokens = new TreeMap<String, String>();
       long start = System.currentTimeMillis();
       
       try {
-         Map<String, CompletionType> types = resolver.resolveTypes(root, source, resource, prefix, complete, line);
-         CompletionContext context = extractor.extractContext(types, source, resource, prefix, line);
-         CompletionExpression expression = parser.parse(types, context, complete);
+         String resource = state.getResource();
+         Map<String, CompletionType> types = resolver.resolveTypes(state);
+         CompletionContext context = extractor.extractContext(state);
+         CompletionExpression expression = parser.parse(state, context);
          CompletionType type = expression.getConstraint();
          String module = converter.createModule(resource);
          
          if(type != null) {
-            Map<String, String> availableTokens = extractTypeTokens(type, expression, source, resource, prefix);
+            Map<String, String> availableTokens = extractTypeTokens(state, type, expression);
             resultTokens.putAll(availableTokens);
          }
          CompletionType thisType = context.getType();
@@ -61,14 +61,14 @@ public class CompletionMatcher {
          Map<String, String> thisTokens = context.getTokens();
          
          if(thisType != null) {
-            Map<String, String> availableTokens = extractTypeTokens(thisType, expression, source, resource, prefix);
+            Map<String, String> availableTokens = extractTypeTokens(state, thisType, expression);
             resultTokens.putAll(availableTokens);
          }
          if(thisModule != null) {
-            Map<String, String> availableTokens = extractTypeTokens(thisModule, expression, source, resource, prefix);
+            Map<String, String> availableTokens = extractTypeTokens(state, thisModule, expression);
             resultTokens.putAll(availableTokens);
          }
-         Map<String, String> globalTokens = extractGlobalTokens(types, expression, source, resource, prefix);
+         Map<String, String> globalTokens = extractGlobalTokens(state, expression);
          resultTokens.putAll(globalTokens);
          resultTokens.putAll(thisTokens);
          return resultTokens;
@@ -80,7 +80,8 @@ public class CompletionMatcher {
       }
    }
    
-   private Map<String, String> extractTypeTokens(CompletionType type, CompletionExpression complete, String source, String resource, String prefix) {
+   private Map<String, String> extractTypeTokens(CompletionState state, CompletionType type, CompletionExpression complete) {
+      String prefix = state.getPrefix();
       Map<String, String> strings = new HashMap<String,String>();
       CompletionFilter filter = new CompletionFilter(complete, prefix);
       List<Function> functions = type.getFunctions();
@@ -129,7 +130,9 @@ public class CompletionMatcher {
       return strings;
    }
    
-   private Map<String, String> extractGlobalTokens(Map<String, CompletionType> types, CompletionExpression complete, String source, String resource, String prefix) {
+   private Map<String, String> extractGlobalTokens(CompletionState state, CompletionExpression complete) {
+      String prefix = state.getPrefix();
+      Map<String, CompletionType> types = state.getTypes();
       Map<String, String> strings = new HashMap<String,String>();
       CompletionFilter filter = new CompletionFilter(complete, prefix);
       Set<String> names = types.keySet();

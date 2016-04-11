@@ -116,10 +116,7 @@ import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.common.ThreadPool;
 import org.snapscript.compile.Compiler;
 import org.snapscript.compile.Executable;
-import org.snapscript.compile.StoreContext;
-import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
-import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Function;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
@@ -134,8 +131,6 @@ import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
-import org.snapscript.core.store.FileStore;
-import org.snapscript.core.store.Store;
 
 public class CompletionTypeResolver {
    
@@ -282,39 +277,39 @@ public class CompletionTypeResolver {
    private final PrimitivePromoter promoter;
    private final PathConverter converter;
    private final ConsoleLogger logger;
-   private final ThreadPool pool;
    
    public CompletionTypeResolver(ConsoleLogger logger) {
       this.cache = new ConcurrentHashMap<String, CompletionType>();
       this.promoter = new PrimitivePromoter();
       this.converter = new PathConverter();
-      this.pool = new ThreadPool(6);
       this.logger = logger;
    }
    
-   public Map<String, CompletionType> resolveTypes(File root, String text, String resource, String prefix, String complete, int line) {
-      Model model = new EmptyModel();
-      Store store = new FileStore(root);
-      Context context = new StoreContext(store, pool);
-      Compiler compiler = new StringCompiler(context);
-      ScopeMerger merger = new ScopeMerger(context);
-      Map<String, CompletionType> types = importTypes(context, resource, prefix);
+   public Map<String, CompletionType> resolveTypes(CompletionState event) {
+      int line = event.getLine();
+      Model model = event.getModel();
+      String complete = event.getComplete();
+      Context context = event.getContext();
+      String resource = event.getResource();
+      ScopeMerger merger = event.getMerger();
+      Compiler compiler = event.getCompiler();
+      Map<String, CompletionType> types = importTypes(event);
       ModuleRegistry registry = context.getRegistry();
       List<Module> modules = registry.getModules();
+      String current = converter.createModule(resource);
       
       try {
-         String source = parseSource(context, text, resource, complete, line);
-         String module = converter.createModule(resource);
+         String source = parseSource(event);
          PackageLinker linker = context.getLinker();
-         Package library = linker.link(module, source, SCRIPT.name);
-         Scope scope = merger.merge(model, module);
+         Package library = linker.link(current, source, SCRIPT.name);
+         Scope scope = merger.merge(model, current);
          
          library.compile(scope);
       } catch(Exception e) {
          logger.log("Error compiling " + resource + ", parsing imports only for " + complete + " at " + line, e);
          
          try {
-            String source = parseImportsOnly(context, text, resource);
+            String source = parseImportsOnly(event);
             Executable executable = compiler.compile(source);
             executable.execute();
          }catch(Exception fatal) {
@@ -346,10 +341,30 @@ public class CompletionTypeResolver {
            types.put(name, value);
         }
       }
-      return expandFunctions(types, prefix);
+      Map<String, String> imports = parseAliases(event);
+      Set<String> keys = imports.keySet();
+      Module container = registry.getModule(current);
+      
+      for(String key : keys) {
+         Type type = container.getType(key);
+         
+         if(type != null) {
+            CompletionType value = new CompletionType(type, key);
+            types.put(key, value);
+         } else {
+            Module module = container.getModule(key);
+            
+            if(module != null) {
+               CompletionType value = new CompletionType(module, key);
+               types.put(key, value);
+            }
+         }
+      }
+      return expandFunctions(event);
    }
    
-   private Map<String, CompletionType> expandFunctions(Map<String, CompletionType> types, String prefix) {
+   private Map<String, CompletionType> expandFunctions(CompletionState state) {
+      Map<String, CompletionType> types = state.getTypes();
       Set<String> names = new HashSet<String>(types.keySet());
       
       for(String name : names) {
@@ -364,7 +379,7 @@ public class CompletionTypeResolver {
             if(constraint != null) {
                Signature signature = function.getSignature();
                List<String> parameters = signature.getNames();
-               CompletionType match = resolveType(types, constraint);
+               CompletionType match = resolveType(state, constraint);
                int count = parameters.size();
                
                if(match != null) {
@@ -378,7 +393,7 @@ public class CompletionTypeResolver {
             Type constraint = property.getConstraint();
             
             if(constraint != null) {
-               CompletionType match = resolveType(types, constraint);
+               CompletionType match = resolveType(state, constraint);
                
                if(match != null) {
                   types.put(key, match);
@@ -390,7 +405,8 @@ public class CompletionTypeResolver {
       return types;
    }
    
-   private CompletionType resolveType(Map<String, CompletionType> types, Type constraint) {
+   private CompletionType resolveType(CompletionState state, Type constraint) {
+      Map<String, CompletionType> types = state.getTypes();
       String name = constraint.getName();
       CompletionType match = types.get(name);
    
@@ -412,8 +428,9 @@ public class CompletionTypeResolver {
       return match;
    }
    
-   private Map<String, CompletionType> importTypes(Context context, String resource, String prefix) {
-      Map<String, CompletionType> types = new HashMap<String, CompletionType>();
+   private Map<String, CompletionType> importTypes(CompletionState state) {
+      Map<String, CompletionType> types = state.getTypes();
+      String resource = state.getResource();
       Set<String> names = new HashSet<String>();
       
       for(Class real : DEFAULT_TYPES) {
@@ -421,6 +438,7 @@ public class CompletionTypeResolver {
          names.add(name);
       }
       try {
+         Context context = state.getContext();
          TypeLoader loader = context.getLoader();
          int require = names.size();
          int actual = cache.size();
@@ -443,12 +461,36 @@ public class CompletionTypeResolver {
       return types;
    }
    
-   private String parseSource(Context context, String text, String resource, String complete, int line) {
-      StringBuilder builder = new StringBuilder();
-      String lines[] = text.split("\\r?\\n");
+   private Map<String, String> parseAliases(CompletionState state) {
+      Map<String, String> imports = new HashMap<String, String>();
+      List<String> lines = state.getLines();
+      Pattern pattern = Pattern.compile("^import\\s+(.*)\\s+as\\s+(.*);.*");
 
-      for(int i = 0; i < lines.length; i++){
-         String token = lines[i];
+      for(String line : lines) {
+         String token = line.trim();
+        
+         if(token.startsWith("import ")) {
+            Matcher matcher = pattern.matcher(token);
+            
+            if(matcher.matches()) {
+               String type = matcher.group(1);
+               String name = matcher.group(2);
+               
+               imports.put(name, type);
+            }
+         }
+      }
+      return imports;
+   }
+   
+   private String parseSource(CompletionState state) {
+      StringBuilder builder = new StringBuilder();
+      List<String> lines = state.getLines();
+      int length = lines.size();
+      int line = state.getLine();
+      
+      for(int i = 0; i < length; i++){
+         String token = lines.get(i);
          
          if(i != line) {
             builder.append(token);
@@ -460,10 +502,10 @@ public class CompletionTypeResolver {
       return builder.toString();
    }
    
-   private String parseImportsOnly(Context context, String text, String resource) {
+   private String parseImportsOnly(CompletionState state) {
       List<String> imports = new ArrayList<String>();
       StringBuilder builder = new StringBuilder();
-      String lines[] = text.split("\\r?\\n");
+      List<String> lines = state.getLines();
       Pattern pattern = Pattern.compile("^import (.*);.*");
 
       for(String line : lines) {

@@ -25,8 +25,10 @@ public class CompletionExpressionParser {
       this.logger = logger;
    }
 
-   public CompletionExpression parse(Map<String, CompletionType> types, CompletionContext context, String complete) {
+   public CompletionExpression parse(CompletionState event, CompletionContext context) {
       Set<String> tokens = new HashSet<String>();
+      Map<String, CompletionType> types = event.getTypes();
+      String complete = event.getComplete();
       String trim = complete.trim();
       
       if(trim.endsWith(".")) {
