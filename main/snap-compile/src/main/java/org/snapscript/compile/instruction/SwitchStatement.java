@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction;
 
+import static org.snapscript.compile.instruction.condition.RelationalOperator.EQUALS;
+
 import org.snapscript.core.Compilation;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
@@ -61,8 +63,7 @@ public class SwitchStatement implements Compilation {
       
       @Override
       public Result execute(Scope scope) throws Exception {
-         Value value = condition.evaluate(scope, null);
-         Object left = value.getValue();
+         Value left = condition.evaluate(scope, null);
          
          for(int i = 0; i < cases.length; i++){
             Evaluation evaluation = cases[i].getEvaluation();
@@ -79,10 +80,11 @@ public class SwitchStatement implements Compilation {
                }
                return ResultType.getNormal();
             }
-            Value other = evaluation.evaluate(scope, null);
-            Object right = other.getValue();
-   
-            if(left.equals(right)) {
+            Value right = evaluation.evaluate(scope, null);
+            Value value = EQUALS.operate(left, right);
+            Boolean match = value.getBoolean();
+            
+            if(match.booleanValue()) {
                for(int j = i; j < cases.length; j++) {
                   Statement statement = cases[j].getStatement();
                   Result result = statement.execute(scope);
@@ -94,6 +96,7 @@ public class SwitchStatement implements Compilation {
                      return result;      
                   }
                }   
+               return ResultType.getNormal();
             }  
          }
          return ResultType.getNormal();
