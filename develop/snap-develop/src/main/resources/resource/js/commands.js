@@ -77,15 +77,20 @@ function deleteFile(resourceDetails) {
         resourceDetails = editorData.resource;
     }
     if (resourceDetails != null) {
-        var message = JSON.stringify({
-            project: document.title,
-            resource: resourceDetails.filePath
-        });
-        clearConsole();
-        socket.send("DELETE:" + message);
-        if (editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) {
-            resetEditor();
-        }
+        var editorData = loadEditor();
+        var editorResource = editorData.resource;
+        var message = "Delete resource " + editorResource.filePath;
+        createConfirmAlert("Delete File", message, "Delete", "Cancel", function () {
+            var message = JSON.stringify({
+                project: document.title,
+                resource: resourceDetails.filePath
+            });
+            clearConsole();
+            socket.send("DELETE:" + message);
+            if (editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) {
+                resetEditor();
+            }
+        }, function () { });
     }
 }
 function deleteDirectory(resourceDetails) {

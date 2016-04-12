@@ -83,16 +83,24 @@ function deleteFile(resourceDetails) {
       resourceDetails = editorData.resource;
    }
    if(resourceDetails != null) {
-      var message = JSON.stringify({
-         project : document.title,
-         resource : resourceDetails.filePath
-      });
-      clearConsole();
-      socket.send("DELETE:" + message);
+      var editorData = loadEditor();
+      var editorResource = editorData.resource;
+      var message = "Delete resource " + editorResource.filePath;
       
-      if(editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) { // delete focused file
-         resetEditor();
-      }
+      createConfirmAlert("Delete File", message, "Delete", "Cancel", 
+            function(){
+               var message = JSON.stringify({
+                  project : document.title,
+                  resource : resourceDetails.filePath
+               });
+               clearConsole();
+               socket.send("DELETE:" + message);
+               
+               if(editorData.resource != null && editorData.resource.resourcePath == resourceDetails.resourcePath) { // delete focused file
+                  resetEditor();
+               }
+            },
+            function(){});
    }
 } 
 

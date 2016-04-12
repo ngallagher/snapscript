@@ -30,7 +30,7 @@ function openTreeFile(resourcePath, afterLoad) {
          if(isEditorChanged()) {
             var editorData = loadEditor();
             var editorResource = editorData.resource;
-            var message = "Resource " + editorResource.fileName + " has changed";
+            var message = "Save resource " + editorResource.filePath;
             
             createConfirmAlert("File Changed", message, "Save", "Ignore", 
                   function(){
