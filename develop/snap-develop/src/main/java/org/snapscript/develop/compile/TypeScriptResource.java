@@ -1,4 +1,4 @@
-package org.snapscript.develop.typescript;
+package org.snapscript.develop.compile;
 
 import java.io.File;
 import java.io.IOException;

@@ -10,6 +10,10 @@
     <constructor-arg ref="Workspace" />
   </bean>
 
+  <bean id="ConfigurationClassLoader" class="org.snapscript.develop.ConfigurationClassLoader">
+    <constructor-arg ref="Workspace" />
+  </bean>
+
   <bean id="ConsoleLogger" class="org.snapscript.agent.ConsoleLogger">
     <constructor-arg value="${verbose}" />
   </bean>
@@ -72,25 +76,26 @@
     <constructor-arg value=".vm" />
   </bean>
 
-  <bean id="TypeScriptCompiler" class="org.snapscript.develop.typescript.TypeScriptCompiler">
+  <bean id="TypeScriptCompiler" class="org.snapscript.develop.compile.TypeScriptCompiler">
     <constructor-arg value="src/main/typescript/tsc.js" />
-    <constructor-arg value="C:/Program Files/nodejs/node.exe" />    
+    <constructor-arg value="C:/Program Files/nodejs/node.exe" />
   </bean>
-  
-  <bean id="TypeScriptResource" class="org.snapscript.develop.typescript.TypeScriptResource">
+
+  <bean id="TypeScriptResource" class="org.snapscript.develop.compile.TypeScriptResource">
     <constructor-arg ref="TypeScriptCompiler" />
-    <constructor-arg ref="FileMatcher"/>
+    <constructor-arg ref="FileMatcher" />
     <constructor-arg value="src/main/resources/resource/ts" />
     <constructor-arg>
-        <list>
-            <value>src/main/resources/resource/js</value>
-            <value>target/classes/resource/js</value>            
-        </list>
-    </constructor-arg>     
-  </bean>  
+      <list>
+        <value>src/main/resources/resource/js</value>
+        <value>target/classes/resource/js</value>
+      </list>
+    </constructor-arg>
+  </bean>
 
   <bean id="CompletionResource" class="org.snapscript.develop.complete.CompletionResource">
     <constructor-arg ref="ProjectBuilder" />
+    <constructor-arg ref="ConfigurationClassLoader" />
     <constructor-arg ref="ConsoleLogger" />
   </bean>
 

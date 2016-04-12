@@ -1,13 +1,12 @@
 package org.snapscript.develop.complete;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.Executor;
 
-import org.snapscript.common.ThreadPool;
 import org.snapscript.compile.Compiler;
 import org.snapscript.compile.StoreContext;
 import org.snapscript.compile.StringCompiler;
@@ -34,12 +33,12 @@ public class CompletionState {
    private final String prefix;
    private final int line;
    
-   public CompletionState(ThreadPool pool, List<String> lines, File root, String source, String resource, String prefix, String complete, int line) {
+   public CompletionState(Executor executor, List<String> lines, File root, String source, String resource, String prefix, String complete, int line) {
       this.types = new HashMap<String, CompletionType>();
       this.tokens = new TreeMap<String, String>();
       this.model = new EmptyModel();
       this.store = new FileStore(root);
-      this.context = new StoreContext(store, pool);
+      this.context = new StoreContext(store, executor);
       this.compiler = new StringCompiler(context);
       this.merger = new ScopeMerger(context);
       this.resource = resource;

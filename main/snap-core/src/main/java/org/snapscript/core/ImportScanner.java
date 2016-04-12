@@ -33,7 +33,7 @@ public class ImportScanner {
    private final Map<Object, String> names;
    private final Set<String> failures;
    private final String[] prefixes;
-  
+   
    public ImportScanner() {
       this(DEFAULTS);
    }
@@ -144,7 +144,7 @@ public class ImportScanner {
    
    private Class loadType(String name) {
       try {
-         Class result = Class.forName(name);
+         Class result = ImportLoader.getClass(name);
 
          if(result != null) {
             types.put(name, result);
@@ -157,7 +157,7 @@ public class ImportScanner {
    
    private Package loadPackage(String name) {
       try {
-         Package result = Package.getPackage(name);
+         Package result = ImportLoader.getPackage(name);
          
          if(result != null) {
             packages.put(name, result);

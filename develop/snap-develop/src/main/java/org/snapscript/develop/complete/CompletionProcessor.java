@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.snapscript.agent.ConsoleLogger;
-import org.snapscript.common.ThreadPool;
+import org.snapscript.develop.ConfigurationClassLoader;
 import org.snapscript.develop.http.project.Project;
 
 public class CompletionProcessor {
    
    private final CompletionMatcherBuilder builder;
-   private final ThreadPool pool;
+   private final CompletionThreadPool pool;
    
-   public CompletionProcessor(ConsoleLogger logger) {
+   public CompletionProcessor(ConfigurationClassLoader loader, ConsoleLogger logger) {
       this.builder = new CompletionMatcherBuilder(logger);
-      this.pool = new ThreadPool(6);
+      this.pool = new CompletionThreadPool(loader, 6);
    }
 
    public Map<String, String> createTokens(CompletionRequest request, Project project) {
