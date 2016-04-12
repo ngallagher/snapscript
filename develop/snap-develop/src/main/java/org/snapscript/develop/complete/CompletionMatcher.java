@@ -1,18 +1,17 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionToken.CLASS;
-import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
-import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
-import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
-import static org.snapscript.develop.complete.CompletionToken.MODULE;
-import static org.snapscript.develop.complete.CompletionToken.TRAIT;
-import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
+import static org.snapscript.develop.complete.HintToken.CLASS;
+import static org.snapscript.develop.complete.HintToken.CONSTANT;
+import static org.snapscript.develop.complete.HintToken.ENUMERATION;
+import static org.snapscript.develop.complete.HintToken.FUNCTION;
+import static org.snapscript.develop.complete.HintToken.MODULE;
+import static org.snapscript.develop.complete.HintToken.TRAIT;
+import static org.snapscript.develop.complete.HintToken.VARIABLE;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.core.Function;
@@ -26,38 +25,38 @@ import org.snapscript.parse.GrammarResolver;
 
 public class CompletionMatcher {
    
-   private final CompletionContextExtractor extractor;
-   private final CompletionExpressionParser parser;
-   private final CompletionTypeResolver resolver;
+   private final SourceContextExtractor extractor;
+   private final UserExpressionParser parser;
+   private final TypeNodeResolver resolver;
    private final PathConverter converter;
    private final ConsoleLogger logger;
    
    public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConsoleLogger logger) {
-      this.extractor = new CompletionContextExtractor(resolver, indexer);
-      this.parser = new CompletionExpressionParser(logger);
-      this.resolver = new CompletionTypeResolver(logger);
+      this.extractor = new SourceContextExtractor(resolver, indexer);
+      this.parser = new UserExpressionParser(logger);
+      this.resolver = new TypeNodeResolver(logger);
       this.converter = new PathConverter();
       this.logger = logger;
    }
    
-   public Map<String, String> findTokens(CompletionState state) {
+   public Map<String, String> findTokens(Completion state) {
       Map<String, String> resultTokens = state.getTokens();
       long start = System.currentTimeMillis();
       
       try {
          String resource = state.getResource();
-         Map<String, CompletionType> types = resolver.resolveTypes(state);
-         CompletionContext context = extractor.extractContext(state);
-         CompletionExpression expression = parser.parse(state, context);
-         CompletionType type = expression.getConstraint();
+         Map<String, TypeNode> types = resolver.resolveTypes(state);
+         SourceContext context = extractor.extractContext(state);
+         UserExpression expression = parser.parse(state, context);
+         TypeNode type = expression.getConstraint();
          String module = converter.createModule(resource);
          
          if(type != null) {
             Map<String, String> availableTokens = extractTypeTokens(state, type, expression);
             resultTokens.putAll(availableTokens);
          }
-         CompletionType thisType = context.getType();
-         CompletionType thisModule = types.get(module);
+         TypeNode thisType = context.getType();
+         TypeNode thisModule = types.get(module);
          Map<String, String> thisTokens = context.getTokens();
          
          if(thisType != null) {
@@ -80,10 +79,10 @@ public class CompletionMatcher {
       }
    }
    
-   private Map<String, String> extractTypeTokens(CompletionState state, CompletionType type, CompletionExpression complete) {
+   private Map<String, String> extractTypeTokens(Completion state, TypeNode type, UserExpression complete) {
       String prefix = state.getPrefix();
       Map<String, String> strings = new HashMap<String,String>();
-      CompletionFilter filter = new CompletionFilter(complete, prefix);
+      TokenFilter filter = new TokenFilter(complete, prefix);
       List<Function> functions = type.getFunctions();
       List<Property> properties = type.getProperties();
       
@@ -130,15 +129,15 @@ public class CompletionMatcher {
       return strings;
    }
    
-   private Map<String, String> extractGlobalTokens(CompletionState state, CompletionExpression complete) {
+   private Map<String, String> extractGlobalTokens(Completion state, UserExpression complete) {
       String prefix = state.getPrefix();
-      Map<String, CompletionType> types = state.getTypes();
+      Map<String, TypeNode> types = state.getTypes();
       Map<String, String> strings = new HashMap<String,String>();
-      CompletionFilter filter = new CompletionFilter(complete, prefix);
+      TokenFilter filter = new TokenFilter(complete, prefix);
       Set<String> names = types.keySet();
       
       for(String key : names) {
-         CompletionType type = types.get(key);
+         TypeNode type = types.get(key);
          String name = type.getName();
          Class real = type.getType();
          

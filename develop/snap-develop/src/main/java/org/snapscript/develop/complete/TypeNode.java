@@ -10,17 +10,17 @@ import org.snapscript.core.Property;
 import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
 
-public class CompletionType {
+public class TypeNode {
 
    private final Object value;
    private final String name;
    
-   public CompletionType(Type value, String name) {
+   public TypeNode(Type value, String name) {
       this.value = value;
       this.name = name;
    }
    
-   public CompletionType(Module value, String name) {
+   public TypeNode(Module value, String name) {
       this.value = value;
       this.name = name;
    }

@@ -1,20 +1,20 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionToken.CLASS;
-import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
-import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
-import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
-import static org.snapscript.develop.complete.CompletionToken.MODULE;
-import static org.snapscript.develop.complete.CompletionToken.STRING;
-import static org.snapscript.develop.complete.CompletionToken.TOKEN;
-import static org.snapscript.develop.complete.CompletionToken.TRAIT;
-import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
+import static org.snapscript.develop.complete.HintToken.CLASS;
+import static org.snapscript.develop.complete.HintToken.CONSTANT;
+import static org.snapscript.develop.complete.HintToken.ENUMERATION;
+import static org.snapscript.develop.complete.HintToken.FUNCTION;
+import static org.snapscript.develop.complete.HintToken.MODULE;
+import static org.snapscript.develop.complete.HintToken.STRING;
+import static org.snapscript.develop.complete.HintToken.TOKEN;
+import static org.snapscript.develop.complete.HintToken.TRAIT;
+import static org.snapscript.develop.complete.HintToken.VARIABLE;
 
 import java.util.List;
 
 import org.snapscript.parse.Token;
 
-public class CompletionTokenProcessor {
+public class HintTokenProcessor {
    
    public static String getType(List<Token> tokens, int i) {
       if(isClass(tokens, i)) {

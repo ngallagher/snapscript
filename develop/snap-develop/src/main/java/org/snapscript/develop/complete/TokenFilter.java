@@ -2,12 +2,12 @@ package org.snapscript.develop.complete;
 
 import java.util.Set;
 
-public class CompletionFilter {
+public class TokenFilter {
 
-   private final CompletionExpression  complete;
+   private final UserExpression  complete;
    private final String prefix;
    
-   public CompletionFilter(CompletionExpression complete, String prefix) {
+   public TokenFilter(UserExpression complete, String prefix) {
       this.complete = complete;
       this.prefix = prefix;
    }

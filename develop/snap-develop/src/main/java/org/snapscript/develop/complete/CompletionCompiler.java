@@ -10,7 +10,7 @@ import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 import org.snapscript.parse.Syntax;
 
-public class CompletionMatcherBuilder {
+public class CompletionCompiler {
    
    private final Map<String, Grammar> grammars;
    private final GrammarCompiler compiler;
@@ -18,7 +18,7 @@ public class CompletionMatcherBuilder {
    private final GrammarIndexer indexer;
    private final CompletionMatcher matcher;
 
-   public CompletionMatcherBuilder(ConsoleLogger logger) {
+   public CompletionCompiler(ConsoleLogger logger) {
       this.grammars = new LinkedHashMap<String, Grammar>();      
       this.resolver = new GrammarResolver(grammars);
       this.indexer = new GrammarIndexer();

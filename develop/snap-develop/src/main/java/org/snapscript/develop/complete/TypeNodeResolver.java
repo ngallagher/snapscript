@@ -132,7 +132,7 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
-public class CompletionTypeResolver {
+public class TypeNodeResolver {
    
    private static final Class[] DEFAULT_TYPES = new Class[] {
       String.class,
@@ -273,19 +273,19 @@ public class CompletionTypeResolver {
       EOFException.class
    };
 
-   private final Map<String, CompletionType> cache;
+   private final Map<String, TypeNode> cache;
    private final PrimitivePromoter promoter;
    private final PathConverter converter;
    private final ConsoleLogger logger;
    
-   public CompletionTypeResolver(ConsoleLogger logger) {
-      this.cache = new ConcurrentHashMap<String, CompletionType>();
+   public TypeNodeResolver(ConsoleLogger logger) {
+      this.cache = new ConcurrentHashMap<String, TypeNode>();
       this.promoter = new PrimitivePromoter();
       this.converter = new PathConverter();
       this.logger = logger;
    }
    
-   public Map<String, CompletionType> resolveTypes(CompletionState event) {
+   public Map<String, TypeNode> resolveTypes(Completion event) {
       int line = event.getLine();
       Model model = event.getModel();
       String complete = event.getComplete();
@@ -293,7 +293,7 @@ public class CompletionTypeResolver {
       String resource = event.getResource();
       ScopeMerger merger = event.getMerger();
       Compiler compiler = event.getCompiler();
-      Map<String, CompletionType> types = importTypes(event);
+      Map<String, TypeNode> types = importTypes(event);
       ModuleRegistry registry = context.getRegistry();
       List<Module> modules = registry.getModules();
       String current = converter.createModule(resource);
@@ -324,7 +324,7 @@ public class CompletionTypeResolver {
            String name = type.getName();
 
            if(name != null) {
-              CompletionType value = new CompletionType(type, name);
+              TypeNode value = new TypeNode(type, name);
               types.put(name, value);
            }
         }
@@ -336,7 +336,7 @@ public class CompletionTypeResolver {
            if(matcher.matches()) {
               name = matcher.group(1);
            }
-           CompletionType value = new CompletionType(imported, name);
+           TypeNode value = new TypeNode(imported, name);
            types.put(module, value);
            types.put(name, value);
         }
@@ -349,13 +349,13 @@ public class CompletionTypeResolver {
          Type type = container.getType(key);
          
          if(type != null) {
-            CompletionType value = new CompletionType(type, key);
+            TypeNode value = new TypeNode(type, key);
             types.put(key, value);
          } else {
             Module module = container.getModule(key);
             
             if(module != null) {
-               CompletionType value = new CompletionType(module, key);
+               TypeNode value = new TypeNode(module, key);
                types.put(key, value);
             }
          }
@@ -363,12 +363,12 @@ public class CompletionTypeResolver {
       return expandFunctions(event);
    }
    
-   private Map<String, CompletionType> expandFunctions(CompletionState state) {
-      Map<String, CompletionType> types = state.getTypes();
+   private Map<String, TypeNode> expandFunctions(Completion state) {
+      Map<String, TypeNode> types = state.getTypes();
       Set<String> names = new HashSet<String>(types.keySet());
       
       for(String name : names) {
-         CompletionType type = types.get(name);
+         TypeNode type = types.get(name);
          List<Function> functions = type.getFunctions();
          List<Property> properties = type.getProperties();
          
@@ -379,7 +379,7 @@ public class CompletionTypeResolver {
             if(constraint != null) {
                Signature signature = function.getSignature();
                List<String> parameters = signature.getNames();
-               CompletionType match = resolveType(state, constraint);
+               TypeNode match = resolveType(state, constraint);
                int count = parameters.size();
                
                if(match != null) {
@@ -393,7 +393,7 @@ public class CompletionTypeResolver {
             Type constraint = property.getConstraint();
             
             if(constraint != null) {
-               CompletionType match = resolveType(state, constraint);
+               TypeNode match = resolveType(state, constraint);
                
                if(match != null) {
                   types.put(key, match);
@@ -405,10 +405,10 @@ public class CompletionTypeResolver {
       return types;
    }
    
-   private CompletionType resolveType(CompletionState state, Type constraint) {
-      Map<String, CompletionType> types = state.getTypes();
+   private TypeNode resolveType(Completion state, Type constraint) {
+      Map<String, TypeNode> types = state.getTypes();
       String name = constraint.getName();
-      CompletionType match = types.get(name);
+      TypeNode match = types.get(name);
    
       if(match == null) {
          Class real = constraint.getType();
@@ -421,15 +421,15 @@ public class CompletionTypeResolver {
             match = types.get(identifier);
          }
          if(match == null) {
-            match = new CompletionType(constraint, name);
+            match = new TypeNode(constraint, name);
             types.put(name, match);
          }
       }
       return match;
    }
    
-   private Map<String, CompletionType> importTypes(CompletionState state) {
-      Map<String, CompletionType> types = state.getTypes();
+   private Map<String, TypeNode> importTypes(Completion state) {
+      Map<String, TypeNode> types = state.getTypes();
       String resource = state.getResource();
       Set<String> names = new HashSet<String>();
       
@@ -449,7 +449,7 @@ public class CompletionTypeResolver {
                String name = type.getName();
                
                if(name != null) {
-                  CompletionType value = new CompletionType(type, name);
+                  TypeNode value = new TypeNode(type, name);
                   cache.put(name, value);
                }
             }
@@ -461,7 +461,7 @@ public class CompletionTypeResolver {
       return types;
    }
    
-   private Map<String, String> parseAliases(CompletionState state) {
+   private Map<String, String> parseAliases(Completion state) {
       Map<String, String> imports = new HashMap<String, String>();
       List<String> lines = state.getLines();
       Pattern pattern = Pattern.compile("^import\\s+(.*)\\s+as\\s+(.*);.*");
@@ -483,7 +483,7 @@ public class CompletionTypeResolver {
       return imports;
    }
    
-   private String parseSource(CompletionState state) {
+   private String parseSource(Completion state) {
       StringBuilder builder = new StringBuilder();
       List<String> lines = state.getLines();
       int length = lines.size();
@@ -502,7 +502,7 @@ public class CompletionTypeResolver {
       return builder.toString();
    }
    
-   private String parseImportsOnly(CompletionState state) {
+   private String parseImportsOnly(Completion state) {
       List<String> imports = new ArrayList<String>();
       StringBuilder builder = new StringBuilder();
       List<String> lines = state.getLines();

@@ -11,22 +11,22 @@ import org.snapscript.develop.http.project.Project;
 
 public class CompletionProcessor {
    
-   private final CompletionMatcherBuilder builder;
-   private final CompletionThreadPool pool;
+   private final CompletionCompiler builder;
+   private final ClassPathExecutor pool;
    
    public CompletionProcessor(ConfigurationClassLoader loader, ConsoleLogger logger) {
-      this.builder = new CompletionMatcherBuilder(logger);
-      this.pool = new CompletionThreadPool(loader, 6);
+      this.builder = new CompletionCompiler(logger);
+      this.pool = new ClassPathExecutor(loader, 6);
    }
 
    public Map<String, String> createTokens(CompletionRequest request, Project project) {
       CompletionMatcher finder = builder.compile();
-      CompletionState state = createState(request, project);
+      Completion state = createState(request, project);
       
       return finder.findTokens(state);
    }
    
-   private CompletionState createState(CompletionRequest request, Project project){
+   private Completion createState(CompletionRequest request, Project project){
       String prefix = request.getPrefix();
       String source = request.getSource();
       String resource = request.getResource();
@@ -36,6 +36,6 @@ public class CompletionProcessor {
       List<String> list = Arrays.asList(lines);
       int line = request.getLine();
       
-      return new CompletionState(pool, list, root, source, resource, prefix, complete, line);
+      return new Completion(pool, list, root, source, resource, prefix, complete, line);
    }
 }

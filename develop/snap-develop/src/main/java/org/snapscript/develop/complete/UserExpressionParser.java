@@ -1,13 +1,13 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionToken.CLASS;
-import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
-import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
-import static org.snapscript.develop.complete.CompletionToken.FUNCTION;
-import static org.snapscript.develop.complete.CompletionToken.MODULE;
-import static org.snapscript.develop.complete.CompletionToken.TOKEN;
-import static org.snapscript.develop.complete.CompletionToken.TRAIT;
-import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
+import static org.snapscript.develop.complete.HintToken.CLASS;
+import static org.snapscript.develop.complete.HintToken.CONSTANT;
+import static org.snapscript.develop.complete.HintToken.ENUMERATION;
+import static org.snapscript.develop.complete.HintToken.FUNCTION;
+import static org.snapscript.develop.complete.HintToken.MODULE;
+import static org.snapscript.develop.complete.HintToken.TOKEN;
+import static org.snapscript.develop.complete.HintToken.TRAIT;
+import static org.snapscript.develop.complete.HintToken.VARIABLE;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -17,17 +17,17 @@ import java.util.regex.Pattern;
 
 import org.snapscript.agent.ConsoleLogger;
 
-public class CompletionExpressionParser {
+public class UserExpressionParser {
 
    private final ConsoleLogger logger;
    
-   public CompletionExpressionParser(ConsoleLogger logger) {
+   public UserExpressionParser(ConsoleLogger logger) {
       this.logger = logger;
    }
 
-   public CompletionExpression parse(CompletionState event, CompletionContext context) {
+   public UserExpression parse(Completion event, SourceContext context) {
       Set<String> tokens = new HashSet<String>();
-      Map<String, CompletionType> types = event.getTypes();
+      Map<String, TypeNode> types = event.getTypes();
       String complete = event.getComplete();
       String trim = complete.trim();
       
@@ -56,24 +56,24 @@ public class CompletionExpressionParser {
             tokens.add(TOKEN);
          }
       }
-      CompletionType constraint = parseHint(types, complete);
+      TypeNode constraint = parseHint(types, complete);
       
       if(constraint != null) {
          logger.log("'" + complete + "' is constrained to " + constraint);
       } else {
          logger.log("'" + complete + "' has no known constraints");
       }
-      return new CompletionExpression(complete, constraint, context, tokens);
+      return new UserExpression(complete, constraint, context, tokens);
    }
    
-   private CompletionType parseHint(Map<String, CompletionType> types, String complete) {
+   private TypeNode parseHint(Map<String, TypeNode> types, String complete) {
       ConstraintHint[] hints = ConstraintHint.values();
       
       for(ConstraintHint hint : hints) {
          String constraint = hint.parse(complete);
          
          if(constraint != null) {
-            CompletionType type = types.get(constraint);
+            TypeNode type = types.get(constraint);
             
             if(type != null){
                logger.log("match was " + constraint);

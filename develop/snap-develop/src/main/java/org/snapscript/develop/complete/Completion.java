@@ -17,9 +17,9 @@ import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.store.FileStore;
 import org.snapscript.core.store.Store;
 
-public class CompletionState {
+public class Completion {
 
-   private final Map<String, CompletionType> types;
+   private final Map<String, TypeNode> types;
    private final Map<String, String> tokens;
    private final List<String> lines;
    private final ScopeMerger merger;
@@ -33,8 +33,8 @@ public class CompletionState {
    private final String prefix;
    private final int line;
    
-   public CompletionState(Executor executor, List<String> lines, File root, String source, String resource, String prefix, String complete, int line) {
-      this.types = new HashMap<String, CompletionType>();
+   public Completion(Executor executor, List<String> lines, File root, String source, String resource, String prefix, String complete, int line) {
+      this.types = new HashMap<String, TypeNode>();
       this.tokens = new TreeMap<String, String>();
       this.model = new EmptyModel();
       this.store = new FileStore(root);
@@ -49,7 +49,7 @@ public class CompletionState {
       this.line = line;
    }
    
-   public Map<String, CompletionType> getTypes() {
+   public Map<String, TypeNode> getTypes() {
       return types;
    }
    

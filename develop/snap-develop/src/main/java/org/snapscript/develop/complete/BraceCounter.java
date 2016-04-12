@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.snapscript.common.ArrayStack;
 import org.snapscript.common.Stack;
 
-public class CompletionBraceCounter {
+public class BraceCounter {
    
    public static final String OPEN_BRACE = "{";
    public static final String CLOSE_BRACE = "}";
@@ -17,7 +17,7 @@ public class CompletionBraceCounter {
    private final Stack<BraceContext> stack;
    private final Map<String, String> global;
 
-   public CompletionBraceCounter(){
+   public BraceCounter(){
       this.global = new HashMap<String, String>();
       this.current = new AtomicReference<String>();
       this.stack = new ArrayStack<BraceContext>();

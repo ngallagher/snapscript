@@ -5,16 +5,16 @@ import java.util.concurrent.Executor;
 import org.snapscript.common.ThreadPool;
 import org.snapscript.develop.ConfigurationClassLoader;
 
-public class CompletionThreadPool implements Executor {
+public class ClassPathExecutor implements Executor {
 
    private final ConfigurationClassLoader loader;
    private final ThreadPool pool;
    
-   public CompletionThreadPool(ConfigurationClassLoader loader) {
+   public ClassPathExecutor(ConfigurationClassLoader loader) {
       this(loader, 6);
    }
    
-   public CompletionThreadPool(ConfigurationClassLoader loader, int threads) {
+   public ClassPathExecutor(ConfigurationClassLoader loader, int threads) {
       this.pool = new ThreadPool(threads);
       this.loader = loader;
    }

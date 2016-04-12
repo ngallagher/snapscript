@@ -2,25 +2,25 @@ package org.snapscript.develop.complete;
 
 import java.util.Set;
 
-public class CompletionExpression {
+public class UserExpression {
    
-   private final CompletionContext context;
-   private final CompletionType constraint;
+   private final SourceContext context;
+   private final TypeNode constraint;
    private final Set<String> tokens;
    private final String complete;
    
-   public CompletionExpression(String complete, CompletionType constraint, CompletionContext context, Set<String> tokens) {
+   public UserExpression(String complete, TypeNode constraint, SourceContext context, Set<String> tokens) {
       this.constraint = constraint;
       this.context = context;
       this.complete = complete;
       this.tokens = tokens;
    }
    
-   public CompletionContext getContext(){
+   public SourceContext getContext(){
       return context;
    }
    
-   public CompletionType getConstraint() {
+   public TypeNode getConstraint() {
       return constraint;
    }
    

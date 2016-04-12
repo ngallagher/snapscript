@@ -2,12 +2,12 @@ package org.snapscript.develop.complete;
 
 import java.util.Map;
 
-public class CompletionContext {
+public class SourceContext {
 
    private final Map<String, String> tokens;
-   private final CompletionType type;
+   private final TypeNode type;
    
-   public CompletionContext(CompletionType type, Map<String, String> tokens) {
+   public SourceContext(TypeNode type, Map<String, String> tokens) {
       this.tokens = tokens;
       this.type = type;
    }
@@ -16,7 +16,7 @@ public class CompletionContext {
       return tokens;
    }
    
-   public CompletionType getType(){
+   public TypeNode getType(){
       return type;
    }
 }

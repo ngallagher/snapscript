@@ -1,13 +1,13 @@
 package org.snapscript.develop.complete;
 
-import static org.snapscript.develop.complete.CompletionBraceCounter.CLOSE_BRACE;
-import static org.snapscript.develop.complete.CompletionBraceCounter.OPEN_BRACE;
-import static org.snapscript.develop.complete.CompletionToken.CLASS;
-import static org.snapscript.develop.complete.CompletionToken.CONSTANT;
-import static org.snapscript.develop.complete.CompletionToken.ENUMERATION;
-import static org.snapscript.develop.complete.CompletionToken.MODULE;
-import static org.snapscript.develop.complete.CompletionToken.TRAIT;
-import static org.snapscript.develop.complete.CompletionToken.VARIABLE;
+import static org.snapscript.develop.complete.BraceCounter.CLOSE_BRACE;
+import static org.snapscript.develop.complete.BraceCounter.OPEN_BRACE;
+import static org.snapscript.develop.complete.HintToken.CLASS;
+import static org.snapscript.develop.complete.HintToken.CONSTANT;
+import static org.snapscript.develop.complete.HintToken.ENUMERATION;
+import static org.snapscript.develop.complete.HintToken.MODULE;
+import static org.snapscript.develop.complete.HintToken.TRAIT;
+import static org.snapscript.develop.complete.HintToken.VARIABLE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +22,24 @@ import org.snapscript.parse.Token;
 import org.snapscript.parse.TokenIndexer;
 import org.snapscript.parse.TokenType;
 
-public class CompletionContextExtractor {
+public class SourceContextExtractor {
 
    private final SourceProcessor processor;
    private final GrammarIndexer indexer;
    
-   public CompletionContextExtractor(GrammarResolver resolver, GrammarIndexer indexer) {
+   public SourceContextExtractor(GrammarResolver resolver, GrammarIndexer indexer) {
       this.processor = new SourceProcessor(100);
       this.indexer = indexer;
    }
    
-   public CompletionContext extractContext(CompletionState event) {
-      CompletionBraceCounter counter = new CompletionBraceCounter();
+   public SourceContext extractContext(Completion state) {
+      BraceCounter counter = new BraceCounter();
       List<Token> tokens = new ArrayList<Token>();
-      Map<String, CompletionType> types = event.getTypes();
-      String source = event.getSource();
-      String resource = event.getResource();
-      String prefix = event.getPrefix();
-      int line = event.getLine();
+      Map<String, TypeNode> types = state.getTypes();
+      String source = state.getSource();
+      String resource = state.getResource();
+      String prefix = state.getPrefix();
+      int line = state.getLine();
       
       if(!source.isEmpty()) {
          TokenIndexer indexer = createIndexer(source, resource);
@@ -56,15 +56,15 @@ public class CompletionContextExtractor {
          
          if(number > line) {
             String context = counter.getType();
-            CompletionType type = types.get(context);
+            TypeNode type = types.get(context);
             Map<String, String> strings = counter.getTokens(prefix);
             
-            return new CompletionContext(type, strings);
+            return new SourceContext(type, strings);
          }
          if(text.equals(OPEN_BRACE) || text.equals(CLOSE_BRACE)) {
             counter.setBrace(text);
          }
-         String type = CompletionTokenProcessor.getType(tokens, i);
+         String type = HintTokenProcessor.getType(tokens, i);
       
          if(type.equals(CLASS) || type.equals(TRAIT) || type.equals(ENUMERATION) || type.equals(MODULE)) {
             counter.setType(text);
@@ -79,7 +79,7 @@ public class CompletionContextExtractor {
          }
       }
       Map<String, String> strings = counter.getTokens(prefix);
-      return new CompletionContext(null, strings);
+      return new SourceContext(null, strings);
    }
    
    private TokenIndexer createIndexer(String text, String resource) {
