@@ -1,38 +1,40 @@
 <project>
   <environment>
-      <variable name="TEST">${java.home}</variable>
-      <variable name="PROJECT_ROOT">C:\Work\development\github\snapscript\develop\snap-develop\work</variable>
-  </environment>    
+    <variable name="PROJECT_ROOT">C:\Work\development\github\snapscript\develop\snap-develop\work</variable>
+  </environment>
   <arguments>
-      <argument>-Xmx200m</argument>
-      <argument>-Xms10m</argument>   
-      <argument>-XX:+UnlockCommercialFeatures</argument>
-      <argument>-XX:+FlightRecorder</argument>
+    <argument>-Xmx200m</argument>
+    <argument>-Xms10m</argument>
+    <argument>-XX:+UnlockCommercialFeatures</argument>
+    <argument>-XX:+FlightRecorder</argument>
   </arguments>
   <dependencies validate='true'>
-    <!-- dependency>${user.dir}\..\..\**\target\classes</dependency--> <!-- ** is recursive -->
-    <dependency>${user.home}\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\stax\stax-api\1.0.1\*-1.0.1.jar</dependency> <!-- * is a single file or directory -->
-    <dependency>${user.home}\.m2\repository\stax\stax\1.2.0\*-1.2.0.jar</dependency>
-    <dependency>${user.home}\.m2\repository\xpp3\xpp3\1.1.3.3\xpp3-1.1.3.3.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\simpleframework\simple-http\6.0.1\simple-http-6.0.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\simpleframework\simple-common\6.0.1\simple-common-6.0.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\simpleframework\simple-transport\6.0.1\simple-transport-6.0.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-core\4.2.1.RELEASE\spring-core-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-beans\4.2.1.RELEASE\spring-beans-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-context\4.2.1.RELEASE\spring-context-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-aop\4.2.1.RELEASE\spring-aop-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-expression\4.2.1.RELEASE\spring-expression-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\springframework\spring-context-support\4.2.1.RELEASE\spring-context-support-4.2.1.RELEASE.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\slf4j\slf4j-api\1.6.1\slf4j-api-1.6.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\slf4j\slf4j-log4j12\1.6.1\slf4j-log4j12-1.6.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\log4j\log4j\1.2.16\log4j-1.2.16.jar</dependency>
-    <dependency>${user.home}\.m2\repository\log4j\apache-log4j-extras\1.1\apache-log4j-extras-1.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\org\apache\velocity\velocity\1.7\velocity-1.7.jar</dependency>
-    <dependency>${user.home}\.m2\repository\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar</dependency>
-    <dependency>${user.home}\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar</dependency>
-    <dependency>${user.home}\.m2\repository\com\google\code\gson\gson\2.5\gson-2.5.jar</dependency>
+    <dependency pattern="${user.home}\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\stax\stax-api\1.0.1\*-1.0.1.jar"/> 
+    <dependency pattern="${user.home}\.m2\repository\stax\stax\1.2.0\*-1.2.0.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\xpp3\xpp3\1.1.3.3\xpp3-1.1.3.3.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\simpleframework\simple-http\6.0.1\simple-http-6.0.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\simpleframework\simple-common\6.0.1\simple-common-6.0.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\simpleframework\simple-transport\6.0.1\simple-transport-6.0.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-core\4.2.1.RELEASE\spring-core-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-beans\4.2.1.RELEASE\spring-beans-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-context\4.2.1.RELEASE\spring-context-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-aop\4.2.1.RELEASE\spring-aop-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-expression\4.2.1.RELEASE\spring-expression-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\springframework\spring-context-support\4.2.1.RELEASE\spring-context-support-4.2.1.RELEASE.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\slf4j\slf4j-api\1.6.1\slf4j-api-1.6.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\slf4j\slf4j-log4j12\1.6.1\slf4j-log4j12-1.6.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\log4j\log4j\1.2.16\log4j-1.2.16.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\log4j\apache-log4j-extras\1.1\apache-log4j-extras-1.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\org\apache\velocity\velocity\1.7\velocity-1.7.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar"/>
+    <dependency pattern="${user.home}\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar"/>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.5</version>
+    </dependency>
   </dependencies>
 </project>
