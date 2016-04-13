@@ -295,7 +295,6 @@ public class TypeNodeResolver {
       Compiler compiler = event.getCompiler();
       Map<String, TypeNode> types = importTypes(event);
       ModuleRegistry registry = context.getRegistry();
-      List<Module> modules = registry.getModules();
       String current = converter.createModule(resource);
       
       try {
@@ -316,6 +315,8 @@ public class TypeNodeResolver {
             logger.log("Error compiling imports for " + resource, fatal);
          }
       }
+      List<Module> modules = registry.getModules();
+      
       for(Module imported : modules) {
         List<Type> accessible = imported.getTypes();
         String module = imported.getName();
