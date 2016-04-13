@@ -28,6 +28,7 @@ import org.snapscript.agent.event.socket.SocketEventServer;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.common.ThreadBuilder;
+import org.snapscript.develop.configuration.ProcessConfiguration;
 
 public class ProcessPool {
 

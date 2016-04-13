@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.ProcessEventChannel;
+import org.snapscript.develop.configuration.ProcessConfiguration;
 import org.snapscript.develop.http.loader.RemoteProcessBuilder;
 import org.snapscript.develop.http.loader.RemoteProcessLauncher;
 

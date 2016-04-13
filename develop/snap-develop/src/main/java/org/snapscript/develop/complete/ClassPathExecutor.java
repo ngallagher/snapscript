@@ -3,7 +3,7 @@ package org.snapscript.develop.complete;
 import java.util.concurrent.Executor;
 
 import org.snapscript.common.ThreadPool;
-import org.snapscript.develop.ConfigurationClassLoader;
+import org.snapscript.develop.configuration.ConfigurationClassLoader;
 
 public class ClassPathExecutor implements Executor {
 

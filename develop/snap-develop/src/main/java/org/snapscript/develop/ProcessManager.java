@@ -13,15 +13,17 @@ import org.snapscript.develop.command.BreakpointsCommand;
 import org.snapscript.develop.command.BrowseCommand;
 import org.snapscript.develop.command.ExecuteCommand;
 import org.snapscript.develop.command.StepCommand;
+import org.snapscript.develop.configuration.ProcessConfiguration;
+import org.snapscript.develop.configuration.ProcessConfigurationLoader;
 
 public class ProcessManager {
    
    private final Map<String, ProcessConnection> connections; // active processes
    private final ProcessConfiguration configuration;
-   private final ConfigurationLoader loader;
+   private final ProcessConfigurationLoader loader;
    private final ProcessPool pool;
 
-   public ProcessManager(ConfigurationLoader loader, ConsoleLogger logger, Workspace workspace, int port, int capacity) throws Exception {
+   public ProcessManager(ProcessConfigurationLoader loader, ConsoleLogger logger, Workspace workspace, int port, int capacity) throws Exception {
       this.connections = new ConcurrentHashMap<String, ProcessConnection>();
       this.configuration = new ProcessConfiguration();
       this.pool = new ProcessPool(configuration, logger, workspace, port, capacity);

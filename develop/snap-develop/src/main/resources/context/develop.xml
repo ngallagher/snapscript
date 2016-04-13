@@ -6,12 +6,17 @@
     <constructor-arg value="${directory}" />
   </bean>
 
-  <bean id="ConfigurationLoader" class="org.snapscript.develop.ConfigurationLoader">
+  <bean id="ConfigurationReader" class="org.snapscript.develop.configuration.ConfigurationReader">
+    <constructor-arg ref="ConsoleLogger" />      
     <constructor-arg ref="Workspace" />
   </bean>
 
-  <bean id="ConfigurationClassLoader" class="org.snapscript.develop.ConfigurationClassLoader">
-    <constructor-arg ref="Workspace" />
+  <bean id="ConfigurationClassLoader" class="org.snapscript.develop.configuration.ConfigurationClassLoader">
+    <constructor-arg ref="ConfigurationReader" />
+  </bean>
+
+  <bean id="ProcessConfigurationLoader" class="org.snapscript.develop.configuration.ProcessConfigurationLoader">
+    <constructor-arg ref="ConfigurationReader" />
   </bean>
 
   <bean id="ConsoleLogger" class="org.snapscript.agent.ConsoleLogger">
@@ -19,7 +24,7 @@
   </bean>
 
   <bean id="ProcessManager" class="org.snapscript.develop.ProcessManager">
-    <constructor-arg ref="ConfigurationLoader" />
+    <constructor-arg ref="ProcessConfigurationLoader" />
     <constructor-arg ref="ConsoleLogger" />
     <constructor-arg ref="Workspace" />
     <constructor-arg value="${agent-port}" />

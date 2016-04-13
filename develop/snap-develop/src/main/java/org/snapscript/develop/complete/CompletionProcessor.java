@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.snapscript.agent.ConsoleLogger;
-import org.snapscript.develop.ConfigurationClassLoader;
+import org.snapscript.develop.configuration.ConfigurationClassLoader;
 import org.snapscript.develop.http.project.Project;
 
 public class CompletionProcessor {

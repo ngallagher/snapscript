@@ -1,4 +1,4 @@
-package org.snapscript.develop;
+package org.snapscript.develop.configuration;
 
 import java.io.File;
 import java.net.URL;
@@ -8,19 +8,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ConfigurationClassLoader {
-
-   private static final String CONFIGURATION_FILE = ".project";
    
    private final AtomicReference<ClassLoader> reference;
    private final ConfigurationReader reader;
    
-   public ConfigurationClassLoader(Workspace workspace) {
-      this(workspace, CONFIGURATION_FILE);
-   }
-   
-   public ConfigurationClassLoader(Workspace workspace, String name) {
-      this.reader = new ConfigurationReader(workspace, name);
+   public ConfigurationClassLoader(ConfigurationReader reader) {
       this.reference = new AtomicReference<ClassLoader>();
+      this.reader = reader;
    }
    
    public Class loadClass(String name) {

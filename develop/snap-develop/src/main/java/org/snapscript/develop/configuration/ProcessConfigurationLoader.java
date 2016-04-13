@@ -1,26 +1,19 @@
-package org.snapscript.develop;
+package org.snapscript.develop.configuration;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.snapscript.develop.common.FilePatternScanner;
+public class ProcessConfigurationLoader {
 
-public class ConfigurationLoader {
-
-   private static final String CONFIGURATION_FILE = ".project";
    private static final String JAVA_CLASS_PATH = "java.class.path";
    private static final String PATH_SEPARATOR = "path.separator";
    
    private final ConfigurationReader reader;
    
-   public ConfigurationLoader(Workspace workspace) {
-      this(workspace, CONFIGURATION_FILE);
-   }
-   
-   public ConfigurationLoader(Workspace workspace, String name) {
-      this.reader = new ConfigurationReader(workspace, name);
+   public ProcessConfigurationLoader(ConfigurationReader reader) {
+      this.reader = reader;
    }
 
    public void load(ProcessConfiguration configuration) {
@@ -41,7 +34,7 @@ public class ConfigurationLoader {
 
             if(dependencies != null) {
                for(File dependency : dependencies) {
-                  if(data.isValidate() && !dependency.exists()) {
+                  if(!dependency.exists()) {
                      throw new IllegalStateException("Could not find dependency " + dependency);
                   }
                   String normal = dependency.getCanonicalPath();

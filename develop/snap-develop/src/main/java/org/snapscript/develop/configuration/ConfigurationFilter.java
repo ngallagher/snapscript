@@ -1,4 +1,4 @@
-package org.snapscript.develop;
+package org.snapscript.develop.configuration;
 
 import org.simpleframework.xml.filter.Filter;
 

@@ -7,7 +7,7 @@ import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.snapscript.agent.ConsoleLogger;
-import org.snapscript.develop.ConfigurationClassLoader;
+import org.snapscript.develop.configuration.ConfigurationClassLoader;
 import org.snapscript.develop.http.project.Project;
 import org.snapscript.develop.http.project.ProjectBuilder;
 import org.snapscript.develop.http.resource.Resource;

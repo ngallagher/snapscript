@@ -1,4 +1,4 @@
-package org.snapscript.develop;
+package org.snapscript.develop.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
