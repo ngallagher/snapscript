@@ -37,11 +37,12 @@ public class ConsoleTransferListener extends AbstractTransferListener {
 
       for (Map.Entry<TransferResource, Long> entry : downloads.entrySet()) {
          TransferResource progress = entry.getKey();
+         String repository = progress.getRepositoryUrl();
          String name = progress.getResourceName();
          long total = progress.getContentLength();
          long complete = entry.getValue().longValue();
 
-         logger.log(name + ": " + getStatus(complete, total));;
+         logger.log(repository + name + ": " + getStatus(complete, total));;
       }
 
    }
