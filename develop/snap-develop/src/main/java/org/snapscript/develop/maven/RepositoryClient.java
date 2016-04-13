@@ -22,6 +22,8 @@ import org.sonatype.aether.util.artifact.JavaScopes;
 import org.sonatype.aether.util.filter.DependencyFilterUtils;
 
 public class RepositoryClient {
+   
+   private static final String EXTENSION_TYPE = "jar";
 
    private final List<RemoteRepository> repositories;
    private final Map<String, List<File>> cache;
@@ -50,7 +52,7 @@ public class RepositoryClient {
    
    private List<File> download(String groupId, String artifactId, String version) throws Exception {
       List<File> files = new ArrayList<File>();
-      Artifact artifact = new DefaultArtifact(groupId, artifactId, "jar", version);
+      Artifact artifact = new DefaultArtifact(groupId, artifactId, EXTENSION_TYPE, version);
       RepositorySystemSession session = factory.newRepositorySystemSession(system, path);
       DependencyFilter filter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
 

@@ -8,7 +8,7 @@ import org.sonatype.aether.repository.LocalRepository;
 import org.sonatype.aether.repository.RemoteRepository;
 
 public class RepositoryFactory {
-   
+
    private final ConsoleLogger logger;
 
    public RepositoryFactory(ConsoleLogger logger) {
@@ -16,21 +16,21 @@ public class RepositoryFactory {
    }
 
    public RepositorySystem newRepositorySystem() {
-       return ManualRepositorySystemFactory.newRepositorySystem();
+      return ManualRepositorySystemFactory.newRepositorySystem();
    }
 
    public RepositorySystemSession newRepositorySystemSession(RepositorySystem system, String path) {
-       MavenRepositorySystemSession session = new MavenRepositorySystemSession();
-       LocalRepository localRepo = new LocalRepository(path);
-       
-       session.setLocalRepositoryManager( system.newLocalRepositoryManager( localRepo ) );
-       session.setTransferListener( new ConsoleTransferListener(logger) );
-       session.setRepositoryListener( new ConsoleRepositoryListener(logger) );
+      MavenRepositorySystemSession session = new MavenRepositorySystemSession();
+      LocalRepository localRepo = new LocalRepository(path);
 
-       return session;
+      session.setLocalRepositoryManager(system.newLocalRepositoryManager(localRepo));
+      session.setTransferListener(new ConsoleTransferListener(logger));
+      session.setRepositoryListener(new ConsoleRepositoryListener(logger));
+
+      return session;
    }
 
-   public RemoteRepository newRemoteRepository(String name, String type, String location){
-       return new RemoteRepository(name, type, location);
+   public RemoteRepository newRemoteRepository(String name, String type, String location) {
+      return new RemoteRepository(name, type, location);
    }
 }

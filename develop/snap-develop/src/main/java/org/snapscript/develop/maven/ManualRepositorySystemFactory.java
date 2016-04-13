@@ -9,13 +9,13 @@ import org.sonatype.aether.spi.connector.RepositoryConnectorFactory;
 
 public class ManualRepositorySystemFactory {
 
-    public static RepositorySystem newRepositorySystem() {
-        DefaultServiceLocator locator = new DefaultServiceLocator();
-        locator.addService( RepositoryConnectorFactory.class, FileRepositoryConnectorFactory.class );
-        locator.addService( RepositoryConnectorFactory.class, WagonRepositoryConnectorFactory.class );
-        locator.setServices( WagonProvider.class, new ManualWagonProvider() );
+   public static RepositorySystem newRepositorySystem() {
+      DefaultServiceLocator locator = new DefaultServiceLocator();
+      locator.addService(RepositoryConnectorFactory.class, FileRepositoryConnectorFactory.class);
+      locator.addService(RepositoryConnectorFactory.class, WagonRepositoryConnectorFactory.class);
+      locator.setServices(WagonProvider.class, new ManualWagonProvider());
 
-        return locator.getService( RepositorySystem.class );
-    }
+      return locator.getService(RepositorySystem.class);
+   }
 
 }

@@ -5,9 +5,11 @@ import org.apache.maven.wagon.providers.http.LightweightHttpWagon;
 import org.sonatype.aether.connector.wagon.WagonProvider;
 
 public class ManualWagonProvider implements WagonProvider {
+   
+   private static final String SCHEME = "http";
 
    public Wagon lookup(String roleHint) throws Exception {
-      if ("http".equals(roleHint)) {
+      if (SCHEME.equals(roleHint)) {
          return new LightweightHttpWagon();
       }
       return null;
