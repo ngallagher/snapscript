@@ -12,7 +12,9 @@ public class CommandWriter {
    }
    
    public String write(Command object) throws Exception {
-      if(marshallers.isEmpty()) {
+      Class type = object.getClass();
+      
+      if(!marshallers.containsKey(type)) {
          CommandType[] commands = CommandType.values();
          
          for(CommandType command : commands) {
@@ -20,7 +22,6 @@ public class CommandWriter {
             marshallers.put(command.command, marshaller);
          }
       }
-      Class type = object.getClass();
       CommandMarshaller marshaller = marshallers.get(type);
       
       if(marshaller == null) {

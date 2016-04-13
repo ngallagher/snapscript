@@ -14,7 +14,9 @@ public class ProcessEventProducer {
    }
    
    public void produce(ProcessEvent object) throws Exception {
-      if(marshallers.isEmpty()) {
+      Class type = object.getClass();
+      
+      if(!marshallers.containsKey(type)) {
          ProcessEventType[] events = ProcessEventType.values();
          
          for(ProcessEventType event : events) {
@@ -22,7 +24,6 @@ public class ProcessEventProducer {
             marshallers.put(event.event, marshaller);
          }
       }
-      Class type = object.getClass();
       ProcessEventMarshaller marshaller = marshallers.get(type);
       MessageEnvelope message = marshaller.toMessage(object);
       
