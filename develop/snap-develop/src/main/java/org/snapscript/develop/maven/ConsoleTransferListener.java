@@ -44,7 +44,6 @@ public class ConsoleTransferListener extends AbstractTransferListener {
 
          logger.log(repository + name + ": " + getStatus(complete, total));;
       }
-
    }
 
    private String getStatus(long complete, long total) {
@@ -65,6 +64,7 @@ public class ConsoleTransferListener extends AbstractTransferListener {
 
       TransferResource resource = event.getResource();
       long contentLength = event.getTransferredBytes();
+      
       if (contentLength >= 0) {
          String type = (event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploaded" : "Downloaded");
          String len = contentLength >= 1024 ? toKB(contentLength) + " KB" : contentLength + " B";
@@ -76,8 +76,10 @@ public class ConsoleTransferListener extends AbstractTransferListener {
             double kbPerSec = (contentLength / 1024.0) / (duration / 1000.0);
             throughput = " at " + format.format(kbPerSec) + " KB/sec";
          }
-
-         logger.log(type + ": " + resource.getRepositoryUrl() + resource.getResourceName() + " (" + len + throughput + ")");
+         String location = resource.getRepositoryUrl();
+         String name = resource.getResourceName();
+         
+         logger.log(type + ": " + location + name + " (" + len + throughput + ")");
       }
    }
 
