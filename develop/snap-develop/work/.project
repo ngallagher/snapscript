@@ -9,7 +9,7 @@
     <argument>-XX:+FlightRecorder</argument>
   </arguments>
   <repository path="c:\temp\remote-repo">
-    <location name="default">http://repo1.maven.org/maven2</location>
+    <location name="central">http://repo1.maven.org/maven2</location>
   </repository>
   <dependencies>
     <dependency>
