@@ -1,3 +1,5 @@
+import org.simpleframework.http.Protocol;
+
 /*
  * This is a simple illustration of a Snap object
  * implementing a Java interface.

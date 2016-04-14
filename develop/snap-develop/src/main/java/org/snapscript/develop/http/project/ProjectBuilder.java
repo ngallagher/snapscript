@@ -66,7 +66,8 @@ public class ProjectBuilder {
          OutputStream stream = new FileOutputStream(ignore);
          PrintStream print = new PrintStream(stream);
          print.println("/temp/");
-         print.println("/.temp/");         
+         print.println("/.temp/");   
+         print.println("/.backup/");     
          print.close();
       }catch(Exception e) {
          e.printStackTrace();

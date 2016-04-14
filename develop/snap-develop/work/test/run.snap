@@ -3,7 +3,7 @@ import core.PathConverter;
 import core.store.FileStore;
 import compile.StoreContext;
 import compile.ResourceCompiler;
-
+ 
 function runTests(directory) {
    const scanner = new FilePatternScanner(directory);
    const scripts = scanner.scan("**/*_test.snap");

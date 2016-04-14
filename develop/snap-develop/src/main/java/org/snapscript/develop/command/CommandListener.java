@@ -8,6 +8,7 @@ import java.util.Set;
 import org.simpleframework.http.Path;
 import org.simpleframework.http.socket.FrameChannel;
 import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.develop.BackupManager;
 import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.common.Problem;
 import org.snapscript.develop.common.ProblemFinder;
@@ -22,16 +23,18 @@ public class CommandListener {
    private final ProcessManager engine;
    private final ConsoleLogger logger;
    private final ProblemFinder finder;
+   private final BackupManager manager;
    private final String project;
    private final File root;
    private final Path path;
    
-   public CommandListener(ProcessManager engine, ProjectCompiler compiler, FrameChannel channel, ConsoleLogger logger, Path path, File root, String project) {
+   public CommandListener(ProcessManager engine, ProjectCompiler compiler, FrameChannel channel, ConsoleLogger logger, BackupManager manager, Path path, File root, String project) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);
       this.finder = new ProblemFinder();
       this.compiler = compiler;
+      this.manager = manager;
       this.logger = logger;
       this.engine = engine;
       this.project = project;
@@ -48,14 +51,14 @@ public class CommandListener {
             Problem problem = finder.parse(project, resource, source);
             File file = new File(root, "/" + resource);
             boolean exists = file.exists();
-               
+            
+            if(exists) {
+               manager.backup(root, file, project);
+            }
             if(command.isCreate() && exists) {
                client.sendAlert(resource, "Resource " + resource + " already exists");
             } else {
-               FileOutputStream out = new FileOutputStream(file);
-               OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
-               encoder.write(source);
-               encoder.close();
+               manager.save(file, source);
                
                if(problem == null) {
                   client.sendSyntaxError(resource, "", 0, -1); // clear problem
@@ -78,9 +81,6 @@ public class CommandListener {
                client.sendReloadTree();
             }
          }
-         //} else {
-         //   client.sendSyntaxError(resource, line);
-         //}
       } catch(Exception e) {
          logger.log("Error saving " + resource, e);
       }
@@ -95,12 +95,12 @@ public class CommandListener {
          
          if(problem == null) {
             File file = new File(root, "/" + resource);
-            FileOutputStream out = new FileOutputStream(file);
-            OutputStreamWriter encoder = new OutputStreamWriter(out, "UTF-8");
-            encoder.write(source);
-            encoder.close();
-            //client.sendReloadTree();
+            boolean exists = file.exists();
             
+            if(exists) {
+               manager.backup(root, file, project);
+            }
+            manager.save(file, source);
             client.sendSyntaxError(resource, "", 0, -1); // clear problem
             engine.register(forwarder); // make sure we are registered
             engine.execute(command, filter); 
@@ -162,8 +162,14 @@ public class CommandListener {
       
       try {
          File file = new File(root, "/" + resource);
+         boolean exists = file.exists();
          
-         if(file.exists()) {
+         if(exists) {
+            manager.backup(root, file, project);
+            
+            if(file.isDirectory()) {
+               
+            }
             file.delete();
             client.sendReloadTree();
          }
@@ -228,6 +234,7 @@ public class CommandListener {
             String path = problem.getResource();
             int line = problem.getLine();
             long time = System.currentTimeMillis();
+            
             client.sendSyntaxError(path,description,  time, line);
          }
       } catch(Exception e) {

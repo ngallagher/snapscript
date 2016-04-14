@@ -6,8 +6,13 @@
     <constructor-arg value="${directory}" />
   </bean>
 
+  <bean id="BackupManager" class="org.snapscript.develop.BackupManager">
+    <constructor-arg ref="ConsoleLogger" />
+    <constructor-arg ref="Workspace" />
+  </bean>
+
   <bean id="ConfigurationReader" class="org.snapscript.develop.configuration.ConfigurationReader">
-    <constructor-arg ref="ConsoleLogger" />      
+    <constructor-arg ref="ConsoleLogger" />
     <constructor-arg ref="Workspace" />
   </bean>
 
@@ -143,6 +148,7 @@
     <constructor-arg ref="ConnectListener" />
     <constructor-arg ref="ConsoleLogger" />
     <constructor-arg ref="ProcessManager" />
+    <constructor-arg ref="BackupManager"/>
   </bean>
 
   <bean id="ClassResourceLoader" class="org.snapscript.develop.http.loader.ClassResourceLoader">
