@@ -47,7 +47,7 @@ public class ProjectCompiler {
          long finish = System.currentTimeMillis();
          long duration = finish - start;
          
-         logger.log("Took " + duration + " ms to compile project " + name);
+         logger.debug("Took " + duration + " ms to compile project " + name);
       }
    }
    

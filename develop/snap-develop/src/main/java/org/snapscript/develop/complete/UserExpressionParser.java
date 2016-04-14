@@ -59,9 +59,9 @@ public class UserExpressionParser {
       TypeNode constraint = parseHint(types, complete);
       
       if(constraint != null) {
-         logger.log("'" + complete + "' is constrained to " + constraint);
+         logger.debug("'" + complete + "' is constrained to " + constraint);
       } else {
-         logger.log("'" + complete + "' has no known constraints");
+         logger.debug("'" + complete + "' has no known constraints");
       }
       return new UserExpression(complete, constraint, context, tokens);
    }
