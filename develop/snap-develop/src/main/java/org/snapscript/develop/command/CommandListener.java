@@ -53,12 +53,12 @@ public class CommandListener {
             boolean exists = file.exists();
             
             if(exists) {
-               manager.backup(root, file, project);
+               manager.backupFile(root, file, project);
             }
             if(command.isCreate() && exists) {
                client.sendAlert(resource, "Resource " + resource + " already exists");
             } else {
-               manager.save(file, source);
+               manager.saveFile(file, source);
                
                if(problem == null) {
                   client.sendSyntaxError(resource, "", 0, -1); // clear problem
@@ -98,9 +98,9 @@ public class CommandListener {
             boolean exists = file.exists();
             
             if(exists) {
-               manager.backup(root, file, project);
+               manager.backupFile(root, file, project);
             }
-            manager.save(file, source);
+            manager.saveFile(file, source);
             client.sendSyntaxError(resource, "", 0, -1); // clear problem
             engine.register(forwarder); // make sure we are registered
             engine.execute(command, filter); 
@@ -165,7 +165,7 @@ public class CommandListener {
          boolean exists = file.exists();
          
          if(exists) {
-            manager.backup(root, file, project);
+            manager.backupFile(root, file, project);
             
             if(file.isDirectory()) {
                
