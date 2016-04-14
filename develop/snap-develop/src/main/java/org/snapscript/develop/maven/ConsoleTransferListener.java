@@ -42,7 +42,7 @@ public class ConsoleTransferListener extends AbstractTransferListener {
          long total = progress.getContentLength();
          long complete = entry.getValue().longValue();
 
-         logger.log(repository + name + ": " + getStatus(complete, total));;
+         logger.debug(repository + name + ": " + getStatus(complete, total));;
       }
    }
 

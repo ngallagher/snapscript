@@ -16,6 +16,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.core.Validate;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
 import org.snapscript.agent.ConsoleLogger;
@@ -26,27 +27,19 @@ import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.repository.RemoteRepository;
 
 public class ConfigurationReader {
-
-   private static final String CONFIGURATION_FILE = ".project";
    
    private final AtomicReference<Configuration> reference;
    private final ConfigurationFilter filter;
    private final RepositoryFactory factory;
    private final Persister persister;
    private final Workspace workspace;
-   private final String name;
    
    public ConfigurationReader(ConsoleLogger logger, Workspace workspace) {
-      this(logger, workspace, CONFIGURATION_FILE);
-   }
-   
-   public ConfigurationReader(ConsoleLogger logger, Workspace workspace, String name) {
       this.reference = new AtomicReference<Configuration>();
       this.factory = new RepositoryFactory(logger);
       this.filter = new ConfigurationFilter();
       this.persister = new Persister(filter);
       this.workspace = workspace;
-      this.name = name;
    }
 
    public Configuration load() {
@@ -54,62 +47,44 @@ public class ConfigurationReader {
       
       if(configuration == null) {
          try {
-            File file = workspace.create(name);
+            File file = workspace.create(Configuration.PROJECT_FILE);
             
             if(file.exists()) {
-               ProjectDetails details = persister.read(ProjectDetails.class, file);
-               configuration = new ConfigurationDetails(details, factory);
+               ProjectDefinition details = persister.read(ProjectDefinition.class, file);
+               Map<String, String> variables = details.getVariables();
+               List<String> arguments = details.getArguments();
+               
+               configuration = new RepositoryConfiguration(factory, details, variables, arguments);
                reference.set(configuration);
+               return configuration;
             }
          }catch(Exception e) {
             throw new IllegalStateException("Could not read configuration", e);
          }
+         return new EmptyConfiguration();
       }
       return configuration;
    }  
    
-   private static class ConfigurationDetails implements Configuration {
-      
-      private final RepositoryFactory factory;
-      private final ProjectDetails details;
-      
-      public ConfigurationDetails(ProjectDetails details, RepositoryFactory factory){
-         this.details = details;
-         this.factory = factory;
-      }
 
-      @Override
-      public Map<String, String> getVariables() {
-         return details.getVariables();
-      }
-
-      @Override
-      public List<File> getDependencies() {
-         return details.getDependencies(factory);
-      }
-
-      @Override
-      public List<String> getArguments() {
-         return details.getArguments();
-      }
-   }
    
    @Root
-   private static class ProjectDetails {
+   private static class ProjectDefinition implements DependencyLoader {
       
       @Element(name="repository", required=false)
-      private RepositoryConfiguration repository;
+      private RepositoryDefinition repository;
       
       @Path("dependencies")
       @ElementList(entry="dependency", required=false, inline=true)
-      private List<Dependency> dependencies;
+      private List<DependencyDefinition> dependencies;
+      
+      @ElementList(entry="variable", required=false)
+      private Dictionary<VariableDefinition> environment;
       
       @ElementList(entry="argument", required=false)
       private List<String> arguments;
       
-      @ElementList(entry="variable", required=false)
-      private Dictionary<EnvironmentVariable> environment;
-      
+      @Validate
       public void validate() {
          if(dependencies != null) {
             if(repository == null) {
@@ -122,21 +97,22 @@ public class ConfigurationReader {
          Map<String, String> map = new LinkedHashMap<String, String>();
          
          if(environment != null) {
-            for(EnvironmentVariable data : environment) {
+            for(VariableDefinition data : environment) {
                map.put(data.name, data.value);
             }
          }
          return map;
       }
       
+      @Override
       public List<File> getDependencies(RepositoryFactory factory) {
          List<File> files = new ArrayList<File>();
       
          try {
             RepositoryClient client = repository.getClient(factory);
             
-            for(Dependency dependency : dependencies) {
-               List<File> matches = dependency.getDependencies(client);
+            for(DependencyDefinition dependency : dependencies) {
+               List<File> matches = client.resolve(dependency.groupId, dependency.artifactId, dependency.version);
                
                for(File match : matches) {
                   if(!match.exists()) {
@@ -159,8 +135,49 @@ public class ConfigurationReader {
       }
    }
    
+   
    @Root
-   private static class Dependency{
+   private static class RepositoryDefinition {
+      
+      @Attribute
+      private String path;
+      
+      @ElementList(entry="location", inline=true)
+      private List<LocationDefinition> repositories;
+      
+      public RepositoryClient getClient(RepositoryFactory factory) {
+         List<RemoteRepository> list = new ArrayList<RemoteRepository>();
+         
+         for(LocationDefinition repository : repositories) {
+            RemoteRepository remote = factory.newRemoteRepository(repository.name, "default", repository.location);
+            list.add(remote);
+         }
+         RepositorySystem system = factory.newRepositorySystem();
+         return new RepositoryClient(list, system, factory, path);
+      }
+   }
+   
+   @Root
+   private static class LocationDefinition implements Entry {
+      
+      @Text
+      private String location;
+      
+      @Attribute
+      private String name;
+      
+      public LocationDefinition() {
+         super();
+      }
+
+      @Override
+      public String getName() {
+         return name;
+      }
+   }
+   
+   @Root
+   private static class DependencyDefinition {
 
       @Element
       private String groupId;
@@ -170,18 +187,14 @@ public class ConfigurationReader {
       
       @Element
       private String version;
-
-      public List<File> getDependencies(RepositoryClient client) {
-         try {
-            return client.resolve(groupId, artifactId, version);
-         } catch(Exception e) {
-            throw new IllegalStateException("Could not resolve '" + groupId + ":" + artifactId + ":" +version, e);
-         }
-      }  
+      
+      public DependencyDefinition() {
+         super();
+      }
    }
    
    @Root
-   private static class EnvironmentVariable implements Entry {
+   private static class VariableDefinition implements Entry {
       
       @Attribute
       private String name;
@@ -194,46 +207,6 @@ public class ConfigurationReader {
          session.put(name, value);
       }
       
-      @Override
-      public String getName() {
-         return name;
-      }
-   }
-   
-   @Root
-   private static class RepositoryConfiguration {
-      
-      @Attribute
-      private String path;
-      
-      @ElementList(entry="location", inline=true)
-      private List<RepositoryLocation> repositories;
-      
-      public RepositoryClient getClient(RepositoryFactory factory) {
-         List<RemoteRepository> list = new ArrayList<RemoteRepository>();
-         
-         for(RepositoryLocation repository : repositories) {
-            RemoteRepository remote = repository.getRepository(factory);
-            list.add(remote);
-         }
-         RepositorySystem system = factory.newRepositorySystem();
-         return new RepositoryClient(list, system, factory, path);
-      }
-   }
-   
-   @Root
-   private static class RepositoryLocation implements Entry {
-      
-      @Text
-      private String location;
-      
-      @Attribute
-      private String name;
-
-      public RemoteRepository getRepository(RepositoryFactory factory) {
-         return factory.newRemoteRepository(name, "default", location);
-      }
-
       @Override
       public String getName() {
          return name;

@@ -1,6 +1,8 @@
 package org.snapscript.develop;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.agent.event.ProcessEventChannel;
+import org.snapscript.develop.configuration.Configuration;
 import org.snapscript.develop.configuration.ProcessConfiguration;
 import org.snapscript.develop.http.loader.RemoteProcessBuilder;
 import org.snapscript.develop.http.loader.RemoteProcessLauncher;
@@ -35,26 +38,23 @@ public class ProcessLauncher {
       String home = System.getProperty("java.home");
       String name = String.format("agent-%s%s", sequence, time);
       String java = String.format("%s%sbin%s/java", home, File.separatorChar, File.separatorChar);
-      String classPath = configuration.getClassPath();
       String resources = String.format("http://localhost:%s/resource/", httpPort);
       String classes = String.format("http://localhost:%s/class/", httpPort);
       Map<String, String> variables = configuration.getVariables();
       List<String> arguments = configuration.getArguments();
       String launcher = RemoteProcessLauncher.class.getCanonicalName();
       String target = ProcessRunner.class.getCanonicalName();
-      
-      if(classPath == null) {
-         classPath = System.getProperty("java.class.path");
-      }
+      String dependencies = write(configuration);
       List<String> command = new ArrayList<String>();
       
       command.add(java);
       command.addAll(arguments);
       command.add("-cp");
-      command.add(classPath);
+      command.add(".");
       command.add(launcher);
       command.add(classes);
       command.add(target);
+      command.add(dependencies);
       command.add("org.snapscript.");
       command.add(resources);
       command.add(name);
@@ -74,5 +74,42 @@ public class ProcessLauncher {
       
       Process process = builder.start();
       return new ProcessDefinition(process, name);
+   }
+   
+   private String write(ProcessConfiguration configuration) throws Exception {
+      File projectFile = workspace.create(Configuration.PROJECT_FILE);
+      File classPathFile = workspace.create(Configuration.CLASSPATH_FILE);
+      String classPath = configuration.getClassPath();
+      
+      if(classPath == null) {
+         classPath = System.getProperty("java.class.path");
+      }
+      String[] dependencies = classPath.split(File.pathSeparator);
+      
+      if(!classPathFile.exists()) {
+         FileWriter writer = new FileWriter(classPathFile);
+         PrintWriter printer = new PrintWriter(writer);
+         
+         for(String dependency : dependencies) {
+            printer.println(dependency);
+         }
+         printer.close();
+         logger.log("Created " + classPathFile);
+      } else if(projectFile.exists()) {
+         long projectFileChange = projectFile.lastModified();
+         long classPathFileChange = classPathFile.lastModified();
+         
+         if(projectFileChange > classPathFileChange) {
+            FileWriter writer = new FileWriter(classPathFile);
+            PrintWriter printer = new PrintWriter(writer);
+            
+            for(String dependency : dependencies) {
+               printer.println(dependency);
+            }
+            printer.close();
+            logger.log("Updated " + classPathFile + " from " + projectFile);
+         }
+      }
+      return classPathFile.getCanonicalPath();
    }
 }

@@ -1,10 +1,12 @@
 package org.snapscript.agent;
 
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class ConsoleLogger {
    
+   private final PrintStream logger;
    private final DateFormat format;
    private final boolean verbose;
    
@@ -14,6 +16,7 @@ public class ConsoleLogger {
    
    public ConsoleLogger(boolean verbose) {
       this.format = new SimpleDateFormat("HH:mm:ss");
+      this.logger = System.out;
       this.verbose = verbose;
    }
    
@@ -35,7 +38,7 @@ public class ConsoleLogger {
       String name = thread.getName();
       String date = format.format(time);
       
-      System.out.println(date + " ["+name+"] " + message);
+      logger.println(date + " ["+name+"] " + message);
    }
    
    public synchronized void log(String message, Throwable cause) {
@@ -45,16 +48,16 @@ public class ConsoleLogger {
       String date = format.format(time);
       
       if(cause != null) {
-         System.out.print(date + " ["+name+"] " + message);
+         logger.print(date + " ["+name+"] " + message);
          
          if(verbose) {
-            System.out.print(": ");
-            cause.printStackTrace(System.out);
+            logger.print(": ");
+            cause.printStackTrace(logger);
          } else {
-            System.out.println(": " + cause);
+            logger.println(": " + cause);
          }
       } else {
-         System.out.println("["+name+"] " + message);
+         logger.println("["+name+"] " + message);
       }
    }
 }
