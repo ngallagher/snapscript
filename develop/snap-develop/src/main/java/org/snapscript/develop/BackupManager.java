@@ -142,6 +142,7 @@ public class BackupManager {
             File timeStampFile = timeStampFiles.get(timeStamp);
             backupHistory.add(timeStampFile);
          }
+         Collections.reverse(backupHistory);
          return backupHistory;
       } catch(Exception e) {
          logger.log("Could not find backup from " + file, e);
