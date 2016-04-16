@@ -15,6 +15,7 @@ public class TryCatchTest extends TestCase {
    "      System.out.println(\"problem!!!! \"+e);\n"+
    "   }\n"+
    "}catch(e){\n"+
+   "   println(e.class);\n"+
    "   System.out.println(\"caught in last block \"+e);\n"+
    "}\n";
 

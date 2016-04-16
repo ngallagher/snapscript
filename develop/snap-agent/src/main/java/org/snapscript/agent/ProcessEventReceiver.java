@@ -11,7 +11,6 @@ import org.snapscript.agent.event.BreakpointsEvent;
 import org.snapscript.agent.event.BrowseEvent;
 import org.snapscript.agent.event.ExecuteEvent;
 import org.snapscript.agent.event.PingEvent;
-import org.snapscript.agent.event.PongEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.StepEvent;

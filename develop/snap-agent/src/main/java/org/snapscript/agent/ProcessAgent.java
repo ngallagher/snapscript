@@ -1,7 +1,6 @@
 package org.snapscript.agent;
 
 import java.net.URI;
-import java.util.concurrent.ThreadFactory;
 
 import org.snapscript.agent.debug.BreakpointMatcher;
 import org.snapscript.agent.debug.SuspendController;

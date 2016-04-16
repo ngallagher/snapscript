@@ -1,7 +1,7 @@
 import io.IOException;
 import io.OutputStream;
 import net.InetSocketAddress;
-import http.RequestBuilder;
+import http.request.RequestBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;

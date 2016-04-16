@@ -80,16 +80,16 @@ public class TryCatchStatement extends Statement {
          String name = parameter.getName();
 
          if(data != null) {
+            Object cause = extractor.extract(scope, data);
+            
             if(type != null) {
-               Object cause = extractor.extract(scope, data);
-               
                if(!checker.compatible(scope, cause, type)) {
                   return result;
                }
             }
             Scope compound = scope.getInner();
             State state = compound.getState();
-            Value constant = ValueType.getConstant(data);
+            Value constant = ValueType.getConstant(cause);
             
             state.addConstant(name, constant);
                

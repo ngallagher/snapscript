@@ -5,8 +5,7 @@ function testThrowString(){
 	}catch(e){
 	   println(e);
 	   println(e.class);
-		println(e.message);
-		//assert e.message == "A string";
+		assert e == "A string";
 	}
 }
 
@@ -14,9 +13,26 @@ function testThrowException() {
 	try {
 		throw new IllegalStateException("Some text");
 	} catch(e) {
-		println(e);
-	   println(e.class);
-		println(e.message);
-		//assert e.message == "Some text";
+		e.printStackTrace();
+		assert e.message == "Some text";
+	}
+}
+
+function testNullPointerException() {
+	try {
+	   var x = null;
+	   x.toString();
+	} catch(e) {
+		e.printStackTrace();
+	   assert e.message == "Reference to a null object";
+	}
+}
+
+function testNullPointerException() {
+	try {
+	   var x = "xx";
+	   x++;
+	} catch(e) {
+		e.printStackTrace();
 	}
 }
