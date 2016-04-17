@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.State;
@@ -12,10 +13,12 @@ import org.snapscript.core.Value;
 public class InstanceState implements State {
    
    private final Map<String, Value> values;
+   private final Set<String> cache;
    private final Instance instance;
 
    public InstanceState(Instance instance) {
       this.values = new ConcurrentHashMap<String, Value>();
+      this.cache = new CopyOnWriteArraySet<String>();
       this.instance = instance;
    }
    
@@ -57,6 +60,7 @@ public class InstanceState implements State {
          
          if(value != null) {
             values.put(name, value); // cache for quicker access
+            cache.add(name); // remember cache status
          }
       }
       return value;
@@ -87,7 +91,9 @@ public class InstanceState implements State {
       Value variable = values.get(name);
 
       if(variable != null) {
-         throw new InternalStateException("Variable '" + name + "' already exists");
+         if(!cache.remove(name)) { // clear status
+            throw new InternalStateException("Variable '" + name + "' already exists");
+         }
       }
       values.put(name, value);      
    }
@@ -97,7 +103,9 @@ public class InstanceState implements State {
       Value variable = values.get(name);
 
       if(variable != null) {
-         throw new InternalStateException("Variable '" + name + "' already exists");
+         if(!cache.remove(name)) {
+            throw new InternalStateException("Variable '" + name + "' already exists");
+         }
       }
       values.put(name, value);     
    }
