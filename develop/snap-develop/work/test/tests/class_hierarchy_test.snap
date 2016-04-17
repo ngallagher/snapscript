@@ -23,7 +23,7 @@ function testClassHierarchyFailure(){
       var y = new Y('create Y');
       y.dump();
    }catch(e){
-      //e.printStackTrace();
+      e.printStackTrace();
       failure = true;
    }
    assert failure;

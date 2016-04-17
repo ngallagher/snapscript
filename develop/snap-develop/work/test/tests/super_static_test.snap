@@ -62,5 +62,3 @@ function testSuperStaticScope() {
    println("iterating");
    y.iterate();
 }
-
-testSuperStaticScope();
