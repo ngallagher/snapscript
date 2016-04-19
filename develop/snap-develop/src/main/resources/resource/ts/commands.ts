@@ -1,4 +1,8 @@
 
+function findTypes(text) {
+   return "<b>Seach :"+text+"</b>";
+}
+
 function newFile(resourcePath) {
    newFileTreeDialog(resourcePath, true, function(resourceDetails) {
       if(!isResourceFolder(resourceDetails.filePath)) {

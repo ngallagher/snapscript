@@ -430,6 +430,19 @@ function registerEditorBindings() {
       readOnly : true
    // false if this command should not apply in readOnly mode
    });
+   editor.commands.addCommand({
+       name: 'find',
+       bindKey: {
+           win: 'Ctrl-Shift-S',
+           mac: 'Command-Shift-S'
+       },
+       exec: function (editor) {
+           createListDialog(function(text){
+              return findTypes(text);
+           });
+       },
+       readOnly: true
+   });    
 }
 
 function showEditor() {

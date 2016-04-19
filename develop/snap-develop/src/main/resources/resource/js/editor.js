@@ -384,6 +384,19 @@ function registerEditorBindings() {
         },
         readOnly: true
     });
+    editor.commands.addCommand({
+        name: 'find',
+        bindKey: {
+            win: 'Ctrl-Shift-S',
+            mac: 'Command-Shift-S'
+        },
+        exec: function (editor) {
+            createListDialog(function (text) {
+                return findTypes(text);
+            });
+        },
+        readOnly: true
+    });
 }
 function showEditor() {
     var langTools = ace.require("ace/ext/language_tools");

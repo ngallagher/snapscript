@@ -73,7 +73,11 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
         showClose: true,
         showMax: true,
         onOpen: function (event) {
-            console.log('open');
+            setTimeout(function () {
+                var element = document.getElementById('dialogFile');
+                element.contentEditable = true;
+                element.focus();
+            }, 200);
         },
         onClose: function (event) {
             console.log('close');
@@ -142,7 +146,11 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
         showClose: true,
         showMax: true,
         onOpen: function (event) {
-            console.log('open');
+            setTimeout(function () {
+                var element = document.getElementById('dialogPath');
+                element.contentEditable = true;
+                element.focus();
+            }, 200);
         },
         onClose: function (event) {
             closeCallback(); // this should probably be a parameter
@@ -169,6 +177,55 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
         }
         $('#dialogPath').html(projectName);
     }, 2);
+}
+function createListDialog(listFunction) {
+    w2popup.open({
+        title: "Open Type",
+        body: '<div id="dialogContainerBig">' +
+            '   <div id="dialog"></div>' +
+            '</div>' +
+            '<div id="dialogPath" onkeydown="return submitDialog(event);" onclick="this.contentEditable=\'true\';"></div>',
+        buttons: '<button id="dialogSave" class="btn">Open</button>',
+        width: 600,
+        height: 400,
+        overflow: 'hidden',
+        color: '#333',
+        speed: '0.3',
+        opacity: '0.8',
+        modal: true,
+        showClose: true,
+        showMax: true,
+        onOpen: function (event) {
+            setTimeout(function () {
+                $('#dialogPath').on('change keyup paste', function () {
+                    var text = $("#dialogPath").html();
+                    var list = listFunction(text);
+                    $("#dialog").html(list);
+                });
+                var element = document.getElementById('dialogPath');
+                element.contentEditable = true;
+                element.focus();
+            }, 200);
+        },
+        onClose: function (event) {
+            console.log('close');
+        },
+        onMax: function (event) {
+            console.log('max');
+        },
+        onMin: function (event) {
+            console.log('min');
+        },
+        onKeydown: function (event) {
+            console.log('keydown');
+        }
+    });
+    $("#dialogSave").click(function () {
+        w2popup.close();
+    });
+    $("#dialogCancel").click(function () {
+        w2popup.close();
+    });
 }
 function submitDialog(e) {
     var evt = e || window.event;
