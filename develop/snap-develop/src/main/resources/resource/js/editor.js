@@ -392,7 +392,13 @@ function registerEditorBindings() {
         },
         exec: function (editor) {
             createListDialog(function (text) {
-                return findTypes(text);
+                var typesFound = findTypes(text);
+                var typeList = "<ul>";
+                for (var i = 0; i < typesFound.length; i++) {
+                    typeList += "<li>" + typesFound[i].name + "</li>";
+                }
+                typeList += "</ul>";
+                return typeList;
             });
         },
         readOnly: true

@@ -1,5 +1,29 @@
 function findTypes(text) {
-    return "<b>Seach :" + text + "</b>";
+    var response = [];
+    jQuery.ajax({
+        url: '/type/' + document.title + '?prefix=' + text,
+        success: function (typeMatches) {
+            var typeReferences = [];
+            for (var typeMatch in typeMatches) {
+                if (typeMatches.hasOwnProperty(typeMatch)) {
+                    typeReferences.push(typeMatch);
+                }
+            }
+            typeReferences.sort();
+            for (var i = 0; i < typeReferences.length; i++) {
+                var typeReference = typeReferences[i];
+                var typeDetails = typeReference.split(":");
+                var typeEntry = {
+                    name: typeDetails[0],
+                    resource: typeDetails[1],
+                    project: document.title
+                };
+                response.push(typeEntry);
+            }
+        },
+        async: false
+    });
+    return response;
 }
 function newFile(resourcePath) {
     newFileTreeDialog(resourcePath, true, function (resourceDetails) {

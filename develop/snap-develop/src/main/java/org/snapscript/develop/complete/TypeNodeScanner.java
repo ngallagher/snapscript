@@ -1,4 +1,4 @@
-package org.snapscript.develop.http.project;
+package org.snapscript.develop.complete;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,26 +13,28 @@ import org.snapscript.develop.common.FileReader;
 import org.snapscript.develop.common.TypeNode;
 import org.snapscript.develop.common.TypeNodeFinder;
 import org.snapscript.develop.configuration.ConfigurationClassLoader;
+import org.snapscript.develop.http.project.Project;
+import org.snapscript.develop.http.project.ProjectBuilder;
 
-public class ProjectTypeLoader {
+public class TypeNodeScanner {
 
    private final FileProcessor<Map<String, TypeNode>> processor;
    private final FileAction<Map<String, TypeNode>> action;
    private final ProjectBuilder builder;
    private final ConsoleLogger logger;
    
-   public ProjectTypeLoader(ProjectBuilder builder, ConfigurationClassLoader loader, ConsoleLogger logger) {
+   public TypeNodeScanner(ProjectBuilder builder, ConfigurationClassLoader loader, ConsoleLogger logger) {
       this(builder, loader, logger, 10);
    }
    
-   public ProjectTypeLoader(ProjectBuilder builder, ConfigurationClassLoader loader, ConsoleLogger logger, int threads) {
+   public TypeNodeScanner(ProjectBuilder builder, ConfigurationClassLoader loader, ConsoleLogger logger, int threads) {
       this.action = new CompileAction(builder, loader, logger);
       this.processor = new FileProcessor<Map<String, TypeNode>>(action, threads);
       this.builder = builder;
       this.logger = logger;
    }
    
-   public Map<String, TypeNode> compileProject(Path path) throws Exception {
+   public Map<String, String> compileProject(Path path, String prefix) throws Exception {
       Project project = builder.createProject(path);
       String name = project.getProjectName();
       File directory = project.getProjectPath();
@@ -43,7 +45,7 @@ public class ProjectTypeLoader {
       if(root.endsWith("/")) {
          root = root.substring(0, length -1);
       }
-      Map<String, TypeNode> typeNodes = new HashMap<String, TypeNode>();
+      Map<String, String> typeNodes = new HashMap<String, String>();
       
       try {
          Set<Map<String, TypeNode>> resourceTypes = processor.process(name, root + "/**.snap"); // build all resources
@@ -55,7 +57,9 @@ public class ProjectTypeLoader {
                TypeNode typeNode = types.get(typeName);
                String typePath = typeNode.getResource();
                
-               typeNodes.put(typeName + ":" + typePath, typeNode);
+               if(typeName.startsWith(prefix)) {
+                  typeNodes.put(typeName + ":" + typePath, typeName);
+               }
             }
          }
          return typeNodes;

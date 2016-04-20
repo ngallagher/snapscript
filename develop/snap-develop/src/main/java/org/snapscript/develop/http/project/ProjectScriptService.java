@@ -13,12 +13,13 @@ import org.snapscript.develop.ConnectListener;
 import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.command.CommandController;
 import org.snapscript.develop.command.CommandListener;
+import org.snapscript.develop.complete.TypeNodeScanner;
 import org.snapscript.develop.configuration.ConfigurationClassLoader;
 
 public class ProjectScriptService implements Service {
    
    private final ProjectProblemFinder compiler;
-   private final ProjectTypeLoader loader;
+   private final TypeNodeScanner loader;
    private final ConnectListener listener;
    private final ProjectBuilder builder;
    private final ProcessManager engine;
@@ -27,7 +28,7 @@ public class ProjectScriptService implements Service {
    
    public ProjectScriptService(ProcessManager engine, ConnectListener listener, ConfigurationClassLoader loader, ConsoleLogger logger, ProjectBuilder builder, BackupManager manager) {
       this.compiler = new ProjectProblemFinder(builder, logger);
-      this.loader = new ProjectTypeLoader(builder, loader, logger);
+      this.loader = new TypeNodeScanner(builder, loader, logger);
       this.manager = manager;
       this.listener = listener;
       this.builder = builder;

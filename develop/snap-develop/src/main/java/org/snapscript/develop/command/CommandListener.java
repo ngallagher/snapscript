@@ -12,14 +12,14 @@ import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.common.Problem;
 import org.snapscript.develop.common.ProblemFinder;
 import org.snapscript.develop.common.TypeNode;
+import org.snapscript.develop.complete.TypeNodeScanner;
 import org.snapscript.develop.http.project.ProjectProblemFinder;
-import org.snapscript.develop.http.project.ProjectTypeLoader;
 
 public class CommandListener {
    
    private final CommandEventForwarder forwarder;
    private final ProjectProblemFinder compiler;
-   private final ProjectTypeLoader loader;
+   private final TypeNodeScanner loader;
    private final CommandFilter filter;
    private final CommandClient client;
    private final ProcessManager engine;
@@ -30,7 +30,7 @@ public class CommandListener {
    private final File root;
    private final Path path;
    
-   public CommandListener(ProcessManager engine, ProjectProblemFinder compiler, ProjectTypeLoader loader, FrameChannel channel, ConsoleLogger logger, BackupManager manager, Path path, File root, String project) {
+   public CommandListener(ProcessManager engine, ProjectProblemFinder compiler, TypeNodeScanner loader, FrameChannel channel, ConsoleLogger logger, BackupManager manager, Path path, File root, String project) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);
