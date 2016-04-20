@@ -34,7 +34,11 @@ import org.snapscript.develop.configuration.ClassPathExecutor;
 import org.snapscript.develop.configuration.ConfigurationClassLoader;
 
 public class ResourceTypeLoader {
-
+   
+   private static final String MODULE_NAME_PATTERN = "^[a-zA-Z0-9\\.]+\\.([a-zA-Z0-9]+)$";
+   private static final String IMPORT_ALIAS_PATTERN = "^import\\s+(.*)\\s+as\\s+(.*);.*";
+   private static final String IMPORT_PATTERN = "^import (.*);.*";
+   
    private final PathConverter converter;
    private final ConsoleLogger logger;
    private final Executor executor;
@@ -58,12 +62,13 @@ public class ResourceTypeLoader {
       ScopeMerger merger = new ScopeMerger(context);
       ModuleRegistry registry = context.getRegistry();
       String current = converter.createModule(resource);
+      String lines[] = source.split("\\r?\\n");
       
       try {
          String lineSource = source;
          
          if(line != -1) {
-            lineSource = excludeLine(source, line);
+            lineSource = excludeLine(lines, line);
          }
          PackageLinker linker = context.getLinker();
          Package library = linker.link(current, lineSource, SCRIPT.name);
@@ -74,7 +79,7 @@ public class ResourceTypeLoader {
          logger.log("Error compiling " + resource, e);
          
          try {
-            String importSource = createImports(source);
+            String importSource = createImports(lines);
             Executable executable = compiler.compile(importSource);
             executable.execute();
          }catch(Exception fatal) {
@@ -96,7 +101,7 @@ public class ResourceTypeLoader {
            }
         }
         if(module != null){
-           Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\.]+\\.([a-zA-Z0-9]+)$");
+           Pattern pattern = Pattern.compile(MODULE_NAME_PATTERN);
            Matcher matcher = pattern.matcher(module);
            String name = module;
            
@@ -108,7 +113,7 @@ public class ResourceTypeLoader {
            types.put(name, value);
         }
       }
-      Map<String, String> imports = convertAliases(source);
+      Map<String, String> imports = convertAliases(lines);
       Set<String> keys = imports.keySet();
       Module container = registry.getModule(current);
       
@@ -130,10 +135,9 @@ public class ResourceTypeLoader {
       return types;
    }
    
-   private Map<String, String> convertAliases(String source) {
+   private Map<String, String> convertAliases(String[] lines) {
       Map<String, String> imports = new HashMap<String, String>();
-      String lines[] = source.split("\\r?\\n");
-      Pattern pattern = Pattern.compile("^import\\s+(.*)\\s+as\\s+(.*);.*");
+      Pattern pattern = Pattern.compile(IMPORT_ALIAS_PATTERN);
 
       for(String line : lines) {
          String token = line.trim();
@@ -152,9 +156,8 @@ public class ResourceTypeLoader {
       return imports;
    }
    
-   private String excludeLine(String source, int line) {
+   private String excludeLine(String[] lines, int line) {
       StringBuilder builder = new StringBuilder();
-      String lines[] = source.split("\\r?\\n");
       
       for(int i = 0; i < lines.length; i++){
          String token = lines[i];
@@ -169,11 +172,10 @@ public class ResourceTypeLoader {
       return builder.toString();
    }
    
-   private String createImports(String source) {
+   private String createImports(String[] lines) {
       List<String> imports = new ArrayList<String>();
       StringBuilder builder = new StringBuilder();
-      String lines[] = source.split("\\r?\\n");
-      Pattern pattern = Pattern.compile("^import (.*);.*");
+      Pattern pattern = Pattern.compile(IMPORT_PATTERN);
 
       for(String line : lines) {
          String token = line.trim();
