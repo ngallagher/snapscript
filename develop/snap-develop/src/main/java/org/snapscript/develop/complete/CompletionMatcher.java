@@ -20,6 +20,8 @@ import org.snapscript.core.PathConverter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.develop.common.TypeNode;
+import org.snapscript.develop.configuration.ConfigurationClassLoader;
 import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 
@@ -27,14 +29,14 @@ public class CompletionMatcher {
    
    private final SourceContextExtractor extractor;
    private final UserExpressionParser parser;
-   private final TypeNodeResolver resolver;
+   private final CompletionTypeResolver resolver;
    private final PathConverter converter;
    private final ConsoleLogger logger;
    
-   public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConsoleLogger logger) {
+   public CompletionMatcher(GrammarResolver resolver, GrammarIndexer indexer, ConfigurationClassLoader loader, ConsoleLogger logger) {
       this.extractor = new SourceContextExtractor(resolver, indexer);
       this.parser = new UserExpressionParser(logger);
-      this.resolver = new TypeNodeResolver(logger);
+      this.resolver = new CompletionTypeResolver(loader, logger);
       this.converter = new PathConverter();
       this.logger = logger;
    }

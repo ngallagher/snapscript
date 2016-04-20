@@ -2,6 +2,8 @@ package org.snapscript.develop.complete;
 
 import java.util.Set;
 
+import org.snapscript.develop.common.TypeNode;
+
 public class UserExpression {
    
    private final SourceContext context;

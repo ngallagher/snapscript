@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.develop.common.TypeNode;
 
 public class UserExpressionParser {
 

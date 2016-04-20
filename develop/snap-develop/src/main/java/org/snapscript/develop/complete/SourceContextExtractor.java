@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.snapscript.develop.common.TypeNode;
 import org.snapscript.parse.GrammarIndexer;
 import org.snapscript.parse.GrammarResolver;
 import org.snapscript.parse.Line;

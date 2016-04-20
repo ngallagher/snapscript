@@ -1,9 +1,8 @@
-package org.snapscript.develop.complete;
+package org.snapscript.develop.configuration;
 
 import java.util.concurrent.Executor;
 
 import org.snapscript.common.ThreadPool;
-import org.snapscript.develop.configuration.ConfigurationClassLoader;
 
 public class ClassPathExecutor implements Executor {
 

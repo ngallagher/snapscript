@@ -2,6 +2,8 @@ package org.snapscript.develop.complete;
 
 import java.util.Map;
 
+import org.snapscript.develop.common.TypeNode;
+
 public class SourceContext {
 
    private final Map<String, String> tokens;
