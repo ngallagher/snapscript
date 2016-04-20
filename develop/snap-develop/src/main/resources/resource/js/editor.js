@@ -395,9 +395,10 @@ function registerEditorBindings() {
                 var typesFound = findTypes(text);
                 var typeList = "<table width='100%'>";
                 for (var i = 0; i < typesFound.length; i++) {
+                    var resourceLink = "/project/" + typesFound[i].project + "#" + typesFound[i].resource;
                     typeList += "<tr>";
-                    typeList += "<td width='50%'><div class='typeNode'>" + typesFound[i].name + "</div></td>";
-                    typeList += "<td width='40%'><div class='resourceNode'>" + typesFound[i].resource + "</div></td>";
+                    typeList += "<td width='50%'><div class='typeNode' onclick='location.href=\"" + resourceLink + "\"'>" + typesFound[i].name + "</div></td>";
+                    typeList += "<td width='40%'><div class='resourceNode' onclick='location.href=\"" + resourceLink + "\"'>" + typesFound[i].resource + "</div></td>";
                     typeList += "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
                     typeList += "</tr>";
                 }
