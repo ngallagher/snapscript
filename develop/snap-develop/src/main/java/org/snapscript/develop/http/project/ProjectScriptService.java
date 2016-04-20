@@ -13,20 +13,23 @@ import org.snapscript.develop.ConnectListener;
 import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.command.CommandController;
 import org.snapscript.develop.command.CommandListener;
+import org.snapscript.develop.configuration.ConfigurationClassLoader;
 
 public class ProjectScriptService implements Service {
    
-   private final ProjectCompiler compiler;
-   private final ConnectListener script;
+   private final ProjectProblemFinder compiler;
+   private final ProjectTypeLoader loader;
+   private final ConnectListener listener;
    private final ProjectBuilder builder;
    private final ProcessManager engine;
    private final ConsoleLogger logger;
    private final BackupManager manager;
    
-   public ProjectScriptService(ProcessManager engine, ConnectListener script, ConsoleLogger logger, ProjectBuilder builder, BackupManager manager) {
-      this.compiler = new ProjectCompiler(builder, logger);
+   public ProjectScriptService(ProcessManager engine, ConnectListener listener, ConfigurationClassLoader loader, ConsoleLogger logger, ProjectBuilder builder, BackupManager manager) {
+      this.compiler = new ProjectProblemFinder(builder, logger);
+      this.loader = new ProjectTypeLoader(builder, loader, logger);
       this.manager = manager;
-      this.script = script;
+      this.listener = listener;
       this.builder = builder;
       this.logger = logger;
       this.engine = engine;
@@ -43,11 +46,11 @@ public class ProjectScriptService implements Service {
          String projectName = project.getProjectName();
          
          try {
-            CommandListener listener = new CommandListener(engine, compiler, channel, logger, manager, path, projectPath, projectName);
-            CommandController controller = new CommandController(listener);
+            CommandListener commandListener = new CommandListener(engine, compiler, loader, channel, logger, manager, path, projectPath, projectName);
+            CommandController commandController = new CommandController(commandListener);
 
-            channel.register(controller);
-            script.connect(listener, path); // if there is a script then execute it
+            channel.register(commandController);
+            listener.connect(commandListener, path); // if there is a script then execute it
          } catch(Exception e) {
             logger.log("Could not connect " + path, e);
          }

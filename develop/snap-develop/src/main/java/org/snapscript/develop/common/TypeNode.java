@@ -71,6 +71,16 @@ public class TypeNode {
       return Collections.emptyList();
    }
    
+   public String getResource() {
+      if(Module.class.isInstance(value)) {
+         return ((Module)value).getPath();
+      }
+      if(Type.class.isInstance(value)) {
+         return ((Type)value).getModule().getPath();
+      }
+      return null;
+   }
+   
    public boolean isModule(){
       return Module.class.isInstance(value);
    }

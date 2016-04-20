@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 import org.snapscript.core.MapModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.ResultType;
+import org.snapscript.parse.SourceCode;
+import org.snapscript.parse.SourceProcessor;
 import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxParser;
 
@@ -22,7 +24,7 @@ public class CompilePerformanceTest extends TestCase {
    }
    public void testCompilerPerformance() throws Exception {
       //compileScript("perf4.js");  
-      compileScript("/script/script13.snap"); 
+     // compileScript("/script/script13.snap"); 
       compileScript("/perf/perf4.snap"); 
  /*     executeScript("perf2.js");    
       executeScript("perf3.js"); */   
@@ -36,6 +38,10 @@ public class CompilePerformanceTest extends TestCase {
    }
    public static Object executeScript(String source, boolean execute) throws Exception {
       String script = ClassPathReader.load(source);
+      SourceProcessor processor = new SourceProcessor(100);
+      SourceCode code = processor.process(script);
+      int compressed = code.getSource().length;
+      int maxLine = code.getLines()[code.getLines().length -1];
       
       for(int j=0;j<ITERATIONS;j++){
          long start=System.currentTimeMillis();
@@ -43,7 +49,7 @@ public class CompilePerformanceTest extends TestCase {
          p.parse(source, script, "script");
          long finish=System.currentTimeMillis();
          long duration=finish-start;
-         System.err.println("Time taken to parse "+source+" was " + duration+" size was "+script.length());
+         System.err.println("Time taken to parse "+source+" was " + duration+" size was "+script.length() + " compressed to " + compressed + " and " + maxLine + " lines");
       }
       for(int j=0;j<ITERATIONS;j++){
          long start=System.currentTimeMillis();
@@ -59,7 +65,7 @@ public class CompilePerformanceTest extends TestCase {
          Executable e=compiler.compile(script);
          long finish=System.currentTimeMillis();
          long duration=finish-start;
-         System.err.println("Time taken to compile "+source+" was " + duration+" size was "+script.length());
+         System.err.println("Time taken to compile "+source+" was " + duration+" size was "+script.length() + " compressed to " + compressed + " and " + maxLine + " lines");
          start=System.currentTimeMillis();
          if(execute){
             e.execute();

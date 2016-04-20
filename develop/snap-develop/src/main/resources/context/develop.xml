@@ -146,6 +146,7 @@
   <bean id="ProjectScriptService" class="org.snapscript.develop.http.project.ProjectScriptService">
     <constructor-arg ref="ProjectBuilder" />
     <constructor-arg ref="ConnectListener" />
+    <constructor-arg ref="ConfigurationClassLoader"/>
     <constructor-arg ref="ConsoleLogger" />
     <constructor-arg ref="ProcessManager" />
     <constructor-arg ref="BackupManager"/>

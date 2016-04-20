@@ -11,18 +11,18 @@ import org.snapscript.develop.common.FileReader;
 import org.snapscript.develop.common.Problem;
 import org.snapscript.develop.common.ProblemFinder;
 
-public class ProjectCompiler {
+public class ProjectProblemFinder {
 
    private final FileProcessor<Problem> processor;
    private final FileAction<Problem> action;
    private final ProjectBuilder builder;
    private final ConsoleLogger logger;
    
-   public ProjectCompiler(ProjectBuilder builder, ConsoleLogger logger) {
+   public ProjectProblemFinder(ProjectBuilder builder, ConsoleLogger logger) {
       this(builder, logger, 10);
    }
    
-   public ProjectCompiler(ProjectBuilder builder, ConsoleLogger logger, int threads) {
+   public ProjectProblemFinder(ProjectBuilder builder, ConsoleLogger logger, int threads) {
       this.action = new CompileAction(builder, logger);
       this.processor = new FileProcessor<Problem>(action, threads);
       this.builder = builder;

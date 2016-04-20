@@ -4,6 +4,8 @@ import static org.snapscript.parse.TextCategory.INDEX;
 
 public class SourceCompressor {
    
+   private static final int LINE_LIMIT = 32000;
+   
    private char[] original;
    private char[] compress;
    private short[] lines;
@@ -52,6 +54,9 @@ public class SourceCompressor {
                }               
             }
             if(next == '\n') {
+               if(line > LINE_LIMIT) {
+                  throw new SourceException("Source exceeds " + LINE_LIMIT + " lines");
+               }
                line++;
             }
             read++;
@@ -92,6 +97,9 @@ public class SourceCompressor {
                   char terminal = original[read];
                   
                   if(terminal == '\n') {
+                     if(line > LINE_LIMIT) {
+                        throw new SourceException("Source exceeds " + LINE_LIMIT + " lines");
+                     }
                      read++;
                      line++;
                      return true;
@@ -105,6 +113,9 @@ public class SourceCompressor {
                   char terminal = original[read];
                   
                   if(terminal == '\n') {
+                     if(line > LINE_LIMIT) {
+                        throw new SourceException("Source exceeds " + LINE_LIMIT + " lines");
+                     }
                      line++;
                   }
                   if(terminal == '/' && read > 0) {
@@ -162,6 +173,9 @@ public class SourceCompressor {
                }
             }
             if(next == '\n') {
+               if(line > LINE_LIMIT) {
+                  throw new SourceException("Source exceeds " + LINE_LIMIT + " lines");
+               }
                line++;
             }
             lines[write] = line;

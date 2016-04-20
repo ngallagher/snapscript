@@ -1,8 +1,7 @@
 package org.snapscript.develop.command;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.util.Map;
 import java.util.Set;
 
 import org.simpleframework.http.Path;
@@ -12,12 +11,15 @@ import org.snapscript.develop.BackupManager;
 import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.common.Problem;
 import org.snapscript.develop.common.ProblemFinder;
-import org.snapscript.develop.http.project.ProjectCompiler;
+import org.snapscript.develop.common.TypeNode;
+import org.snapscript.develop.http.project.ProjectProblemFinder;
+import org.snapscript.develop.http.project.ProjectTypeLoader;
 
 public class CommandListener {
    
    private final CommandEventForwarder forwarder;
-   private final ProjectCompiler compiler;
+   private final ProjectProblemFinder compiler;
+   private final ProjectTypeLoader loader;
    private final CommandFilter filter;
    private final CommandClient client;
    private final ProcessManager engine;
@@ -28,13 +30,14 @@ public class CommandListener {
    private final File root;
    private final Path path;
    
-   public CommandListener(ProcessManager engine, ProjectCompiler compiler, FrameChannel channel, ConsoleLogger logger, BackupManager manager, Path path, File root, String project) {
+   public CommandListener(ProcessManager engine, ProjectProblemFinder compiler, ProjectTypeLoader loader, FrameChannel channel, ConsoleLogger logger, BackupManager manager, Path path, File root, String project) {
       this.filter = new CommandFilter();
       this.client = new CommandClient(channel, project);
       this.forwarder = new CommandEventForwarder(client, filter);
       this.finder = new ProblemFinder();
       this.compiler = compiler;
       this.manager = manager;
+      this.loader = loader;
       this.logger = logger;
       this.engine = engine;
       this.project = project;
@@ -228,7 +231,21 @@ public class CommandListener {
          }
          engine.register(forwarder); // make sure we are registered
          Set<Problem> problems = compiler.compileProject(path);
-         
+//         Map<String, TypeNode> nodes = loader.compileProject(path);
+//         Set<String> names = nodes.keySet();
+//         int index = 0;
+//         
+//         for(String name : names) {
+//            String[] pair = name.split(":");
+//            TypeNode node = nodes.get(name);
+//            index++;
+//            
+//            if(node.isModule()) {
+//               logger.log(index + " module " + pair[0] + " --> '" + pair[1] + "'");
+//            } else {
+//               logger.log(index + " class " + pair[0] + " --> '" + pair[1] + "'");
+//            }
+//         }
          for(Problem problem : problems) {
             String description = problem.getDescription();
             String path = problem.getResource();
