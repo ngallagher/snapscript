@@ -1,5 +1,28 @@
 
-function findTypes(text) {
+function openTypes() {
+   createListDialog(function(text){
+      var typesFound = findTypesMatching(text);
+      var typeRows = [];
+     
+      for(var i = 0; i < typesFound.length; i++) {
+         var resourceLink = "/project/" + typesFound[i].project + "#" + typesFound[i].resource;
+         var typeCell = {
+            text: typesFound[i].name,
+            link: resourceLink,
+            style: typesFound[i].type == 'module' ? 'moduleNode' : 'typeNode'
+         };
+         var resourceCell = {
+            text: typesFound[i].resource,
+            link: resourceLink,
+            style: 'resourceNode'
+         };
+         typeRows.push([typeCell, resourceCell]);
+      }
+      return typeRows;
+  });
+}
+
+function findTypesMatching(text) {
    var response = [];
    
    jQuery.ajax({

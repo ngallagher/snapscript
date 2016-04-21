@@ -52,6 +52,12 @@
 	background-repeat: no-repeat;
     padding: 12px;  
 }
+#openTypes {
+	background-image: url('/img/toolbar/insp_sbook.gif');	
+	background-position: center;
+	background-repeat: no-repeat;
+    padding: 12px; 
+}
 .toolbarTop {
 	padding: 5px;
 	height: 40px;
