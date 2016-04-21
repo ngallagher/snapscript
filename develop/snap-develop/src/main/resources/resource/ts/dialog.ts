@@ -197,7 +197,7 @@ function createListDialog(listFunction) { // listFunction(token): [a, b, c]
             '   <div id="dialog"></div>'+
             '</div>'+
             '<div id="dialogPath" onkeydown="return submitDialog(event);" onclick="this.contentEditable=\'true\';"></div>',
-      buttons : '<button id="dialogSave" class="btn">Open</button>',
+      buttons : '<button id="dialogSave" class="btn">Cancel</button>',
       width : 600,
       height : 400,
       overflow : 'hidden',
@@ -211,9 +211,29 @@ function createListDialog(listFunction) { // listFunction(token): [a, b, c]
          setTimeout(function() {
             $('#dialogPath').on('change keyup paste', function() {
                var text = $("#dialogPath").html();
-               var list = listFunction(text);
+               var expression = text.replace("<br>", "");
+               var list = listFunction(expression);
+               var content = "<table class='dialogListTable' width='100%'>";
                
-               $("#dialog").html(list);
+               for(var i = 0; i < list.length; i++) {
+                  var row = list[i];
+                  content += "<tr>";
+                  
+                  for(var j = 0; j < row.length; j++) {
+                     var cell = row[j];
+                     content += "<td width='50%'><div class='";
+                     content += cell.style;
+                     content += "' onclick='return submitDialogListResource(\"";
+                     content += cell.link;
+                     content += "\")'>";
+                     content += cell.text;
+                     content += "</div></td>";
+                  }
+                  content += "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>"; 
+                  content += "</tr>";
+               }
+               content +="</table>";
+               $("#dialog").html(content);
             });
             var element = document.getElementById('dialogPath');
             
@@ -240,6 +260,12 @@ function createListDialog(listFunction) { // listFunction(token): [a, b, c]
    $("#dialogCancel").click(function() {
       w2popup.close();
    });
+}
+
+function submitDialogListResource(resource) {
+   location.href = resource;
+   $("#dialogSave").click(); // force the click
+   return false
 }
 
 function submitDialog(e) {

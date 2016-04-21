@@ -439,19 +439,23 @@ function registerEditorBindings() {
        exec: function (editor) {
            createListDialog(function(text){
                 var typesFound = findTypes(text);
-                var typeList = "<table width='100%'>";
-                
+                var typeRows = [];
+               
                 for(var i = 0; i < typesFound.length; i++) {
                    var resourceLink = "/project/" + typesFound[i].project + "#" + typesFound[i].resource;
-                    
-                   typeList += "<tr>";
-                   typeList += "<td width='50%'><div class='typeNode' onclick='location.href=\""+resourceLink+"\"'>" + typesFound[i].name + "</div></td>";
-                   typeList += "<td width='40%'><div class='resourceNode' onclick='location.href=\""+resourceLink+"\"'>" + typesFound[i].resource + "</div></td>";
-                   typeList += "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>"; 
-                   typeList += "</tr>";
+                   var typeCell = {
+                      text: typesFound[i].name,
+                      link: resourceLink,
+                      style: typesFound[i].type == 'module' ? 'moduleNode' : 'typeNode'
+                   };
+                   var resourceCell = {
+                      text: typesFound[i].resource,
+                      link: resourceLink,
+                      style: 'resourceNode'
+                   };
+                   typeRows.push([typeCell, resourceCell]);
                 }
-                typeList +="</table>";
-                return typeList;
+                return typeRows;
            });
        },
        readOnly: true

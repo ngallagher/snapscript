@@ -40,6 +40,18 @@ public class ModuleRegistry {
       }
       String path = converter.createPath(name);
       Module current = modules.get(name);
+      
+      if(current == null) {
+         return addModule(name, path);
+      }
+      return current;
+   }
+   
+   public Module addModule(String name, String path) {
+      if (name == null) {
+         throw new InternalArgumentException("Module name was null");
+      }
+      Module current = modules.get(name);
 
       if (current == null) {
          Module module = new ContextModule(context, path, name);

@@ -18,12 +18,14 @@ public class Application implements Executable{
    private final Context context;
    private final Model model;
    private final String name;
+   private final String path;
    
-   public Application(Context context, Package library, String name){
+   public Application(Context context, Package library, String name, String path){
       this.merger = new ScopeMerger(context);
       this.model = new EmptyModel();
       this.library = library;
       this.context = context;
+      this.path = path;
       this.name = name;
    }
    
@@ -34,7 +36,7 @@ public class Application implements Executable{
    
    @Override
    public void execute(Model model) throws Exception{ 
-      Scope scope = merger.merge(model, name);
+      Scope scope = merger.merge(model, name, path);
       Statement script = library.compile(scope);
       ErrorHandler handler = context.getHandler();
       ExecutableValidator validator = context.getValidator();

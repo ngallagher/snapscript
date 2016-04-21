@@ -7,6 +7,7 @@ import org.simpleframework.http.Path;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.snapscript.agent.ConsoleLogger;
+import org.snapscript.develop.common.PatternEscaper;
 import org.snapscript.develop.configuration.ConfigurationClassLoader;
 import org.snapscript.develop.http.project.ProjectBuilder;
 import org.snapscript.develop.http.resource.Resource;
@@ -16,6 +17,9 @@ import com.google.gson.GsonBuilder;
 
 // /type/<project>
 public class TypeNodeResource implements Resource {
+   
+   private static final String STAR_PATTERN = "_STAR_PATTERN_";
+   private static final String EXPRESSION = "expression";
 
    private final ConfigurationClassLoader loader;
    private final TypeNodeScanner scanner;
@@ -29,16 +33,28 @@ public class TypeNodeResource implements Resource {
 
    @Override
    public void handle(Request request, Response response) throws Throwable {
-      String prefix = request.getParameter("prefix");
+      String expression = parse(request);
       PrintStream out = response.getPrintStream();
       Path path = request.getPath();
       Thread thread = Thread.currentThread();
       ClassLoader classLoader = loader.getClassLoader();
       thread.setContextClassLoader(classLoader);
-      Map<String, String> tokens = scanner.compileProject(path, prefix);
+      Map<String, TypeNodeReference> tokens = scanner.findTypes(path, expression);
       String text = gson.toJson(tokens);
       response.setContentType("application/json");
       out.println(text);
       out.close();
+   }
+   
+   private String parse(Request request) {      
+      String expression = request.getParameter(EXPRESSION);
+      
+      if(expression != null && !expression.isEmpty()) {
+         expression = expression.replace("*", STAR_PATTERN);
+         expression = PatternEscaper.escape(expression);
+         expression = expression.replace(STAR_PATTERN, ".*");
+         return expression + ".*";
+      }
+      return ".*";
    }
 }

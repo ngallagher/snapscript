@@ -24,7 +24,7 @@ public class StatementPackage implements Package {
          
          try {
             ModuleRegistry registry = context.getRegistry();
-            Module library = registry.addModule(name);
+            Module library = registry.addModule(name, path);
             Scope inner = library.getScope();
            
             statement.define(inner);

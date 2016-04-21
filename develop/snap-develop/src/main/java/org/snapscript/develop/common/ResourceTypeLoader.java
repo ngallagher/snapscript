@@ -54,6 +54,10 @@ public class ResourceTypeLoader {
    }
    
    public Map<String, TypeNode> compileSource(File root, String resource, String source, int line) {
+      return compileSource(root, resource, source, line, false);
+   }
+   
+   public Map<String, TypeNode> compileSource(File root, String resource, String source, int line, boolean aliases) {
       Map<String, TypeNode> types = new HashMap<String, TypeNode>();
       Model model = new EmptyModel();
       Store store = new FileStore(root);
@@ -72,7 +76,7 @@ public class ResourceTypeLoader {
          }
          PackageLinker linker = context.getLinker();
          Package library = linker.link(current, lineSource, SCRIPT.name);
-         Scope scope = merger.merge(model, current);
+         Scope scope = merger.merge(model, current, resource);
          
          library.compile(scope);
       } catch(Exception e) {
@@ -113,22 +117,24 @@ public class ResourceTypeLoader {
            types.put(name, value);
         }
       }
-      Map<String, String> imports = convertAliases(lines);
-      Set<String> keys = imports.keySet();
-      Module container = registry.getModule(current);
-      
-      for(String key : keys) {
-         Type type = container.getType(key);
+      if(aliases) {
+         Map<String, String> imports = convertAliases(lines);
+         Set<String> keys = imports.keySet();
+         Module container = registry.getModule(current);
          
-         if(type != null) {
-            TypeNode value = new TypeNode(type, key);
-            types.put(key, value);
-         } else {
-            Module module = container.getModule(key);
+         for(String key : keys) {
+            Type type = container.getType(key);
             
-            if(module != null) {
-               TypeNode value = new TypeNode(module, key);
+            if(type != null) {
+               TypeNode value = new TypeNode(type, key);
                types.put(key, value);
+            } else {
+               Module module = container.getModule(key);
+               
+               if(module != null) {
+                  TypeNode value = new TypeNode(module, key);
+                  types.put(key, value);
+               }
             }
          }
       }

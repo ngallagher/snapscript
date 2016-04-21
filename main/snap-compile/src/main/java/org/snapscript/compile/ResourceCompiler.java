@@ -49,7 +49,7 @@ public class ResourceCompiler implements Compiler {
          Package library = linker.link(resource, source, instruction.name);
          String module = converter.createModule(resource);
          
-         return new Application(context, library, module);
+         return new Application(context, library, module, resource);
       }
       return executable;
    } 

@@ -42,7 +42,7 @@ public class CompletionTypeResolver {
       String resource = state.getResource();
       Map<String, TypeNode> stateTypes = state.getTypes();
       Map<String, TypeNode> defaultTypes = loader.loadTypes();
-      Map<String, TypeNode> resourceTypes = compiler.compileSource(root, resource, source, line);
+      Map<String, TypeNode> resourceTypes = compiler.compileSource(root, resource, source, line, true);
 
       stateTypes.putAll(defaultTypes);
       stateTypes.putAll(resourceTypes);

@@ -29,19 +29,7 @@ public class FilePatternScanner {
                
                try {
                   expression = path.getCanonicalPath(); // remove ../ and ./
-                  
-                  while(expression.contains("\\\\")) { // ensure \\ does not exist
-                     expression = expression.replace("\\\\", "\\");
-                  }
-                  while(expression.contains("//")) { // ensure // does not exist
-                     expression = expression.replace("//", "/");
-                  }
-                  expression = expression.replace("\\", "\\\\"); // escape \
-                  expression = expression.replace(".", "\\."); // escape .
-                  expression = expression.replace("(", "\\("); // escape (
-                  expression = expression.replace(")", "\\)"); // escape )
-                  expression = expression.replace("-", "\\-"); // escape -
-                  expression = expression.replace("$", "\\$"); // escape $
+                  expression = PatternEscaper.escape(expression);
                   expression = expression.replace(RECURSIVE_PATTERN, ".*");
                   expression = expression.replace(SINGLE_PATTERN, "[a-zA-Z0-9_\\$\\-\\(\\)\\.\\s]+");
                   

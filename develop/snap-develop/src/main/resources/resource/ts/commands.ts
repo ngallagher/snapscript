@@ -3,23 +3,24 @@ function findTypes(text) {
    var response = [];
    
    jQuery.ajax({
-      url: '/type/' + document.title + '?prefix=' + text,
+      url: '/type/' + document.title + '?expression=' + text,
       success: function (typeMatches) {
-         var typeReferences = [];
+         var sortedMatches = [];
          
          for (var typeMatch in typeMatches) {
             if (typeMatches.hasOwnProperty(typeMatch)) {
-               typeReferences.push(typeMatch);
+               sortedMatches.push(typeMatch);
             }
          }
-         typeReferences.sort();
+         sortedMatches.sort();
 
-         for(var i = 0; i < typeReferences.length; i++) {
-            var typeReference = typeReferences[i];
-            var typeDetails = typeReference.split(":");
+         for(var i = 0; i < sortedMatches.length; i++) {
+            var typeMatch = sortedMatches[i];
+            var typeReference = typeMatches[typeMatch];
             var typeEntry = {
-                  name: typeDetails[0],
-                  resource: typeDetails[1],
+                  name: typeReference.name,
+                  resource: typeReference.resource,
+                  type: typeReference.type,
                   project: document.title
             };
             response.push(typeEntry);

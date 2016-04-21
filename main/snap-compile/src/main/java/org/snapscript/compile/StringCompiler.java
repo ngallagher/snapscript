@@ -10,10 +10,12 @@ import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
+import org.snapscript.core.PathConverter;
 
 public class StringCompiler implements Compiler {
    
    private final Cache<String, Executable> cache;
+   private final PathConverter converter;
    private final Instruction instruction;
    private final Context context;   
    private final String module;
@@ -28,6 +30,7 @@ public class StringCompiler implements Compiler {
    
    public StringCompiler(Context context, Instruction instruction, String module) {
       this.cache = new LeastRecentlyUsedCache<String, Executable>();
+      this.converter = new PathConverter();
       this.instruction = instruction;
       this.context = context;
       this.module = module;
@@ -48,8 +51,9 @@ public class StringCompiler implements Compiler {
       if(executable == null) {
          PackageLinker linker = context.getLinker();
          Package library = linker.link(module, source, instruction.name);
+         String path = converter.createPath(DEFAULT_PACKAGE);
          
-         return new Application(context, library, module);
+         return new Application(context, library, module, path);
       }
       return executable;
    } 

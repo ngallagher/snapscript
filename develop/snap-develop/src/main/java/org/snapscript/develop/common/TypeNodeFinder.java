@@ -25,11 +25,13 @@ public class TypeNodeFinder {
          Set<String> names = nodes.keySet();
          
          for(String name : names) {
-            TypeNode node = nodes.get(name);
-            String path = node.getResource();
-            
-            if(path.equals(resource)) {
-               types.put(name, node);
+            if(!name.contains(".")) {
+               TypeNode node = nodes.get(name);
+               String path = node.getResource();
+               
+               if(path.equals(resource)) {
+                  types.put(name, node);
+               }
             }
          }
       }catch(Exception cause) {

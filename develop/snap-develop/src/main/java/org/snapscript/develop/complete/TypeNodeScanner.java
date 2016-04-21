@@ -2,6 +2,7 @@ package org.snapscript.develop.complete;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class TypeNodeScanner {
       this.logger = logger;
    }
    
-   public Map<String, String> compileProject(Path path, String prefix) throws Exception {
+   public Map<String, TypeNodeReference> findTypes(Path path, String expression) throws Exception {
       Project project = builder.createProject(path);
       String name = project.getProjectName();
       File directory = project.getProjectPath();
@@ -45,7 +46,7 @@ public class TypeNodeScanner {
       if(root.endsWith("/")) {
          root = root.substring(0, length -1);
       }
-      Map<String, String> typeNodes = new HashMap<String, String>();
+      Map<String, TypeNodeReference> typeNodes = new HashMap<String, TypeNodeReference>();
       
       try {
          Set<Map<String, TypeNode>> resourceTypes = processor.process(name, root + "/**.snap"); // build all resources
@@ -57,8 +58,15 @@ public class TypeNodeScanner {
                TypeNode typeNode = types.get(typeName);
                String typePath = typeNode.getResource();
                
-               if(typeName.startsWith(prefix)) {
-                  typeNodes.put(typeName + ":" + typePath, typeName);
+               if(typeName.matches(expression)) {
+                  TypeNodeReference reference = null;
+                  
+                  if(typeNode.isModule()) {
+                     reference = new TypeNodeReference(typeName, typePath, TypeNodeReference.MODULE);
+                  } else {
+                     reference = new TypeNodeReference(typeName, typePath, TypeNodeReference.CLASS);
+                  }
+                  typeNodes.put(typeName +":" + typePath, reference);
                }
             }
          }

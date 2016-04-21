@@ -28,11 +28,12 @@ public class ModuleBuilder {
    }
    
    protected Module create(Module parent, String name) throws Exception {
+      String path = parent.getPath();
       String prefix = parent.getName();
       Context context = parent.getContext();
       ImportManager manager = parent.getManager();
       ModuleRegistry registry = context.getRegistry();
-      Module module = registry.addModule(prefix +"."+ name); // create module
+      Module module = registry.addModule(prefix +"."+ name, path); // create module
       
       manager.addImports(module); // add parent imports
       manager.addImport(prefix, name); // make module accessible by name
