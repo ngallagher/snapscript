@@ -391,7 +391,7 @@ function registerEditorBindings() {
             mac: 'Command-Shift-S'
         },
         exec: function (editor) {
-            openTypes();
+            searchTypes();
         },
         readOnly: true
     });

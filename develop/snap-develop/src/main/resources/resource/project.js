@@ -84,7 +84,7 @@ function createProjectLayout() {
                            + "         <td><div id='newFile' onclick='newFile(null)' title='New File&nbsp;&nbsp;&nbsp;Ctrl+N'></div></td>"                           
                            + "         <td><div id='saveFile' onclick='saveFile(null)' title='Save File&nbsp;&nbsp;&nbsp;Ctrl+S'></div></td>" 
                            + "         <td><div id='deleteFile' onclick='deleteFile(null)' title='Delete File'></div></td>"   
-                           + "         <td><div id='openTypes' onclick='openTypes()' title='Open Types&nbsp;&nbsp;&nbsp;Ctrl+Shift+S'></div></td>"                             
+                           + "         <td><div id='searchTypes' onclick='searchTypes()' title='Search Types&nbsp;&nbsp;&nbsp;Ctrl+Shift+S'></div></td>"                             
                            + "         <td><div id='runScript' onclick='runScript()' title='Run Script&nbsp;&nbsp;&nbsp;Ctrl+R'></div></td>" 
                            + "      </tr>"
                            + "      </table>"

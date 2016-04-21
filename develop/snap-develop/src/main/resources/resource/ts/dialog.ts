@@ -190,9 +190,9 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
    }, 2);
 }
 
-function createListDialog(listFunction) { // listFunction(token): [a, b, c]
+function createListDialog(listFunction, dialogTitle) { // listFunction(token): [a, b, c]
    w2popup.open({
-      title : "Open Type",
+      title : dialogTitle,
       body : '<div id="dialogContainerBig">'+
             '   <div id="dialog"></div>'+
             '</div>'+

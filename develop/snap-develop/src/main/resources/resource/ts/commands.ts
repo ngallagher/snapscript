@@ -1,5 +1,5 @@
 
-function openTypes() {
+function searchTypes() {
    createListDialog(function(text){
       var typesFound = findTypesMatching(text);
       var typeRows = [];
@@ -19,7 +19,7 @@ function openTypes() {
          typeRows.push([typeCell, resourceCell]);
       }
       return typeRows;
-  });
+  }, "Search Types");
 }
 
 function findTypesMatching(text) {
