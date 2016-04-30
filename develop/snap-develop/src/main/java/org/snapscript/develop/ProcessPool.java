@@ -47,7 +47,7 @@ public class ProcessPool {
    private final int capacity;
    
    public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, Workspace workspace, int port, int capacity) throws IOException {
-      this(configuration, logger, workspace, port, capacity, 2000);
+      this(configuration, logger, workspace, port, capacity, 5000);
    }
    
    public ProcessPool(ProcessConfiguration configuration, ConsoleLogger logger, Workspace workspace, int port, int capacity, long frequency) throws IOException {
@@ -73,7 +73,7 @@ public class ProcessPool {
          if(pool == null) {
             throw new IllegalArgumentException("No pool of type '" + system + "'");
          }
-         ProcessConnection connection = pool.poll(5, TimeUnit.SECONDS); // take a process from the pool
+         ProcessConnection connection = pool.poll(10, TimeUnit.SECONDS); // take a process from the pool
          
          if(connection == null) {
             throw new IllegalStateException("No agent of type " + system + " as pool is empty");
