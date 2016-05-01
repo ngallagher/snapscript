@@ -51,7 +51,7 @@ public class StringCompiler implements Compiler {
       if(executable == null) {
          PackageLinker linker = context.getLinker();
          Package library = linker.link(module, source, instruction.name);
-         String path = converter.createPath(DEFAULT_PACKAGE);
+         String path = converter.createPath(module);
          
          return new Application(context, library, module, path);
       }

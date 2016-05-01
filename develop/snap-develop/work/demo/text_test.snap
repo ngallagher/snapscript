@@ -1,3 +1,5 @@
+import security.SecureRandom;
+
 var b = 'blah
 blah
    blah';
@@ -13,6 +15,13 @@ class Blah{
       return [1,2,3,4];
    }
 }
+
+import security.SecureRandom;
+
+var random = new SecureRandom();
+var val = random.nextInt();
+
+println("rand="+val);
 
 var object = new Blah();
 var list = object.blah();

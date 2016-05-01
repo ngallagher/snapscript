@@ -34,9 +34,15 @@ public class FibTest extends TestCase {
    //time=1299 memory=1,586,667,584
    //time=1310 memory=1,586,589,152
    public void testRecursion() throws Exception {
-      DecimalFormat format = new DecimalFormat("###,###,###,###,###");
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile(SOURCE);
+      timeExecution(executable);
+      timeExecution(executable);
+      timeExecution(executable);
+   }
+   
+   private void timeExecution(Executable executable) throws Exception {
+      DecimalFormat format = new DecimalFormat("###,###,###,###,###");
       ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
       Thread thread = Thread.currentThread();
       long id = thread.getId();

@@ -5,33 +5,22 @@ import static org.snapscript.compile.instruction.Instruction.SCRIPT_PACKAGE;
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
 import org.snapscript.core.Context;
-import org.snapscript.core.NoPackage;
 import org.snapscript.core.Package;
 import org.snapscript.core.PackageLinker;
-import org.snapscript.core.PathConverter;
-import org.snapscript.core.Statement;
-import org.snapscript.core.StatementPackage;
-import org.snapscript.parse.SyntaxCompiler;
-import org.snapscript.parse.SyntaxNode;
-import org.snapscript.parse.SyntaxParser;
 
 public class InstructionLinker implements PackageLinker {
    
-   private final Cache<String, Statement> cache;
+   private final Cache<String, Package> cache;
    private final Instruction instruction;
-   private final SyntaxCompiler compiler;
-   private final PathConverter converter;
-   private final Assembler assembler;   
+   private final PackageBuilder builder;  
    
    public InstructionLinker(Context context) {
       this(context, SCRIPT_PACKAGE);
    }
    
    public InstructionLinker(Context context, Instruction instruction) {
-      this.cache = new LeastRecentlyUsedCache<String, Statement>();
-      this.assembler = new InstructionAssembler(context);      
-      this.compiler = new SyntaxCompiler();
-      this.converter = new PathConverter();
+      this.cache = new LeastRecentlyUsedCache<String, Package>();
+      this.builder = new PackageBuilder(context);
       this.instruction = instruction;
    }
    
@@ -42,18 +31,12 @@ public class InstructionLinker implements PackageLinker {
    
    @Override
    public Package link(String resource, String source, String grammar) throws Exception {
-      Statement linked = cache.fetch(resource);
+      Package linked = cache.fetch(resource);
       
       if(linked == null) {
-         SyntaxParser parser = compiler.compile();
-         SyntaxNode node = parser.parse(resource, source, grammar);
-         Statement statement = assembler.assemble(node, resource);
-         String module = converter.createModule(resource);
-         String path = converter.createPath(resource);
-         
-         cache.cache(resource, statement); 
-         return new StatementPackage(statement, module, path);
+         linked = builder.create(resource, source, grammar);
+         cache.cache(resource, linked);
       }
-      return new NoPackage(); 
+      return linked; 
    } 
 }
