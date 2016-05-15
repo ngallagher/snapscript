@@ -12,6 +12,11 @@ public class FunctionType implements Type {
    public FunctionType(Signature signature) {
       this.function = new EmptyFunction(signature, METHOD_CLOSURE);
    }
+   
+   @Override
+   public List<Annotation> getAnnotations() {
+      return Collections.emptyList();
+   }
 
    @Override
    public List<Property> getProperties() {

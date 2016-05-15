@@ -2,6 +2,7 @@ package org.snapscript.core.index;
 
 import java.util.List;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
@@ -17,6 +18,11 @@ public class ClassType implements Type {
       this.index = new ClassIndex(indexer, this);
       this.name = name;
       this.type = type;
+   }
+   
+   @Override
+   public List<Annotation> getAnnotations() {
+      return index.getAnnotations();
    }
    
    @Override

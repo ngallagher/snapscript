@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
@@ -20,7 +21,7 @@ public class EnumDefinition extends Statement {
    private final EnumList list;
    private final TypePart[] parts;
    
-   public EnumDefinition(TypeName name, TypeHierarchy hierarchy, EnumList list, TypePart... parts) {
+   public EnumDefinition(AnnotationList annotations, TypeName name, TypeHierarchy hierarchy, EnumList list, TypePart... parts) {
       this.builder = new EnumBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor(true);
       this.extractor = new NameExtractor(name);

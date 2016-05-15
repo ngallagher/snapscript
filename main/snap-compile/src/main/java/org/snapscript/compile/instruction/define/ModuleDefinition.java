@@ -4,6 +4,7 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
@@ -18,7 +19,7 @@ public class ModuleDefinition extends Statement {
    private final ModuleBuilder builder;
    private final Statement body;
    
-   public ModuleDefinition(ModuleName module, Statement... body) {
+   public ModuleDefinition(AnnotationList annotations, ModuleName module, Statement... body) {
       this.reference = new AtomicReference<Module>();
       this.builder = new ModuleBuilder(module);
       this.body = new ModuleBody(body);

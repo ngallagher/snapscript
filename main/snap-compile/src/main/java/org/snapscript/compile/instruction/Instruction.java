@@ -25,6 +25,7 @@ import org.snapscript.compile.instruction.construct.MapEntryList;
 import org.snapscript.compile.instruction.construct.MapKey;
 import org.snapscript.compile.instruction.define.ClassConstructor;
 import org.snapscript.compile.instruction.define.ClassDefinition;
+import org.snapscript.compile.instruction.define.MemberDeclaration;
 import org.snapscript.compile.instruction.define.EnumConstructor;
 import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
@@ -37,8 +38,8 @@ import org.snapscript.compile.instruction.define.ThisConstructor;
 import org.snapscript.compile.instruction.define.TraitDefinition;
 import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
-import org.snapscript.compile.instruction.define.TypeField;
-import org.snapscript.compile.instruction.define.TypeFunction;
+import org.snapscript.compile.instruction.define.MemberField;
+import org.snapscript.compile.instruction.define.MemberFunction;
 import org.snapscript.compile.instruction.define.TypeHierarchy;
 import org.snapscript.compile.instruction.define.TypeName;
 import org.snapscript.compile.instruction.literal.BooleanLiteral;
@@ -145,7 +146,7 @@ public enum Instruction {
    CLOSURE(Closure.class, "closure"),
    THROW(ThrowStatement.class, "throw-statement"),    
    TRY_CATCH(TryCatchStatement.class, "try-catch-statement"),
-   TRY_FINALLY(TryFinallyStatement.class, "try-finally-statement"),      
+   TRY_FINALLY(TryFinallyStatement.class, "try-finally-statement"),     
    TYPE_NAME(TypeName.class, "type-name"),
    TRAIT_NAME(TraitName.class, "trait-name"),     
    TRAIT_HIERARCHY(TypeHierarchy.class, "trait-hierarchy"),
@@ -153,19 +154,22 @@ public enum Instruction {
    TRAIT_FUNCTION(TraitFunction.class, "trait-function"),
    ENUM_KEY(EnumKey.class, "enum-key"),
    ENUM_HIERARCHY(TypeHierarchy.class, "enum-hierarchy"),
-   ENUM_FIELD(TypeField.class, "enum-field"),
-   ENUM_FUNCTION(TypeFunction.class, "enum-function"),   
+   ENUM_FIELD(MemberField.class, "enum-field"),
+   ENUM_FUNCTION(MemberFunction.class, "enum-function"),   
    ENUM_DEFINITION(EnumDefinition.class, "enum-definition"), 
    ENUM_CONSTRUCTOR(EnumConstructor.class, "enum-constructor"), 
    ENUM_VALUE(EnumValue.class, "enum-value"),
    ENUM_LIST(EnumList.class, "enum-list"),     
    CLASS_HIERARCHY(TypeHierarchy.class, "class-hierarchy"),
-   CLASS_DEFINITION(ClassDefinition.class, "class-definition"),   
+   CLASS_DEFINITION(ClassDefinition.class, "class-definition"),
+   CLASS_FIELD(MemberField.class, "class-field"),
+   CLASS_FUNCTION(MemberFunction.class, "class-function"),   
+   CLASS_CONSTRUCTOR(ClassConstructor.class, "class-constructor"),  
+   ANNOTATION_LIST(AnnotationList.class, "annotation-list"),
+   ANNOTATION_DECLARATION(AnnotationDeclaration.class, "annotation-declaration"),
    MODIFIER(Modifier.class, "modifier"),
    MODIFIER_LIST(ModifierList.class, "modifier-list"), 
-   MEMBER_FIELD(TypeField.class, "member-field"),
-   MEMBER_FUNCTION(TypeFunction.class, "member-function"),   
-   MEMBER_CONSTRUCTOR(ClassConstructor.class, "member-constructor"),     
+   MEMBER_DECLARATION(MemberDeclaration.class, "member-declaration"),
    SUPER_CONSTRUCTOR(SuperConstructor.class, "super-constructor"),
    THIS_CONSTRUCTOR(ThisConstructor.class, "this-constructor"),
    EXPRESSION(Expression.class, "expression"),

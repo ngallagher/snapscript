@@ -4,7 +4,6 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.List;
 
-import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
@@ -15,8 +14,8 @@ import org.snapscript.core.Type;
 
 public class DefaultConstructor implements TypePart {
    
+   private final MemberDeclaration modifiers;
    private final ParameterList parameters;
-   private final ModifierList modifiers;
    private final boolean compile;
 
    public DefaultConstructor(){
@@ -24,8 +23,8 @@ public class DefaultConstructor implements TypePart {
    }
    
    public DefaultConstructor(boolean compile) {
+      this.modifiers = new MemberDeclaration();
       this.parameters = new ParameterList();
-      this.modifiers = new ModifierList();
       this.compile = compile;
    } 
    

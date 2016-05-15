@@ -5,6 +5,7 @@ class Base with Runnable {
       println("Base.new(${x})");
       this.x=x;
    }
+   
    dump(){
       println("Base.dump(): x=${x}");
       fun();

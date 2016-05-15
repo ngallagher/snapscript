@@ -1,7 +1,5 @@
 package org.snapscript.compile.instruction;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.compile.instruction.collection.ArrayBuilder;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;

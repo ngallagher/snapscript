@@ -12,6 +12,9 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
       
+      analyze(tree, "@Blah blah(){}", "member-function");
+      analyze(tree, "@Blah class Boo{}", "class-definition");
+      analyze(tree, "@Blah", "annotation-declaration");
       analyze(tree, "-blah", "value-operand");
       analyze(tree, "-blah", "calculation-operand");
       analyze(tree, "-blah", "assignment-expression");

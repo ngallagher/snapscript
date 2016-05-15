@@ -1,9 +1,11 @@
 package org.snapscript.compile.instruction.define;
 
-public class TraitDefinition extends ClassDefinition {
+import org.snapscript.compile.instruction.AnnotationList;
 
-   public TraitDefinition(TraitName name, TypeHierarchy hierarchy, TypePart... parts) {
-      super(name, hierarchy, parts);     
+public class TraitDefinition extends ClassDefinition {
+   
+   public TraitDefinition(AnnotationList annotations, TraitName name, TypeHierarchy hierarchy, TypePart... parts) {
+      super(annotations, name, hierarchy, parts);     
    }
 
 }

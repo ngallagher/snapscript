@@ -1,17 +1,27 @@
 package org.snapscript.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScopeProperty implements Property<Scope> {
 
+   private final List<Annotation> annotations;
    private final Accessor<Scope> accessor;
    private final String name;
    private final Type type;
    private final int modifiers;
    
    public ScopeProperty(String name, Type type, int modifiers){
+      this.annotations = new ArrayList<Annotation>();
       this.accessor = new ScopeAccessor(name);
       this.modifiers = modifiers;
       this.name = name;
       this.type = type;
+   }
+   
+   @Override
+   public List<Annotation> getAnnotations(){
+      return annotations;
    }
    
    @Override

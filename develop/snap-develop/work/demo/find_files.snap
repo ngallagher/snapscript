@@ -2,6 +2,8 @@ import io.File;
 import io.FileReader;
 import io.BufferedReader;
 
+@Foo
+@Snuh
 trait Searcher {
    search(text);
 }

@@ -2,9 +2,8 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.NameExtractor;
-import org.snapscript.core.Initializer;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
@@ -12,22 +11,19 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class ClassDefinition extends Statement {   
-   
-   private final FunctionPropertyGenerator generator;
+@Bug("Not working - this is just a template")
+public class AnnotationDefinition extends Statement {
+
    private final DefaultConstructor constructor;
+   private final AnnotationBuilder builder;
    private final NameExtractor extractor;
-   private final AtomicBoolean compile;
-   private final ClassBuilder builder;
-   private final TypePart[] parts;
+   private final AtomicBoolean define;
    
-   public ClassDefinition(AnnotationList annotations, TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
-      this.generator = new FunctionPropertyGenerator(); 
-      this.builder = new ClassBuilder(name, hierarchy);
-      this.constructor = new DefaultConstructor();
+   public AnnotationDefinition(TypeName name, TypeHierarchy hierarchy) {
+      this.builder = new AnnotationBuilder(name, hierarchy);
+      this.constructor = new DefaultConstructor(true);
       this.extractor = new NameExtractor(name);
-      this.compile = new AtomicBoolean(true);
-      this.parts = parts;
+      this.define = new AtomicBoolean(true);
    }
    
    @Override
@@ -44,19 +40,14 @@ public class ClassDefinition extends Statement {
       StaticScope other = new StaticScope(scope);
       InitializerCollector collector = new InitializerCollector();
       
-      if(!compile.compareAndSet(false, true)) {
+      if(!define.compareAndSet(false, true)) {
          Type type = builder.create(other);
-         
-         for(TypePart part : parts) {
-            Initializer initializer = part.compile(other, collector, type);
-            collector.update(initializer);
-         } 
-         constructor.compile(other, collector, type);
-         generator.generate(type);
+
+         constructor.compile(other, collector, type); 
+         collector.compile(other, type); 
          
          return ResultType.getNormal(type);
       }
       return ResultType.getNormal();
    }
-
 }

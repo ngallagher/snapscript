@@ -1,7 +1,10 @@
 package org.snapscript.core.index;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.snapscript.core.Annotation;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
@@ -21,6 +24,11 @@ public class ClassIndex {
    public ClassIndex(ClassIndexer indexer, ClassType require) {      
       this.indexer = indexer;
       this.require = require;
+   }
+   
+   @Bug("Not implemented")
+   public List<Annotation> getAnnotations() {
+      return Collections.emptyList();
    }
 
    public List<Property> getProperties() {

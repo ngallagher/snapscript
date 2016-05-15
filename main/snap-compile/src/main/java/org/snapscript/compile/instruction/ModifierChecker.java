@@ -1,13 +1,14 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.compile.instruction.define.MemberDeclaration;
 import org.snapscript.core.ModifierType;
 
 public class ModifierChecker {
 
-   private ModifierList list;
+   private MemberDeclaration list;
    private int modifiers;
    
-   public ModifierChecker(ModifierList list) {
+   public ModifierChecker(MemberDeclaration list) {
       this.modifiers = -1;
       this.list = list;
    }

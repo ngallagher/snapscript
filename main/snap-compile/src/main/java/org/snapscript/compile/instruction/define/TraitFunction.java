@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.Constraint;
-import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
@@ -10,21 +9,21 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class TraitFunction extends TypeFunction {
+public class TraitFunction extends MemberFunction {
  
-   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters){
+   public TraitFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters){
       super(list, identifier, parameters);
    }
    
-   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint){
+   public TraitFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Constraint constraint){
       super(list, identifier, parameters, constraint);
    }
    
-   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Statement body){  
+   public TraitFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Statement body){  
       super(list, identifier, parameters, body);
    }
    
-   public TraitFunction(ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
+   public TraitFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
       super(list, identifier, parameters, constraint, body);
    } 
    

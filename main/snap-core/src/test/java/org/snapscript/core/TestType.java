@@ -10,6 +10,7 @@ import org.snapscript.core.Type;
 
 public class TestType implements Type {
 
+   private final List<Annotation> annotations;
    private final List<Property> properties;
    private final List<Function> functions;
    private final List<Type> types;
@@ -19,6 +20,7 @@ public class TestType implements Type {
    private final String name;
 
    public TestType(Module module, String name, Type entry, Class type){
+      this.annotations = new ArrayList<Annotation>();
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
@@ -26,6 +28,10 @@ public class TestType implements Type {
       this.entry = entry;
       this.type = type;
       this.name = name;
+   }
+   
+   public List<Annotation> getAnnotations() {
+      return annotations;
    }
    
    public List<Property> getProperties() {

@@ -1,0 +1,23 @@
+
+module X{
+
+   function taskComplete() {
+   }
+}
+
+
+
+// @Path("/blah")
+// class AssetResource {
+
+//    @Inject
+//    var service: AssetService;
+
+//    @Method("GET")
+//    @Path("/a/b/${x}")
+//    @ContentType("application/xml")
+//    @Accept("*/*")
+//    get(x) {
+//       return service.get();
+//    }
+// }

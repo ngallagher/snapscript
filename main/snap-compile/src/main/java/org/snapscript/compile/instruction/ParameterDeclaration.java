@@ -12,19 +12,19 @@ public class ParameterDeclaration {
    private Parameter parameter;
    private Modifier modifier;
    
-   public ParameterDeclaration(Evaluation identifier){
-      this(identifier, null, null);
+   public ParameterDeclaration(AnnotationList list, Evaluation identifier){
+      this(list, identifier, null, null);
    }
    
-   public ParameterDeclaration(Evaluation identifier, Constraint constraint){
-      this(identifier, null, constraint);
+   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Constraint constraint){
+      this(list, identifier, null, constraint);
    }
    
-   public ParameterDeclaration(Evaluation identifier, Modifier modifier){
-      this(identifier, modifier, null);
+   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Modifier modifier){
+      this(list, identifier, modifier, null);
    }
    
-   public ParameterDeclaration(Evaluation identifier, Modifier modifier, Constraint constraint){
+   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Modifier modifier, Constraint constraint){
       this.extractor = new NameExtractor(identifier);
       this.constraint = constraint;
       this.modifier = modifier;

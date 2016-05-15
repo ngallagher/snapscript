@@ -1,9 +1,13 @@
 package org.snapscript.core.index;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.snapscript.core.ModifierType.CONSTANT;
 import static org.snapscript.core.ModifierType.STATIC;
 import static org.snapscript.core.Reserved.TYPE_CLASS;
 
+import java.util.List;
+
+import org.snapscript.core.Annotation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Property;
 import org.snapscript.core.Type;
@@ -16,6 +20,11 @@ public class ClassProperty implements Property {
    public ClassProperty(Type type, Type constraint) {
       this.constraint = constraint;
       this.type = type;
+   }
+   
+   @Override
+   public List<Annotation> getAnnotations(){
+      return EMPTY_LIST;
    }
 
    @Override

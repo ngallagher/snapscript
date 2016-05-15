@@ -6,12 +6,20 @@ var m = x.class;
 var y = m.getModule();
 System.err.println(y==null);
 
+// destructuring
+@Param
+@Blah
 module Y{
+
+   @Wop
    class P {
+   
+      //@Override
       dump(){
          println("x");
       }
    }
+   //@Attribute
    var x=10;
    var y=22;
    function dump(){

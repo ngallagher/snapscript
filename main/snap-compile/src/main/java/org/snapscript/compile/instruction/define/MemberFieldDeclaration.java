@@ -4,20 +4,19 @@ import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.DeclareBlank;
 import org.snapscript.compile.instruction.DeclareVariable;
 import org.snapscript.compile.instruction.ModifierChecker;
-import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Scope;
 
-public class TypeFieldDeclaration {
+public class MemberFieldDeclaration {
    
    private final ModifierChecker checker;
    private final TextLiteral identifier;
    private final Constraint constraint;
    private final Evaluation value;
 
-   public TypeFieldDeclaration(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
+   public MemberFieldDeclaration(MemberDeclaration modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
       this.checker = new ModifierChecker(modifiers);
       this.constraint = constraint;
       this.identifier = identifier;
