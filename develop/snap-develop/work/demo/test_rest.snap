@@ -1,26 +1,9 @@
 
-@Blah(x: 12, x: 55)
-@Service
-@Path(path: "/blah")
-module X{
+var map = {x:12, y: @Blah(x:55)};
+println(map);
 
-   function taskComplete() {
-   }
+
+@Foo
+@Blah(a: 22, x: @Blah(i: 34))
+class Foo{
 }
-println("x3");
-
-
-// @Path("/blah")
-// class AssetResource {
-
-//    @Inject
-//    var service: AssetService;
-
-//    @Method("GET")
-//    @Path("/a/b/${x}")
-//    @ContentType("application/xml")
-//    @Accept("*/*")
-//    get(x) {
-//       return service.get();
-//    }
-// }

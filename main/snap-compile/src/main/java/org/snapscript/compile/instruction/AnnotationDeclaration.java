@@ -5,6 +5,7 @@ import org.snapscript.compile.instruction.define.TypeName;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class AnnotationDeclaration implements Evaluation {
 
@@ -22,6 +23,9 @@ public class AnnotationDeclaration implements Evaluation {
 
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
-      return null;
+      if(list != null) {
+         return list.evaluate(scope, left);
+      }
+      return ValueType.getTransient(null);
    }
 }

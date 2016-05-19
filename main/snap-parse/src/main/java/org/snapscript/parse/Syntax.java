@@ -43,7 +43,7 @@ public enum Syntax {
    CONSTRUCT_SET("construct-set", "'{}'|('{'<set-entry-list>'}')"),
    CONSTRUCT_MAP("construct-map", "'{:}'|('{'<map-entry-list>'}')"),
    CONSTRUCT("construct", "{<construct-object>|<construct-list>|<construct-array>|<construct-map>|<construct-set>}"),
-   ARGUMENT("argument", "{<literal>|<increment-decrement-operand>|<prefix-operand>|<reference>}|<choice>|<conditional>|<calculation>"),
+   ARGUMENT("argument", "{<literal>|<annotation-declaration>|<increment-decrement-operand>|<prefix-operand>|<reference>}|<choice>|<conditional>|<calculation>"),
    ARGUMENT_LIST("argument-list", "<argument>*(','<argument>)"),
    ASSIGNMENT("assignment", "<reference>?' '<assignment-operator>?' '<expression>"),
    ASSIGNMENT_OPERAND("assignment-operand", "'('<assignment>')'"),

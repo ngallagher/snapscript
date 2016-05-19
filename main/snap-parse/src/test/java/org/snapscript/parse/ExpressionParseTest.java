@@ -11,7 +11,10 @@ public class ExpressionParseTest extends TestCase {
       SyntaxParser tree = LexerBuilder.create();
 
       assertNotNull(tree);
-      
+
+      analyze(tree, "@Blah", "argument");
+      analyze(tree, "@Blah(x: 55)", "argument");
+      analyze(tree, "@Blah(x: 55, y: 'blah')", "argument");
       analyze(tree, "blah(){}", "class-function");
       analyze(tree, "public", "member-declaration");
       analyze(tree, "@Blah public", "member-declaration");
