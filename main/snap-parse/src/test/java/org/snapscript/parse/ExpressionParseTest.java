@@ -12,7 +12,22 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
       
-      analyze(tree, "@Blah blah(){}", "member-function");
+      analyze(tree, "blah(){}", "class-function");
+      analyze(tree, "public", "member-declaration");
+      analyze(tree, "@Blah public", "member-declaration");
+      analyze(tree, "@Blah()@Foo(x:1) public", "member-declaration");
+      analyze(tree, "@Blah", "annotation-declaration");
+      analyze(tree, "@Blah()", "annotation-declaration");
+      analyze(tree, "@Blah(x: 1)", "annotation-declaration");
+      analyze(tree, "@Blah", "annotation-list");
+      analyze(tree, "@Blah()", "annotation-list");
+      analyze(tree, "@Blah(x: 1)", "annotation-list");
+      analyze(tree, "@Blah@Foo", "annotation-list");
+      analyze(tree, "@Blah()@Foo(x:1)", "annotation-list");
+      analyze(tree, "@Blah(x: 1)@Foo", "annotation-list");
+      analyze(tree, "blah(){}", "class-function");
+      analyze(tree, "public blah(){}", "class-function");
+      analyze(tree, "@Blah blah(){}", "class-function");
       analyze(tree, "@Blah class Boo{}", "class-definition");
       analyze(tree, "@Blah", "annotation-declaration");
       analyze(tree, "-blah", "value-operand");
@@ -23,7 +38,7 @@ public class ExpressionParseTest extends TestCase {
       analyze(tree, "this.addr = \"${host}:${port}\".getBytes();", "assignment-statement");
       analyze(tree, "{this.addr = \"${host}:${port}\".getBytes();}", "compound-statement");
       analyze(tree, "{this.addr = \"${host}:${port}\".getBytes();}", "group-statement");
-      analyze(tree, "new(a,b,c){this.addr = \"${host}:${port}\".getBytes();}", "member-constructor");
+      analyze(tree, "new(a,b,c){this.addr = \"${host}:${port}\".getBytes();}", "class-constructor");
       analyze(tree, "class Blah with Runnable{new(a,b,c){this.addr = \"${host}:${port}\".getBytes();}}", "script");
       analyze(tree, "count = source.read(buffer)", "assignment");
       analyze(tree, "(count = source.read(buffer))", "assignment-operand");

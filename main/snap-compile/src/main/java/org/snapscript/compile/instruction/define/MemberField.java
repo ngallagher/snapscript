@@ -2,9 +2,11 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.ConstraintExtractor;
 import org.snapscript.compile.instruction.ModifierChecker;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.AccessorProperty;
@@ -23,22 +25,22 @@ public class MemberField implements TypePart {
    private final ConstraintExtractor extractor;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
-   private final MemberDeclaration list;
+   private final ModifierList list;
    
-   public MemberField(MemberDeclaration list, TextLiteral identifier) {
-      this(list, identifier, null, null);
+   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier) {
+      this(annotations, list, identifier, null, null);
    }
 
-   public MemberField(MemberDeclaration list, TextLiteral identifier, Constraint constraint) {
-      this(list, identifier, constraint, null);
+   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint) {
+      this(annotations, list, identifier, constraint, null);
    }
 
-   public MemberField(MemberDeclaration list, TextLiteral identifier, Evaluation value) {
-      this(list, identifier, null, value);
+   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Evaluation value) {
+      this(annotations, list, identifier, null, value);
    }
 
-   public MemberField(MemberDeclaration list, TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.declaration = new MemberFieldDeclaration(list, identifier, constraint, value);
+   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
+      this.declaration = new MemberFieldDeclaration(annotations, list, identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(list);
       this.identifier = identifier;

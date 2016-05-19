@@ -22,6 +22,28 @@ public class SourceCompressorTest extends TestCase {
    "      return new Point(x+this.x, y+this.y); /* simple transform */\n"+
    "   }\n"+
    "}\n";
+   
+   public void testSimpleAnnotationCompress() throws Exception {
+      char[] text = "@Blah @Blah blah(){}".toCharArray();
+      SourceCompressor compressor = new SourceCompressor(text);
+      SourceCode code = compressor.compress();
+      char[] original = code.getOriginal();
+      char[] compress = code.getSource();
+      short[] lines = code.getLines();
+      System.err.println(">"+new String(original)+"<");
+      System.err.println(">"+new String(compress)+"<");
+   }
+   
+   public void testAnnotationCompress() throws Exception {
+      char[] text = "@Blah(x:1) @Blah blah(){}".toCharArray();
+      SourceCompressor compressor = new SourceCompressor(text);
+      SourceCode code = compressor.compress();
+      char[] original = code.getOriginal();
+      char[] compress = code.getSource();
+      short[] lines = code.getLines();
+      System.err.println(">"+new String(original)+"<");
+      System.err.println(">"+new String(compress)+"<");
+   }
 
    public void testVariableCompress() throws Exception {
       char[] text = "x".toCharArray();

@@ -25,12 +25,13 @@ import org.snapscript.compile.instruction.construct.MapEntryList;
 import org.snapscript.compile.instruction.construct.MapKey;
 import org.snapscript.compile.instruction.define.ClassConstructor;
 import org.snapscript.compile.instruction.define.ClassDefinition;
-import org.snapscript.compile.instruction.define.MemberDeclaration;
 import org.snapscript.compile.instruction.define.EnumConstructor;
 import org.snapscript.compile.instruction.define.EnumDefinition;
 import org.snapscript.compile.instruction.define.EnumKey;
 import org.snapscript.compile.instruction.define.EnumList;
 import org.snapscript.compile.instruction.define.EnumValue;
+import org.snapscript.compile.instruction.define.MemberField;
+import org.snapscript.compile.instruction.define.MemberFunction;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
 import org.snapscript.compile.instruction.define.ModuleName;
 import org.snapscript.compile.instruction.define.SuperConstructor;
@@ -38,8 +39,6 @@ import org.snapscript.compile.instruction.define.ThisConstructor;
 import org.snapscript.compile.instruction.define.TraitDefinition;
 import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
-import org.snapscript.compile.instruction.define.MemberField;
-import org.snapscript.compile.instruction.define.MemberFunction;
 import org.snapscript.compile.instruction.define.TypeHierarchy;
 import org.snapscript.compile.instruction.define.TypeName;
 import org.snapscript.compile.instruction.literal.BooleanLiteral;
@@ -169,7 +168,6 @@ public enum Instruction {
    ANNOTATION_DECLARATION(AnnotationDeclaration.class, "annotation-declaration"),
    MODIFIER(Modifier.class, "modifier"),
    MODIFIER_LIST(ModifierList.class, "modifier-list"), 
-   MEMBER_DECLARATION(MemberDeclaration.class, "member-declaration"),
    SUPER_CONSTRUCTOR(SuperConstructor.class, "super-constructor"),
    THIS_CONSTRUCTOR(ThisConstructor.class, "this-constructor"),
    EXPRESSION(Expression.class, "expression"),

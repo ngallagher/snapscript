@@ -2,7 +2,9 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.Constraint;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Function;
@@ -18,20 +20,20 @@ public class MemberFunction implements TypePart {
    protected final MemberFunctionAssembler assembler;
    protected final Statement body;
    
-   public MemberFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters){
-      this(list, identifier, parameters, null, null);
+   public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters){
+      this(annotations, modifiers, identifier, parameters, null, null);
    }
    
-   public MemberFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Constraint constraint){
-      this(list, identifier, parameters, constraint, null);
+   public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters, Constraint constraint){
+      this(annotations, modifiers, identifier, parameters, constraint, null);
    }
    
-   public MemberFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Statement body){  
-      this(list, identifier, parameters, null, body);
+   public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters, Statement body){  
+      this(annotations, modifiers, identifier, parameters, null, body);
    }
    
-   public MemberFunction(MemberDeclaration list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
-      this.assembler = new MemberFunctionAssembler(list, identifier, parameters, constraint, body);
+   public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
+      this.assembler = new MemberFunctionAssembler(annotations, modifiers, identifier, parameters, constraint, body);
       this.body = body;
    } 
 

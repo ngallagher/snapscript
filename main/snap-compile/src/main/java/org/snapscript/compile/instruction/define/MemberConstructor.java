@@ -2,6 +2,8 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.AnnotationList;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
@@ -12,14 +14,14 @@ import org.snapscript.core.Type;
 public abstract class MemberConstructor implements TypePart {
    
    private final ConstructorAssembler assembler;
-   private final MemberDeclaration list;
+   private final ModifierList list;
    private final Statement body;
    
-   public MemberConstructor(MemberDeclaration list, ParameterList parameters, Statement body){  
-      this(list, parameters, null, body);
+   public MemberConstructor(AnnotationList annotations, ModifierList list, ParameterList parameters, Statement body){  
+      this(annotations, list, parameters, null, body);
    }  
    
-   public MemberConstructor(MemberDeclaration list, ParameterList parameters, TypePart part, Statement body){  
+   public MemberConstructor(AnnotationList annotations, ModifierList list, ParameterList parameters, TypePart part, Statement body){  
       this.assembler = new ConstructorAssembler(parameters, part, body);
       this.list = list;
       this.body = body;

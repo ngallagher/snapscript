@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import org.snapscript.compile.StoreContext;
 import org.snapscript.compile.instruction.AnnotationList;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.BooleanLiteral;
 import org.snapscript.compile.instruction.literal.NumberLiteral;
 import org.snapscript.compile.instruction.literal.TextLiteral;
@@ -32,8 +33,8 @@ public class ClassDefinitionTest extends TestCase {
       TextLiteral nameLiteral = new TextLiteral(nameToken);
       TypeName name = new TypeName(nameLiteral);
       TypePart[] parts = new TypePart[]{
-            new MemberField(new MemberDeclaration(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
-            new MemberField(new MemberDeclaration(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
+            new MemberField(new AnnotationList(),new ModifierList(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
+            new MemberField(new AnnotationList(),new ModifierList(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
       };
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(new AnnotationList(), name, hierarchy, parts);
@@ -57,8 +58,8 @@ public class ClassDefinitionTest extends TestCase {
       TextLiteral nameLiteral = new TextLiteral(nameToken);
       TypeName name = new TypeName(nameLiteral);
       TypePart[] parts = new TypePart[]{
-            new MemberField(new MemberDeclaration(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
-            new MemberField(new MemberDeclaration(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
+            new MemberField(new AnnotationList(),new ModifierList(),new TextLiteral(new StringToken("bool")), new BooleanLiteral(new StringToken("true"))),
+            new MemberField(new AnnotationList(),new ModifierList(),new TextLiteral(new StringToken("num")), new NumberLiteral(new NumberToken(12.33d))),            
       };
       TypeHierarchy hierarchy = new TypeHierarchy();
       ClassDefinition definer = new ClassDefinition(new AnnotationList(), name, hierarchy, parts);

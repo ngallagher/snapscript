@@ -4,6 +4,8 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.List;
 
+import org.snapscript.compile.instruction.AnnotationList;
+import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
@@ -14,8 +16,9 @@ import org.snapscript.core.Type;
 
 public class DefaultConstructor implements TypePart {
    
-   private final MemberDeclaration modifiers;
+   private final AnnotationList annotations;
    private final ParameterList parameters;
+   private final ModifierList modifiers;
    private final boolean compile;
 
    public DefaultConstructor(){
@@ -23,8 +26,9 @@ public class DefaultConstructor implements TypePart {
    }
    
    public DefaultConstructor(boolean compile) {
-      this.modifiers = new MemberDeclaration();
+      this.annotations = new AnnotationList();
       this.parameters = new ParameterList();
+      this.modifiers = new ModifierList();
       this.compile = compile;
    } 
    
@@ -44,7 +48,7 @@ public class DefaultConstructor implements TypePart {
    
    protected Initializer define(Scope scope, Initializer statements, Type type, boolean compile) throws Exception {
       Statement statement = new NoStatement();
-      ClassConstructor constructor = new ClassConstructor(modifiers, parameters, statement);
+      ClassConstructor constructor = new ClassConstructor(annotations, modifiers, parameters, statement);
       
       return constructor.compile(scope, statements, type, compile);
    }

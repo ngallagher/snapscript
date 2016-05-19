@@ -7,6 +7,7 @@ import org.snapscript.core.EmptyModel;
 public class ModuleTest extends TestCase {
    
    private static final String SOURCE_1=
+   "@Blah\n"+
    "module M{\n"+
    "   class X{\n"+
    "      var i;\n"+
