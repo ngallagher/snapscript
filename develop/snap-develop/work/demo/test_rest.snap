@@ -1,9 +1,11 @@
 
-var map = {x:12, y: @Blah(x:55)};
-println(map);
+module Blah{
 
-
-@Foo
-@Blah(a: 22, x: @Blah(i: 34))
-class Foo{
+   @Override
+   @Service(x: "/path")
+   testIt() {
+      println("testIt()");
+   }
 }
+
+Blah.testIt();

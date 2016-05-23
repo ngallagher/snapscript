@@ -33,6 +33,7 @@ import org.snapscript.compile.instruction.define.EnumValue;
 import org.snapscript.compile.instruction.define.MemberField;
 import org.snapscript.compile.instruction.define.MemberFunction;
 import org.snapscript.compile.instruction.define.ModuleDefinition;
+import org.snapscript.compile.instruction.define.ModuleFunction;
 import org.snapscript.compile.instruction.define.ModuleName;
 import org.snapscript.compile.instruction.define.SuperConstructor;
 import org.snapscript.compile.instruction.define.ThisConstructor;
@@ -164,6 +165,7 @@ public enum Instruction {
    CLASS_FIELD(MemberField.class, "class-field"),
    CLASS_FUNCTION(MemberFunction.class, "class-function"),   
    CLASS_CONSTRUCTOR(ClassConstructor.class, "class-constructor"),  
+   ANNOTATION_NAME(AnnotationName.class, "annotation-name"),
    ANNOTATION_LIST(AnnotationList.class, "annotation-list"),
    ANNOTATION_DECLARATION(AnnotationDeclaration.class, "annotation-declaration"),
    MODIFIER(Modifier.class, "modifier"),
@@ -176,9 +178,9 @@ public enum Instruction {
    IMPORT(Import.class, "import"), 
    IMPORT_STATIC(ImportStatic.class, "import-static"),
    MODULE_NAME(ModuleName.class, "module-name"),    
-   MODULE_FUNCTION(FunctionDeclaration.class, "module-function"),     
+   MODULE_FUNCTION(ModuleFunction.class, "module-function"),     
    MODULE_DEFINITION(ModuleDefinition.class, "module-definition"),    
-   SCRIPT_FUNCTION(FunctionDeclaration.class, "script-function"),
+   SCRIPT_FUNCTION(ScriptFunction.class, "script-function"),
    SCRIPT_PACKAGE(ScriptPackage.class, "script-package"),
    SCRIPT(Script.class, "script");
    
