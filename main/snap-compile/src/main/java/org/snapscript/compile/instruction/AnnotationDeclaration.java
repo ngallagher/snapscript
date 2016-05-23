@@ -1,15 +1,23 @@
 package org.snapscript.compile.instruction;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.snapscript.compile.instruction.construct.MapEntryList;
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.InternalStateException;
+import org.snapscript.core.MapAnnotation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 
 public class AnnotationDeclaration implements Evaluation {
 
-   private final AnnotationName name;
-   private final MapEntryList list;
+   private AnnotationName name;
+   private MapEntryList list;
+   private Value value;
    
    public AnnotationDeclaration(AnnotationName name) {
       this(name, null);
@@ -22,12 +30,35 @@ public class AnnotationDeclaration implements Evaluation {
 
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
+      if(value == null) {
+         Annotation annotation = create(scope, left);
+         
+         if(annotation == null) {
+            throw new InternalStateException("Could not create annotation");
+         }
+         value = ValueType.getTransient(annotation);
+      }
+      return value;
+   }
+   
+   private Annotation create(Scope scope, Object left) throws Exception {
+      Map<String, Object> attributes = new LinkedHashMap<String, Object>();
+      
+      if(list != null) {
+         Value value = list.evaluate(scope, left);
+         Map<Object, Object> map = value.getValue();
+         Set<Object> keys = map.keySet();
+         
+         for(Object key : keys) {
+            String name = String.valueOf(key);
+            Object attribute = map.get(name);
+            
+            attributes.put(name, attribute);
+         }
+      }
       Value value = name.evaluate(scope, left);
       String name = value.getString();
       
-      if(list != null) {
-         return list.evaluate(scope, left);
-      }
-      return ValueType.getTransient(null);
+      return new MapAnnotation(name, attributes);
    }
 }

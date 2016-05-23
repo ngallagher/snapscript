@@ -9,3 +9,6 @@ module Blah{
 }
 
 Blah.testIt();
+
+var map = {x:@Boo(path: "/path")};
+println(map);
