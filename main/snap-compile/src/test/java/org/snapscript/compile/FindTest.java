@@ -12,7 +12,7 @@ public class FindTest extends TestCase {
    private static final String SOURCE=
    "module FileFinder {\n"+
    "\n"+
-   "   function find(root, pattern){\n"+
+   "   find(root, pattern){\n"+
    "      var file = new File(root);\n"+
    "\n"+
    "      if(file.isDirectory()) {\n"+
@@ -21,7 +21,7 @@ public class FindTest extends TestCase {
    "      return [file];\n"+
    "   }\n"+
    "\n"+
-   "   function find(root, pattern, found) {\n"+
+   "   find(root, pattern, found) {\n"+
    "      var list = root.listFiles((entry) -> {\n"+
    "\n"+
    "         if(entry.isFile()) {\n"+

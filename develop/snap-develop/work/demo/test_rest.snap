@@ -1,18 +1,7 @@
 
-@Override
-@Service(x: "/path")
-class Blah{
+class Blah {
 
-   @Override
-   @Service(x: "/path")
-   static testIt() {
-      println("testIt()");
+   public function(x: String){
+         return x;
    }
 }
-
-Blah.testIt();
-
-var map = {x:@Boo(path: "/path")};
-println(map);
-
-println(Blah.class.annotations);

@@ -14,24 +14,24 @@ import org.snapscript.core.Value;
 public class TraitTest extends TestCase{
    private static final String SOURCE_1=
    "trait Pet {\n"+
-   "   function speak() {\n"+
+   "   speak() {\n"+
    "      out.println('Yo!');\n"+
    "   }\n"+
-   "   function comeToMaster();\n"+
+   "   comeToMaster();\n"+
    "}\n"+
    "\n"+
    "class Dog extends Pet {\n"+
    "  // don't need to implement 'speak' if you don't want to\n"+
-   "   function comeToMaster() {\n"+
+   "   comeToMaster() {\n"+
    "      out.println('I\\'m coming!');\n"+
    "   }\n"+
    "}\n"+
    "\n"+
    "class Cat extends Pet {\n"+
-   "  function speak() {\n"+
+   "  speak() {\n"+
    "      out.println('meow');\n"+
    "  }\n"+
-   "  function comeToMaster() {\n"+
+   "  comeToMaster() {\n"+
    "      out.println('That\\'s not gonna happen.');\n"+
    "   }\n"+
    "}\n"+

@@ -27,7 +27,7 @@ public class ModuleTest extends TestCase {
 
    private static final String SOURCE_2=
    "module Mod {\n"+
-   "   function createTyp(i){\n"+
+   "   createTyp(i){\n"+
    "      return new Typ(i);\n"+
    "   }\n"+
    "}\n"+
