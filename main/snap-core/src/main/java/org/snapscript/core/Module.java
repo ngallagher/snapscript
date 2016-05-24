@@ -12,6 +12,7 @@ public interface Module extends Any{
    Type addType(String name);
    Module getModule(String module); 
    InputStream getResource(String path);
+   List<Annotation> getAnnotations();
    List<Function> getFunctions();
    List<Type> getTypes();
    String getPath();

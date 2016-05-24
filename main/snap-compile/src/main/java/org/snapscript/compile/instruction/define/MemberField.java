@@ -23,6 +23,7 @@ public class MemberField implements TypePart {
 
    private final MemberFieldDeclaration declaration;
    private final ConstraintExtractor extractor;
+   private final AnnotationList annotations;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
    private final ModifierList list;
@@ -43,6 +44,7 @@ public class MemberField implements TypePart {
       this.declaration = new MemberFieldDeclaration(annotations, list, identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(list);
+      this.annotations = annotations;
       this.identifier = identifier;
       this.list = list;
    }
@@ -60,11 +62,13 @@ public class MemberField implements TypePart {
          Accessor accessor = new StaticAccessor(initializer, scope, type, name);
          Property property = new AccessorProperty(name, type, constraint, accessor, modifiers);
          
+         annotations.apply(scope, property);
          properties.add(property);
       } else {
          Accessor accessor = new ScopeAccessor(name);
          Property property = new AccessorProperty(name, type, constraint, accessor, modifiers); // is this the correct type!!??
          
+         annotations.apply(scope, property);
          properties.add(property);
       }
       return declare;

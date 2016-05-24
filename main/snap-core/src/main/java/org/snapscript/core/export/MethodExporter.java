@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;
+import org.snapscript.core.Parameter;
+import org.snapscript.core.ParameterBuilder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -16,13 +19,11 @@ import org.snapscript.core.TypeLoader;
 
 public class MethodExporter {
    
-   private static final String[] PREFIX = {
-   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
-   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-
+   private final ParameterBuilder builder;
    private final Context context;
    
    public MethodExporter(Context context){
+      this.builder = new ParameterBuilder();
       this.context = context;
    }
 
@@ -47,14 +48,16 @@ public class MethodExporter {
       return Collections.emptyList();
    }
 
+   @Bug
    private Function export(Object value, Function function) {
       String name = function.getName();
       Invocation invocation = function.getInvocation();
       Signature signature = function.getSignature();
-      List<Type> parameters = signature.getTypes();
+      List<Parameter> parameters = signature.getParameters();
       
       if(!parameters.isEmpty()) {
-         Type start = parameters.get(0); 
+         Parameter parameter = parameters.get(0);
+         Type start = parameter.getType();
          Class type = start.getType();
          Type constraint = function.getConstraint();
          boolean variable = signature.isVariable();
@@ -62,20 +65,15 @@ public class MethodExporter {
          int length = parameters.size();
       
          if(type == Scope.class) {
-            List<String> names = new ArrayList<String>();
-            List<Type> types = new ArrayList<Type>();
-            Signature reduced = new Signature(names, types, variable);
+            List<Parameter> copy = new ArrayList<Parameter>();
+            Signature reduced = new Signature(copy, variable);
             Invocation adapter = new ExportInvocation(invocation, value);
          
             for(int i = 1; i < length; i++) {
-               Type parameter = parameters.get(i);
-               String prefix = PREFIX[i % PREFIX.length];
-               
-               if(i > PREFIX.length) {
-                  prefix += i / PREFIX.length;
-               }
-               names.add(prefix);
-               types.add(parameter);
+               Parameter next = parameters.get(i);
+               Type t = next.getType();
+               Parameter build = builder.create(t, i - 1);
+               copy.add(build);
             }
             return new InvocationFunction(reduced, adapter, null, constraint, name, modifiers);
          }

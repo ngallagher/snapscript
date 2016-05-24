@@ -52,6 +52,7 @@ public class ModuleFunction extends Statement {
       Type returns = constraint.extract(scope);
       Function function = builder.create(signature, returns, name);
       
+      annotations.apply(scope, function);
       functions.add(function);
       body.compile(scope);
       

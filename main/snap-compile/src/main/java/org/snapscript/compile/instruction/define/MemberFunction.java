@@ -18,6 +18,7 @@ import org.snapscript.core.Type;
 public class MemberFunction implements TypePart {
    
    protected final MemberFunctionAssembler assembler;
+   protected final AnnotationList annotations;
    protected final Statement body;
    
    public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters){
@@ -34,6 +35,7 @@ public class MemberFunction implements TypePart {
    
    public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
       this.assembler = new MemberFunctionAssembler(annotations, modifiers, identifier, parameters, constraint, body);
+      this.annotations = annotations;
       this.body = body;
    } 
 
@@ -54,6 +56,7 @@ public class MemberFunction implements TypePart {
          
          list.add(function); // This is VERY STRANGE!!! NEEDED BUT SHOULD NOT BE HERE!!!
       }
+      annotations.apply(scope, function);
       functions.add(function);
       
       if(body != null) {

@@ -3,9 +3,13 @@ package org.snapscript.core;
 import static org.snapscript.core.ModifierType.ABSTRACT;
 import static org.snapscript.core.Reserved.METHOD_CLOSURE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmptyFunction<T> implements Function<T> {
 
    private final FunctionDescription description;
+   private final List<Annotation> annotations;
    private final Signature signature;
    private final String name;
    private final int modifiers;
@@ -20,6 +24,7 @@ public class EmptyFunction<T> implements Function<T> {
    
    public EmptyFunction(Signature signature, String name, int modifiers){
       this.description = new FunctionDescription(signature, null, name, ABSTRACT.mask);
+      this.annotations = new ArrayList<Annotation>();
       this.signature = signature;
       this.modifiers = modifiers;
       this.name = name;
@@ -53,6 +58,11 @@ public class EmptyFunction<T> implements Function<T> {
    @Override
    public Signature getSignature(){
       return signature;
+   }
+   
+   @Override
+   public List<Annotation> getAnnotations() {
+      return annotations;
    }
    
    @Override

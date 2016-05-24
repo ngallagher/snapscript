@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;

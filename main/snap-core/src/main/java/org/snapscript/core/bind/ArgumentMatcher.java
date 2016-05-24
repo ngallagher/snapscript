@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -34,17 +35,20 @@ public class ArgumentMatcher {
    }
    
    private ArgumentConverter resolve(Signature signature) throws Exception {
-      List<Type> types = signature.getTypes();
-      int size = types.size();
+      List<Parameter> parameters = signature.getParameters();
+      int size = parameters.size();
       
       if(size > 0) {
          ConstraintConverter[] converters = new ConstraintConverter[size];
          
          for(int i = 0; i < size - 1; i++) {
-            Type type = types.get(i);
+            Parameter parameter = parameters.get(i);
+            Type type = parameter.getType();
+            
             converters[i] = matcher.match(type);
          }
-         Type type = types.get(size - 1);
+         Parameter parameter = parameters.get(size - 1);
+         Type type = parameter.getType();
          
          if(type != null) {
             Type entry = type.getEntry();

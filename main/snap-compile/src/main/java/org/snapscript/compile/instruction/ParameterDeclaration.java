@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction;
 
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 

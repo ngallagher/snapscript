@@ -20,8 +20,8 @@ public class ModuleDefinition extends Statement {
    private final Statement body;
    
    public ModuleDefinition(AnnotationList annotations, ModuleName module, Statement... body) {
+      this.builder = new ModuleBuilder(annotations, module);
       this.reference = new AtomicReference<Module>();
-      this.builder = new ModuleBuilder(module);
       this.body = new ModuleBody(body);
    }
    

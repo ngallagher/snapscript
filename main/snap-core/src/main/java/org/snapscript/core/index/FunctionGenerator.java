@@ -5,46 +5,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Any;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;
+import org.snapscript.core.Parameter;
+import org.snapscript.core.ParameterBuilder;
 import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 
 public class FunctionGenerator {
    
-   private static final String[] PREFIX = {
-   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
-   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-
    private final DefaultMethodChecker checker;
+   private final ParameterBuilder builder;
    private final TypeIndexer indexer;
    
    public FunctionGenerator(TypeIndexer indexer) {
       this.checker = new DefaultMethodChecker();
+      this.builder = new ParameterBuilder();
       this.indexer = indexer;
    }
-   
-   public Function generate(Type type, Method method, Class[] parameters, String name, int modifiers) {
+
+   public Function generate(Type type, Method method, Class[] types, String name, int modifiers) {
       Class real = method.getReturnType();
       boolean variable = method.isVarArgs();
       
       try {
-         List<Type> types = new ArrayList<Type>();
-         List<String> names = new ArrayList<String>();
+         List<Parameter> parameters = new ArrayList<Parameter>();
    
-         for(int i = 0; i < parameters.length; i++){
-            Type parameter = indexer.loadType(parameters[i]);
-            String prefix = PREFIX[i % PREFIX.length];
+         for(int i = 0; i < types.length; i++){
+            boolean last = i + 1 == types.length;
+            Type match = indexer.loadType(types[i]);
+            Parameter parameter = builder.create(match, i, variable && last);
             
-            if(i > PREFIX.length) {
-               prefix += i / PREFIX.length;
-            }
-            types.add(parameter);
-            names.add(prefix);
+            parameters.add(parameter);
          }
-         Signature signature = new Signature(names, types, variable);
+         Signature signature = new Signature(parameters, variable);
          Invocation invocation = null;
          
          if(checker.check(method)) {

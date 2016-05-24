@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.snapscript.core.AccessorProperty;
 import org.snapscript.core.Function;
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Property;
 import org.snapscript.core.PropertyNameExtractor;
 import org.snapscript.core.Signature;
@@ -34,7 +35,7 @@ public class FunctionPropertyGenerator {
       }
       for(Function function : functions) {
          Signature signature = function.getSignature();
-         List<String> names = signature.getNames();
+         List<Parameter> names = signature.getParameters();
          int modifiers = function.getModifiers();
          int count = names.size();
          

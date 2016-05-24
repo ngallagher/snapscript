@@ -39,13 +39,13 @@ public class FunctionDescription {
       builder.append("(");
       
       if(signature != null) {
-         List<Type> types = signature.getTypes();
-         List<String> names = signature.getNames();
-         int size = names.size();
+         List<Parameter> parameters = signature.getParameters();
+         int size = parameters.size();
          
          for(int i = start; i < size; i++) {
-            Type type = types.get(i);
-            String name = names.get(i);
+            Parameter parameter = parameters.get(i);
+            Type type = parameter.getType();
+            String name = parameter.getName();
             
             if(i > start) {
                builder.append(", ");

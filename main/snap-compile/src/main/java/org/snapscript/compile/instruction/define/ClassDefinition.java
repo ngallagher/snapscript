@@ -22,8 +22,8 @@ public class ClassDefinition extends Statement {
    private final TypePart[] parts;
    
    public ClassDefinition(AnnotationList annotations, TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
+      this.builder = new ClassBuilder(annotations, name, hierarchy);
       this.generator = new FunctionPropertyGenerator(); 
-      this.builder = new ClassBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor();
       this.extractor = new NameExtractor(name);
       this.compile = new AtomicBoolean(true);

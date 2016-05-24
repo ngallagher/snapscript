@@ -5,15 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.snapscript.agent.ConsoleLogger;
-import org.snapscript.core.Context;
 import org.snapscript.core.Function;
-import org.snapscript.core.Module;
-import org.snapscript.core.ModuleRegistry;
-import org.snapscript.core.PathConverter;
+import org.snapscript.core.Parameter;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Signature;
@@ -65,7 +60,7 @@ public class CompletionTypeResolver {
            
             if(constraint != null) {
                Signature signature = function.getSignature();
-               List<String> parameters = signature.getNames();
+               List<Parameter> parameters = signature.getParameters();
                TypeNode match = resolveType(state, constraint);
                int count = parameters.size();
                

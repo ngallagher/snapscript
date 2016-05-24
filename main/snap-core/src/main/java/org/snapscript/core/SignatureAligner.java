@@ -13,8 +13,8 @@ public class SignatureAligner {
    
    public Object[] align(Object... list) throws Exception {
       if(signature.isVariable()) {
-         List<String> names = signature.getNames();
-         int length = names.size();
+         List<Parameter> parameters = signature.getParameters();
+         int length = parameters.size();
          int start = length - 1;
          int remaining = list.length - start;
          

@@ -4,26 +4,20 @@ import java.util.List;
 
 public class Signature {
    
-   private final List<String> names;
-   private final List<Type> types;
+   private final List<Parameter> parameters;
    private final boolean variable;
 
-   public Signature(List<String> names, List<Type> types){
-      this(names, types, false);
+   public Signature(List<Parameter> parameters){
+      this(parameters, false);
    }
    
-   public Signature(List<String> names, List<Type> types, boolean variable){
+   public Signature(List<Parameter> parameters, boolean variable){
+      this.parameters = parameters;
       this.variable = variable;
-      this.types = types;
-      this.names = names;
    }
    
-   public List<String> getNames(){
-      return names;
-   }
-   
-   public List<Type> getTypes(){
-      return types;
+   public List<Parameter> getParameters(){
+      return parameters;
    }
    
    public boolean isVariable() {

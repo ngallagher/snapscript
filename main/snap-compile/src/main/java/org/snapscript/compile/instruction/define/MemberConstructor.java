@@ -14,6 +14,7 @@ import org.snapscript.core.Type;
 public abstract class MemberConstructor implements TypePart {
    
    private final ConstructorAssembler assembler;
+   private final AnnotationList annotations;
    private final ModifierList list;
    private final Statement body;
    
@@ -23,6 +24,7 @@ public abstract class MemberConstructor implements TypePart {
    
    public MemberConstructor(AnnotationList annotations, ModifierList list, ParameterList parameters, TypePart part, Statement body){  
       this.assembler = new ConstructorAssembler(parameters, part, body);
+      this.annotations = annotations;
       this.list = list;
       this.body = body;
    } 
@@ -33,6 +35,7 @@ public abstract class MemberConstructor implements TypePart {
       Function constructor = builder.create(scope, initializer, type, modifiers, compile);
       List<Function> functions = type.getFunctions();
       
+      annotations.apply(scope, constructor);
       functions.add(constructor);
       body.compile(scope);
       

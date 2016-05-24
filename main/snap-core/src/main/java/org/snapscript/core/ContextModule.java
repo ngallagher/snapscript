@@ -7,8 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ContextModule implements Module {
-
+   
    private final Map<String, Module> modules;
+   private final List<Annotation> annotations;   
    private final Map<String, Type> types;
    private final List<Function> functions; 
    private final List<Type> references;
@@ -19,6 +20,7 @@ public class ContextModule implements Module {
    private final Scope scope;
    
    public ContextModule(Context context, String path, String prefix) {
+      this.annotations = new CopyOnWriteArrayList<Annotation>();
       this.functions = new CopyOnWriteArrayList<Function>();
       this.modules = new ConcurrentHashMap<String, Module>();
       this.types = new ConcurrentHashMap<String, Type>();
@@ -38,6 +40,11 @@ public class ContextModule implements Module {
    @Override
    public ImportManager getManager() {
       return manager;
+   }
+   
+   @Override
+   public List<Annotation> getAnnotations() {
+      return annotations;
    }
 
    @Override

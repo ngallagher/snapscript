@@ -16,6 +16,7 @@ import java.util.Set;
 import org.snapscript.agent.ConsoleLogger;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
+import org.snapscript.core.Parameter;
 import org.snapscript.core.PathConverter;
 import org.snapscript.core.Property;
 import org.snapscript.core.Signature;
@@ -93,7 +94,7 @@ public class CompletionMatcher {
          
          if(filter.acceptToken(name, FUNCTION)) {
             Signature signature = function.getSignature();
-            List<String> parameters = signature.getNames();
+            List<Parameter> parameters = signature.getParameters();
             Type constraint = function.getConstraint(); // perhaps add the return type
             int count = parameters.size();
             
@@ -101,12 +102,13 @@ public class CompletionMatcher {
                StringBuilder builder = new StringBuilder();
                
                for(int i = 0; i < count; i++) {
-                  String parameter = parameters.get(i);
+                  Parameter parameter = parameters.get(i);
+                  String id = parameter.getName();
                   
                   if(i > 0) {
                      builder.append(", ");
                   }
-                  builder.append(parameter);
+                  builder.append(id);
                }
                strings.put(name + "(" + builder + ")", FUNCTION);
             } else {

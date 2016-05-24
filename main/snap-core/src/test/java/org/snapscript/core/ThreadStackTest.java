@@ -59,9 +59,8 @@ public class ThreadStackTest extends TestCase {
    public static void createFunction(ThreadStack stack, String functionName, String typeName, String moduleName){
       Module module = new ContextModule(null, moduleName, moduleName);
       TestType type = new TestType(module, typeName, null, null);
-      List<Type> types = new ArrayList<Type>();
-      List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types);
+      List<Parameter> parameters = new ArrayList<Parameter>();
+      Signature signature = new Signature(parameters);
       
       stack.before(new InvocationFunction(signature, null, type, null, functionName, 11));
    }

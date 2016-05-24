@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction;
 
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Scope;
 
 public class VariableArgumentChecker {

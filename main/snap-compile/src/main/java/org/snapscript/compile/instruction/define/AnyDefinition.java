@@ -16,6 +16,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Module;
+import org.snapscript.core.Parameter;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -58,30 +59,27 @@ public class AnyDefinition extends Statement {
    }
    
    private Function createHashCode(Type type, Type returns) {
-      List<Type> types = new ArrayList<Type>();
-      List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types);
+      List<Parameter> parameters = new ArrayList<Parameter>();
+      Signature signature = new Signature(parameters);
       Invocation<Object> invocation = new HashCodeInvocation();
       
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_HASH_CODE, PUBLIC.mask);
    }
    
    private Function createEquals(Type type, Type returns) {
-      List<Type> types = new ArrayList<Type>();
-      List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types);
+      List<Parameter> parameters = new ArrayList<Parameter>();
+      Parameter parameter = new Parameter(METHOD_ARGUMENT, null);
+      Signature signature = new Signature(parameters);
       Invocation<Object> invocation = new EqualsInvocation();
-      
-      types.add(null);
-      names.add(METHOD_ARGUMENT);
+
+      parameters.add(parameter);
       
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_EQUALS, PUBLIC.mask);
    }
    
    private Function createToString(Type type, Type returns) {
-      List<Type> types = new ArrayList<Type>();
-      List<String> names = new ArrayList<String>();
-      Signature signature = new Signature(names, types);
+      List<Parameter> parameters = new ArrayList<Parameter>();
+      Signature signature = new Signature(parameters);
       Invocation<Object> invocation = new ToStringInvocation();
       
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_TO_STRING, PUBLIC.mask);

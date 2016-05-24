@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Context;
 import org.snapscript.core.ImportManager;
@@ -9,10 +10,12 @@ import org.snapscript.core.Scope;
 
 public class ModuleBuilder {
 
+   private final AnnotationList annotations;
    private final NameExtractor extractor;
    
-   public ModuleBuilder(ModuleName module) {
+   public ModuleBuilder(AnnotationList annotations, ModuleName module) {
       this.extractor = new NameExtractor(module);
+      this.annotations = annotations;
    }
 
    public Module create(Scope scope) throws Exception {
@@ -22,6 +25,7 @@ public class ModuleBuilder {
       ImportManager manager = module.getManager();
       String include = parent.getName();
       
+      annotations.apply(scope, module);
       manager.addImport(include); // make outer classes accessible
       
       return module;

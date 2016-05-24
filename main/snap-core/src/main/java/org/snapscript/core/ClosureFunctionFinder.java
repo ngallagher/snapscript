@@ -73,7 +73,7 @@ public class ClosureFunctionFinder {
    private boolean match(Function function) throws Exception {
       String name = function.getName();
       Signature signature = function.getSignature();
-      List<Type> parameters = signature.getTypes();
+      List<Parameter> parameters = signature.getParameters();
       int width = parameters.size();
       
       if(name.equals(METHOD_HASH_CODE)) {
