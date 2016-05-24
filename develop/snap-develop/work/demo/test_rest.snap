@@ -1,9 +1,11 @@
 
-module Blah{
+@Override
+@Service(x: "/path")
+class Blah{
 
    @Override
    @Service(x: "/path")
-   testIt() {
+   static testIt() {
       println("testIt()");
    }
 }
@@ -12,3 +14,5 @@ Blah.testIt();
 
 var map = {x:@Boo(path: "/path")};
 println(map);
+
+println(Blah.class.annotations);

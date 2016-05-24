@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -30,17 +29,33 @@ public class MethodExporter {
    public List<Function> export(Object value) throws Exception {
       Class require = value.getClass();
       TypeLoader loader = context.getLoader();
-      Type type = loader.loadType(require);
-      List<Function> functions = type.getFunctions();
+      Type source = loader.loadType(require);
+      
+      return export(value, source);
+   }
+   
+   private List<Function> export(Object value, Type source) throws Exception {
+      List<Function> functions = source.getFunctions();
       
       if(!functions.isEmpty()) {
          List<Function> adapters = new ArrayList<Function>();
          
          for(Function function : functions) {
-            Function adapter = export(value, function);
+            Signature signature = function.getSignature();
+            List<Parameter> parameters = signature.getParameters();
             
-            if(adapter != null) {
-               adapters.add(adapter);
+            if(!parameters.isEmpty()) {
+               Parameter parameter = parameters.get(0);
+               Type type = parameter.getType();
+               Class real = type.getType();
+            
+               if(real == Scope.class) {
+                  Function adapter = export(value, function);
+                  
+                  if(adapter != null) {
+                     adapters.add(adapter);
+                  }
+               }
             }
          }
          return adapters;
@@ -48,38 +63,33 @@ public class MethodExporter {
       return Collections.emptyList();
    }
 
-   @Bug
    private Function export(Object value, Function function) {
       String name = function.getName();
       Invocation invocation = function.getInvocation();
       Signature signature = function.getSignature();
       List<Parameter> parameters = signature.getParameters();
-      
-      if(!parameters.isEmpty()) {
-         Parameter parameter = parameters.get(0);
-         Type start = parameter.getType();
-         Class type = start.getType();
-         Type constraint = function.getConstraint();
-         boolean variable = signature.isVariable();
-         int modifiers = function.getModifiers();
-         int length = parameters.size();
-      
-         if(type == Scope.class) {
-            List<Parameter> copy = new ArrayList<Parameter>();
-            Signature reduced = new Signature(copy, variable);
-            Invocation adapter = new ExportInvocation(invocation, value);
+      Type constraint = function.getConstraint();
+      boolean variable = signature.isVariable();
+      int modifiers = function.getModifiers();
+      int length = parameters.size();
+   
+      if(length > 0) {
+         List<Parameter> copy = new ArrayList<Parameter>();
+         Signature reduced = new Signature(copy, variable);
+         Invocation adapter = new ExportInvocation(invocation, value);
          
-            for(int i = 1; i < length; i++) {
-               Parameter next = parameters.get(i);
-               Type t = next.getType();
-               Parameter build = builder.create(t, i - 1);
-               copy.add(build);
-            }
-            return new InvocationFunction(reduced, adapter, null, constraint, name, modifiers);
+         for(int i = 1; i < length; i++) {
+            Parameter parameter = parameters.get(i);
+            Type type = parameter.getType();
+            Parameter duplicate = builder.create(type, i - 1);
+            
+            copy.add(duplicate);
          }
+         return new InvocationFunction(reduced, adapter, null, constraint, name, modifiers);
       }
       return null;
    }
+
    
    private static class ExportInvocation implements Invocation<Object>{
 
