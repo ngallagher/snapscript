@@ -5,7 +5,7 @@ module Singleton{
       map.put(i, "value-${i}");
    }
    
-   function dump(){
+   dump(){
       var x = "text";
       println("dump="+map+" x="+x);
    }

@@ -8,7 +8,7 @@ println(i);
 
 module Child{
 
-   function testImportInheritance() {
+   testImportInheritance() {
       var s = new SecureRandom();
       var i = s.nextInt();
       

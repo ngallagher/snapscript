@@ -22,7 +22,7 @@ module Y{
    //@Attribute
    var x=10;
    var y=22;
-   function dump(){
+   dump(){
       println("${x},${y}");
    }
 }

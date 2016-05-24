@@ -6,7 +6,7 @@ module Empty{
 }
 
 class TestCase {
-   function runTests(){
+   runTests(){
       println(this.class);
       println(this.class.getFunctions());
       for(var func in this.class.functions){
@@ -16,32 +16,32 @@ class TestCase {
          }
       }
    }
-   function assertEquals(a,b){
+   assertEquals(a,b){
       if(a!=b){
          throw "Assertion failed";
       }
    }
-   function assertNotEquals(a,b){
+   assertNotEquals(a,b){
       if(a==b){
          throw "Assertion failed";
       }
    }   
-   function assertNotNull(a){
+   assertNotNull(a){
       if(a==null){
          throw "Assertion failed";
       }
    }
-   function assertNull(a){
+   assertNull(a){
       if(a!=null){
          throw "Assertion failed";
       }
    }
-   function assertTrue(a){
+   assertTrue(a){
       if(a!=true){
          throw "Assertion failed";
       }
    }   
-   function assertFalse(a){
+   assertFalse(a){
       if(a!=false){
          throw "Assertion failed";
       }
@@ -50,7 +50,7 @@ class TestCase {
 
 class SimpleTest extends TestCase{
    
-   function testNumbers(){
+   testNumbers(){
       println("testNumbers()");
       var x=0;
       assertNotEquals(1d,21f);
@@ -58,7 +58,7 @@ class SimpleTest extends TestCase{
       assertEquals(++x,1);
       assertTrue(x==1);
    }
-   function testSomethingElse(){
+   testSomethingElse(){
       assertFalse(2==3);
    }   
 }

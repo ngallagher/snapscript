@@ -10,7 +10,7 @@ function start(t){
 
 class Task with Runnable {
    
-   function run(){
+   run(){
       System.out.println("test!!!!!!!"+Thread.currentThread().getName());
    }
 }

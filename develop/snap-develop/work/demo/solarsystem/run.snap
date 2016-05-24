@@ -31,7 +31,7 @@ module SolarSystem {
      * Main entry point into program. User may input number of planets on
      * command line.
      */
-    function start(arguments) {
+    start(arguments) {
         var skyFrame;
         var numOfPlanets = 8;
 
@@ -66,7 +66,7 @@ module SolarSystem {
      * The method usage prints a message to the console instructing the use on
      * how to use the program.
      */
-    function usage() {
+    usage() {
         const explaination =
         "This program displays a simulated solar system in 2 dimensions.\n"+
         "Buttons along the top of the GUI allow the user to show or hide\n" +

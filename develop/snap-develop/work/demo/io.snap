@@ -18,7 +18,7 @@ class BlahBlah extends Blah with Runnable {
    }
 }
 module Goo {
-   function fun(text){
+   fun(text){
       return "fun("+text+")";
    }
 }

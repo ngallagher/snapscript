@@ -2,7 +2,7 @@ import static lang.System.*;
 import text.DecimalFormat;
 
 class TestTimer{
-   function timeTests(){
+   timeTests(){
       for(var func in this.class.functions){
          if(func.name.startsWith("test")){
             var start=currentTimeMillis();            
@@ -68,7 +68,7 @@ class StaticMethod{
    }
 }
 class SimpleTest extends TestTimer{
-   function testCount(){
+   testCount(){
       var format=new DecimalFormat("###,###,###,###.00");
       var j=0;
       for(var i=0;i<1000000;i++){
@@ -76,13 +76,13 @@ class SimpleTest extends TestTimer{
       }
       System.out.println("result of 1 million iterations is="+format.format(j));
    }
-   function testInstantiate(){
+   testInstantiate(){
       for(var i=0;i<100000;i++){
          var v=new Special(i,i+1);
          v.test();
       }
    }   
-   function testInstantiateWithThree(){
+   testInstantiateWithThree(){
       var v=new SpecialSpecial(0,1);
       for(var i=0;i<100000;i++){
          v=new SpecialSpecial(i,i+1);
@@ -90,7 +90,7 @@ class SimpleTest extends TestTimer{
       }
       v.done();
    }   
-   function testStaticMethod(){
+   testStaticMethod(){
       for(var i=0;i<100000;i++){
          StaticMethod.max(i,i+1);
       }

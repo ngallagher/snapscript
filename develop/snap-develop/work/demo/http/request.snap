@@ -1,5 +1,5 @@
 module RequestBuilder {
-   function get(address){
+   get(address){
       return null;
    }
 }
