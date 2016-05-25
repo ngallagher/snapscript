@@ -41,7 +41,7 @@ public class MemberField implements TypePart {
    }
 
    public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.declaration = new MemberFieldDeclaration(annotations, list, identifier, constraint, value);
+      this.declaration = new MemberFieldDeclaration(list, identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(list);
       this.annotations = annotations;

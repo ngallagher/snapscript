@@ -22,7 +22,7 @@ public class MemberFunctionAssembler {
    private final ModifierList list;
    private final Statement body;
    
-   public MemberFunctionAssembler(AnnotationList annotations, ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){ 
+   public MemberFunctionAssembler(ModifierList list, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){ 
       this.constraint = new ConstraintExtractor(constraint);
       this.extractor = new NameExtractor(identifier);
       this.checker = new ModifierChecker(list);

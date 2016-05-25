@@ -8,25 +8,27 @@ import org.snapscript.core.Type;
 
 public class ParameterDeclaration {
    
+   private AnnotationList annotations;
    private NameExtractor extractor;
    private Constraint constraint;
    private Parameter parameter;
    private Modifier modifier;
    
-   public ParameterDeclaration(AnnotationList list, Evaluation identifier){
-      this(list, identifier, null, null);
+   public ParameterDeclaration(AnnotationList annotations, Evaluation identifier){
+      this(annotations, identifier, null, null);
    }
    
-   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Constraint constraint){
-      this(list, identifier, null, constraint);
+   public ParameterDeclaration(AnnotationList annotations, Evaluation identifier, Constraint constraint){
+      this(annotations, identifier, null, constraint);
    }
    
-   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Modifier modifier){
-      this(list, identifier, modifier, null);
+   public ParameterDeclaration(AnnotationList annotations, Evaluation identifier, Modifier modifier){
+      this(annotations, identifier, modifier, null);
    }
    
-   public ParameterDeclaration(AnnotationList list, Evaluation identifier, Modifier modifier, Constraint constraint){
+   public ParameterDeclaration(AnnotationList annotations, Evaluation identifier, Modifier modifier, Constraint constraint){
       this.extractor = new NameExtractor(identifier);
+      this.annotations = annotations;
       this.constraint = constraint;
       this.modifier = modifier;
    }
@@ -34,6 +36,10 @@ public class ParameterDeclaration {
    public Parameter get(Scope scope) throws Exception {
       if(parameter == null) {
          parameter = create(scope);
+         
+         if(parameter != null) {
+            annotations.apply(scope, parameter);
+         }
       }
       return parameter;
    }

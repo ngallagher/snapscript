@@ -1,19 +1,19 @@
 
 module Functions {
 
-   function function(s: String[][]){
+   function(s: String[][]){
       return "String[][]";
    }
    
-   function function(s: String[]){
+   function(s: String[]){
       return "String[]";
    }
    
-   function function(s: Float[][]){
+   function(s: Float[][]){
       return "Float[][]";
    }
    
-   function function(s: Float[]){
+   function(s: Float[]){
       return "Float[]";
    }
 }

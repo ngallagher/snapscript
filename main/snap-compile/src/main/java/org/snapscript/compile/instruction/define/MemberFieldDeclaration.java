@@ -18,7 +18,7 @@ public class MemberFieldDeclaration {
    private final Constraint constraint;
    private final Evaluation value;
 
-   public MemberFieldDeclaration(AnnotationList annotations, ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
+   public MemberFieldDeclaration(ModifierList modifiers, TextLiteral identifier, Constraint constraint, Evaluation value) {
       this.checker = new ModifierChecker(modifiers);
       this.constraint = constraint;
       this.identifier = identifier;

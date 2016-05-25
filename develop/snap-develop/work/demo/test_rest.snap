@@ -1,7 +1,52 @@
 
+@Service(path: "/path")
 class Blah {
 
-   public function(x: String){
+   @Path(path: "/path")
+   @Element(name: "name")
+   const x;
+
+   @Attribute(name: "name")
+   const y;
+
+   @Override
+   @Func(name: "/a")
+   public funcA(@Param(name: "x") x: String){
          return x;
+   }
+   
+   @Override
+   @Func(name: "/b")
+   public funcB(@Param(name: "xx") x: String){
+         return x;
+   }
+}
+
+@Singleton
+module Mod {
+
+   @Bean
+   doIt(){
+      return "x";
+   }
+}
+
+
+dump(Mod.getFunctions());
+println("=====================================================");
+dump(Blah.class.functions);
+println("=====================================================");
+var fields = Blah.class.properties;
+for(var field in fields){
+   println(field.name +"=" + field.annotations);
+}
+
+function dump(funcs){
+   for(var func in funcs){
+      println(func.name + "=" + func.annotations);
+      var parameters = func.signature.parameters;
+      for(var parameter in parameters) {
+         println("    "+parameter.name + "=>>>" + parameter.annotations);
+      }
    }
 }

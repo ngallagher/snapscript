@@ -34,7 +34,7 @@ public class MemberFunction implements TypePart {
    }
    
    public MemberFunction(AnnotationList annotations, ModifierList modifiers, Evaluation identifier, ParameterList parameters, Constraint constraint, Statement body){  
-      this.assembler = new MemberFunctionAssembler(annotations, modifiers, identifier, parameters, constraint, body);
+      this.assembler = new MemberFunctionAssembler(modifiers, identifier, parameters, constraint, body);
       this.annotations = annotations;
       this.body = body;
    } 

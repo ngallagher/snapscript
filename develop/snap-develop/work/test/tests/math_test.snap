@@ -1,11 +1,11 @@
 
 module Calc {
 
-   function sqrt(n) {
+   sqrt(n) {
       return sqrt(n,null);
    }
    
-   function sqrt(n, g) {
+   sqrt(n, g) {
       if (g==null) {
             // Take an initial guess at the square root
             g = n / 2.0;
@@ -21,7 +21,7 @@ module Calc {
       return sqrt(n, ng);
    }
    
-   function sort (a) {//shellsort
+   sort (a) {//shellsort
       var inc = a.size() / 2;
       
       while (inc > 0) {

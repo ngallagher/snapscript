@@ -4,10 +4,10 @@ module Mod{
    for(var i =0; i < 10; i++){
       x[i]=i;
    }
-   function get(i: Integer):Integer{
+   get(i: Integer):Integer{
       return x[i];
    }
-   function toList():[]{
+   toList():[]{
       return x;
    }
 }
