@@ -16,9 +16,6 @@ public class ExpressionParseTest extends TestCase {
       analyze(tree, "@Blah(x: 55)", "argument");
       analyze(tree, "@Blah(x: 55, y: 'blah')", "argument");
       analyze(tree, "blah(){}", "class-function");
-      analyze(tree, "public", "member-declaration");
-      analyze(tree, "@Blah public", "member-declaration");
-      analyze(tree, "@Blah()@Foo(x:1) public", "member-declaration");
       analyze(tree, "@Blah", "annotation-declaration");
       analyze(tree, "@Blah()", "annotation-declaration");
       analyze(tree, "@Blah(x: 1)", "annotation-declaration");

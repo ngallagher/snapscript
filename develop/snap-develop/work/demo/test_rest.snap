@@ -11,13 +11,13 @@ class Blah {
 
    @Override
    @Func(name: "/a")
-   public funcA(@Param(name: "x") x: String){
+   funcA(@Param(name: "x") x: String){
          return x;
    }
    
    @Override
    @Func(name: "/b")
-   public funcB(@Param(name: "xx") x: String){
+   funcB(@Param(name: "xx") x: String){
          return x;
    }
 }
