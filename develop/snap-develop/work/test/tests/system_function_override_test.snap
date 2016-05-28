@@ -1,0 +1,9 @@
+
+function print(v: String) {
+   return "print(${v})";
+}
+
+function testPrintOverride() {
+   var result = print("x");
+   assert result == "print(x)";
+}
