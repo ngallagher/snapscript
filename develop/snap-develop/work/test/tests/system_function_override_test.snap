@@ -9,6 +9,9 @@ class Concrete extends Base{
    dump(v){
       return print(v);
    }
+   foo(v){
+      println(v);
+   }
 }
 function print(v: String) {
    return "print(${v})";
@@ -22,5 +25,6 @@ function testPrintOverride() {
 function testClassPrintOverride(){
    var object = new Concrete();
    var result = object.dump("text");
+   object.foo("text");
    assert result == "Base.print(text)";
 }
