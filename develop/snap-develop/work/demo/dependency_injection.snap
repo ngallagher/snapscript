@@ -42,9 +42,15 @@ for(var mod in Loader.class.getModule().getContext().getRegistry().getModules())
 }
 for(var i in 0..9){
    var s = time();
-   load("math.stuff");
+   var type = load("math.stuff").getType("Blah");
+   println(type);
    var f = time();
    println(f-s);
 }
 var inst2 = loader.create("math.stuff.Blah");
 println(inst2);
+
+var type = load("math.stuff").getType("Blah");
+var object = type.new(type);
+
+println(object);
