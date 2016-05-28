@@ -27,7 +27,7 @@ function call(obj, name, arg){
 }
 
 class Loader{
-
+   
    create(name){
       var type = class.getModule().getContext().getLoader().resolveType(name);
       return type.new(type);
