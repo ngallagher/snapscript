@@ -3,7 +3,10 @@ package org.snapscript.core.export;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.Module;
+import org.snapscript.core.Package;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
+import org.snapscript.core.TypeLoader;
 
 public class SystemContext {
 
@@ -12,13 +15,21 @@ public class SystemContext {
    public SystemContext(Context context) {
       this.context = context;
    }
-
+   
    public <T> T eval(Scope scope, String source) throws Exception {
       ExpressionEvaluator executor = context.getEvaluator();
       Module module = scope.getModule();
       String name = module.getName();
       
       return executor.evaluate(scope, source, name);
+   }
+   
+   public void load(Scope scope, String name) throws Exception {
+      TypeLoader loader = context.getLoader();
+      Package module = loader.importPackage(name);
+      Statement statement = module.compile(scope);
+      
+      statement.execute(scope);
    }
    
    public void printf(Scope scope, Object value, Object... values)  throws Exception{
