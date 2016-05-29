@@ -1,13 +1,16 @@
 package org.snapscript.core.extend;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,94 @@ public class FileExtension {
          }
       } finally {
          reader.close();
+      }
+   }
+   
+   public void writeBytes(File file, byte[] data) throws IOException {
+      OutputStream stream = new FileOutputStream(file);
+      
+      try {
+         if(data.length > 0) {
+            stream.write(data);
+         }
+      } finally {
+         stream.close();
+      }
+   }
+   
+   public void writeText(File file, String text) throws IOException {
+      OutputStream stream = new FileOutputStream(file);
+      
+      try {
+         byte[] data = text.getBytes();
+         
+         if(data.length > 0) {
+            stream.write(data);
+         }
+      } finally {
+         stream.close();
+      }
+   }
+   
+   public void writeText(File file, String text, String encoding) throws IOException {
+      OutputStream stream = new FileOutputStream(file);
+      
+      try {
+         byte[] data = text.getBytes(encoding);
+         
+         if(data.length > 0) {
+            stream.write(data);
+         }
+      } finally {
+         stream.close();
+      }
+   }
+   
+   public byte[] readBytes(File file) throws IOException {
+      InputStream stream = new FileInputStream(file);
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+      byte[] data = new byte[1024];
+      int count = 0;
+      
+      try {
+         while((count = stream.read(data)) != -1) {
+            buffer.write(data, 0, count);
+         }
+         return buffer.toByteArray();
+      } finally {
+         stream.close();
+      }
+   }
+   
+   public String readText(File file) throws IOException {
+      InputStream stream = new FileInputStream(file);
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+      byte[] data = new byte[1024];
+      int count = 0;
+      
+      try {
+         while((count = stream.read(data)) != -1) {
+            buffer.write(data, 0, count);
+         }
+         return buffer.toString();
+      } finally {
+         stream.close();
+      }
+   }
+   
+   public String readText(File file, String encoding) throws IOException {
+      InputStream stream = new FileInputStream(file);
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+      byte[] data = new byte[1024];
+      int count = 0;
+      
+      try {
+         while((count = stream.read(data)) != -1) {
+            buffer.write(data, 0, count);
+         }
+         return buffer.toString(encoding);
+      } finally {
+         stream.close();
       }
    }
    
