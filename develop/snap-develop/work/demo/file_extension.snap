@@ -3,3 +3,8 @@ new File(".")
    .stream()
    .sorted()
    .forEach(file: File -> println(file));
+   
+new File("c:\\temp\\pom.xml")
+   .contains("project")
+   .stream()
+   .forEach(line -> println(line));
