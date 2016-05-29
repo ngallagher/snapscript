@@ -11,13 +11,13 @@ import org.snapscript.core.Module;
 public class ModuleExtender {
    
    private final List<Function> functions;
-   private final FunctionExtractor exporter;
-   private final ScopeExtension system;
+   private final FunctionExtractor extractor;
+   private final ScopeExtension extension;
    
    public ModuleExtender(Context context) {
       this.functions = new ArrayList<Function>();
-      this.exporter = new FunctionExtractor(context);
-      this.system = new ScopeExtension(context);
+      this.extractor = new FunctionExtractor(context);
+      this.extension = new ScopeExtension(context);
    }
    
    public synchronized void extend(Module module){
@@ -25,7 +25,7 @@ public class ModuleExtender {
       
       if(functions.isEmpty()) {
          try {
-            List<Function> list = exporter.extract(system);
+            List<Function> list = extractor.extract(extension);
             
             for(Function function : list) {
                functions.add(function);
