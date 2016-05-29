@@ -4,7 +4,6 @@ var cube = (x) -> square(x) * x;
 println(square(2));
 println(cube(2));
 
-
 function call(fun){
    fun(22,33,1);
 }

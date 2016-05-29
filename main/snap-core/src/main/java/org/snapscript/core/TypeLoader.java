@@ -1,5 +1,6 @@
 package org.snapscript.core;
 
+import org.snapscript.core.extend.ClassExtender;
 import org.snapscript.core.index.TypeIndexer;
 
 public class TypeLoader {
@@ -8,10 +9,12 @@ public class TypeLoader {
    private final PackageLoader loader;
    private final ImportScanner scanner;
    private final TypeIndexer indexer;
+   private final ClassExtender extender;
    
    public TypeLoader(PackageLinker linker, ModuleRegistry registry, ResourceManager manager){
       this.scanner = new ImportScanner();
-      this.indexer = new TypeIndexer(registry, scanner);
+      this.extender = new ClassExtender(this);
+      this.indexer = new TypeIndexer(registry, scanner, extender);
       this.loader = new PackageLoader(linker, manager);
       this.manager = new PackageManager(loader, scanner);
    }

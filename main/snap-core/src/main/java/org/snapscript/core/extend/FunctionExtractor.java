@@ -19,22 +19,21 @@ import org.snapscript.core.TypeLoader;
 public class FunctionExtractor {
    
    private final ParameterBuilder builder;
-   private final Context context;
+   private final TypeLoader loader;
    
-   public FunctionExtractor(Context context){
+   public FunctionExtractor(TypeLoader loader){
       this.builder = new ParameterBuilder();
-      this.context = context;
+      this.loader = loader;
    }
 
-   public List<Function> extract(Object value) throws Exception {
+   public List<Function> extract(Class extend, Object value) throws Exception {
       Class require = value.getClass();
-      TypeLoader loader = context.getLoader();
       Type source = loader.loadType(require);
       
-      return extract(value, source);
+      return extract(extend, value, source);
    }
    
-   private List<Function> extract(Object value, Type source) throws Exception {
+   private List<Function> extract(Class extend, Object value, Type source) throws Exception {
       List<Function> functions = source.getFunctions();
       
       if(!functions.isEmpty()) {
@@ -49,8 +48,8 @@ public class FunctionExtractor {
                Type type = parameter.getType();
                Class real = type.getType();
             
-               if(real == Scope.class) {
-                  Function adapter = extract(value, function);
+               if(real == extend) {
+                  Function adapter = extract(extend, value, function);
                   
                   if(adapter != null) {
                      adapters.add(adapter);
@@ -63,7 +62,7 @@ public class FunctionExtractor {
       return Collections.emptyList();
    }
 
-   private Function extract(Object value, Function function) {
+   private Function extract(Class extend, Object value, Function function) {
       String name = function.getName();
       Invocation invocation = function.getInvocation();
       Signature signature = function.getSignature();
@@ -76,7 +75,7 @@ public class FunctionExtractor {
       if(length > 0) {
          List<Parameter> copy = new ArrayList<Parameter>();
          Signature reduced = new Signature(copy, variable);
-         Invocation adapter = new ExportInvocation(invocation, value);
+         Invocation adapter = new ExportInvocation(invocation, value, extend);
          
          for(int i = 1; i < length; i++) {
             Parameter parameter = parameters.get(i);
@@ -95,10 +94,12 @@ public class FunctionExtractor {
 
       private final Invocation invocation;
       private final Object target;
+      private final Class extend;
       
-      public ExportInvocation(Invocation invocation, Object target) {
+      public ExportInvocation(Invocation invocation, Object target, Class extend) {
          this.invocation = invocation;
          this.target = target;
+         this.extend = extend;
       }
       
       @Override
@@ -108,8 +109,11 @@ public class FunctionExtractor {
          for(int i = 0; i < list.length; i++) {
             arguments[i + 1] = list[i];
          }
-         arguments[0] = scope;
-         
+         if(extend == Scope.class) {
+            arguments[0] = scope;
+         } else {
+            arguments[0] = left;
+         }
          return invocation.invoke(scope, target, arguments);
       }
    }

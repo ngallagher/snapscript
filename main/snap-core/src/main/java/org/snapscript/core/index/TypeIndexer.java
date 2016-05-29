@@ -6,6 +6,7 @@ import java.util.Map;
 import org.snapscript.core.ImportScanner;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Type;
+import org.snapscript.core.extend.ClassExtender;
 
 public class TypeIndexer {
 
@@ -14,8 +15,8 @@ public class TypeIndexer {
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
 
-   public TypeIndexer(ModuleRegistry registry, ImportScanner scanner) {
-      this.indexer = new ClassIndexer(this, registry, scanner);
+   public TypeIndexer(ModuleRegistry registry, ImportScanner scanner, ClassExtender extender) {
+      this.indexer = new ClassIndexer(this, registry, scanner, extender);
       this.types = new LinkedHashMap<Object, Type>();
       this.scanner = scanner;
       this.registry = registry;

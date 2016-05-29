@@ -7,24 +7,31 @@ import java.util.List;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Type;
+import org.snapscript.core.extend.ClassExtender;
 
 public class FunctionIndexer {
    
    private final FunctionGenerator generator;
    private final ConstructorIndexer indexer;
    private final ModifierConverter converter;
+   private final ClassExtender extender;
    
-   public FunctionIndexer(TypeIndexer indexer){
+   public FunctionIndexer(TypeIndexer indexer, ClassExtender extender){
       this.generator = new FunctionGenerator(indexer);
       this.indexer = new ConstructorIndexer(indexer);
       this.converter = new ModifierConverter();
+      this.extender = extender;
    }
 
    public List<Function> index(Type type) throws Exception {
       Class source = type.getType();
+      List<Function> extensions = extender.extend(source);
       List<Function> constructors = indexer.index(type);
       Method[] methods = source.getDeclaredMethods();
       
+      for(Function extension : extensions) {
+         constructors.add(extension);
+      }
       if(methods.length > 0) {
          List<Function> functions = new ArrayList<Function>();
    
