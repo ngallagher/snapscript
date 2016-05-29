@@ -37,6 +37,7 @@ public class ProcessPool {
    private final Set<ProcessEventListener> listeners;
    private final ProcessConfiguration configuration;
    private final ProcessEventInterceptor interceptor;
+   private final ProcessAgentStarter starter;
    private final ProcessLauncher launcher;
    private final ProcessAgentPinger pinger;
    private final SocketEventServer server;
@@ -58,6 +59,7 @@ public class ProcessPool {
       this.server = new SocketEventServer(interceptor, logger, port);
       this.launcher = new ProcessLauncher(server, logger, workspace);
       this.pinger = new ProcessAgentPinger(frequency);
+      this.starter = new ProcessAgentStarter(pinger);
       this.listener = new ProcessListener(logger);
       this.manager = new ConsoleManager(listener, frequency);
       this.factory = new ThreadBuilder();
@@ -79,6 +81,7 @@ public class ProcessPool {
             throw new IllegalStateException("No agent of type " + system + " as pool is empty");
          }
          running.offer(connection);
+         launch(); // start a process straight away
          return connection;
       }catch(Exception e){
          logger.log("Could not acquire process for '" +system+ "'", e);
@@ -114,7 +117,8 @@ public class ProcessPool {
    
    public void launch() { // launch a new process!!
       try {
-         pinger.launch();
+         Thread thread = factory.newThread(starter);
+         thread.start();
       } catch(Exception e) {
          logger.log("Could not launch process", e);
       }
@@ -251,6 +255,24 @@ public class ProcessPool {
                logger.log(process + ": Exception processing scope event", e);
                listeners.remove(listener);
             }
+         }
+      }
+   }
+   
+   private class ProcessAgentStarter implements Runnable {
+      
+      private final ProcessAgentPinger pinger;
+      
+      public ProcessAgentStarter(ProcessAgentPinger pinger) {
+         this.pinger = pinger;
+      }
+      
+      @Override
+      public void run() {
+         try {
+            pinger.launch();
+         }catch(Exception e) {
+            logger.log("Error starting agent", e);
          }
       }
    }
