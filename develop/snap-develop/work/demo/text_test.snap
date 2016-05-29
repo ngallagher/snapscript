@@ -1,5 +1,14 @@
 import security.SecureRandom;
 
+println(new Date().format("yyyy-MM-dd"));
+println(new Date().getYear());
+println();
+var year = new Date().getYear();
+println(year);
+println(new Date());
+var calendar = Calendar.getInstance();
+println(calendar.get(Calendar.YEAR));
+
 var b = 'blah
 blah
    blah';
