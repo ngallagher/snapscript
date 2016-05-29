@@ -101,7 +101,7 @@ public class DateExtension {
    }
 
    public Date minusMonths(Date date, int months) {
-      return addDays(date, -months);
+      return addMonths(date, -months);
    }
 
    public Date minusYears(Date date, int years) {

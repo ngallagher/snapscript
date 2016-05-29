@@ -8,3 +8,8 @@ new File("c:\\temp\\pom.xml")
    .contains("project")
    .stream()
    .forEach(line -> println(line));
+   
+println(new Date().addYears(1).minusMonths(1).addDays(1).format("yyyy-MM-dd"));
+
+println(new Date().format("yyyy-MM-dd"));
+println(new Date().minusMonths(1).format("yyyy-MM-dd"));
