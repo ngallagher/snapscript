@@ -1,0 +1,27 @@
+
+@Configuration
+module WebService {
+
+   @Component
+   getBlah(){
+      return new Blah();
+   }
+   
+   @Component
+   getFoo(){
+      return new Foo();
+   }
+}
+class Foo{
+}
+class Blah{
+   @Inject
+   var x: Blah;
+}
+println(Foo.annotations);
+println(WebService.annotations);
+var funcs = WebService.getFunctions();
+
+for(var func in funcs){
+   println(func.annotations);
+}

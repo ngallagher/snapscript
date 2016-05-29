@@ -181,13 +181,13 @@ public class TokenIndexer {
 
          if (token != null) {
             int length = token.length();
-            Character next = token.charAt(length - 1);
+            Character last = token.charAt(length - 1);
             Character peek = reader.peek();
             
-            if (identifier(next) && identifier(peek)) {
+            if (identifier(last) && identifier(peek)) {
                reader.reset(mark);
             } else {
-               if(identifier(next) && brace(peek)) {
+               if(identifier(last) && brace(peek)) {
                   return new StringToken(token, line, LITERAL.mask | IDENTIFIER.mask);
                }
                return new StringToken(token, line, LITERAL.mask);

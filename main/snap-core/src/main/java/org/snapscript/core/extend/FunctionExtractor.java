@@ -1,4 +1,4 @@
-package org.snapscript.core.export;
+package org.snapscript.core.extend;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,25 +16,25 @@ import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
-public class MethodExporter {
+public class FunctionExtractor {
    
    private final ParameterBuilder builder;
    private final Context context;
    
-   public MethodExporter(Context context){
+   public FunctionExtractor(Context context){
       this.builder = new ParameterBuilder();
       this.context = context;
    }
 
-   public List<Function> export(Object value) throws Exception {
+   public List<Function> extract(Object value) throws Exception {
       Class require = value.getClass();
       TypeLoader loader = context.getLoader();
       Type source = loader.loadType(require);
       
-      return export(value, source);
+      return extract(value, source);
    }
    
-   private List<Function> export(Object value, Type source) throws Exception {
+   private List<Function> extract(Object value, Type source) throws Exception {
       List<Function> functions = source.getFunctions();
       
       if(!functions.isEmpty()) {
@@ -50,7 +50,7 @@ public class MethodExporter {
                Class real = type.getType();
             
                if(real == Scope.class) {
-                  Function adapter = export(value, function);
+                  Function adapter = extract(value, function);
                   
                   if(adapter != null) {
                      adapters.add(adapter);
@@ -63,7 +63,7 @@ public class MethodExporter {
       return Collections.emptyList();
    }
 
-   private Function export(Object value, Function function) {
+   private Function extract(Object value, Function function) {
       String name = function.getName();
       Invocation invocation = function.getInvocation();
       Signature signature = function.getSignature();

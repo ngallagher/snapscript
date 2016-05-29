@@ -23,7 +23,11 @@ public class MathTest extends TestCase{
    "var r = 0;\n"+
    "\n"+
    "for(var i = 0; i < " + ITERATIONS +"; i++){\n"+
-   "   r = ((x / y) * z) + 6;\n"+
+   "   //r = ((x / y) * z) + 6;\n"+
+   "   r = calc(x,y,z);\n"+
+   "}\n"+
+   "function calc(x, y, z){\n"+
+   "   return ((x / y) * z) + 6;\n"+
    "}\n";
          
    public void testMath() throws Exception {
@@ -44,7 +48,7 @@ public class MathTest extends TestCase{
          assertEquals(result, expect);
       }
       long finish = System.nanoTime();
-      System.err.println("iterations="+ITERATIONS+" time="+TimeUnit.NANOSECONDS.toMillis(finish-start));
+      System.err.println("testMath() iterations="+ITERATIONS+" time="+TimeUnit.NANOSECONDS.toMillis(finish-start));
    }
    
    public void testMathInLoop() throws Exception {
@@ -53,7 +57,7 @@ public class MathTest extends TestCase{
       long start = System.nanoTime();
       executable.execute();
       long finish = System.nanoTime();
-      System.err.println("iterations="+ITERATIONS+" time="+TimeUnit.NANOSECONDS.toMillis(finish-start));
+      System.err.println("testMathInLoop() iterations="+ITERATIONS+" time="+TimeUnit.NANOSECONDS.toMillis(finish-start));
    }
 
    public static void main(String[] list) throws Exception {

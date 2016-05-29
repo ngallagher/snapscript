@@ -1,4 +1,4 @@
-package org.snapscript.core.export;
+package org.snapscript.core.extend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,24 +8,24 @@ import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 
-public class SystemExporter {
+public class ModuleExtender {
    
    private final List<Function> functions;
-   private final MethodExporter exporter;
-   private final SystemContext system;
+   private final FunctionExtractor exporter;
+   private final ScopeExtension system;
    
-   public SystemExporter(Context context) {
+   public ModuleExtender(Context context) {
       this.functions = new ArrayList<Function>();
-      this.exporter = new MethodExporter(context);
-      this.system = new SystemContext(context);
+      this.exporter = new FunctionExtractor(context);
+      this.system = new ScopeExtension(context);
    }
    
-   public synchronized void export(Module module){
+   public synchronized void extend(Module module){
       List<Function> available = module.getFunctions();
       
       if(functions.isEmpty()) {
          try {
-            List<Function> list = exporter.export(system);
+            List<Function> list = exporter.extract(system);
             
             for(Function function : list) {
                functions.add(function);

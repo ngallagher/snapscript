@@ -16,7 +16,7 @@ public class FibTest extends TestCase {
    "   }\n"+
    "   return fib(n-1) + fib(n-2);\n"+
    "}\n"+
-   "var result = fib(30);\n"+
+   "var result = fib(40);\n"+
    "println(result);\n";
 
    //time=1498 memory=1,933,564,016
@@ -34,6 +34,7 @@ public class FibTest extends TestCase {
    //time=1299 memory=1,586,667,584
    //time=1310 memory=1,586,589,152
    public void testRecursion() throws Exception {
+      System.err.println(SOURCE);
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       Executable executable = compiler.compile(SOURCE);
       timeExecution(executable);

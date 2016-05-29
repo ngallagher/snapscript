@@ -1,8 +1,5 @@
 package org.snapscript.parse;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import junit.framework.TestCase;
 
 public class ExpressionParseTest extends TestCase {
@@ -12,6 +9,7 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "func = 0;", "assignment-statement");
       analyze(tree, "@Blah", "argument");
       analyze(tree, "@Blah(x: 55)", "argument");
       analyze(tree, "@Blah(x: 55, y: 'blah')", "argument");
@@ -107,18 +105,6 @@ public class ExpressionParseTest extends TestCase {
    }
 
    private void analyze(SyntaxParser analyzer, String source, String grammar, boolean success) throws Exception {
-      Set<String> keep=new HashSet<String>();
-      
-      keep.add("expression");
-      keep.add("reference");
-      keep.add("method");
-      keep.add("variable");
-      keep.add("literal");
-      keep.add("construct");       
-      keep.add("calculation-expression");
-      keep.add("calculation-operator");
-      keep.add("arithmetic-expression");
-      
       SyntaxNode list = analyzer.parse(null, source, grammar);
 
       if (list != null) {

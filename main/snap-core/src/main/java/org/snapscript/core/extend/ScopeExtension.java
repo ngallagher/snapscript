@@ -1,4 +1,4 @@
-package org.snapscript.core.export;
+package org.snapscript.core.extend;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
@@ -9,11 +9,11 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TypeLoader;
 
-public class SystemContext {
+public class ScopeExtension {
 
    private final Context context;
    
-   public SystemContext(Context context) {
+   public ScopeExtension(Context context) {
       this.context = context;
    }
    
