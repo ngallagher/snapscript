@@ -17,8 +17,8 @@ public class ConsoleLogger {
    private static final int EVENT_LIMIT = 10000;
    
    private final LogDispatcher dispatcher;
+   private final DateFormatter formatter;
    private final PrintStream logger;
-   private final DateFormat format;
    private final boolean verbose;
    
    public ConsoleLogger() {
@@ -27,7 +27,7 @@ public class ConsoleLogger {
    
    public ConsoleLogger(boolean verbose) {
       this.dispatcher = new LogDispatcher(EVENT_LIMIT);
-      this.format = new SimpleDateFormat(TIME_FORMAT);
+      this.formatter = new DateFormatter(TIME_FORMAT);
       this.logger = System.out;
       this.verbose = verbose;
    }
@@ -52,6 +52,20 @@ public class ConsoleLogger {
    public void log(String message, Throwable cause) {
       LogEvent event = new LogEvent(message, cause);
       dispatcher.log(event);
+   }
+   
+   private class DateFormatter extends ThreadLocal<DateFormat> {
+      
+      private final String format;
+      
+      public DateFormatter(String format) {
+         this.format = format;
+      }
+      
+      @Override
+      public DateFormat initialValue(){
+         return new SimpleDateFormat(format);
+      }
    }
    
    private class LogDispatcher implements Runnable {
@@ -115,6 +129,7 @@ public class ConsoleLogger {
       @Override
       public void run() {
          String name = thread.getName();
+         DateFormat format = formatter.get();
          String date = format.format(time);
          
          if(cause != null) {
