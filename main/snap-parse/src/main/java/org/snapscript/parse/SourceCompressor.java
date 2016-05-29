@@ -23,6 +23,9 @@ public class SourceCompressor {
    }
    
    public SourceCode compress() {
+      if(read < count) {
+         directive(); // read interpreter directive
+      }
       while(read < count) {
          char next = original[read];
          
@@ -83,6 +86,34 @@ public class SourceCompressor {
          text[i] = next;
       }
       return new SourceCode(original, text, index, types);
+   }
+   
+   private boolean directive() {
+      char start = original[read];
+      
+      if(directive(start)){
+         if(read + 1 < count) {   
+            char next = original[read + 1];
+            
+            if(next == '!') {
+               while(read < count) {
+                  char terminal = original[read];
+                  
+                  if(terminal == '\n') {
+                     if(line > LINE_LIMIT) {
+                        throw new SourceException("Source exceeds " + LINE_LIMIT + " lines");
+                     }
+                     read++;
+                     line++;
+                     return true;
+                  }
+                  read++;
+               }
+               return true; // end of source
+            } 
+         }
+      }
+      return false;
    }
    
    private boolean comment() {
@@ -193,6 +224,10 @@ public class SourceCompressor {
    
    private boolean quote(char value) {
       return value == '"' || value == '\'';
+   }
+   
+   private boolean directive(char value) {
+      return value == '#';
    }
    
    private boolean comment(char value) {

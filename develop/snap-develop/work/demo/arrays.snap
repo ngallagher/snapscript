@@ -1,3 +1,5 @@
+#!/bin.snap
+
 var x = new String[3][4];
 
 x[1][1]="x";

@@ -1,3 +1,4 @@
+#!/bin/snap
 import io.Goo as Splat; // should module be a type
 import constants.Constants;
 import math.stuff.Max;
