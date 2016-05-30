@@ -144,6 +144,15 @@ public class ProcessPool {
             connections.cache(system, pool);
          }
          pool.offer(connection);
+         
+         for(ProcessEventListener listener : listeners) {
+            try {
+               listener.onRegister(channel, event);
+            } catch(Exception e) {
+               logger.log(process + ": Exception processing exit event", e);
+               listeners.remove(listener);
+            }
+         }
       }
       
       @Override

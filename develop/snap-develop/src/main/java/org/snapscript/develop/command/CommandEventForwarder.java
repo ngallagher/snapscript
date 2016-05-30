@@ -9,6 +9,7 @@ import org.snapscript.agent.event.PongEvent;
 import org.snapscript.agent.event.ProcessEventAdapter;
 import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.ProfileEvent;
+import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.ScopeEvent;
 import org.snapscript.agent.event.SyntaxErrorEvent;
 import org.snapscript.agent.event.WriteErrorEvent;
@@ -95,6 +96,15 @@ public class CommandEventForwarder extends ProcessEventAdapter {
          Set<ProfileResult> results = event.getResults();
          client.sendProfile(process, results);
       }
+   }
+   
+   @Override
+   public void onRegister(ProcessEventChannel channel, RegisterEvent event) throws Exception {  
+      String focus = filter.get();
+      String process = event.getProcess();
+      String system = event.getSystem();
+      long time = System.currentTimeMillis();
+      client.sendStatus(process, system, null, time, false, process.equals(focus)); // update clients on status
    }
    
    @Override
