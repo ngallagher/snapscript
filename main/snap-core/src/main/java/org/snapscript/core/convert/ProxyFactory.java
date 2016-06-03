@@ -24,7 +24,7 @@ public class ProxyFactory {
       Class[] interfaces = collector.collect(scope);
       
       if(interfaces.length > 0) {
-         ScopeProxyHandler handler = new ScopeProxyHandler(wrapper, scope);
+         ScopeProxyHandler handler = new ScopeProxyHandler(wrapper, context, scope);
          
          if(loader == null) {
             loader = Any.class.getClassLoader();

@@ -1,4 +1,4 @@
-new File(".")
+new File("c:\\temp")
    .findFiles(".*")
    .stream()
    .sorted()

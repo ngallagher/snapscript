@@ -16,7 +16,7 @@ var random = new SecureRandom();
 var start = System.currentTimeMillis();
 
 for(var i = 0; i < ONE_HUNDRED_THOUSAND; i++) {
-   var num = random.nextInt(100000);
+   var num = random.nextInt(ONE_HUNDRED_THOUSAND);
    set.add(num);
 }
 var finish = System.currentTimeMillis();

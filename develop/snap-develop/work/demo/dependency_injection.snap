@@ -3,7 +3,7 @@ module Mod{
       println("Mod.func()");
    }
 }
-dump(Mod);
+dump(Mod.this);
 function dump(mod){
    mod.func();
 }
