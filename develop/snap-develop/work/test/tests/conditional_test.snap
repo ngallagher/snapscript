@@ -23,4 +23,17 @@ function testConditions() {
    assert x ?? z === z;
    assert "test" == "test";
    assert "test" === "test";
+   
+   var a = "a";
+   var b = "b";
+   
+   assert (a > b) == false;
+   assert a < b;
+   assert (a >= b) == false;
+   assert a <= b;
+   assert ("a" > "b") == false;
+   assert "a" < "b";
+   assert ("a" >= "b") == false;
+   assert "a" <= "b";
+   assert "a" <= "a";
 }

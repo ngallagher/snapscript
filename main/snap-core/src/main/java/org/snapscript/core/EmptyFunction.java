@@ -23,7 +23,7 @@ public class EmptyFunction<T> implements Function<T> {
    }
    
    public EmptyFunction(Signature signature, String name, int modifiers){
-      this.description = new FunctionDescription(signature, null, name, ABSTRACT.mask);
+      this.description = new FunctionDescription(signature, null, name);
       this.annotations = new ArrayList<Annotation>();
       this.signature = signature;
       this.modifiers = modifiers;

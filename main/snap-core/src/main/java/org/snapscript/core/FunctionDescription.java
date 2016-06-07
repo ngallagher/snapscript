@@ -8,6 +8,10 @@ public class FunctionDescription {
    private final String name;
    private final Type type;
    private final int start;
+   
+   public FunctionDescription(Signature signature, Type type, String name) {
+      this(signature, type, name, 0);
+   }
   
    public FunctionDescription(Signature signature, Type type, String name, int start) {
       this.signature = signature;

@@ -1,52 +1,10 @@
 
-@Service(path: "/path")
-class Blah {
 
-   @Path(path: "/path")
-   @Element(name: "name")
-   const x;
+var a = "a";
+var b = "b";
 
-   @Attribute(name: "name")
-   const y;
+println(a > b);
+println(a < b);
 
-   @Override
-   @Func(name: "/a")
-   funcA(@Param(name: "x") x: String){
-         return x;
-   }
-   
-   @Override
-   @Func(name: "/b")
-   funcB(@Param(name: "xx") x: String){
-         return x;
-   }
-}
-
-@Singleton
-module Mod {
-
-   @Bean
-   doIt(){
-      return "x";
-   }
-}
-
-
-dump(Mod.getFunctions());
-println("=====================================================");
-dump(Blah.class.functions);
-println("=====================================================");
-var fields = Blah.class.properties;
-for(var field in fields){
-   println(field.name +"=" + field.annotations);
-}
-
-function dump(funcs){
-   for(var func in funcs){
-      println(func.name + "=" + func.annotations);
-      var parameters = func.signature.parameters;
-      for(var parameter in parameters) {
-         println("    "+parameter.name + "=>>>" + parameter.annotations);
-      }
-   }
-}
+println("a" > "b");
+println("a" < "b");
