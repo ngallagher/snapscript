@@ -20,7 +20,7 @@ module Module{
       return "func";
    }
 }
-testReflection();
+
 function testReflection(){ 
    Module.getAnnotations()
       .stream()
@@ -40,6 +40,7 @@ function testReflection(){
             .forEach(annotation -> {
                println(annotation);
                assert annotation.getName().equals("Func");
+               assert annotation.name.equals("Func");
             });
       });
 }
