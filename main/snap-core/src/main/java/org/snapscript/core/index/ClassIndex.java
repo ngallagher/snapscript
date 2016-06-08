@@ -1,10 +1,8 @@
 package org.snapscript.core.index;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.snapscript.core.Annotation;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
@@ -13,6 +11,7 @@ import org.snapscript.core.Type;
 
 public class ClassIndex {
    
+   private List<Annotation> annotations;
    private List<Property> properties;
    private List<Function> functions;
    private ClassIndexer indexer;
@@ -26,9 +25,15 @@ public class ClassIndex {
       this.require = require;
    }
    
-   @Bug("Not implemented")
    public List<Annotation> getAnnotations() {
-      return Collections.emptyList();
+      if(annotations == null) {
+         try {
+            annotations = indexer.indexAnnotations(require);
+         } catch(Exception e) {
+            throw new InternalStateException("Could not index " + require, e);
+         }
+      }
+      return annotations;
    }
 
    public List<Property> getProperties() {

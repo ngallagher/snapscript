@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Type;
@@ -11,6 +12,7 @@ import org.snapscript.core.extend.ClassExtender;
 
 public class FunctionIndexer {
    
+   private final AnnotationExtractor extractor;
    private final FunctionGenerator generator;
    private final ConstructorIndexer indexer;
    private final ModifierConverter converter;
@@ -19,6 +21,7 @@ public class FunctionIndexer {
    public FunctionIndexer(TypeIndexer indexer, ClassExtender extender){
       this.generator = new FunctionGenerator(indexer);
       this.indexer = new ConstructorIndexer(indexer);
+      this.extractor = new AnnotationExtractor();
       this.converter = new ModifierConverter();
       this.extender = extender;
    }
@@ -42,8 +45,11 @@ public class FunctionIndexer {
                String name = method.getName();
                Class[] parameters = method.getParameterTypes();
                Function function = generator.generate(type, method, parameters, name, modifiers);
+               List<Annotation> extracted = extractor.extract(method);
+               List<Annotation> actual = function.getAnnotations();
                
                functions.add(function);
+               actual.addAll(extracted);
             }
          }
          if(!constructors.isEmpty()) {

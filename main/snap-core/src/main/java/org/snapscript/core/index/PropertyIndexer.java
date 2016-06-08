@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.Property;
@@ -16,6 +17,7 @@ import org.snapscript.core.Type;
 
 public class PropertyIndexer {
    
+   private final AnnotationExtractor extractor;
    private final ClassPropertyBuilder builder;
    private final ModifierConverter converter;
    private final PropertyGenerator generator;
@@ -24,6 +26,7 @@ public class PropertyIndexer {
    
    public PropertyIndexer(TypeIndexer indexer){
       this.builder = new ClassPropertyBuilder(indexer);
+      this.extractor = new AnnotationExtractor();
       this.converter = new ModifierConverter();
       this.generator = new PropertyGenerator();
       this.promoter = new PrimitivePromoter();
@@ -47,9 +50,12 @@ public class PropertyIndexer {
                Class declaration = field.getType();
                Type constraint = indexer.loadType(declaration);
                Property property = generator.generate(field, type, constraint, name, modifiers); 
+               List<Annotation> extracted = extractor.extract(field);
+               List<Annotation> actual = property.getAnnotations();
                
                done.add(name);
                properties.add(property);
+               actual.addAll(extracted);
             }
          }
          for(Method method : methods){
@@ -72,12 +78,15 @@ public class PropertyIndexer {
                      Class normal = promoter.promote(declaration);
                      Type constraint = indexer.loadType(normal);
                      Property property = generator.generate(method, write, type, constraint, name, modifiers);                
+                     List<Annotation> extracted = extractor.extract(method);
+                     List<Annotation> actual = property.getAnnotations();
                      
                      if(write != null){
                         write.setAccessible(true);
                      }
                      method.setAccessible(true);
                      properties.add(property);
+                     actual.addAll(extracted);
                   }
                }
             }

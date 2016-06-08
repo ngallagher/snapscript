@@ -4,6 +4,7 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import java.util.List;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.ImportScanner;
 import org.snapscript.core.InternalArgumentException;
@@ -17,10 +18,10 @@ import org.snapscript.core.extend.ClassExtender;
 public class ClassIndexer {
 
    private final ClassHierarchyIndexer hierarchy;
+   private final AnnotationExtractor extractor;
    private final FunctionIndexer functions;
    private final PropertyIndexer properties;
    private final PrimitivePromoter promoter;
-   private final ClassExtender extender;
    private final ImportScanner scanner;
    private final ModuleRegistry registry;
    private final TypeIndexer indexer;
@@ -29,8 +30,8 @@ public class ClassIndexer {
       this.hierarchy = new ClassHierarchyIndexer(indexer);
       this.properties = new PropertyIndexer(indexer);
       this.functions = new FunctionIndexer(indexer, extender);
+      this.extractor = new AnnotationExtractor();
       this.promoter = new PrimitivePromoter();
-      this.extender = extender;
       this.scanner = scanner;
       this.registry = registry;
       this.indexer = indexer;
@@ -44,6 +45,16 @@ public class ClassIndexer {
          throw new InternalArgumentException("Could not determine type for " + source);
       }
       return hierarchy.index(actual);
+   }
+   
+   public List<Annotation> indexAnnotations(ClassType type) throws Exception {
+      Class source = type.getType();
+      Class actual = promoter.promote(source);
+      
+      if(actual == null) {
+         throw new InternalArgumentException("Could not determine type for " + source);
+      }
+      return extractor.extract(actual);
    }
    
    public List<Property> indexProperties(ClassType type) throws Exception {
