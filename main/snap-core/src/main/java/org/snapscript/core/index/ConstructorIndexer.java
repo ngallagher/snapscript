@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Type;
 
 public class ConstructorIndexer {
 
+   private final AnnotationExtractor extractor;
    private final ConstructorGenerator generator;
    private final ModifierConverter converter;
    
    public ConstructorIndexer(TypeIndexer indexer) {
       this.generator = new ConstructorGenerator(indexer);
+      this.extractor = new AnnotationExtractor();
       this.converter = new ModifierConverter();
    }
 
@@ -31,8 +34,11 @@ public class ConstructorIndexer {
                int modifiers = converter.convert(constructor); // accept all consructors public/private
                Class[] parameters = constructor.getParameterTypes();
                Function function = generator.generate(type, constructor, parameters, modifiers);
+               List<Annotation> extracted = extractor.extract(constructor);
+               List<Annotation> actual = function.getAnnotations();
                
                functions.add(function);
+               actual.addAll(extracted);
             }
             return functions;
          }
