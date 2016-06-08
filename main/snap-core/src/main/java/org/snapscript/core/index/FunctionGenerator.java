@@ -23,10 +23,10 @@ public class FunctionGenerator {
    }
 
    public Function generate(Type type, Method method, Class[] types, String name, int modifiers) {
+      Signature signature = generator.generate(type, method);
       Class real = method.getReturnType();
       
       try {
-         Signature signature = generator.generate(type, method);
          Invocation invocation = null;
          
          if(checker.check(method)) {
