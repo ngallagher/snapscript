@@ -1,11 +1,7 @@
 package org.snapscript.core.index;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
