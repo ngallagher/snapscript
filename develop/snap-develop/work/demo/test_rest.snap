@@ -8,3 +8,11 @@ println(a < b);
 
 println("a" > "b");
 println("a" < "b");
+
+var func1 = () -> println("func1()");
+
+println(func1);
+println(func1.name);
+println(func1.getName());
+println(func1.annotations == []);
+println(func1.getAnnotations() == []);

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Annotation;
+import org.snapscript.core.Any;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -45,7 +46,7 @@ public class FunctionDispatcher implements InvocationDispatcher {
       return ValueType.getTransient(value);
    }
    
-   private static class FunctionAdapter {
+   private static class FunctionAdapter implements Any {
       
       private final Function function;
       

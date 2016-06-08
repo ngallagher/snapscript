@@ -48,7 +48,7 @@ public class FunctionProxyHandler implements InvocationHandler {
          }
          return function.toString();
       }
-      if(method.equals(METHOD_EQUALS)) {
+      if(name.equals(METHOD_EQUALS)) {
          if(width != 1) {
             throw new InternalStateException("Closure "+METHOD_EQUALS+" does not accept " + width + " arguments");
          }
