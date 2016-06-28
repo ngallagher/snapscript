@@ -39,6 +39,7 @@ function checkResult(sum) {
   
   if (x != 50000 || y != -50000) {
     //throw "failed: x = " + x + ", y = " + y;
+    println("x=${x} y=${y}");
   }
 }
 

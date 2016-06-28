@@ -1,8 +1,11 @@
+import util.concurrent.ScheduledThreadPoolExecutor;
 import find.FilePatternScanner;
 import core.PathConverter;
 import core.store.FileStore;
 import compile.StoreContext;
 import compile.ResourceCompiler;
+
+const threads = 10;
 
 function runTests(directory) {
    const scanner = new FilePatternScanner(directory);
@@ -10,7 +13,8 @@ function runTests(directory) {
    const converter = new PathConverter();
    const root = new File(directory);
    const store = new FileStore(root);
-   const context = new StoreContext(store);
+   const executor = new ScheduledThreadPoolExecutor(threads);
+   const context = new StoreContext(store, executor);
    const compiler = new ResourceCompiler(context);
    var failures = 0;
    var tests = 0;
@@ -33,7 +37,9 @@ function runTests(directory) {
       
       for(var test in tests){
          if(test.name.startsWith("test")) {
-            timeTest(-> test.invocation.invoke(scope, scope), script, test.name);
+            //executor.execute(-> {
+               timeTest(-> test.invocation.invoke(scope, scope), script, test.name);
+            //});
          }
       }
    }

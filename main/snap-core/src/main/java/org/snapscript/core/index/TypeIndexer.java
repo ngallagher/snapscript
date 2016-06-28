@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.snapscript.core.ImportScanner;
+import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Type;
 import org.snapscript.core.extend.ClassExtender;
@@ -90,10 +91,11 @@ public class TypeIndexer {
 
    private synchronized Type createType(String module, String name) throws Exception {
       String alias = createName(module, name);
+      Module parent = registry.addModule(module);
       Type type = types.get(alias);
       
       if(type == null) {
-         return new ScopeType(registry, module, name);
+         return new ScopeType(parent, name);
       }
       return type;
    }
