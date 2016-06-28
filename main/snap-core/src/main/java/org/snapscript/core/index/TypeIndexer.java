@@ -12,6 +12,7 @@ import org.snapscript.core.extend.ClassExtender;
 public class TypeIndexer {
 
    private final Map<Object, Type> types;
+   private final TypeNameBuilder builder;
    private final ModuleRegistry registry;
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
@@ -19,6 +20,7 @@ public class TypeIndexer {
    public TypeIndexer(ModuleRegistry registry, ImportScanner scanner, ClassExtender extender) {
       this.indexer = new ClassIndexer(this, registry, scanner, extender);
       this.types = new LinkedHashMap<Object, Type>();
+      this.builder = new TypeNameBuilder();
       this.scanner = scanner;
       this.registry = registry;
    }
@@ -38,7 +40,7 @@ public class TypeIndexer {
    }
 
    public synchronized Type loadType(String module, String name) throws Exception {
-      String alias = createName(module, name);
+      String alias = builder.createName(module, name);
       Type done = types.get(alias);
 
       if (done == null) {
@@ -53,7 +55,7 @@ public class TypeIndexer {
    }
 
    public synchronized Type defineType(String module, String name) throws Exception {
-      String alias = createName(module, name);
+      String alias = builder.createName(module, name);
       Type done = types.get(alias);
 
       if (done == null) {
@@ -90,7 +92,7 @@ public class TypeIndexer {
    }
 
    private synchronized Type createType(String module, String name) throws Exception {
-      String alias = createName(module, name);
+      String alias = builder.createName(module, name);
       Module parent = registry.addModule(module);
       Type type = types.get(alias);
       
@@ -109,16 +111,5 @@ public class TypeIndexer {
          return new ClassType(indexer, source, name);
       }
       return type;
-   }
-   
-   private synchronized String createName(String module, String name) {
-      if(module != null) {
-         int length = module.length();
-         
-         if(length > 0) {
-            return module + "." + name;
-         }
-      }
-      return name;
    }
 }
