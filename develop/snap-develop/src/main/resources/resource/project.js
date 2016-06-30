@@ -38,7 +38,7 @@ function createProjectLayout() {
       padding : 0,
       panels : [ {
          type : 'top',
-         size : '35px',
+         size : '40px',
          resizable : false,
          style : pstyle
       }, {
@@ -77,10 +77,11 @@ function createProjectLayout() {
                      content : "<div class='toolbarTop'>"
                            + "<table border='0'>"
                            + "<tr>"
+                           + "   <td><div id='toolbarLogoContainer'><img style='height: 25px; margin-top: -1px;' src='/img/logo_grey_shade.png'></div></td>"
+                           + "   <td><div class='toolbarSeparator'></div></td>"                           
                            + "   <td>"
                            + "      <table id='toolbarNormal'>"
                            + "      <tr>"
-                           + "         <td>&nbsp;&nbsp;</td>" 
                            + "         <td><div id='newFile' onclick='newFile(null)' title='New File&nbsp;&nbsp;&nbsp;Ctrl+N'></div></td>"                           
                            + "         <td><div id='saveFile' onclick='saveFile(null)' title='Save File&nbsp;&nbsp;&nbsp;Ctrl+S'></div></td>" 
                            + "         <td><div id='deleteFile' onclick='deleteFile(null)' title='Delete File'></div></td>"   
