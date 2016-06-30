@@ -26,7 +26,8 @@ function createTreeOfDepth(treePath, element, id, expandPath, foldersOnly, treeM
                             ] },
                         { title: "&nbsp;Save", cmd: "saveFile", uiIcon: "menu-save" },
                         { title: "&nbsp;Delete", cmd: "deleteFile", uiIcon: "menu-trash", disabled: false },
-                        { title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run" } //,              
+                        { title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run" },
+                        { title: "&nbsp;Explore", cmd: "exploreDirectory", uiIcon: "menu-explore" } //,              
                     ],
                     beforeOpen: function (event, ui) {
                         var node = $.ui.fancytree.getNode(ui.target);

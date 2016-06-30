@@ -47,9 +47,18 @@ function findTypesMatching(text) {
     });
     return response;
 }
+function exploreDirectory(resourcePath) {
+    if (isResourceFolder(resourcePath.filePath)) {
+        var message = JSON.stringify({
+            project: document.title,
+            resource: resourcePath.filePath
+        });
+        socket.send("EXPLORE:" + message);
+    }
+}
 function newFile(resourcePath) {
     newFileTreeDialog(resourcePath, true, function (resourceDetails) {
-        if (!isResourceFolder(resourceDetails.filePath)) {
+        if (!isResourceFolder(resourceDetails)) {
             var message = JSON.stringify({
                 project: document.title,
                 resource: resourceDetails.filePath,

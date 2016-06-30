@@ -29,7 +29,8 @@ function createTreeOfDepth(treePath, element, id, expandPath, foldersOnly, treeM
                          ]},              
                       {title: "&nbsp;Save", cmd: "saveFile", uiIcon: "menu-save"},             
                       {title: "&nbsp;Delete", cmd: "deleteFile", uiIcon: "menu-trash", disabled: false },
-                      {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"} //,              
+                      {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"},
+                      {title: "&nbsp;Explore", cmd: "exploreDirectory", uiIcon: "menu-explore"} //,              
                       //{title: "----"},
                       //{title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
                       //{title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true }

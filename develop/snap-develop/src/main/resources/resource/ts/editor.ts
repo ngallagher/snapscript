@@ -211,7 +211,12 @@ function encodeEditorText(text, resource) {
    var token = resource.toLowerCase();
    
    if(token.endsWith(".json")) {
-      return JSON.stringify(text, null, 3);
+      try {
+          var object = JSON.parse(text);
+          return JSON.stringify(object, null, 3);
+      }catch(e) {
+        return text;
+      }
    }
    return text;
 }

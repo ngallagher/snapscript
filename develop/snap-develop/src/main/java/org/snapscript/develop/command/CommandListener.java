@@ -1,6 +1,8 @@
 package org.snapscript.develop.command;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +47,31 @@ public class CommandListener {
       this.path = path;
    }
 
+   public void onExplore(ExploreCommand command) {
+      String resource = command.getResource();
+      
+      try {
+         if(resource != null) {
+            File file = new File(root, "/" + resource);
+            String path = file.getCanonicalPath();
+            boolean exists = file.exists();
+            boolean directory = file.isDirectory();
+            
+            if(exists && directory) {
+               List<String> arguments = new ArrayList<String>();
+               
+               arguments.add("explorer");
+               arguments.add(path);
+
+               ProcessBuilder builder = new ProcessBuilder(arguments);
+               builder.start();
+            }
+         }
+      } catch(Exception e) {
+         logger.log("Error exploring directory " + resource, e);
+      }
+   }
+   
    public void onSave(SaveCommand command) {
       String resource = command.getResource();
       String source = command.getSource();

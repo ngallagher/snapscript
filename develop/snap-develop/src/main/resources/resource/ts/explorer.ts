@@ -18,33 +18,43 @@ function showTree() {
 }
 
 function openTreeFile(resourcePath, afterLoad) {
-   $.get(resourcePath, function(response) {
-      var mode = resolveEditorMode(resourcePath);
+   if(resourcePath.toLowerCase().endsWith(".json")) { // is it json
+      $.get(resourcePath, function(response) {
+         handleOpenTreeFile(resourcePath, afterLoad, response);
+      }, "text");
+   } else {
+      $.get(resourcePath, function(response) {
+         handleOpenTreeFile(resourcePath, afterLoad, response);
+      });
+   }
+}
+
+function handleOpenTreeFile(resourcePath, afterLoad, response) {
+   var mode = resolveEditorMode(resourcePath);
+   
+   if(mode == null) {
+      var resourceBlob = new Blob([response], {type: "application/octet-stream"});
+      var resourceFile = resourcePath.replace(/.*\//, "");
       
-      if(mode == null) {
-         var resourceBlob = new Blob([response], {type: "application/octet-stream"});
-         var resourceFile = resourcePath.replace(/.*\//, "");
+      saveAs(resourceBlob, resourceFile);
+   } else {
+      if(isEditorChanged()) {
+         var editorData = loadEditor();
+         var editorResource = editorData.resource;
+         var message = "Save resource " + editorResource.filePath;
          
-         saveAs(resourceBlob, resourceFile);
+         createConfirmAlert("File Changed", message, "Save", "Ignore", 
+               function(){
+                  saveEditor(true); // save the file
+               },
+               function(){
+                  updateEditor(response, resourcePath);
+               });
       } else {
-         if(isEditorChanged()) {
-            var editorData = loadEditor();
-            var editorResource = editorData.resource;
-            var message = "Save resource " + editorResource.filePath;
-            
-            createConfirmAlert("File Changed", message, "Save", "Ignore", 
-                  function(){
-                     saveEditor(true); // save the file
-                  },
-                  function(){
-                     updateEditor(response, resourcePath);
-                  });
-         } else {
-            updateEditor(response, resourcePath);
-         }
+         updateEditor(response, resourcePath);
       }
-      afterLoad();
-   });
+   }
+   afterLoad();
 }
 
 function handleTreeMenu(resourcePath, commandName, elementId) {
@@ -56,6 +66,8 @@ function handleTreeMenu(resourcePath, commandName, elementId) {
       newFile(resourcePath);
    }else if(commandName == "newDirectory") {
       newDirectory(resourcePath);
+   }else if(commandName == "exploreDirectory") {
+      exploreDirectory(resourcePath);
    }else if(commandName == "saveFile") {
       openTreeFile(resourcePath.resourcePath, function(){
          saveFile();

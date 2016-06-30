@@ -9,6 +9,7 @@ public enum CommandType {
    PRINT_ERROR(PrintErrorCommandMarshaller.class, PrintErrorCommand.class, PROCESS),
    EXECUTE(ExecuteCommandMarshaller.class, ExecuteCommand.class, CLIENT),
    SAVE(SaveCommandMarshaller.class, SaveCommand.class, CommandOrigin.CLIENT),
+   EXPLORE(ExploreCommandMarshaller.class, ExploreCommand.class, CommandOrigin.CLIENT),
    DELETE(DeleteCommandMarshaller.class, DeleteCommand.class, CommandOrigin.CLIENT),
    RELOAD_TREE(ReloadTreeCommandMarshaller.class, ReloadTreeCommand.class, ENGINE),
    BREAKPOINTS(BreakpointsCommandMarshaller.class, BreakpointsCommand.class, CommandOrigin.CLIENT),
