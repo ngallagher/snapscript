@@ -31,6 +31,7 @@ function testInstanceOf(){
    assert null!?=null;   
    assert null!?=String;   
    assert new Blah.Foo()?=Blah.Foo;
+   assert new Blah.Foo()?=Runnable;
 }
 
 function testInstanceOfWithClass(){
