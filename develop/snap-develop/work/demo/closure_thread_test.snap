@@ -21,3 +21,4 @@ list.stream()
     .map(s -> s.toUpperCase())
     .sorted()
     .forEach(s: String -> println(s));
+   
