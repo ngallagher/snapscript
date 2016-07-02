@@ -126,23 +126,26 @@ public class CommandListener {
       
       try {
          File fromFile = new File(root, "/" + from);
-         File toFile = new File(root, "/" + to);            
-         boolean fromExists = fromFile.exists();
-         boolean toExists = toFile.exists();
+         File toFile = new File(root, "/" + to); 
          
-         if(!fromExists) {
-            client.sendAlert(from, "Resource " + from + " does not exist");
-         } else {
-            if(toExists) {
-               client.sendAlert(to, "Resource " + to + " does already exists");
+         if(!fromFile.equals(root)) { // don't rename root
+            boolean fromExists = fromFile.exists();
+            boolean toExists = toFile.exists();
+            
+            if(!fromExists) {
+               client.sendAlert(from, "Resource " + from + " does not exist");
             } else {
-               if(fromFile.renameTo(toFile)){
-                  client.sendReloadTree();
+               if(toExists) {
+                  client.sendAlert(to, "Resource " + to + " does already exists");
                } else {
-                  client.sendAlert(from, "Could not rename " + from + " to " + to);
+                  if(fromFile.renameTo(toFile)){
+                     client.sendReloadTree();
+                  } else {
+                     client.sendAlert(from, "Could not rename " + from + " to " + to);
+                  }
                }
             }
-         }
+         } 
       } catch(Exception e) {
          logger.log("Error renaming " + from, e);
       }
@@ -224,16 +227,19 @@ public class CommandListener {
       
       try {
          File file = new File(root, "/" + resource);
-         boolean exists = file.exists();
          
-         if(exists) {
-            manager.backupFile(root, file, project);
+         if(!file.equals(root)) { // don't delete root
+            boolean exists = file.exists();
             
-            if(file.isDirectory()) {
+            if(exists) {
+               manager.backupFile(root, file, project);
                
+               if(file.isDirectory()) {
+                  
+               }
+               file.delete();
+               client.sendReloadTree();
             }
-            file.delete();
-            client.sendReloadTree();
          }
       } catch(Exception e) {
          logger.log("Error deleting " + resource, e);
