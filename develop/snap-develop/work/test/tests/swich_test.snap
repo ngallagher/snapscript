@@ -91,3 +91,47 @@ function testSwitchReturn() {
    assert FindColor.find(4) == "white"; 
    assert FindColor.find(5) == "white";      
 }
+
+function testSwitchType() {
+   var x = new String();
+   var r = null;
+   switch(x.class){
+   case Integer:
+      println("Integer");
+      r = "Integer";
+      break;
+   case Double:
+      println("Double");
+      r = "Double";
+      break;
+   case String:
+      println("String");
+      r = "String";
+      break;
+   default:
+      println("none");
+   }
+   assert r == "String";
+}
+
+function testSwitchList() {
+   var x = [1, 2, 3];
+   var r = null;
+   switch(x){
+   case Integer:
+      println("Integer");
+      r = "Integer";
+      break;
+   case [3, 2]:
+      println("[3, 2]");
+      r = "[3, 2]";
+      break;
+   case [1, 2, 3]:
+      println("[1, 2, 3]");
+      r = "[1, 2, 3]";
+      break;
+   default:
+      println("none");
+   }
+   assert r == "[1, 2, 3]";
+}
