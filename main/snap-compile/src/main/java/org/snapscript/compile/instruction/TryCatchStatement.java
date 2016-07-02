@@ -15,7 +15,7 @@ public class TryCatchStatement extends Statement {
    
    private final ParameterDeclaration declaration;
    private final ErrorCauseExtractor extractor;
-   private final ConstraintChecker checker;
+   private final CompatibilityChecker checker;
    private final Statement statement;
    private final Statement handle;
    private final Statement finish;
@@ -30,7 +30,7 @@ public class TryCatchStatement extends Statement {
    
    public TryCatchStatement(Statement statement, ParameterDeclaration declaration, Statement handle, Statement finish) {
       this.extractor = new ErrorCauseExtractor();
-      this.checker = new ConstraintChecker();
+      this.checker = new CompatibilityChecker();
       this.declaration = declaration;  
       this.statement = statement;
       this.handle = handle;

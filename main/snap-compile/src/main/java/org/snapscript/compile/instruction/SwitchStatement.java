@@ -81,7 +81,7 @@ public class SwitchStatement implements Compilation {
                return ResultType.getNormal();
             }
             Value right = evaluation.evaluate(scope, null);
-            Value value = EQUALS.operate(left, right);
+            Value value = EQUALS.operate(scope, left, right);
             Boolean match = value.getBoolean();
             
             if(match.booleanValue()) {

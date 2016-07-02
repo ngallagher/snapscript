@@ -13,11 +13,11 @@ import org.snapscript.core.ValueType;
 
 public class ParameterExtractor {
    
-   private final ConstraintChecker checker;
+   private final CompatibilityChecker checker;
    private final Signature signature;
    
    public ParameterExtractor(Signature signature) {
-      this.checker = new ConstraintChecker();
+      this.checker = new CompatibilityChecker();
       this.signature = signature;
    }
 

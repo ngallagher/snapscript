@@ -21,6 +21,7 @@ class Foo {
       return text;
    }
 }
+println(Foo);
 
 class Nuh {
    var foo;

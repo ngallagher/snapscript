@@ -27,7 +27,7 @@ public class Comparison implements Evaluation {
          Value leftResult = left.evaluate(scope, null);
          Value rightResult = right.evaluate(scope, null);
          
-         return operator.operate(leftResult, rightResult);
+         return operator.operate(scope, leftResult, rightResult);
       }
       return left.evaluate(scope, null);
    }      

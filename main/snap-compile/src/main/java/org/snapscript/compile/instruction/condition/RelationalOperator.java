@@ -1,13 +1,15 @@
 package org.snapscript.compile.instruction.condition;
 
 import org.snapscript.compile.instruction.BooleanValue;
+import org.snapscript.compile.instruction.CompatibilityChecker;
+import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.parse.StringToken;
 
 public enum RelationalOperator {
    SAME("==="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          Object first = left.getValue();
          Object second = right.getValue();
          
@@ -19,7 +21,7 @@ public enum RelationalOperator {
    },   
    NOT_SAME("!=="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          Object first = left.getValue();
          Object second = right.getValue();
          
@@ -31,7 +33,7 @@ public enum RelationalOperator {
    },   
    EQUALS("=="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) == 0){
@@ -42,7 +44,7 @@ public enum RelationalOperator {
    },  
    NOT_EQUALS("!="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) != 0){
@@ -53,7 +55,7 @@ public enum RelationalOperator {
    },  
    GREATER(">"){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) > 0){
@@ -64,7 +66,7 @@ public enum RelationalOperator {
    },  
    GREATER_OR_EQUALS(">="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) >= 0){
@@ -75,7 +77,7 @@ public enum RelationalOperator {
    }, 
    LESS("<"){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) < 0){
@@ -86,7 +88,7 @@ public enum RelationalOperator {
    }, 
    LESS_OR_EQUALS("<="){
       @Override
-      public Value operate(Value left, Value right) {
+      public Value operate(Scope scope, Value left, Value right) {
          ValueComparator comparator = ValueComparator.resolveComparator(left, right);
          
          if(comparator.compare(left, right) <= 0){
@@ -94,15 +96,41 @@ public enum RelationalOperator {
          }
          return BooleanValue.FALSE;
       }      
+   },
+   INSTANCE_OF("?="){
+      @Override
+      public Value operate(Scope scope, Value left, Value right) {
+         Object first = left.getValue();
+         Object second = right.getValue();
+         
+         if(checker.instanceOf(scope, first, second)){
+            return BooleanValue.TRUE;
+         }
+         return BooleanValue.FALSE;
+      }      
+   },
+   NOT_INSTANCE_OF("!?="){
+      @Override
+      public Value operate(Scope scope, Value left, Value right) {
+         Object first = left.getValue();
+         Object second = right.getValue();
+         
+         if(!checker.instanceOf(scope, first, second)){
+            return BooleanValue.TRUE;
+         }
+         return BooleanValue.FALSE;
+      }      
    };
    
+   public final InstanceChecker checker;
    public final String operator;
    
    private RelationalOperator(String operator) {
+      this.checker = new InstanceChecker();
       this.operator = operator;
    }
    
-   public abstract Value operate(Value left, Value right);
+   public abstract Value operate(Scope scope, Value left, Value right);
    
    public static RelationalOperator resolveOperator(StringToken token) {
       if(token != null) {

@@ -10,7 +10,7 @@ public enum Syntax {
    ARITHMETIC_OPERATOR("arithmetic-operator", "{'**'|'+'|'-'|'*'|'/'|'%'}"),
    BINARY_OPERATOR("binary-operator", "{'&'|'|'|'^'|'>>>'|'>>'|'<<'}"),
    COALESCE_OPERATOR("coalesce-operator", "'??'"),    
-   COMPARISON_OPERATOR("comparison-operator", "{'>='|'<='|'>'|'<'|'==='|'!=='|'=='|'!='}"), 
+   COMPARISON_OPERATOR("comparison-operator", "{'>='|'<='|'>'|'<'|'==='|'!=='|'=='|'!='|'?='|'!?='}"), 
    CONDITIONAL_OPERATOR("conditional-operator", "{'&&'|'||'}"),
    PREFIX_OPERATOR("prefix-operator", "{'!'|'~'|'+'|'-'}"),
    INCREMENT_OPERATOR("increment-operator", "'++'"),

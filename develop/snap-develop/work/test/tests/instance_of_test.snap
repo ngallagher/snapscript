@@ -1,0 +1,37 @@
+
+class Task with Runnable{
+   run(){}
+}
+
+class PrintTask extends Task{
+   override run(){
+      println();
+   }
+}
+
+function testInstanceOf(){
+   assert "" ?= String;
+   assert {:} ?= Map;
+   assert new Task() ?=Runnable;
+   assert new PrintTask() ?=Runnable;
+   assert {} ?=Set;
+   assert []?=List;
+   assert []?=Collection;
+   assert []!?=Map;
+   assert ""!?=null;
+   assert null!?=null;   
+   assert null!?=String;      
+}
+
+function testInstanceOfWithClass(){
+   assert "" ?= String.class;
+   assert {:} ?= Map.class;
+   assert new Task() ?=Runnable.class;
+   assert new PrintTask() ?=Runnable.class;
+   assert new PrintTask() ?=new Task().class;   
+   assert {} ?=Set.class;
+   assert []?=List.class;
+   assert []?=Collection.class;
+   assert []!?=Map.class;
+   assert []!?=null;
+}

@@ -10,9 +10,9 @@ import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.Score;
 
-public class ConstraintChecker {
+public class CompatibilityChecker {
    
-   public ConstraintChecker() {
+   public CompatibilityChecker() {
       super();
    }
 
