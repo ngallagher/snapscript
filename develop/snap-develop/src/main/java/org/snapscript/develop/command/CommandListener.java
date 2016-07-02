@@ -116,6 +116,34 @@ public class CommandListener {
       }
    }
    
+   public void onRename(RenameCommand command) {
+      String from = command.getFrom();
+      String to = command.getTo();
+      
+      try {
+         File fromFile = new File(root, "/" + from);
+         File toFile = new File(root, "/" + to);            
+         boolean fromExists = fromFile.exists();
+         boolean toExists = toFile.exists();
+         
+         if(!fromExists) {
+            client.sendAlert(from, "Resource " + from + " does not exist");
+         } else {
+            if(toExists) {
+               client.sendAlert(to, "Resource " + to + " does already exists");
+            } else {
+               if(fromFile.renameTo(toFile)){
+                  client.sendReloadTree();
+               } else {
+                  client.sendAlert(from, "Could not rename " + from + " to " + to);
+               }
+            }
+         }
+      } catch(Exception e) {
+         logger.log("Error renaming " + from, e);
+      }
+   }   
+   
    public void onExecute(ExecuteCommand command) {
       String resource = command.getResource();
       String source = command.getSource();

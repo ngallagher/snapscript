@@ -27,7 +27,8 @@ function createTreeOfDepth(treePath, element, id, expandPath, foldersOnly, treeM
                          {title: "&nbsp;File", cmd: "newFile", uiIcon: "menu-new"},
                          {title: "&nbsp;Directory", cmd: "newDirectory", uiIcon: "menu-new"}
                          ]},              
-                      {title: "&nbsp;Save", cmd: "saveFile", uiIcon: "menu-save"},             
+                      {title: "&nbsp;Save", cmd: "saveFile", uiIcon: "menu-save"}, 
+                      {title: "&nbsp;Rename", cmd: "renameFile", uiIcon: "menu-rename"},                       
                       {title: "&nbsp;Delete", cmd: "deleteFile", uiIcon: "menu-trash", disabled: false },
                       {title: "&nbsp;Run", cmd: "runScript", uiIcon: "menu-run"},
                       {title: "&nbsp;Explore", cmd: "exploreDirectory", uiIcon: "menu-explore"} //,              
@@ -50,7 +51,7 @@ function createTreeOfDepth(treePath, element, id, expandPath, foldersOnly, treeM
                     var commandName = ui.cmd;
                     var elementId = ui.key;
                     
-                    treeMenuHandler(resourcePath, commandName, elementId);
+                    treeMenuHandler(resourcePath, commandName, elementId, node.isFolder());
                   }
              });         
          }
@@ -76,7 +77,7 @@ function isResourceFolder(path) {
 
 function cleanResourcePath(path) {
    if(path != null) {
-      var cleanPath = path.replace(/\/+/, "/"); // replace // with /
+      var cleanPath = path.replace(/\/+/, "/").replace(/\.#/, ""); // replace // with /
       
       if(cleanPath.endsWith("/")) {
          cleanPath = cleanPath.substring(0,cleanPath.length-1);

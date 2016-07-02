@@ -27,7 +27,7 @@ function showProjectDialog() {
    }, function() {
       setTimeout(showProjectDialog, 500);
    },
-   "Open Project", "");
+   "Open Project", "Open", "");
 }
 
 registerModule("start", "Start module: start.js", showProjectDialog, [ "common", "dialog", "tree", "spinner" ]);

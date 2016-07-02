@@ -55,6 +55,12 @@
 	background-repeat: no-repeat !important;
 }
 
+.menu-rename {
+	background-image: url('/img/toolbar/swap.gif') !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+}
+
 .menu-trash {
 	background-image: url('/img/toolbar/trash.gif') !important;
 	background-position: center !important;

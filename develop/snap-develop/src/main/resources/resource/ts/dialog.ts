@@ -42,6 +42,14 @@ function openTreeDialog(resourceDetails, foldersOnly, saveCallback) {
    }
 }
 
+function renameFileTreeDialog(resourceDetails, foldersOnly, saveCallback){
+   createProjectDialog(resourceDetails, foldersOnly, saveCallback, "Rename File");
+}
+
+function renameDirectoryTreeDialog(resourceDetails, foldersOnly, saveCallback){
+   createProjectDialog(resourceDetails, foldersOnly, saveCallback, "Rename Directory");
+}
+
 function newFileTreeDialog(resourceDetails, foldersOnly, saveCallback){
    createProjectDialog(resourceDetails, foldersOnly, saveCallback, "New File");
 }
@@ -99,8 +107,10 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
       }
    });
    $("#dialogSave").click(function() {
-      var dialogFileName = $('#dialogFile').html();
-      var dialogFolder = $('#dialogFolder').html();
+      var originalDialogFileName = $('#dialogFile').html();
+      var originalDialogFolder = $('#dialogFolder').html();
+      var dialogFileName = cleanResourcePath(originalDialogFileName);
+      var dialogFolder = cleanResourcePath(originalDialogFolder);
       var dialogProjectPath = dialogFolder + "/" + dialogFileName; // /src/blah/script.snap
       var dialogPathDetails = createResourcePath(dialogProjectPath); 
       
@@ -112,7 +122,7 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
    });
    if (resourceDetails != null) {
       $('#dialogFolder').html(cleanResourcePath(resourceDetails.projectDirectory)); // /src/blah
-      $('#dialogFile').html(resourceDetails.fileName); // script.snap
+      $('#dialogFile').html(cleanResourcePath(resourceDetails.fileName)); // script.snap
    }
    createTree(treePath, "dialog", "dialogTree", dialogExpandPath, foldersOnly, null, function(event, data) {
       var selectedFileDetails = createResourcePath(data.node.tooltip);
@@ -122,21 +132,22 @@ function createTreeDialog(resourceDetails, foldersOnly, saveCallback, dialogTitl
          $('#dialogFile').html("");
       } else {
          $('#dialogFolder').html(cleanResourcePath(selectedFileDetails.projectDirectory)); // /src/blah
-         $('#dialogFile').html(selectedFileDetails.fileName); // file.snap
+         $('#dialogFile').html(cleanResourcePath(selectedFileDetails.fileName)); // file.snap
       }
    });
 }
 
-function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath) {
+function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, buttonText, treePath) {
    var completeFunction = function() {
-      var dialogFolder = $('#dialogPath').html();
+      var originalDialogFolder = $('#dialogPath').html();
+      var dialogFolder = cleanResourcePath(originalDialogFolder); // clean up path
       var dialogPathDetails = createResourcePath(dialogFolder); 
-      var projectName = dialogPathDetails.projectDirectory;
+      var selectedDirectory = dialogPathDetails.projectDirectory;
       
-      if(projectName.startsWith("/")) {
-         projectName = projectName.substring(1);
+      if(selectedDirectory.startsWith("/")) {
+         selectedDirectory = selectedDirectory.substring(1);
       }
-      openCallback(dialogPathDetails, projectName);
+      openCallback(dialogPathDetails, selectedDirectory);
    };
    w2popup.open({
       title : dialogTitle,
@@ -144,7 +155,7 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
              '   <div id="dialog"></div>'+
              '</div>'+
              '<div id="dialogPath" onkeydown="return submitDialog(event);" onclick="this.contentEditable=\'true\';"></div>',
-      buttons : '<button id="dialogSave" class="btn">Open</button>',
+      buttons : '<button id="dialogSave" class="btn">'+buttonText+'</button>',
       width : 500,
       height : 400,
       overflow : 'hidden',
@@ -181,12 +192,12 @@ function createTreeOpenDialog(openCallback, closeCallback, dialogTitle, treePath
    });
    createTreeOfDepth(treePath, "dialog", "dialogTree", "/" + document.title, true, null, function(event, data) {
       var selectedFileDetails = createResourcePath(data.node.tooltip);
-      var projectName = selectedFileDetails.projectDirectory;
+      var selectedDirectory = selectedFileDetails.projectDirectory;
       
-      if(projectName.startsWith("/")) {
-         projectName = projectName.substring(1);
+      if(selectedDirectory.startsWith("/")) {
+         selectedDirectory = selectedDirectory.substring(1);
       }
-      $('#dialogPath').html(projectName);
+      $('#dialogPath').html(cleanResourcePath(selectedDirectory));
    }, 2);
 }
 

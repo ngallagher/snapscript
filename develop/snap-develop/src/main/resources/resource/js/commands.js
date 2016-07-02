@@ -56,9 +56,32 @@ function exploreDirectory(resourcePath) {
         socket.send("EXPLORE:" + message);
     }
 }
+function renameFile(resourcePath) {
+    var originalFile = resourcePath.filePath;
+    renameFileTreeDialog(resourcePath, true, function (resourceDetails) {
+        var message = JSON.stringify({
+            project: document.title,
+            from: originalFile,
+            to: resourceDetails.filePath
+        });
+        socket.send("RENAME:" + message);
+    });
+}
+function renameDirectory(resourcePath) {
+    var originalPath = resourcePath.filePath;
+    var directoryPath = createResourcePath(originalPath + ".#"); // put a # in to trick in to thinking its a file
+    renameDirectoryTreeDialog(directoryPath, true, function (resourceDetails) {
+        var message = JSON.stringify({
+            project: document.title,
+            from: originalPath,
+            to: resourceDetails.filePath
+        });
+        socket.send("RENAME:" + message);
+    });
+}
 function newFile(resourcePath) {
     newFileTreeDialog(resourcePath, true, function (resourceDetails) {
-        if (!isResourceFolder(resourceDetails)) {
+        if (!isResourceFolder(resourceDetails.filePath)) {
             var message = JSON.stringify({
                 project: document.title,
                 resource: resourceDetails.filePath,

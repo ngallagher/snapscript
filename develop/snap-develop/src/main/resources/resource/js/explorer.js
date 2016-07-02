@@ -14,7 +14,8 @@ function showTree() {
     createRoute("RELOAD_TREE", reloadTree);
 }
 function openTreeFile(resourcePath, afterLoad) {
-    if (resourcePath.toLowerCase().endsWith(".json")) {
+    var filePath = resourcePath.toLowerCase();
+    if (filePath.endsWith(".json") || filePath.endsWith(".js")) {
         $.get(resourcePath, function (response) {
             handleOpenTreeFile(resourcePath, afterLoad, response);
         }, "text");
@@ -49,7 +50,7 @@ function handleOpenTreeFile(resourcePath, afterLoad, response) {
     }
     afterLoad();
 }
-function handleTreeMenu(resourcePath, commandName, elementId) {
+function handleTreeMenu(resourcePath, commandName, elementId, isDirectory) {
     if (commandName == "runScript") {
         openTreeFile(resourcePath.resourcePath, function () {
             runScript();
@@ -63,6 +64,14 @@ function handleTreeMenu(resourcePath, commandName, elementId) {
     }
     else if (commandName == "exploreDirectory") {
         exploreDirectory(resourcePath);
+    }
+    else if (commandName == "renameFile") {
+        if (isDirectory) {
+            renameDirectory(resourcePath);
+        }
+        else {
+            renameFile(resourcePath);
+        }
     }
     else if (commandName == "saveFile") {
         openTreeFile(resourcePath.resourcePath, function () {
