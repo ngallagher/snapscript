@@ -53,6 +53,10 @@ public class CommandListener {
       try {
          if(resource != null) {
             File file = new File(root, "/" + resource);
+            
+            if(file.isDirectory()) {
+               file = file.getParentFile();
+            }
             String path = file.getCanonicalPath();
             boolean exists = file.exists();
             boolean directory = file.isDirectory();
