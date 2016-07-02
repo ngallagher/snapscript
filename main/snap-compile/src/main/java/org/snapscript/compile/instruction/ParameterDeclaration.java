@@ -5,6 +5,7 @@ import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Parameter;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
+import org.snapscript.core.Value;
 
 public class ParameterDeclaration {
    
@@ -47,8 +48,9 @@ public class ParameterDeclaration {
    private Parameter create(Scope scope) throws Exception {
       String name = extractor.extract(scope);
       
-      if(constraint != null && name != null) { 
-         Type type = constraint.create(scope);  
+      if(constraint != null && name != null) {
+         Value value = constraint.evaluate(scope, null);
+         Type type = value.getValue();
          
          if(type == null) {
             throw new InternalStateException("Constraint for '" +name + "' has not been imported");

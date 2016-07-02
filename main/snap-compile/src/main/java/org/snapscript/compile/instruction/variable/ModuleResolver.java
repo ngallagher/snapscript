@@ -3,7 +3,9 @@ package org.snapscript.compile.instruction.variable;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
+import org.snapscript.core.Type;
 import org.snapscript.core.Value;
+import org.snapscript.core.ValueType;
 
 public class ModuleResolver implements ValueResolver<Module> {
    
@@ -17,7 +19,15 @@ public class ModuleResolver implements ValueResolver<Module> {
    public Value resolve(Scope scope, Module left) {
       Scope inner = left.getScope();
       State state = inner.getState();
+      Value value = state.getValue(name);
       
-      return state.getValue(name);
+      if(value == null) {
+         Type type = left.getType(name);
+        
+         if(type != null) {
+            return ValueType.getTransient(type);
+         }
+      }
+      return value;
    }
 }

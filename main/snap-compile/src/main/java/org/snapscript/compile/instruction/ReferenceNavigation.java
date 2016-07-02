@@ -8,14 +8,14 @@ import org.snapscript.parse.StringToken;
 public class ReferenceNavigation implements Evaluation {
    
    private final ReferenceOperator operator;
-   private final ReferencePart part;
+   private final Evaluation part;
    private final Evaluation next;
    
-   public ReferenceNavigation(ReferencePart part) {
+   public ReferenceNavigation(Evaluation part) {
       this(part, null, null);
    }
    
-   public ReferenceNavigation(ReferencePart part, StringToken operator, Evaluation next) {
+   public ReferenceNavigation(Evaluation part, StringToken operator, Evaluation next) {
       this.operator = ReferenceOperator.resolveOperator(operator);
       this.part = part;
       this.next = next;

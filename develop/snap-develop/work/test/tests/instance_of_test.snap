@@ -9,6 +9,15 @@ class PrintTask extends Task{
    }
 }
 
+
+module Blah{
+   class Foo extends Task{
+      override run(){
+         println("Blah.run()");
+      }
+   }
+}
+
 function testInstanceOf(){
    assert "" ?= String;
    assert {:} ?= Map;
@@ -20,7 +29,8 @@ function testInstanceOf(){
    assert []!?=Map;
    assert ""!?=null;
    assert null!?=null;   
-   assert null!?=String;      
+   assert null!?=String;   
+   assert new Blah.Foo()?=Blah.Foo;
 }
 
 function testInstanceOfWithClass(){
@@ -34,4 +44,16 @@ function testInstanceOfWithClass(){
    assert []?=Collection.class;
    assert []!?=Map.class;
    assert []!?=null;
+}
+
+function testInstanceOfWithArray(){
+   var a = new Task[1];
+   var b = new Integer[1];
+   var c = new String[1][2];
+   assert a?=Task[];
+   assert b?=Integer[];
+   assert c?=String[][];
+   assert a?=Task[].class;
+   assert a!?=null;
+   assert null!?=Integer.class;
 }
