@@ -1,0 +1,14 @@
+
+function testTemplate(){
+   var a = 1;
+   var b = 2;
+   var c = "x";
+   
+   assert "${a}" == "1";
+   assert "${a}" == '1';
+   assert "${a+b}" == '3';
+   assert "${a+b" == '${a+b';
+   assert "${a}${x}" == '1${x}';
+   assert '${a}' == '${a}';
+   assert '${a+b}' == '${a+b}';
+}
