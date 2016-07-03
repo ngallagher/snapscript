@@ -1,7 +1,0 @@
-
-println(Integer[][]);
-println(Integer[]);
-println(Integer[].class);
-var x = new Integer[2];
-assert x?=Integer[];
-assert x!?=Integer[];

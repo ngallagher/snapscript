@@ -44,21 +44,26 @@ public class PropertyTest extends TestCase{
    "}\n"+
    "var b = new Blah();\n"+
    "println(b.text);\n";
+   
+   private static final String SOURCE_3=
+   "var m = {a: 'b', c: 'd'};\n"+
+   "var k = m.keySet;\n"+
+   "println(k);\n";
 
 //   public static void main(String[] l)throws Exception{
 //      new PropertyTest().testProperties();
 //   }
-//   public void testProperties() throws Exception {
-//      Map map = new HashMap<String,Value>();
-//      map.put("out",System.out);
-//      Model s = new MapModel(map);
-//      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
-//      boolean failure=false;
-//      System.err.println(SOURCE_1);
-//      compiler.compile(SOURCE_1).execute(s);
-//      System.err.println();  
-//
-//   }
+   public void testProperties() throws Exception {
+      Map map = new HashMap<String,Value>();
+      map.put("out",System.out);
+      Model s = new MapModel(map);
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      boolean failure=false;
+      System.err.println(SOURCE_1);
+      compiler.compile(SOURCE_1).execute(s);
+      System.err.println();  
+
+   }
    
    public void testScopeProperties() throws Exception {
       Map map = new HashMap<String,Value>();
@@ -71,4 +76,11 @@ public class PropertyTest extends TestCase{
       System.err.println();  
 
    }
+   
+   public void testMapProperties() throws Exception {
+      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+      System.err.println(SOURCE_3);
+      compiler.compile(SOURCE_3).execute();
+   }
+   
 }

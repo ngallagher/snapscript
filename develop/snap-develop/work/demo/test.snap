@@ -1,0 +1,24 @@
+
+println(Integer[][]);
+println(Integer[]);
+println(Integer[].class);
+var x = new Integer[2];
+assert x?=Integer[];
+
+
+
+match(11);
+switch(2);
+
+function switch(x){
+   println(x);
+}
+function match(x){
+   println(x);
+}
+// FIXME
+var e = {a:"c",b:"d"};
+println(e.keySet); // fucked up!!!
+for(var k in e.keySet){
+   println(e);
+}

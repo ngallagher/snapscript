@@ -21,12 +21,12 @@ public class VariableBinder {
       if(left != null) {
          Class type = left.getClass();
          
-         if(Map.class.isInstance(left)) {
-            return new MapResolver(name);
-         }
          if(Module.class.isInstance(left)) {
             return new ModuleResolver(name);
          }
+         if(Map.class.isInstance(left)) {
+            return new MapResolver(traverser, name);
+         }         
          if(Scope.class.isInstance(left)) {
             return new ScopeResolver(traverser, name);
          }
