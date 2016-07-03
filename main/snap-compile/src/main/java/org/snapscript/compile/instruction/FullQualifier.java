@@ -11,13 +11,27 @@ public class FullQualifier implements Qualifier {
       this.count = tokens.length;
       this.tokens = tokens;
    }
+   
+   @Override
+   public String[] getSegments() {
+      String[] segments = new String[count];
+
+      for (int i = 0; i < count; i++) {
+         StringToken token = tokens[i];
+         String value = token.getValue();
+         
+         segments[i] = value;
+      }
+      return segments;
+   }
 
    @Override
    public String getQualifier() {
       StringBuilder builder = new StringBuilder();
 
       for (int i = 0; i < count; i++) {
-         String value = tokens[i].getValue();
+         StringToken token = tokens[i];
+         String value = token.getValue();
 
          if (i > 0) {
             builder.append(".");

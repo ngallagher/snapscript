@@ -1,4 +1,6 @@
+import math.stuff.Max;
 
+//println(math.stuff.Max.class);
 println(Integer[][]);
 println(Integer[]);
 println(Integer[].class);

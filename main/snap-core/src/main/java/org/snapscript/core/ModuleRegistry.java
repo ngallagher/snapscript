@@ -23,18 +23,18 @@ public class ModuleRegistry {
       this.context = context;
    }
    
-   public List<Module> getModules() {
+   public synchronized List<Module> getModules() {
       return references;
    }
 
-   public Module getModule(String name) {
+   public synchronized Module getModule(String name) {
       if (name == null) {
          throw new InternalArgumentException("Module name was null");
       }
       return modules.get(name);
    }
 
-   public Module addModule(String name) {
+   public synchronized Module addModule(String name) {
       if (name == null) {
          throw new InternalArgumentException("Module name was null");
       }
@@ -47,7 +47,7 @@ public class ModuleRegistry {
       return current;
    }
    
-   public Module addModule(String name, String path) {
+   public synchronized Module addModule(String name, String path) {
       if (name == null) {
          throw new InternalArgumentException("Module name was null");
       }
