@@ -22,4 +22,9 @@ function testMapReference(){
    assert map5.get(date) == date;
    assert map6.get(id) == map5.get(id);
    assert map6.get(date) == map5.get(date);
+   assert map1.keySet == {'id', 'date'};
+   assert map1.size == 2;
+   assert map2.size == 2;
+   assert map3.size == 2;
 }
+
