@@ -46,8 +46,8 @@ public class AssertStatement implements Compilation {
       public Result execute(Scope scope) throws Exception {
          Value value = evaluation.evaluate(scope, null);
          Object object = value.getValue();
-         
-         if(object != Boolean.TRUE) {
+
+         if(!Boolean.TRUE.equals(object)) {
             throw new AssertionException("Assertion failed");
          }
          return ResultType.getNormal();
