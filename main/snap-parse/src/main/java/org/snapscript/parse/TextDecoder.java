@@ -42,6 +42,10 @@ public class TextDecoder {
                } else {
                   if(next == '\\' || next == '\'' || next == '\"'){ // skip
                      result[write++] = source[read + 1];
+                  } else if(next == 'r') {                  
+                     result[write++] = '\r';
+                  } else if(next == 'b') {                  
+                     result[write++] = '\b';                     
                   } else if(next == 'n') {                  
                      result[write++] = '\n';
                   } else if(next == 't') {
