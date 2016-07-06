@@ -1,23 +1,36 @@
 package org.snapscript.compile.instruction.condition;
 
-import org.snapscript.core.Evaluation;
 import org.snapscript.parse.StringToken;
 
-public class ConditionalOperator implements ConditionalPart {   
+public enum ConditionalOperator {
+   AND("&&"),
+   OR("||");
    
-   private final CombinationOperator operator;
+   private final String operator;
    
-   public ConditionalOperator(StringToken operator) {
-      this.operator = CombinationOperator.resolveOperator(operator);
+   private ConditionalOperator(String operator){
+      this.operator = operator;
    }
    
-   @Override
-   public Evaluation getEvaluation(){
-      return null;
-   }
+  public boolean isAnd() {
+     return this == AND;
+  }
   
-   @Override
-   public CombinationOperator getOperator(){
-      return operator;
-   }
+  public boolean isOr() {
+     return this == OR;
+  }
+  
+  public static ConditionalOperator resolveOperator(StringToken token){
+     if(token != null) {
+        String value = token.getValue();
+        ConditionalOperator[] operators = ConditionalOperator.values();
+        
+        for(ConditionalOperator operator : operators) {
+           if(operator.operator.equals(value)) {
+              return operator;
+           }
+        }
+     }
+     return null;
+  }
 }

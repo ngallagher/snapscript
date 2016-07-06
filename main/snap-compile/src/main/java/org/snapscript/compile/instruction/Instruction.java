@@ -4,11 +4,8 @@ import org.snapscript.compile.instruction.collection.Array;
 import org.snapscript.compile.instruction.collection.ArrayIndex;
 import org.snapscript.compile.instruction.collection.Range;
 import org.snapscript.compile.instruction.condition.Choice;
+import org.snapscript.compile.instruction.condition.Combination;
 import org.snapscript.compile.instruction.condition.Comparison;
-import org.snapscript.compile.instruction.condition.ConditionalList;
-import org.snapscript.compile.instruction.condition.ConditionalOperand;
-import org.snapscript.compile.instruction.condition.ConditionalOperator;
-import org.snapscript.compile.instruction.condition.ConditionalResult;
 import org.snapscript.compile.instruction.condition.ForInStatement;
 import org.snapscript.compile.instruction.condition.ForStatement;
 import org.snapscript.compile.instruction.condition.IfStatement;
@@ -87,10 +84,7 @@ public enum Instruction {
    CALCULATION_OPERATOR(CalculationOperator.class, "calculation-operator"),
    CALCULATION_OPERAND(CalculationOperand.class, "calculation-operand"),   
    COMPARISON(Comparison.class, "comparison"),
-   CONDITIONAL_LIST(ConditionalList.class, "conditional-list"),
-   CONDITIONAL_OPERATOR(ConditionalOperator.class, "conditional-operator"),
-   CONDITIONAL_OPERAND(ConditionalOperand.class, "conditional-operand"),   
-   CONDITIONAL_RESULT(ConditionalResult.class, "conditional-result"),      
+   COMBINATION(Combination.class, "combination"),        
    POSTFIX_INCREMENT(PostfixIncrement.class, "postfix-increment"),
    POSTFIX_DECREMENT(PostfixDecrement.class, "postfix-decrement"),
    PREFIX_INCREMENT(PrefixIncrement.class, "prefix-increment"),
@@ -221,3 +215,4 @@ public enum Instruction {
       return null;
    }
 }
+   

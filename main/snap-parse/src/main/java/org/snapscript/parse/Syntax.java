@@ -62,10 +62,10 @@ public enum Syntax {
    VALUE_OPERAND("value-operand", "<increment-decrement-operand>|<literal>|<prefix-operand>|<reference-operand>"),
    COMPARISON_OPERAND("comparison-operand", "<value-operand>|<calculation>|<assignment-operand>|<conditional-result>|'('<comparison-operand>')'"),
    COMPARISON("comparison", "<comparison-operand>?' '<comparison-operator>?' '<comparison-operand>"),
-   CONDITIONAL_OPERAND("conditional-operand", "<comparison>|<value-operand>|<assignment-operand>|<boolean>|<conditional-result>|'('<conditional-list>')'"),
-   CONDITIONAL_LIST("conditional-list", "<conditional-operand>*(?' '<conditional-operator>?' '<conditional-operand>)"),
+   CONDITIONAL_OPERAND("conditional-operand", "<comparison>|<value-operand>|<assignment-operand>|<boolean>|<conditional-result>|'('<combination>')'"),
    CONDITIONAL_RESULT("conditional-result", "'('<conditional-operand>')'"),
-   CONDITIONAL("conditional", "<conditional-list>|'('<conditional>')'"),
+   CONDITIONAL("conditional", "{<combination>|<conditional-operand>|'('<conditional>')'}"),
+   COMBINATION("combination", "{<conditional>|<conditional-operand>}?' '<conditional-operator>?' '<conditional>"),
    CHOICE("choice", "<conditional>'?'<expression>':'<expression>"),   
    NULL_COALESCE("null-coalesce", "<expression>'??'<expression>"), // ?? is done in calculation
    SUBSTITUTE("substitute", "{<choice>|<null-coalesce>}"),   // use this over <choice>?

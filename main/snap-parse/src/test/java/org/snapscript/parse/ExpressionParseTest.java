@@ -9,6 +9,8 @@ public class ExpressionParseTest extends TestCase {
 
       assertNotNull(tree);
 
+      analyze(tree, "a&&y", "conditional");
+      analyze(tree, "a&&y", "combination");
       analyze(tree, "Integer[][]", "constraint");
       analyze(tree, "Integer[][]", "reference");
       analyze(tree, "func = 0;", "assignment-statement");
