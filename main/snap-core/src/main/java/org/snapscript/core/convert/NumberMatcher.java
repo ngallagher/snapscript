@@ -59,15 +59,6 @@ public class NumberMatcher {
             if(value == '.') {
                break;
             }
-            if(value == '0' && index == 1) {
-               char next = text.charAt(index++);
-               
-               if(next == 'x') {
-                  while(index < length) {
-                     
-                  }
-               }
-            }
             return NumberType.NONE;
          } 
       }
