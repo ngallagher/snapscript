@@ -23,6 +23,8 @@ function testConditions() {
    assert x ?? z === z;
    assert "test" == "test";
    assert "test" === "test";
+   assert "\r".length() == 1;
+   assert "\r\n".length() == 2;
    
    var a = "a";
    var b = "b";

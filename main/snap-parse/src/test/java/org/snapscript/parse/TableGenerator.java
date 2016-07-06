@@ -54,6 +54,7 @@ public class TableGenerator {
             switch(next){
             case '\'': case '"':
             case '\\': case 'n':
+            case 'b': case 'r':               
             case 't': case 'f':
             case 'u': case 'U':
                System.out.print(" | TextCategory.SPECIAL");

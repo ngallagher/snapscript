@@ -13,7 +13,7 @@ import com.sun.management.ThreadMXBean;
 
 public class PositionCacheTest extends TestCase {
    
-   private static final int ITERATIONS = 10000;
+   private static final int ITERATIONS = 100;
    
    public void testComparison() throws Exception {
       ThreadMXBean bean = (ThreadMXBean)ManagementFactory.getThreadMXBean();
@@ -30,7 +30,7 @@ public class PositionCacheTest extends TestCase {
          ArrayPositionCache<String> cache = new ArrayPositionCache<String>(100);
          LeastRecentlyUsedMap<Long, String> map = new LeastRecentlyUsedMap<Long, String>(100);
          System.gc();
-         Thread.sleep(1000);
+         Thread.sleep(100);
          long memoryStart1 = bean.getThreadAllocatedBytes(id);
          long start1 = System.currentTimeMillis();
          
@@ -40,7 +40,7 @@ public class PositionCacheTest extends TestCase {
          long finish1 = System.currentTimeMillis();
          long memoryFinish1 = bean.getThreadAllocatedBytes(id);
          System.gc();
-         Thread.sleep(1000);
+         Thread.sleep(100);
          long memoryStart2 = bean.getThreadAllocatedBytes(id);
          long start2 = System.currentTimeMillis();
          

@@ -27,7 +27,7 @@ public class TextDecoder {
       int read = start + off;
       int write = 0;
 
-      if(length > 0 && limit < count && escape) {
+      if(length > 0 && escape) {
          char[] result = new char[length];
          
          while(read < limit) {

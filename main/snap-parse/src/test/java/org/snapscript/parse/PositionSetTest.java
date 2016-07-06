@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 
 public class PositionSetTest extends TestCase {
    
-   private static final int ITERATIONS = 10000;
+   private static final int ITERATIONS = 100;
    
    public void testPerformance() throws Exception {
       ThreadMXBean bean = (ThreadMXBean)ManagementFactory.getThreadMXBean();
@@ -27,7 +27,7 @@ public class PositionSetTest extends TestCase {
          ArrayPositionSet cache = new ArrayPositionSet(100);
          LeastRecentlyUsedSet<Long> set = new LeastRecentlyUsedSet<Long>(100);
          System.gc();
-         Thread.sleep(1000);
+         Thread.sleep(100);
          long memoryStart1 = bean.getThreadAllocatedBytes(id);
          long start1 = System.currentTimeMillis();
          
@@ -37,7 +37,7 @@ public class PositionSetTest extends TestCase {
          long finish1 = System.currentTimeMillis();
          long memoryFinish1 = bean.getThreadAllocatedBytes(id);
          System.gc();
-         Thread.sleep(1000);
+         Thread.sleep(100);
          long memoryStart2 = bean.getThreadAllocatedBytes(id);
          long start2 = System.currentTimeMillis();
          
@@ -56,7 +56,7 @@ public class PositionSetTest extends TestCase {
       LeastRecentlyUsedSet<Long> set = new LeastRecentlyUsedSet<Long>(10);
       Random random = new SecureRandom();
       
-      for(int i = 0; i < 10000; i++) {
+      for(int i = 0; i < 100; i++) {
          Long value = random.nextLong();
          cache.add(value);
          set.add(value);
