@@ -2,7 +2,9 @@ package org.snapscript.compile.instruction;
 
 import static org.snapscript.compile.instruction.Instruction.SCRIPT_PACKAGE;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
@@ -15,6 +17,7 @@ import org.snapscript.core.Statement;
 
 public class ExecutorLinker implements PackageLinker {
    
+   private final Map<String, Package> registry;
    private final PackageLinker linker;
    private final Executor executor;
    
@@ -28,6 +31,7 @@ public class ExecutorLinker implements PackageLinker {
    
    public ExecutorLinker(Context context, Executor executor, Instruction instruction) {
       this.linker = new InstructionLinker(context, instruction);
+      this.registry = new ConcurrentHashMap<String, Package>();
       this.executor = executor;
    }
 
@@ -38,8 +42,11 @@ public class ExecutorLinker implements PackageLinker {
          FutureTask<Package> task = new FutureTask<Package>(compilation);
          FuturePackage result = new FuturePackage(task, resource);
          
-         executor.execute(task); 
-         return result;
+         if(registry.put(resource, result) == null) {
+            executor.execute(task); 
+            return result;
+         }
+         return registry.get(resource);
       }
       return linker.link(resource, source);
    }
@@ -51,8 +58,11 @@ public class ExecutorLinker implements PackageLinker {
          FutureTask<Package> task = new FutureTask<Package>(compilation);
          FuturePackage result = new FuturePackage(task, resource);
          
-         executor.execute(task); 
-         return result;
+         if(registry.put(resource, result) == null) {
+            executor.execute(task); 
+            return result;
+         }
+         return registry.get(resource);
       }
       return linker.link(resource, source, grammar);
    }

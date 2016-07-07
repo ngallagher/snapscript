@@ -34,7 +34,7 @@ public class InstructionLinker implements PackageLinker {
       Package linked = cache.fetch(resource);
       
       if(linked == null) {
-         linked = builder.create(resource, source, grammar);
+         linked = builder.create(resource, source, grammar); 
          cache.cache(resource, linked);
       }
       return linked; 

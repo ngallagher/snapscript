@@ -44,11 +44,11 @@ public class ResourceCompiler implements Compiler {
       
       if(executable == null) {
          ResourceManager manager = context.getManager();
+         String module = converter.createModule(resource);
          String source = manager.getString(resource);
          PackageLinker linker = context.getLinker();
-         Package library = linker.link(resource, source, instruction.name);
-         String module = converter.createModule(resource);
-         
+         Package library = linker.link(module, source, instruction.name);
+  
          return new Application(context, library, module, resource);
       }
       return executable;
