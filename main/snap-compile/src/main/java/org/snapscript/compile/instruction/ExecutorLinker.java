@@ -2,9 +2,9 @@ package org.snapscript.compile.instruction;
 
 import static org.snapscript.compile.instruction.Instruction.SCRIPT_PACKAGE;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
@@ -17,7 +17,7 @@ import org.snapscript.core.Statement;
 
 public class ExecutorLinker implements PackageLinker {
    
-   private final Map<String, Package> registry;
+   private final ConcurrentMap<String, Package> registry;
    private final PackageLinker linker;
    private final Executor executor;
    
@@ -42,7 +42,7 @@ public class ExecutorLinker implements PackageLinker {
          FutureTask<Package> task = new FutureTask<Package>(compilation);
          FuturePackage result = new FuturePackage(task, resource);
          
-         if(registry.put(resource, result) == null) {
+         if(registry.putIfAbsent(resource, result) == null) {
             executor.execute(task); 
             return result;
          }
@@ -58,7 +58,7 @@ public class ExecutorLinker implements PackageLinker {
          FutureTask<Package> task = new FutureTask<Package>(compilation);
          FuturePackage result = new FuturePackage(task, resource);
          
-         if(registry.put(resource, result) == null) {
+         if(registry.putIfAbsent(resource, result) == null) {
             executor.execute(task); 
             return result;
          }
@@ -106,14 +106,14 @@ public class ExecutorLinker implements PackageLinker {
 
       @Override
       public Package call() {
-         try {
+         try {               
             if(grammar != null) {
                return linker.link(resource, source, grammar);
             }
             return linker.link(resource, source);
          } catch(Exception cause) {
             return new ExceptionPackage("Could not link " + resource, cause);
-         }
+         } 
       }            
    }
    
