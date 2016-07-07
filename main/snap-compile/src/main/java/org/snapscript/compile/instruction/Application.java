@@ -37,7 +37,7 @@ public class Application implements Executable{
    @Override
    public void execute(Model model) throws Exception{ 
       Scope scope = merger.merge(model, name, path);
-      Statement script = library.compile(scope);
+      Statement script = library.compile(scope); // define method should be invoked first
       ErrorHandler handler = context.getHandler();
       ExecutableValidator validator = context.getValidator();
       

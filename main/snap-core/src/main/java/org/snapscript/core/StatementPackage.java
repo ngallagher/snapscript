@@ -28,7 +28,7 @@ public class StatementPackage implements Package {
             Scope inner = library.getScope();
            
             statement.define(inner);
-            statement.compile(inner); 
+            statement.compile(inner); // concurrent compilation means this might happen before define is finished!
          } catch(Exception e) {
             if(path != null) {
                throw new InternalStateException("Error occured in '" + path + "'", e);
