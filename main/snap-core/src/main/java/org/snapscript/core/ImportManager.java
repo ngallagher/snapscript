@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class ImportManager {
-   
+
    private final Map<String, String> aliases;
    private final Set<String> imports;
    private final Context context;
@@ -19,16 +19,12 @@ public class ImportManager {
       this.prefix = prefix;
    }
    
-   public void addImport(String name) {
-      imports.add(name);
+   public void addImport(String type) {
+      imports.add(type);
    }
    
-   public void addImport(String module, String name) {
-      aliases.put(name, module + "."+name);
-   }
-   
-   public void addImport(String module, String name, String alias) {
-      aliases.put(alias, module + "."+name);
+   public void addImport(String type, String alias) {
+      aliases.put(alias, type);
    }
    
    public void addImports(Module module) {
@@ -82,6 +78,10 @@ public class ImportManager {
             }
             for(String module : imports) {
                type = loader.resolveType(module, name); // this is "tetris.game.*"
+               
+               if(type != null) {
+                  return type;
+               }
             }
             if(type == null) {
                type = loader.resolveType(null, name); // null is "java.*"

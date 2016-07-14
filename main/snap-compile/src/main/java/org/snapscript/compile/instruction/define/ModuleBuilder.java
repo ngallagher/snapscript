@@ -7,14 +7,17 @@ import org.snapscript.core.ImportManager;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Scope;
+import org.snapscript.core.index.TypeNameBuilder;
 
 public class ModuleBuilder {
 
    private final AnnotationList annotations;
+   private final TypeNameBuilder builder;
    private final NameExtractor extractor;
    
    public ModuleBuilder(AnnotationList annotations, ModuleName module) {
       this.extractor = new NameExtractor(module);
+      this.builder = new TypeNameBuilder();
       this.annotations = annotations;
    }
 
@@ -34,13 +37,14 @@ public class ModuleBuilder {
    protected Module create(Module parent, String name) throws Exception {
       String path = parent.getPath();
       String prefix = parent.getName();
+      String type = builder.createName(prefix, name);
       Context context = parent.getContext();
       ImportManager manager = parent.getManager();
       ModuleRegistry registry = context.getRegistry();
-      Module module = registry.addModule(prefix +"."+ name, path); // create module
+      Module module = registry.addModule(type, path); // create module
       
       manager.addImports(module); // add parent imports
-      manager.addImport(prefix, name); // make module accessible by name
+      manager.addImport(type, name); // make module accessible by name
       
       return module;
    }

@@ -5,3 +5,8 @@ for(var i in 0..9){
       System.out.println(i);
    }
 }
+class X{
+   public fun(){
+      return null;
+   }
+}
