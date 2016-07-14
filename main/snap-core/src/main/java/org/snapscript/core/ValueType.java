@@ -4,7 +4,8 @@ public enum ValueType {
    CONSTANT,
    REFERENCE,
    TRANSIENT,
-   BLANK;
+   BLANK,
+   PROPERTY;
    
    public static Value getBlank() {
       return new Blank();
@@ -28,6 +29,10 @@ public enum ValueType {
    
    public static Value getReference(Object value, Type type) {
       return new Reference(value, type);
+   }
+   
+   public static Value getProperty(Object value, Type type) {
+      return new Reference(value, type, true);
    }
    
    public static Value getTransient(Object value) {

@@ -77,6 +77,10 @@ public abstract class Value {
    public Type getConstraint(){
       return null; 
    }   
+   
+   public boolean isProperty() {
+      return false;
+   }
 
    public abstract <T> T getValue();
    public abstract void setValue(Object value);

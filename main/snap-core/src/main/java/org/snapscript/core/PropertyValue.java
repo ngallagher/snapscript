@@ -11,6 +11,11 @@ public class PropertyValue extends Value {
       this.object = object;
       this.name = name;
    }
+   
+   @Override
+   public boolean isProperty() {
+      return true;
+   }
 
    public String getName(){
       return name;

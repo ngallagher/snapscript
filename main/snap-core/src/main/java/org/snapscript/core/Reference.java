@@ -4,14 +4,25 @@ public class Reference extends Value {
    
    private Object value;
    private Type type;
+   private boolean property;
    
    public Reference(Object value) {
       this(value, null);
    }
    
    public Reference(Object value, Type type) {
+      this(value, type, false);
+   }
+   
+   public Reference(Object value, Type type, boolean property) {
+      this.property = property;
       this.value = value;
       this.type = type;
+   }
+   
+   @Override
+   public boolean isProperty(){
+      return property;
    }
    
    @Override

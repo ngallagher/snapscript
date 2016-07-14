@@ -69,9 +69,9 @@ enum Key {
    [KEY_E, KEY_J, KEY_O, null]];
 }
 
-System.out.println(Key.at(1,1));
-System.out.println(Key.at(0,0));
-System.out.println(Key.INDEX);
+// System.out.println(Key.at(1,1));
+// System.out.println(Key.at(0,0));
+// System.out.println(Key.INDEX);
 
 
 class KeyPressCalculator {

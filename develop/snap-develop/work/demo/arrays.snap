@@ -1,4 +1,4 @@
-#!/bin.snap
+#!snap
 
 var x = new String[3][4];
 

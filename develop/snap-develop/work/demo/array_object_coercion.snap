@@ -25,4 +25,4 @@ Arrays.sort(x, (a,b)->a.compareTo(b));
 for(var score in x){
    println(score);
 }
-
+println(Integer[].class);

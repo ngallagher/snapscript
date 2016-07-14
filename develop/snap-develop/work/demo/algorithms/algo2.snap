@@ -1,3 +1,5 @@
+var start = new Date().getTime();
+
 function fib(n) {
    if (n<2) {
       return 1;
@@ -6,3 +8,5 @@ function fib(n) {
 }
 var result = fib(30);
 System.out.println("fib(30)="+result);
+var stop =new Date().getTime();
+print((stop -start));

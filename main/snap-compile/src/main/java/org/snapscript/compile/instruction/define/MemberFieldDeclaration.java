@@ -1,9 +1,8 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.DeclareBlank;
-import org.snapscript.compile.instruction.DeclareVariable;
+import org.snapscript.compile.instruction.DeclareProperty;
 import org.snapscript.compile.instruction.ModifierChecker;
 import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
@@ -38,6 +37,6 @@ public class MemberFieldDeclaration {
       if (checker.isConstant()) {
          return new DeclareBlank(identifier, constraint, value);
       }
-      return new DeclareVariable(identifier, constraint, value);
+      return new DeclareProperty(identifier, constraint, value);
    }
 }
