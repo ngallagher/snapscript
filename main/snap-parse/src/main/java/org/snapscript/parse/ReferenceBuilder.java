@@ -14,27 +14,27 @@ public class ReferenceBuilder {
       this.name = name;
    }   
    
-   public GrammarMatcher create(int serial) {
+   public GrammarMatcher create(GrammarCache cache) {
       Grammar grammar = resolver.resolve(name);
       
       if(grammar == null) {
          throw new ParseException("Grammar '" + name + "' not found");
       }
-      return new ReferenceMatcher(grammar, name, index, serial);
+      return new ReferenceMatcher(cache, grammar, name, index);
    }  
    
    private static class ReferenceMatcher implements GrammarMatcher {
       
       private final AtomicReference<GrammarMatcher> reference;
+      private final GrammarCache cache;
       private final Grammar grammar;
       private final String name;
       private final int index;
-      private final int serial;
       
-      public ReferenceMatcher(Grammar grammar, String name, int index, int serial) {
+      public ReferenceMatcher(GrammarCache cache, Grammar grammar, String name, int index) {
          this.reference = new AtomicReference<GrammarMatcher>();
          this.grammar = grammar;
-         this.serial = serial;
+         this.cache = cache;
          this.index = index;
          this.name = name;
       }  
@@ -44,7 +44,7 @@ public class ReferenceBuilder {
          GrammarMatcher matcher = reference.get();
          
          if(matcher == null) {
-            matcher = grammar.create(serial);
+            matcher = grammar.create(cache);
             reference.set(matcher);
          }
          SyntaxBuilder child = builder.mark(index);   

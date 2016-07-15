@@ -20,7 +20,7 @@ public class SyntaxCompiler {
    } 
 
    public synchronized SyntaxParser compile() {
-      if(grammars.isEmpty()) {
+      if(grammars.isEmpty()) { 
          Syntax[] language = Syntax.values();
          
          for(Syntax syntax : language) {

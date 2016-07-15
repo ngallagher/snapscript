@@ -18,11 +18,11 @@ public class MatchAllGrammar implements Grammar {
    }  
 
    @Override
-   public GrammarMatcher create(int serial) {
+   public GrammarMatcher create(GrammarCache cache) {
       List<GrammarMatcher> matchers = new ArrayList<GrammarMatcher>();
       
       for(Grammar grammar : grammars) {
-         GrammarMatcher matcher = grammar.create(serial);
+         GrammarMatcher matcher = grammar.create(cache);
          matchers.add(matcher);
       }
       return new MatchAllMatcher(matchers, name, index);

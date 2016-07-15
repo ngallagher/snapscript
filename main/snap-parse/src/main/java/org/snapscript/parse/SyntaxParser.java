@@ -1,27 +1,27 @@
 package org.snapscript.parse;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class SyntaxParser {   
    
    private final SyntaxTreeBuilder builder;
    private final GrammarResolver resolver;
-   private final AtomicInteger counter;
    
    public SyntaxParser(GrammarResolver resolver, GrammarIndexer indexer) {
       this.builder = new SyntaxTreeBuilder(indexer);
-      this.counter = new AtomicInteger();
       this.resolver = resolver;
    }   
 
-   public SyntaxNode parse(String resource, String expression, String name) {     
+   public SyntaxNode parse(String resource, String expression, String name) {
+      GrammarCache cache = new GrammarCache();
+      
+      if(expression == null) {
+         throw new IllegalArgumentException("Expression for '" + resource + "' is null");
+      }
       Grammar grammar = resolver.resolve(name);
-      int count = counter.getAndIncrement();
       
       if(grammar == null) {
-         throw new IllegalArgumentException("Grammar " + name + " is not defined");
+         throw new IllegalArgumentException("Grammar '" + name + "' is not defined");
       }
-      GrammarMatcher matcher = grammar.create(count);
+      GrammarMatcher matcher = grammar.create(cache);
       SyntaxTree tree = builder.create(resource, expression, name);
       SyntaxBuilder root = tree.mark();
          

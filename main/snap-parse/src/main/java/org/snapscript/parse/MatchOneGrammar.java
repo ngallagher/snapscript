@@ -20,11 +20,11 @@ public class MatchOneGrammar implements Grammar {
    }       
    
    @Override
-   public GrammarMatcher create(int serial) {
+   public GrammarMatcher create(GrammarCache cache) {
       List<GrammarMatcher> matchers = new ArrayList<GrammarMatcher>();
       
       for(Grammar grammar : grammars) {
-         GrammarMatcher matcher = grammar.create(serial);
+         GrammarMatcher matcher = grammar.create(cache);
          matchers.add(matcher);
       }
       return new MatchOneMatcher(matchers, name, index);

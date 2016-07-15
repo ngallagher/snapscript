@@ -9,8 +9,8 @@ public class OptionalGrammar implements Grammar {
    }
    
    @Override
-   public GrammarMatcher create(int serial) {
-      GrammarMatcher matcher = grammar.create(serial);
+   public GrammarMatcher create(GrammarCache cache) {
+      GrammarMatcher matcher = grammar.create(cache);
       return new OptionalMatcher(matcher);
    } 
    

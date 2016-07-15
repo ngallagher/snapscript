@@ -9,7 +9,7 @@ public class SymbolGrammar implements Grammar {
    }
 
    @Override
-   public GrammarMatcher create(int serial) {
+   public GrammarMatcher create(GrammarCache cache) {
       return matcher;
    }  
    

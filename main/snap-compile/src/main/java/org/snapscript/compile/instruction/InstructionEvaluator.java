@@ -61,9 +61,13 @@ public class InstructionEvaluator implements ExpressionEvaluator {
          if(evaluation == null) {
             SyntaxParser parser = compiler.compile();
             SyntaxNode node = parser.parse(module, source, instruction.name);
+            int length = source.length();
             
             evaluation = assembler.assemble(node, source);
-            cache.cache(source, evaluation);      
+            
+            if(length < 100) {
+               cache.cache(source, evaluation);
+            }
          }
          Value reference = evaluation.evaluate(scope,null);
          
