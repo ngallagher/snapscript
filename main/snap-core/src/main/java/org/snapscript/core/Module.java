@@ -17,4 +17,5 @@ public interface Module extends Any{
    List<Type> getTypes();
    String getPath();
    String getName();
+   int getOrder();
 }

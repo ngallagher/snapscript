@@ -71,6 +71,11 @@ public class TestType implements Type {
    }
    
    @Override
+   public int getOrder(){
+      return -1;
+   }
+   
+   @Override
    public String toString() {
       return name;
    }

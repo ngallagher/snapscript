@@ -17,14 +17,16 @@ public class ScopeType implements Type {
    private final List<Type> types;
    private final Module module;
    private final String name;
+   private final int order;
    
-   public ScopeType(Module module, String name){
+   public ScopeType(Module module, String name, int order){
       this.annotations = new ArrayList<Annotation>();
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
       this.module = module;
       this.name = name;
+      this.order = order;
    }
    
    @Override
@@ -65,6 +67,11 @@ public class ScopeType implements Type {
    @Override
    public Type getEntry(){
       return null;
+   }
+   
+   @Override
+   public int getOrder() {
+      return order;
    }
    
    @Override

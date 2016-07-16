@@ -13,11 +13,13 @@ public class ClassType implements Type {
    private final ClassIndex index;
    private final Class type;
    private final String name;
+   private final int order;
    
-   public ClassType(ClassIndexer indexer, Class type, String name) {
+   public ClassType(ClassIndexer indexer, Class type, String name, int order) {
       this.index = new ClassIndex(indexer, this);
       this.name = name;
       this.type = type;
+      this.order = order;
    }
    
    @Override
@@ -58,6 +60,11 @@ public class ClassType implements Type {
    @Override
    public Class getType() {
       return type;
+   }
+   
+   @Override
+   public int getOrder(){
+      return order;
    }
    
    @Override

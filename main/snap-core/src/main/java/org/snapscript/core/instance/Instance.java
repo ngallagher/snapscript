@@ -5,8 +5,6 @@ import org.snapscript.core.Scope;
 public interface Instance extends Scope {
    Instance getInstance();
    void setInstance(Instance instance);
-   @Override
    Instance getInner(); 
-   @Override
    Instance getOuter();
 }

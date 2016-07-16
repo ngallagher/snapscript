@@ -2,8 +2,10 @@ package org.snapscript.core.index;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.snapscript.core.ImportScanner;
+import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Type;
@@ -16,13 +18,21 @@ public class TypeIndexer {
    private final ModuleRegistry registry;
    private final ImportScanner scanner;
    private final ClassIndexer indexer;
-
+   private final AtomicInteger counter;
+   private final int limit;
+   
    public TypeIndexer(ModuleRegistry registry, ImportScanner scanner, ClassExtender extender) {
+      this(registry, scanner, extender, 100000);
+   }
+   
+   public TypeIndexer(ModuleRegistry registry, ImportScanner scanner, ClassExtender extender, int limit) {
       this.indexer = new ClassIndexer(this, registry, scanner, extender);
       this.types = new LinkedHashMap<Object, Type>();
       this.builder = new TypeNameBuilder();
-      this.scanner = scanner;
+      this.counter = new AtomicInteger();
       this.registry = registry;
+      this.scanner = scanner;
+      this.limit = limit;
    }
    
    public synchronized Type loadType(String type) throws Exception {
@@ -97,7 +107,12 @@ public class TypeIndexer {
       Type type = types.get(alias);
       
       if(type == null) {
-         return new ScopeType(parent, name);
+         int order = counter.getAndIncrement();
+         
+         if(order > limit) {
+            throw new InternalStateException("Type limit of " + limit + " exceeded");
+         }
+         return new ScopeType(parent, name, order);
       }
       return type;
    }
@@ -108,7 +123,12 @@ public class TypeIndexer {
       Type type = types.get(alias);
       
       if(type == null) {
-         return new ClassType(indexer, source, name);
+         int order = counter.getAndIncrement();
+         
+         if(order > limit) {
+            throw new InternalStateException("Type limit of " + limit + " exceeded");
+         }
+         return new ClassType(indexer, source, name, order);
       }
       return type;
    }

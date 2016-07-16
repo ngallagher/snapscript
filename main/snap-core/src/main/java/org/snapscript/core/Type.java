@@ -11,4 +11,5 @@ public interface Type extends Any {
    Class getType();
    Type getEntry();
    String getName();
+   int getOrder();
 }
