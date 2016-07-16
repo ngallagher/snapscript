@@ -62,15 +62,15 @@ public enum Instruction {
    HEXIDECIMAL(NumberLiteral.class, "hexidecimal"),   
    BINARY(NumberLiteral.class, "binary"),  
    BOOLEAN(BooleanLiteral.class, "boolean"),
-   IDENTIFIER(TextLiteral.class, "identifier"), 
+   IDENTIFIER(TextLiteral.class, "identifier"), // identifier 
    TEMPLATE(TextTemplate.class, "template"),
-   CLASS(TextLiteral.class, "class"),  
-   TYPE(TextLiteral.class, "type"),   
+   CLASS(TextLiteral.class, "class"), // identifier
+   TYPE(TextLiteral.class, "type"),  // identifier
    TEXT(TextLiteral.class, "text"),
-   THIS(TextLiteral.class, "this"),
+   THIS(TextLiteral.class, "this"), // identifier
    NULL(NullLiteral.class, "null"),
    NUMBER(SignedNumber.class, "number"), 
-   VARIABLE(Variable.class, "variable"),
+   VARIABLE(Variable.class, "variable"), 
    ARGUMENT(Argument.class, "argument"),
    RANGE(Range.class, "range"),     
    ARRAY(Array.class, "array"),      

@@ -1,2 +1,3 @@
 The InstructionEvaluator needs to cache based on the length of a string, caching too big means it can't parse large JSON docs
+All identifers should convert interned strings to integers for faster lookup
      
