@@ -206,6 +206,7 @@ public class EvaluationTest extends TestCase {
       SyntaxPrinter.print(analyzer, source, grammar); // Evaluating the
                                                       // following
       Statement statement = (Statement) builder.assemble(token, "xx");
+      statement.define(scope);
       statement.compile(scope);
       return statement.execute(scope).getType();
    }

@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction.define;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.compile.instruction.AnnotationList;
-import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
@@ -16,25 +15,25 @@ public class ClassDefinition extends Statement {
    
    private final FunctionPropertyGenerator generator;
    private final DefaultConstructor constructor;
-   private final NameExtractor extractor;
    private final AtomicBoolean compile;
    private final ClassBuilder builder;
    private final TypePart[] parts;
+   private final TypeName name;
    
    public ClassDefinition(AnnotationList annotations, TypeName name, TypeHierarchy hierarchy, TypePart... parts) {
       this.builder = new ClassBuilder(annotations, name, hierarchy);
       this.generator = new FunctionPropertyGenerator(); 
       this.constructor = new DefaultConstructor();
-      this.extractor = new NameExtractor(name);
       this.compile = new AtomicBoolean(true);
       this.parts = parts;
+      this.name = name;
    }
    
    @Override
    public Result define(Scope scope) throws Exception {
       Module module = scope.getModule();
-      String name = extractor.extract(scope);
-      Type type = module.addType(name);
+      String alias = name.getName(scope);
+      Type type = module.addType(alias);
       
       return ResultType.getNormal(type);
    }

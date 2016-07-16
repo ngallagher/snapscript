@@ -19,8 +19,8 @@ public class ImportManager {
       this.prefix = prefix;
    }
    
-   public void addImport(String type) {
-      imports.add(type);
+   public void addImport(String prefix) {
+      imports.add(prefix);
    }
    
    public void addImport(String type, String alias) {
@@ -67,7 +67,7 @@ public class ImportManager {
          Type type = loader.resolveType(prefix, name);
 
          if(type == null) {
-            String alias = aliases.get(name);
+            String alias = aliases.get(name); // fully qualified "tetris.game.Block"
             
             if(alias != null) {
                type = loader.resolveType(alias);

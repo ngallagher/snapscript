@@ -1,7 +1,6 @@
 package org.snapscript.core;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,7 +60,7 @@ public class ContextModule implements Module {
    @Override
    public Type addType(String name) {
       try {
-         Type type = getType(name); 
+         Type type = types.get(name); 
          
          if(type == null) {
             TypeLoader loader = context.getLoader();

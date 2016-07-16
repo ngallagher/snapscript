@@ -41,7 +41,7 @@ public class ImportStatic implements Compilation {
       @Override
       public Result compile(Scope scope) throws Exception {
          Module module = scope.getModule();
-         Type type = module.addType(location); // this is a type name
+         Type type = module.getType(location); // this is a type name
          List<Function> methods = type.getFunctions();
          List<Function> functions = module.getFunctions();
          

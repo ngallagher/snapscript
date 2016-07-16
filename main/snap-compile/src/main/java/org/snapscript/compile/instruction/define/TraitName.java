@@ -5,7 +5,6 @@ import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
-import org.snapscript.core.ValueType;
 
 public class TraitName extends TypeName {
    
@@ -14,12 +13,11 @@ public class TraitName extends TypeName {
    }
    
    @Override
-   public Value evaluate(Scope scope, Object left) throws Exception{
-      Value value = literal.evaluate(scope, left);
+   public Type getType(Scope scope) throws Exception{
+      Value value = literal.evaluate(scope, null);
       String name = value.getValue();
       Module module = scope.getModule();
-      Type base = module.addType(name);
       
-      return ValueType.getTransient(base);
+      return  module.getType(name);
    }  
 }

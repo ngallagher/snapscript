@@ -3,7 +3,6 @@ package org.snapscript.compile.instruction.define;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.compile.instruction.AnnotationList;
-import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Module;
 import org.snapscript.core.Result;
@@ -15,26 +14,26 @@ import org.snapscript.core.Type;
 public class EnumDefinition extends Statement {
 
    private final DefaultConstructor constructor;
-   private final NameExtractor extractor;
    private final AtomicBoolean define;
    private final EnumBuilder builder;
    private final EnumList list;
    private final TypePart[] parts;
+   private final TypeName name;
    
    public EnumDefinition(AnnotationList annotations, TypeName name, TypeHierarchy hierarchy, EnumList list, TypePart... parts) {
       this.builder = new EnumBuilder(name, hierarchy);
       this.constructor = new DefaultConstructor(true);
-      this.extractor = new NameExtractor(name);
       this.define = new AtomicBoolean(true);
       this.parts = parts;
       this.list = list;
+      this.name = name;
    }
    
    @Override
    public Result define(Scope scope) throws Exception {
       Module module = scope.getModule();
-      String name = extractor.extract(scope);
-      Type type = module.addType(name);
+      String alias = name.getName(scope);
+      Type type = module.addType(alias);
       
       return ResultType.getNormal(type);
    }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
-import org.snapscript.core.Value;
 
 public class TypeHierarchy {
    
@@ -27,21 +26,25 @@ public class TypeHierarchy {
       List<Type> types = type.getTypes();
       
       if(name != null) {
-         Value value = name.evaluate(scope, null);
-         Type base = value.getValue();
+         Type base = name.getType(scope);
          
-         types.add(base);
+         if(base != null) {
+            types.add(base);
+         }
       }else {
          Result result = definition.compile(scope);
          Type base = result.getValue();
          
-         types.add(base);
+         if(base != null) {
+            types.add(base);
+         }
       }
       for(int i = 0; i < traits.length; i++) {
-         Value value = traits[i].evaluate(scope, null);
-         Type trait = value.getValue();
+         Type trait = traits[i].getType(scope);
          
-         types.add(trait);
+         if(trait != null) {
+            types.add(trait);
+         }
       }
    }
 
