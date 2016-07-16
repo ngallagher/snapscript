@@ -1,5 +1,6 @@
 package org.snapscript.compile.instruction.operation;
 
+import org.snapscript.core.convert.StringBuilder;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Scope;
