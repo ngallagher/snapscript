@@ -1,8 +1,2 @@
-The ReferenceGrammar caches too much, it needs to be something like a thread local
-	      this.matchers = new LeastRecentlyUsedCache<Integer, GrammarMatcher>(capacity); // this cache is no good
-
 The InstructionEvaluator needs to cache based on the length of a string, caching too big means it can't parse large JSON docs
-      
-The imports do not work if they are the same as default imports
-
-The toString is not called on an object in a template string "${obj}" needs to be ${obj.toString()}	      
+     

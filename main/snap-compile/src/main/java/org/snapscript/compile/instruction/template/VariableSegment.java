@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.template;
 
 import java.io.Writer;
 
+import org.snapscript.core.convert.StringBuilder;
 import org.snapscript.core.Scope;
 import org.snapscript.core.State;
 import org.snapscript.core.Value;
@@ -29,7 +30,7 @@ public class VariableSegment implements Segment {
          writer.write(source, off, length);
       } else {
          Object token = value.getValue();
-         String text = String.valueOf(token);
+         String text = StringBuilder.create(scope, token);
          
          writer.append(text);            
       }

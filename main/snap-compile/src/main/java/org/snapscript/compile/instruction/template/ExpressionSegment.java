@@ -2,6 +2,7 @@ package org.snapscript.compile.instruction.template;
 
 import java.io.Writer;
 
+import org.snapscript.core.convert.StringBuilder;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.Module;
@@ -32,7 +33,7 @@ public class ExpressionSegment implements Segment {
       if(value == null) {
          writer.write(source, off, length);
       } else {
-         String text = String.valueOf(value);
+         String text = StringBuilder.create(scope, value);
          
          writer.append(text);            
       }
