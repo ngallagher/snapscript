@@ -24,17 +24,23 @@ public class InstructionEvaluator implements ExpressionEvaluator {
    private final Instruction instruction;
    private final ScopeMerger merger;
    private final Assembler assembler;
+   private final int limit;
    
    public InstructionEvaluator(Context context){
       this(context, EXPRESSION);
    }
    
    public InstructionEvaluator(Context context, Instruction instruction) {
+      this(context, instruction, 200);
+   }
+   
+   public InstructionEvaluator(Context context, Instruction instruction, int limit) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
       this.assembler = new InstructionAssembler(context);
       this.merger = new ScopeMerger(context);
       this.compiler = new SyntaxCompiler();
       this.instruction = instruction;
+      this.limit = limit;
    }
    
    @Override
@@ -65,7 +71,7 @@ public class InstructionEvaluator implements ExpressionEvaluator {
             
             evaluation = assembler.assemble(node, source);
             
-            if(length < 100) {
+            if(length < limit) {
                cache.cache(source, evaluation);
             }
          }
