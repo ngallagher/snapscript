@@ -25,6 +25,7 @@ public class ClosureStatement extends Statement {
       return ResultType.getNormal();
    }
 
+   @Override
    public Result execute(Scope scope) throws Exception {
       if(evaluation != null) {
          Value value = evaluation.evaluate(scope, null);

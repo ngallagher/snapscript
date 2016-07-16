@@ -1,11 +1,6 @@
 package org.snapscript.compile;
 
-import java.lang.management.ManagementFactory;
-import java.text.DecimalFormat;
-
 import junit.framework.TestCase;
-
-import com.sun.management.ThreadMXBean;
 
 public class NumberLiteralTest  extends TestCase {
 

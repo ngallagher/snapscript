@@ -84,6 +84,7 @@ public class FileProcessor<T> {
          this.file = file;
       }
       
+      @Override
       public void run() {
          Map<File, FileExecutor> batch = executors.get(reference);
          FileExecutor executor = batch.get(file);

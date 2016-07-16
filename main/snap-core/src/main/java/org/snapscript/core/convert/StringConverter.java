@@ -31,6 +31,7 @@ public class StringConverter extends ConstraintConverter {
       return POSSIBLE;
    }
    
+   @Override
    public Object convert(Object object) throws Exception {
       if(object != null) {
          return String.valueOf(object);

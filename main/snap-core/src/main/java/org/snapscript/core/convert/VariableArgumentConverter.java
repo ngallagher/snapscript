@@ -13,6 +13,7 @@ public class VariableArgumentConverter implements ArgumentConverter {
       this.converters = converters;
    }
    
+   @Override
    public Score score(Object... list) throws Exception {
       if(list.length > 0) {
          int require = converters.length;
@@ -55,6 +56,7 @@ public class VariableArgumentConverter implements ArgumentConverter {
       
    }
 
+   @Override
    public Object[] convert(Object... list) throws Exception {
       if(list.length > 0) {
          int require = converters.length;

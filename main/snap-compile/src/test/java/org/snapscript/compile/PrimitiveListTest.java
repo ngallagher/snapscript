@@ -18,14 +18,14 @@ public class PrimitiveListTest extends TestCase {
       assertEquals(array.length, list.size());
       
       for(int i = 0; i < array.length; i++) {
-         assertEquals(list.get(i), (int)0);
+         assertEquals(list.get(i), 0);
       }
       assertTrue(list.contains("0"));
       Integer[] copy = (Integer[])list.toArray();
       
       assertEquals(copy.length, array.length);
       for(int i = 0; i < array.length; i++) {
-         assertEquals(copy[i], (Integer)((int)0));
+         assertEquals(copy[i], (Integer)(0));
       }
       for(int i = 0; i < 100; i++){
          list.set(i, i);
@@ -36,7 +36,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }
@@ -55,7 +55,7 @@ public class PrimitiveListTest extends TestCase {
       
       assertEquals(copy.length, array.length);
       for(int i = 0; i < array.length; i++) {
-         assertEquals(copy[i], (Double)((double)0));
+         assertEquals(copy[i], ((double)0));
       }
       for(int i = 0; i < 100; i++){
          list.set(i, i);
@@ -66,7 +66,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }
@@ -96,7 +96,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }
@@ -126,7 +126,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }
@@ -156,7 +156,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }
@@ -175,7 +175,7 @@ public class PrimitiveListTest extends TestCase {
       
       assertEquals(copy.length, array.length);
       for(int i = 0; i < array.length; i++) {
-         assertEquals(copy[i], (Float)((float)0));
+         assertEquals(copy[i], ((float)0));
       }
       for(int i = 0; i < 100; i++){
          list.set(i, i);
@@ -186,7 +186,7 @@ public class PrimitiveListTest extends TestCase {
          assertEquals(list.indexOf((short)i), i);
          assertEquals(list.indexOf((long)i), i);
          assertEquals(list.indexOf((byte)i), i);
-         assertEquals(list.indexOf((int)i), i);
+         assertEquals(list.indexOf(i), i);
          assertEquals(list.indexOf((float)i), i);
       }
    }

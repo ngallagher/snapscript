@@ -11,10 +11,12 @@ public class CalculationOperator implements CalculationPart {
       this.operator = NumericOperator.resolveOperator(operator);
    }
    
+   @Override
    public Evaluation getEvaluation(){
       return null;
    }
    
+   @Override
    public NumericOperator getOperator(){
       return operator;
    }

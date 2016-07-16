@@ -16,6 +16,7 @@ public class NullConverter extends ConstraintConverter {
       return SIMILAR; 
    }
    
+   @Override
    public Object convert(Object object) {
       return object;
    }

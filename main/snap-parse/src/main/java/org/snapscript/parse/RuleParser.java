@@ -16,6 +16,7 @@ public class RuleParser extends StringParser implements RuleIterator {
       this.name = name;
    }
    
+   @Override
    public boolean hasNext() {
       if(rules.isEmpty()) {
          parse(syntax);
@@ -23,6 +24,7 @@ public class RuleParser extends StringParser implements RuleIterator {
       return index < rules.size(); 
    }
    
+   @Override
    public Rule peek() {
       if(hasNext()) {
          return rules.get(index);         
@@ -30,6 +32,7 @@ public class RuleParser extends StringParser implements RuleIterator {
       return null;
    }
    
+   @Override
    public Rule next() {
       Rule symbol = peek();
       

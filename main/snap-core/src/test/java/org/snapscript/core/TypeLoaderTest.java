@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.snapscript.core.store.ClassPathStore;
-import org.snapscript.core.store.Store;
-
 public class TypeLoaderTest extends TestCase {
    
    public static class ExampleObject {

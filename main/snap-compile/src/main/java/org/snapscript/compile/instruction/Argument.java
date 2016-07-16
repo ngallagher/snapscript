@@ -12,6 +12,7 @@ public class Argument implements Evaluation{
       this.evaluation = evaluation;
    }
    
+   @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       return evaluation.evaluate(scope, left);
    }

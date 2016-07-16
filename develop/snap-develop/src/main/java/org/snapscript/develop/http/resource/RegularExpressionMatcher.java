@@ -28,6 +28,7 @@ public class RegularExpressionMatcher implements ResourceMatcher {
       this.fallback = fallback;
    }
 
+   @Override
    public synchronized Resource match(Request request, Response response) {
       Path path = request.getPath();
       String target = path.getPath();

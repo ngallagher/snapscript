@@ -29,6 +29,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Vector;
 
@@ -36,6 +37,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 /**
@@ -80,7 +82,7 @@ public class SolarSystem {
         }
         try {
             numOfPlanets = Integer.parseInt(arguments[0]);
-            numOfPlanets = (int)Math.abs(numOfPlanets);
+            numOfPlanets = Math.abs(numOfPlanets);
             skyFrame = new SkyFrame(numOfPlanets, 0);
         }
         catch(Exception e) {
@@ -271,9 +273,9 @@ class SkyFrame implements ChangeListener, ActionListener {
         BorderLayout MasterPanelLayout = new BorderLayout();
         Container pane = frame.getContentPane();
         pane.setLayout(MasterPanelLayout);
-        pane.add(skyPanel.getPanel(), MasterPanelLayout.CENTER);
+        pane.add(skyPanel.getPanel(), BorderLayout.CENTER);
 
-        slider = new JSlider(JSlider.VERTICAL,
+        slider = new JSlider(SwingConstants.VERTICAL,
         (int)(sun.getMass()*minSunMassMultiplier),
         (int)(sun.getMass()*maxSunMassMultiplier),
         (int)sun.getMass());
@@ -286,7 +288,7 @@ class SkyFrame implements ChangeListener, ActionListener {
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.addChangeListener(this);
-        pane.add(slider, MasterPanelLayout.EAST);
+        pane.add(slider, BorderLayout.EAST);
 
         buttonPanel = new JPanel();
         zoomIn = new JButton(zoomInString);
@@ -319,7 +321,7 @@ class SkyFrame implements ChangeListener, ActionListener {
         freezeButton.addActionListener(this);
         buttonPanel.add(freezeButton);
 
-        pane.add(buttonPanel, MasterPanelLayout.NORTH);
+        pane.add(buttonPanel, BorderLayout.NORTH);
 
         frame.setContentPane(pane);
         frame.setVisible(true);
@@ -330,7 +332,8 @@ class SkyFrame implements ChangeListener, ActionListener {
      * @param event An ActionEvent.
      * @see ActionEvent
      */
-    public void actionPerformed(ActionEvent event) {
+    @Override
+   public void actionPerformed(ActionEvent event) {
         String command = event.getActionCommand();
 
         if (command.equals(zoomOutString)) {
@@ -413,10 +416,11 @@ class SkyFrame implements ChangeListener, ActionListener {
      * @param event ChangeEvent
      * @see ChangeEvent
      */
-    public void stateChanged(ChangeEvent event) {
+    @Override
+   public void stateChanged(ChangeEvent event) {
         JSlider source = (JSlider)event.getSource();
         if (source.getValueIsAdjusting() != true)
-            sun.setMass((double)slider.getValue());
+            sun.setMass(slider.getValue());
     }
 }
 
@@ -502,7 +506,7 @@ class SkyPanel implements JPanelInterface {
         numberOfPlanets = mNumberOfPlanets;
         sun = mSun;
 
-        int numVisibleOrbits =(int)(((double)xMaxPixels/
+        int numVisibleOrbits =(int)((xMaxPixels/
         sun.getAbsPos(Coord.X) -
         sun.getDiameter()/2)/maxPlanetDia);
 
@@ -621,9 +625,9 @@ class SkyPanel implements JPanelInterface {
         float xPos = (float)planet[i].getAbsPos(Coord.X);
         float yPos = (float)planet[i].getAbsPos(Coord.Y);
         float xVel = xPos + 25*(float)planet[i].getVel(Coord.X)/
-                               (float)SkyFrame.getScaleFactor();
+                               SkyFrame.getScaleFactor();
         float yVel = yPos + 25*(float)planet[i].getVel(Coord.Y)/
-                               (float)SkyFrame.getScaleFactor();
+                               SkyFrame.getScaleFactor();
 
         comp2D.setColor(Color.white);
         comp2D.draw(new Line2D.Float(xPos, yPos, xVel, yVel));
@@ -673,7 +677,7 @@ class SkyPanel implements JPanelInterface {
         float y1) {
         float dx = x1 - x0, dy = y1 - y0;
         float r = (float)Math.sqrt(dx*dx + dy*dy);
-        float len = 15/(int)SkyFrame.getScaleFactor();
+        float len = 15/SkyFrame.getScaleFactor();
         int[] x, y;
         int numPts = 4;
 
@@ -688,7 +692,7 @@ class SkyPanel implements JPanelInterface {
         x[3] = (int)(x1 + len*dy/(2*r));
         y[3] = (int)(y1 - len*dx/(2*r));
 
-        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, numPts);
+        GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, numPts);
         path.moveTo(x[0], y[0]);
         for (int i = 1; i < numPts; ++i)
             path.lineTo(x[i], y[i]);
@@ -845,7 +849,7 @@ class Stars {
         double maxRadius,
         double minRadius,
         Sun mSun) {
-        numOfStars = (int)Math.abs(mNumOfStars);
+        numOfStars = Math.abs(mNumOfStars);
         xPos = new double[numOfStars];
         yPos = new double[numOfStars];
         maxRadius = Math.abs(maxRadius);
@@ -1005,7 +1009,8 @@ abstract class Satellite implements Host{
      * @return double The absolute position of the Satellite with respect
      * to the given axis.
      */
-    public double getAbsPos(byte mAxis) {
+    @Override
+   public double getAbsPos(byte mAxis) {
         if (mAxis == Coord.X)
             return xPos/SkyFrame.getScaleFactor() + host.getAbsPos(mAxis);
         else
@@ -1103,7 +1108,8 @@ abstract class Satellite implements Host{
      * The method getMass returns the Satellite's mass (arb. units).
      * @return double
      */
-    public double getMass() {
+    @Override
+   public double getMass() {
     return mass;
     }
     /**
@@ -1247,7 +1253,8 @@ class Planet extends Satellite {
      * The method translate calculates the motion of the planet by numerically
      * integrating Newton's laws of motion.
      */
-    public void translate() {
+    @Override
+   public void translate() {
         double force, distToHost, theta;
 
         for (int i = 0; i < 1/dt; ++i) {
@@ -1327,7 +1334,8 @@ class Planet extends Satellite {
      * planet.
      * @see Graphics2D
      */
-    public void draw(Graphics2D comp2D) {
+    @Override
+   public void draw(Graphics2D comp2D) {
         double zoomedDiameter = diameter/SkyFrame.getScaleFactor();
         //
         // Draw the night-time semi-circle of the planet.
@@ -1431,7 +1439,7 @@ class Moon extends Satellite {
                 double mRadius,
                 Host mHost)
     {
-    super(mDt, mDiameter, mRadius, Color.lightGray, (double)1, mHost);
+    super(mDt, mDiameter, mRadius, Color.lightGray, 1, mHost);
     }
     /**
      * The method translate calculates the motion of the moon. Since moons
@@ -1439,7 +1447,8 @@ class Moon extends Satellite {
      * simplified compared to planetary motion.
      * @see Planet
      */
-    public void translate() {
+    @Override
+   public void translate() {
         double r, theta;
         //
         // Find radial position of moon.
@@ -1477,9 +1486,9 @@ class Sun extends Satellite {
                double mMass,
                double mXPos,
                double mYPos) {
-        super((double)1,
+        super(1,
               mDiameter,
-              (double)0,
+              0,
               Color.yellow,
               mMass,
               (Host)null);
@@ -1492,7 +1501,8 @@ class Sun extends Satellite {
      * @param mAxis The cartesian axis of interest.
      * @return double The absolute positon of the Sun in pixels.
      */
-    public double getAbsPos(byte mAxis) {
+    @Override
+   public double getAbsPos(byte mAxis) {
         if (mAxis == Coord.X)
             return xPos;
         else
@@ -1514,7 +1524,8 @@ class Sun extends Satellite {
      * Sun.
      * @see Graphics2D
      */
-    public void draw(Graphics2D comp2D) {
+    @Override
+   public void draw(Graphics2D comp2D) {
         super.draw(comp2D);
 
         BasicStroke pen = new BasicStroke(2F);
@@ -1544,6 +1555,7 @@ class Sun extends Satellite {
         comp2D.draw(ray);
         }
     }
-    public void translate() {} // Sun does not move.
+    @Override
+   public void translate() {} // Sun does not move.
     }
 

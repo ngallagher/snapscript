@@ -1,7 +1,5 @@
 package org.snapscript.compile.instruction.collection;
 
-import java.lang.reflect.Array;
-
 import org.snapscript.core.InternalArgumentException;
 
 public class BooleanList extends ArrayWrapper<Boolean> {

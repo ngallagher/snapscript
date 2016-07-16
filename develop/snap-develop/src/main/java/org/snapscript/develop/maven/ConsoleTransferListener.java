@@ -94,6 +94,7 @@ public class ConsoleTransferListener extends AbstractTransferListener {
       downloads.remove(event.getResource());
    }
 
+   @Override
    public void transferCorrupted(TransferEvent event) {
       Exception exception = event.getException();
       logger.log("Transfer corrupted", exception);

@@ -21,6 +21,7 @@ public class ProjectResource implements Resource {
       this.engine = engine;
    }
    
+   @Override
    public void handle(Request request, Response response) throws Exception {
       Map<String, Object> map = new HashMap<String, Object>();
       TemplateModel model = new TemplateModel(map);

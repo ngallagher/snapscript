@@ -22,6 +22,7 @@ public class SignedNumber implements Evaluation {
       this.literal = literal;
    }
 
+   @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       if(result == null) {
          Value value = literal.evaluate(scope, null);

@@ -1,9 +1,5 @@
 package org.snapscript.parse;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-
 import junit.framework.TestCase;
 
 public class ExpressionBuilderTest extends TestCase {

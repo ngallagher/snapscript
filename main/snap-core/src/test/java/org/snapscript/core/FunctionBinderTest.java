@@ -1,14 +1,6 @@
 package org.snapscript.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
-import org.snapscript.core.bind.FunctionBinder;
-import org.snapscript.core.convert.ConstraintMatcher;
-import org.snapscript.core.store.ClassPathStore;
-import org.snapscript.core.store.Store;
 
 public class FunctionBinderTest extends TestCase {
    

@@ -30,34 +30,42 @@ public class TestType implements Type {
       this.name = name;
    }
    
+   @Override
    public List<Annotation> getAnnotations() {
       return annotations;
    }
    
+   @Override
    public List<Property> getProperties() {
       return properties;
    }
    
+   @Override
    public List<Function> getFunctions(){
       return functions;
    }
    
+   @Override
    public List<Type> getTypes(){
       return types;
    }
    
+   @Override
    public Module getModule(){
       return module;
    }
    
+   @Override
    public Class getType() {
       return type;
    }
    
+   @Override
    public Type getEntry(){
       return entry;
    }
    
+   @Override
    public String getName(){
       return name;
    }

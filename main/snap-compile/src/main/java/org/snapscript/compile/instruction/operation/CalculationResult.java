@@ -13,6 +13,7 @@ public class CalculationResult implements Evaluation {
       this.value = value;
    }
 
+   @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       return ValueType.getTransient(value);
    }

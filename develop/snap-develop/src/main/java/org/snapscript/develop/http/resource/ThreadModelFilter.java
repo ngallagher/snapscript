@@ -104,6 +104,7 @@ public class ThreadModelFilter implements ResourceFilter {
          this.close = close;
       }
       
+      @Override
       public AtomicBoolean initialValue() {
          return new AtomicBoolean(close);
       }      

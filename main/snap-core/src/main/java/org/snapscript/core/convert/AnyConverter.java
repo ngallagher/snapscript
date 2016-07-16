@@ -22,6 +22,7 @@ public class AnyConverter extends ConstraintConverter {
       return EXACT;
    }
    
+   @Override
    public Object convert(Object object) {
       return wrapper.toProxy(object);
    }

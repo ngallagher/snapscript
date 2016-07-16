@@ -39,6 +39,7 @@ public class VelocityConverter {
 
    private class DateTransform implements Transform<Date> {
 
+      @Override
       public String transform(Date date) {
          DateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
@@ -51,6 +52,7 @@ public class VelocityConverter {
 
    private class ExceptionTransform implements Transform<Throwable> {
 
+      @Override
       public StackTraceError transform(Throwable cause) {
          StackTraceError error = new StackTraceError();
 

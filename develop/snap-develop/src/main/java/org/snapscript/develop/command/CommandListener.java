@@ -3,7 +3,6 @@ package org.snapscript.develop.command;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.simpleframework.http.Path;
@@ -13,7 +12,6 @@ import org.snapscript.develop.BackupManager;
 import org.snapscript.develop.ProcessManager;
 import org.snapscript.develop.common.Problem;
 import org.snapscript.develop.common.ProblemFinder;
-import org.snapscript.develop.common.TypeNode;
 import org.snapscript.develop.complete.TypeNodeScanner;
 import org.snapscript.develop.http.project.ProjectProblemFinder;
 

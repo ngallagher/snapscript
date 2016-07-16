@@ -13,6 +13,7 @@ public class FixedArgumentConverter implements ArgumentConverter {
       this.converters = converters;
    }
    
+   @Override
    public Score score(Object... list) throws Exception {
       if(list.length != converters.length) {
          return INVALID;
@@ -36,6 +37,7 @@ public class FixedArgumentConverter implements ArgumentConverter {
       return EXACT;
    }
    
+   @Override
    public Object[] convert(Object... list) throws Exception {
       if(list.length > 0) {
          Object[] result = new Object[list.length];

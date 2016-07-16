@@ -94,6 +94,7 @@ public class ArrayStack<T> implements Stack<T>{
          this.index = index;
       }
       
+      @Override
       public boolean hasNext() {
          if(index >= 0) {
             return true;
@@ -101,6 +102,7 @@ public class ArrayStack<T> implements Stack<T>{
          return false;
       }
       
+      @Override
       public T next() {
          if(index >= 0) {
             return (T)stack[index--];
@@ -108,6 +110,7 @@ public class ArrayStack<T> implements Stack<T>{
          return null;
       }
       
+      @Override
       public void remove() {
          throw new UnsupportedOperationException("Remove not supported");
       }

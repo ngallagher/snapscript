@@ -8,6 +8,7 @@ public class ManualWagonProvider implements WagonProvider {
    
    private static final String SCHEME = "http";
 
+   @Override
    public Wagon lookup(String roleHint) throws Exception {
       if (SCHEME.equals(roleHint)) {
          return new LightweightHttpWagon();
@@ -15,6 +16,7 @@ public class ManualWagonProvider implements WagonProvider {
       return null;
    }
 
+   @Override
    public void release(Wagon wagon) {
 
    }

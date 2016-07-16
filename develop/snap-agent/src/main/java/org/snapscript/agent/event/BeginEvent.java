@@ -22,6 +22,7 @@ public class BeginEvent implements ProcessEvent {
       this.resource = resource;
    }
 
+   @Override
    public String getProcess() {
       return process;
    }

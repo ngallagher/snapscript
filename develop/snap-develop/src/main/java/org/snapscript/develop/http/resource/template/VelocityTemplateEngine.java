@@ -1,6 +1,5 @@
 package org.snapscript.develop.http.resource.template;
 
-import java.io.File;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.util.Map;

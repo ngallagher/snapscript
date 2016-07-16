@@ -1,6 +1,5 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.Constraint;
 import org.snapscript.compile.instruction.ConstraintExtractor;
 import org.snapscript.compile.instruction.ModifierChecker;

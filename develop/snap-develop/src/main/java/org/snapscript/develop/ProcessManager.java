@@ -1,6 +1,5 @@
 package org.snapscript.develop;
 
-import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

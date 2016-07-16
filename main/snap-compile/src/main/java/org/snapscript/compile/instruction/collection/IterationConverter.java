@@ -53,6 +53,7 @@ public class IterationConverter {
          this.value = value;
       }
       
+      @Override
       public Type getEntry(Scope scope) throws Exception {
          Module module = scope.getModule();
          Class type = value.getClass();
@@ -61,6 +62,7 @@ public class IterationConverter {
          return module.getType(entry);
       }
       
+      @Override
       public Iterable getIterable(Scope scope) throws Exception {
          List list = builder.convert(value);
          
@@ -109,11 +111,13 @@ public class IterationConverter {
          this.value = value;
       }
       
+      @Override
       public Type getEntry(Scope scope) throws Exception {
          Module module = scope.getModule();
          return module.getType(Object.class);
       }
       
+      @Override
       public Iterable getIterable(Scope scope) throws Exception {
          Iterable iterable = (Iterable)value;
          
@@ -134,11 +138,13 @@ public class IterationConverter {
          this.value = value;
       }
       
+      @Override
       public Type getEntry(Scope scope) throws Exception {
          Module module = scope.getModule();
          return module.getType(Object.class);
       }
       
+      @Override
       public Iterable getIterable(Scope scope) throws Exception {
          Enumeration list = (Enumeration)value;
          
@@ -159,6 +165,7 @@ public class IterationConverter {
             this.list = list;
          }
          
+         @Override
          public Iterator iterator() {
             return new EnumerationIterator(list);
          }

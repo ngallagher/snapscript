@@ -1,10 +1,5 @@
 package org.snapscript.compile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 import junit.framework.TestCase;
 
 public class CallableClosureTest extends TestCase {

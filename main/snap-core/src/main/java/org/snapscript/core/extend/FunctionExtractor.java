@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;

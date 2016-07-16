@@ -46,6 +46,7 @@ public class FunctionInvocation implements Compilation {
          this.list = list;
       }
       
+      @Override
       public Value evaluate(Scope scope, Object left) throws Exception {
          InvocationDispatcher handler = dispatcher.bind(scope, left);
          String name = extractor.extract(scope);      

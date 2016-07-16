@@ -23,14 +23,17 @@ public class ProcessEventStream extends OutputStream {
       this.type = type;
    }
    
+   @Override
    public void write(int octet) throws IOException {
       write(new byte[]{(byte)octet});
    }
    
+   @Override
    public void write(byte[] octets) throws IOException {
       write(octets, 0, octets.length);
    }
    
+   @Override
    public void write(byte[] octets, int offset, int length) throws IOException {
       try {
          if(type == ProcessEventType.WRITE_ERROR) {

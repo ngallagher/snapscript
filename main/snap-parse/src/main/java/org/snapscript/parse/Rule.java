@@ -24,6 +24,7 @@ public class Rule {
       return type;
    }     
    
+   @Override
    public String toString(){
       return symbol;
    }

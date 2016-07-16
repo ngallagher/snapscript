@@ -36,6 +36,7 @@ public class ProjectScriptService implements Service {
       this.engine = engine;
    }  
   
+   @Override
    public void connect(Session connection) {
       Request request = connection.getRequest();    
       Path path = request.getPath(); // /connect/<project-name>

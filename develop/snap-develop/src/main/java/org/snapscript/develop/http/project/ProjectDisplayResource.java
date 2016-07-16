@@ -1,8 +1,6 @@
 package org.snapscript.develop.http.project;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.simpleframework.http.Path;

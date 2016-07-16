@@ -1,8 +1,5 @@
 package org.snapscript.common;
 
-import java.security.SecureRandom;
-import java.util.Random;
-
 import junit.framework.TestCase;
 
 public class ArrayQueueTest extends TestCase {

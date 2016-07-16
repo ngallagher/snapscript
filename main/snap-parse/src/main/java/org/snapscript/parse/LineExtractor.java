@@ -45,14 +45,17 @@ public class LineExtractor {
          this.line = line;
       }
       
+      @Override
       public String getSource() {
          return create(line);
       }
       
+      @Override
       public String getResource() {
          return resource;
       }
       
+      @Override
       public int getNumber() {
          return line;
       }

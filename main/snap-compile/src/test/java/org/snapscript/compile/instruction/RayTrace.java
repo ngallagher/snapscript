@@ -81,6 +81,7 @@ public final class RayTrace {
          return (t1 > 0 ? t1 : t2);
       }
 
+      @Override
       public Hit intersect(Hit i, Ray ray) {
          double l = ray_sphere(ray);
          if (l >= i.lambda)
@@ -99,6 +100,7 @@ public final class RayTrace {
          objs = new ArrayList();
       }
 
+      @Override
       public Hit intersect(Hit i, Ray ray) {
          double l = bound.ray_sphere(ray);
          if (l >= i.lambda)

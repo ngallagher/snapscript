@@ -77,6 +77,7 @@ public class ConsoleManager {
          active.set(true);
       }
       
+      @Override
       public void run() {
          try {
             while(active.get()) {
@@ -127,6 +128,7 @@ public class ConsoleManager {
          active.set(true);
       }
       
+      @Override
       public void run() {
          try {
             InputStream stream = process.getInputStream();

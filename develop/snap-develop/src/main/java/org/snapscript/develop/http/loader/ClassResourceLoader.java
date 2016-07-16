@@ -36,7 +36,7 @@ public class ClassResourceLoader {
    
    private byte[] loadResource(String path) throws Exception {
       String location = path.substring(1);
-      ClassLoader loader = getClass().getClassLoader().getSystemClassLoader();
+      ClassLoader loader = ClassLoader.getSystemClassLoader();
       InputStream input = loader.getResourceAsStream(location);
       
       if(input != null) {

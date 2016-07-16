@@ -29,7 +29,7 @@ public class ProcessEventConsumer {
       if(marshaller == null) {
          throw new IllegalStateException("Could not find marshaller for " + code);
       }
-      return (ProcessEvent)marshaller.fromMessage(message);
+      return marshaller.fromMessage(message);
    }
 
 }
