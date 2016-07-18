@@ -10,11 +10,11 @@ import org.snapscript.core.Function;
 public class FunctionCache { // copy on write cache
 
    private volatile Map<Object, Function> cache;
-   private volatile MapUpdater updater; 
+   private volatile CacheUpdater updater; 
    
    public FunctionCache() {
       this.cache = new HashMap<Object, Function>();
-      this.updater = new MapUpdater();
+      this.updater = new CacheUpdater();
    }
    
    public boolean contains(Object key) {
@@ -29,11 +29,11 @@ public class FunctionCache { // copy on write cache
       updater.update(key, function);
    }
    
-   private class MapUpdater {
+   private class CacheUpdater {
       
       private final Lock lock;
       
-      public MapUpdater() {
+      public CacheUpdater() {
          this.lock = new ReentrantLock();
       }
       

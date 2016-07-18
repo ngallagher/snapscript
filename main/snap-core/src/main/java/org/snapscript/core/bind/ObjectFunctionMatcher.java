@@ -42,7 +42,7 @@ public class ObjectFunctionMatcher {
       FunctionCache cache = table.get(type);
       Function function = cache.fetch(key); // all type functions
       
-      if(!cache.contains(key)) {
+      if(function == null) {
          List<Type> path = finder.findPath(type, name); // should only provide non-abstract methods
          Score best = INVALID;
          
