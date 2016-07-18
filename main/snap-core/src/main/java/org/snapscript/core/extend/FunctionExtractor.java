@@ -7,6 +7,7 @@ import java.util.List;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
 import org.snapscript.core.InvocationFunction;
+import org.snapscript.core.Module;
 import org.snapscript.core.Parameter;
 import org.snapscript.core.ParameterBuilder;
 import org.snapscript.core.Result;
@@ -25,14 +26,14 @@ public class FunctionExtractor {
       this.loader = loader;
    }
 
-   public List<Function> extract(Class extend, Object value) throws Exception {
+   public List<Function> extract(Module module, Class extend, Object value) throws Exception {
       Class require = value.getClass();
       Type source = loader.loadType(require);
       
-      return extract(extend, value, source);
+      return extract(module, extend, value, source);
    }
    
-   private List<Function> extract(Class extend, Object value, Type source) throws Exception {
+   private List<Function> extract(Module module, Class extend, Object value, Type source) throws Exception {
       List<Function> functions = source.getFunctions();
       
       if(!functions.isEmpty()) {
@@ -48,7 +49,7 @@ public class FunctionExtractor {
                Class real = type.getType();
             
                if(real == extend) {
-                  Function adapter = extract(extend, value, function);
+                  Function adapter = extract(module, extend, value, function);
                   
                   if(adapter != null) {
                      adapters.add(adapter);
@@ -61,7 +62,7 @@ public class FunctionExtractor {
       return Collections.emptyList();
    }
 
-   private Function extract(Class extend, Object value, Function function) {
+   private Function extract(Module module, Class extend, Object value, Function function) {
       String name = function.getName();
       Invocation invocation = function.getInvocation();
       Signature signature = function.getSignature();
@@ -73,7 +74,7 @@ public class FunctionExtractor {
    
       if(length > 0) {
          List<Parameter> copy = new ArrayList<Parameter>();
-         Signature reduced = new Signature(copy, variable);
+         Signature reduced = new Signature(copy, module, variable);
          Invocation adapter = new ExportInvocation(invocation, value, extend);
          
          for(int i = 1; i < length; i++) {

@@ -29,7 +29,7 @@ public class TypeIndexer {
       this.indexer = new ClassIndexer(this, registry, scanner, extender);
       this.types = new LinkedHashMap<Object, Type>();
       this.builder = new TypeNameBuilder();
-      this.counter = new AtomicInteger();
+      this.counter = new AtomicInteger(1); // consider function types which own 0
       this.registry = registry;
       this.scanner = scanner;
       this.limit = limit;

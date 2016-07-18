@@ -30,11 +30,12 @@ public class ParameterList {
    }
    
    public Signature create(Scope scope, String prefix) throws Exception{
+      Module module = scope.getModule();
+      
       if(signature == null) {
          List<Parameter> parameters = new ArrayList<Parameter>();
          
          if(prefix != null) {
-            Module module = scope.getModule();
             Context context = module.getContext();
             TypeLoader loader = context.getLoader();
             Type constraint = loader.loadType(Type.class);
@@ -52,7 +53,7 @@ public class ParameterList {
                parameters.add(parameter);
             }
          }
-         signature = new Signature(parameters, variable);
+         signature = new Signature(parameters, module, variable);
       }
       return signature;
    }

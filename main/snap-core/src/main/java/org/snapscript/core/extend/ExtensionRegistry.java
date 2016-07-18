@@ -7,16 +7,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalException;
+import org.snapscript.core.Module;
+import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
 public class ExtensionRegistry {
 
    private final Map<Class, Class> extensions;
    private final FunctionExtractor extractor;
+   private final TypeLoader loader;
    
    public ExtensionRegistry(TypeLoader loader){
       this.extensions = new ConcurrentHashMap<Class, Class>();
       this.extractor = new FunctionExtractor(loader);
+      this.loader = loader;
    }
    
    public void register(Class type, Class extension) {
@@ -29,7 +33,10 @@ public class ExtensionRegistry {
       if(extension != null) {
          try {
             Object instance = extension.newInstance();
-            return extractor.extract(type, instance);
+            Type match = loader.loadType(type);
+            Module module = match.getModule();
+            
+            return extractor.extract(module, type, instance);
          } catch(Exception e) {
             throw new InternalException("Could not extend " + type, e);
          }

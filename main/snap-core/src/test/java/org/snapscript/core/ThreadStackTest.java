@@ -60,7 +60,7 @@ public class ThreadStackTest extends TestCase {
       Module module = new ContextModule(null, moduleName, moduleName, -1);
       TestType type = new TestType(module, typeName, null, null);
       List<Parameter> parameters = new ArrayList<Parameter>();
-      Signature signature = new Signature(parameters);
+      Signature signature = new Signature(parameters, module);
       
       stack.before(new InvocationFunction(signature, null, type, null, functionName, 11));
    }

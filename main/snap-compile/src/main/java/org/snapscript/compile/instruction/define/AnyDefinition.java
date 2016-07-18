@@ -46,9 +46,9 @@ public class AnyDefinition extends Statement {
       
       if(functions.isEmpty()) {
          Scope value = module.getScope();
-         Function hashCode = createHashCode(type, integer);
-         Function toString = createToString(type, string);
-         Function equals = createEquals(type, bool);
+         Function hashCode = createHashCode(module, type, integer);
+         Function toString = createToString(module, type, string);
+         Function equals = createEquals(module, type, bool);
          
          functions.add(hashCode);
          functions.add(equals);
@@ -58,18 +58,18 @@ public class AnyDefinition extends Statement {
       return ResultType.getNormal(type);
    }
    
-   private Function createHashCode(Type type, Type returns) {
+   private Function createHashCode(Module module, Type type, Type returns) {
       List<Parameter> parameters = new ArrayList<Parameter>();
-      Signature signature = new Signature(parameters);
+      Signature signature = new Signature(parameters, module);
       Invocation<Object> invocation = new HashCodeInvocation();
       
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_HASH_CODE, PUBLIC.mask);
    }
    
-   private Function createEquals(Type type, Type returns) {
+   private Function createEquals(Module module, Type type, Type returns) {
       List<Parameter> parameters = new ArrayList<Parameter>();
       Parameter parameter = new Parameter(METHOD_ARGUMENT, null);
-      Signature signature = new Signature(parameters);
+      Signature signature = new Signature(parameters, module);
       Invocation<Object> invocation = new EqualsInvocation();
 
       parameters.add(parameter);
@@ -77,9 +77,9 @@ public class AnyDefinition extends Statement {
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_EQUALS, PUBLIC.mask);
    }
    
-   private Function createToString(Type type, Type returns) {
+   private Function createToString(Module module, Type type, Type returns) {
       List<Parameter> parameters = new ArrayList<Parameter>();
-      Signature signature = new Signature(parameters);
+      Signature signature = new Signature(parameters, module);
       Invocation<Object> invocation = new ToStringInvocation();
       
       return new InvocationFunction<Object>(signature, invocation, type, returns, METHOD_TO_STRING, PUBLIC.mask);

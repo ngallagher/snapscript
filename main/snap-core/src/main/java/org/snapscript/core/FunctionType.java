@@ -8,9 +8,11 @@ import java.util.List;
 public class FunctionType implements Type {
    
    private final Function function;
+   private final Module module;
    
-   public FunctionType(Signature signature) {
+   public FunctionType(Signature signature, Module module) {
       this.function = new EmptyFunction(signature, METHOD_CLOSURE);
+      this.module = module;
    }
    
    @Override
@@ -35,7 +37,7 @@ public class FunctionType implements Type {
 
    @Override
    public Module getModule() {
-      return null;
+      return module;
    }
 
    @Override
@@ -55,7 +57,7 @@ public class FunctionType implements Type {
    
    @Override
    public int getOrder() {
-      return -1;
+      return 0;
    }
 
 }

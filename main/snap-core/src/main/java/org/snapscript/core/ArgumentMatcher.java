@@ -1,13 +1,7 @@
-package org.snapscript.core.bind;
+package org.snapscript.core;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.Parameter;
-import org.snapscript.core.Signature;
-import org.snapscript.core.Type;
-import org.snapscript.core.TypeLoader;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FixedArgumentConverter;
@@ -16,25 +10,17 @@ import org.snapscript.core.convert.VariableArgumentConverter;
 
 public class ArgumentMatcher {
 
-   private final Map<Signature, ArgumentConverter> converters;
-   private final ConstraintMatcher matcher;
+   private final Signature signature;
+   private final Module module;
    
-   public ArgumentMatcher(ConstraintMatcher matcher, TypeLoader loader) {
-      this.converters = new ConcurrentHashMap<Signature, ArgumentConverter>();
-      this.matcher = matcher;
+   public ArgumentMatcher(Signature signature, Module module) {
+      this.signature = signature;
+      this.module = module;
    }
    
-   public ArgumentConverter match(Signature signature) throws Exception {
-      ArgumentConverter converter = converters.get(signature);
-      
-      if(converter == null) {
-         converter = resolve(signature);
-         converters.put(signature, converter);
-      }
-      return converter;
-   }
-   
-   private ArgumentConverter resolve(Signature signature) throws Exception {
+   public ArgumentConverter getConverter() throws Exception {
+      Context context = module.getContext();
+      ConstraintMatcher matcher = context.getMatcher();
       List<Parameter> parameters = signature.getParameters();
       int size = parameters.size();
       

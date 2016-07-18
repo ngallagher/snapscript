@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.snapscript.core.Annotation;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.Module;
 import org.snapscript.core.Parameter;
 import org.snapscript.core.ParameterBuilder;
 import org.snapscript.core.Signature;
@@ -27,6 +28,7 @@ public class SignatureGenerator {
    public Signature generate(Type type, Method method) {
       Class[] types = method.getParameterTypes();
       Object[][] annotations = method.getParameterAnnotations();
+      Module module = type.getModule();
       boolean variable = method.isVarArgs();
       
       try {
@@ -51,7 +53,7 @@ public class SignatureGenerator {
             }
             parameters.add(parameter);
          }
-         return new Signature(parameters, variable);
+         return new Signature(parameters, module, variable);
       } catch(Exception e) {
          throw new InternalStateException("Could not create function for " + method, e);
       }
@@ -60,6 +62,7 @@ public class SignatureGenerator {
    public Signature generate(Type type, Constructor constructor) {
       Class[] types = constructor.getParameterTypes();
       Object[][] annotations = constructor.getParameterAnnotations();
+      Module module = type.getModule();
       boolean variable = constructor.isVarArgs();
       
       try {
@@ -84,7 +87,7 @@ public class SignatureGenerator {
             }
             parameters.add(parameter);
          }
-         return new Signature(parameters, variable);
+         return new Signature(parameters, module, variable);
       } catch(Exception e) {
          throw new InternalStateException("Could not create constructor for " + constructor, e);
       }

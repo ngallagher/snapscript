@@ -29,7 +29,7 @@ public class ModuleExtender {
          ScopeExtension extension = new ScopeExtension(context);
          
          try {
-            List<Function> list = extractor.extract(Scope.class, extension);
+            List<Function> list = extractor.extract(module, Scope.class, extension);
             
             for(Function function : list) {
                functions.add(function);

@@ -35,7 +35,7 @@ public class FunctionDispatcher implements InvocationDispatcher {
    public Value dispatch(String name, Object... arguments) throws Exception {
       Context context = scope.getContext();
       FunctionBinder binder = context.getBinder();
-      Callable<Result> call = binder.bind(scope, function, name, arguments);
+      Callable<Result> call = binder.bind(scope, function, name, arguments); // this is not used often
       
       if(call == null) {
          return dispatcher.dispatch(name, arguments);

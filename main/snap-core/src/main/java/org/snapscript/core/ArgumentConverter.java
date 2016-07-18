@@ -1,4 +1,4 @@
-package org.snapscript.core.bind;
+package org.snapscript.core;
 
 import org.snapscript.core.convert.Score;
 

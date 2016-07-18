@@ -13,14 +13,22 @@ import org.snapscript.core.error.ThreadStack;
 
 public class FunctionBinder {
    
-   private final FunctionMatcher matcher;
+   private final ObjectFunctionMatcher objects;
+   private final ModuleFunctionMatcher modules;
+   private final ValueFunctionMatcher values;
+   private final ScopeFunctionMatcher scopes;
+   private final TypeFunctionMatcher types;
    
-   public FunctionBinder(ConstraintMatcher matcher, TypeLoader loader, ThreadStack stack) {
-      this.matcher = new FunctionMatcher(matcher, loader, stack);
+   public FunctionBinder(TypeLoader loader, ThreadStack stack) {
+      this.objects = new ObjectFunctionMatcher(loader, stack);
+      this.modules = new ModuleFunctionMatcher(loader, stack);
+      this.types = new TypeFunctionMatcher(loader, stack);
+      this.values = new ValueFunctionMatcher(stack);
+      this.scopes = new ScopeFunctionMatcher(stack);
    }
    
    public Callable<Result> bind(Value value, Object... list) throws Exception { // closures
-      FunctionPointer call = matcher.match(value, list);
+      FunctionPointer call = values.match(value, list);
       
       if(call != null) {
          return new FunctionCall(call, null, null);
@@ -29,7 +37,7 @@ public class FunctionBinder {
    }
    
    public Callable<Result> bind(Scope scope, String name, Object... list) throws Exception { // function variable
-      FunctionPointer call = matcher.match(scope, name, list);
+      FunctionPointer call = scopes.match(scope, name, list);
       
       if(call != null) {
          return new FunctionCall(call, scope, scope);
@@ -38,7 +46,7 @@ public class FunctionBinder {
    }
    
    public Callable<Result> bind(Scope scope, Module module, String name, Object... list) throws Exception {
-      FunctionPointer call = matcher.match(module, name, list);
+      FunctionPointer call = modules.match(module, name, list);
       
       if(call != null) {
          return new FunctionCall(call, scope, module);
@@ -47,7 +55,7 @@ public class FunctionBinder {
    }
    
    public Callable<Result> bind(Scope scope, Type type, String name, Object... list) throws Exception {
-      FunctionPointer call = matcher.match(type, name, list);
+      FunctionPointer call = types.match(type, name, list);
       
       if(call != null) {
          return new FunctionCall(call, scope, null);
@@ -56,7 +64,7 @@ public class FunctionBinder {
    }
 
    public Callable<Result> bind(Scope scope, Object source, String name, Object... list) throws Exception {
-      FunctionPointer call = matcher.match(source, name, list);
+      FunctionPointer call = objects.match(source, name, list);
       
       if(call != null) {
          return new FunctionCall(call, scope, source);
