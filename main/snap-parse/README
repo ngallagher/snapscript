@@ -1,3 +1,6 @@
 The InstructionEvaluator needs to cache based on the length of a string, caching too big means it can't parse large JSON docs
 All identifers should convert interned strings to integers for faster lookup
+
+Package should be able to declare a constant that will not change after compile() is executed. This
+means that once the Executable is created the constant value is stuck.
      

@@ -6,17 +6,21 @@ import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
+import org.snapscript.core.Scope;
+import org.snapscript.core.StaticScope;
 import org.snapscript.core.Type;
 
 public class ClassType implements Type {
 
    private final ClassIndex index;
+   private final Scope scope;
    private final Class type;
    private final String name;
    private final int order;
    
    public ClassType(ClassIndexer indexer, Class type, String name, int order) {
       this.index = new ClassIndex(indexer, this);
+      this.scope = new StaticScope(this);
       this.name = name;
       this.type = type;
       this.order = order;
@@ -50,6 +54,11 @@ public class ClassType implements Type {
    @Override
    public Type getEntry() {
       return index.getEntry();
+   }
+   
+   @Override
+   public Scope getScope() {
+      return scope;
    }
 
    @Override

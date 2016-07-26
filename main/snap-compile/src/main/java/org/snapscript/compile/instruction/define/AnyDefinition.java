@@ -11,6 +11,7 @@ import static org.snapscript.core.Reserved.METHOD_TO_STRING;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -21,11 +22,10 @@ import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
-import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 
-public class AnyDefinition extends Statement {
+public class AnyDefinition{
    
    private final DefaultConstructor constructor;
    
@@ -33,8 +33,8 @@ public class AnyDefinition extends Statement {
       this.constructor = new DefaultConstructor();
    }
 
-   @Override
-   public Result compile(Scope scope) throws Exception {
+   @Bug("This should work better concurrently")
+   public Type create(Scope scope) throws Exception {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
@@ -53,9 +53,9 @@ public class AnyDefinition extends Statement {
          functions.add(hashCode);
          functions.add(equals);
          functions.add(toString);
-         constructor.compile(value, null, type);
+         constructor.compile(null, type);
       }
-      return ResultType.getNormal(type);
+      return type;
    }
    
    private Function createHashCode(Module module, Type type, Type returns) {

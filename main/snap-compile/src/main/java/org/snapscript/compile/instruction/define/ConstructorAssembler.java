@@ -21,8 +21,9 @@ public class ConstructorAssembler {
       this.body = body;
    } 
    
-   public ConstructorBuilder assemble(Scope scope, Initializer initializer, Type type) throws Exception {
-      Initializer factory = delegate.compile(scope, initializer, type);
+   public ConstructorBuilder assemble(Initializer initializer, Type type) throws Exception {
+      Scope scope = type.getScope();
+      Initializer factory = delegate.compile(initializer, type);
       Signature signature = parameters.create(scope, TYPE_CLASS);
       
       return new ConstructorBuilder(signature, body, factory);

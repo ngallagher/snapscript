@@ -10,45 +10,38 @@ import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.AccessorProperty;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
+import org.snapscript.core.InternalStateException;
+import org.snapscript.core.ModifierType;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
-import org.snapscript.core.ScopeAccessor;
 import org.snapscript.core.StaticAccessor;
 import org.snapscript.core.Type;
 import org.snapscript.core.Value;
 
-public class MemberField implements TypePart {
+public class TraitConstant implements TypePart {
 
-   private final MemberFieldDeclaration declaration;
+   private final TraitConstantDeclaration declaration;
    private final ConstraintExtractor extractor;
    private final AnnotationList annotations;
    private final ModifierChecker checker;
    private final TextLiteral identifier;
-   private final ModifierList list;
    
-   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier) {
-      this(annotations, list, identifier, null, null);
-   }
-
-   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint) {
-      this(annotations, list, identifier, constraint, null);
-   }
-
-   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Evaluation value) {
+   public TraitConstant(AnnotationList annotations, ModifierList list, TextLiteral identifier, Evaluation value) {
       this(annotations, list, identifier, null, value);
    }
-
-   public MemberField(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
-      this.declaration = new MemberFieldDeclaration(list, identifier, constraint, value);
+   
+   public TraitConstant(AnnotationList annotations, ModifierList list, TextLiteral identifier, Constraint constraint, Evaluation value) {
+      this.declaration = new TraitConstantDeclaration(identifier, constraint, value);
       this.extractor = new ConstraintExtractor(constraint);
       this.checker = new ModifierChecker(list);
       this.annotations = annotations;
       this.identifier = identifier;
-      this.list = list;
    }
 
+   @Bug("Clean this up")
    @Override
    public Initializer compile(Initializer initializer, Type type) throws Exception {
       Scope scope = type.getScope();
@@ -57,22 +50,16 @@ public class MemberField implements TypePart {
       Value value = identifier.evaluate(scope, null);
       Type constraint = extractor.extract(scope);
       String name = value.getString();
-      int modifiers = list.getModifiers();
       
-      if (checker.isStatic()) {
-         Accessor accessor = new StaticAccessor(initializer, scope, type, name);
-         Property property = new AccessorProperty(name, type, constraint, accessor, modifiers);
-         
-         annotations.apply(scope, property);
-         properties.add(property);
-      } else {
-         Accessor accessor = new ScopeAccessor(name);
-         Property property = new AccessorProperty(name, type, constraint, accessor, modifiers); // is this the correct type!!??
-         
-         annotations.apply(scope, property);
-         properties.add(property);
+      if(!checker.isConstant()) {
+         throw new InternalStateException("Modifier must be constant for " + name);
       }
+      Accessor accessor = new StaticAccessor(initializer, scope, type, name);
+      Property property = new AccessorProperty(name, type, constraint, accessor, ModifierType.STATIC.mask | ModifierType.CONSTANT.mask);
+      
+      annotations.apply(scope, property);
+      properties.add(property);
+
       return declare;
    }
 }
-

@@ -8,7 +8,6 @@ import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Scope;
 
 public class MemberFieldDeclaration {
    
@@ -24,16 +23,16 @@ public class MemberFieldDeclaration {
       this.value = value;
    }
    
-   public Initializer declare(Scope scope, Initializer initializer) throws Exception {
-      Evaluation evaluation = create(scope, initializer);
+   public Initializer declare(Initializer initializer) throws Exception {
+      Evaluation evaluation = create(initializer);
 
       if (checker.isStatic()) {
-         return new StaticFieldInitializer(evaluation, scope);
+         return new StaticFieldInitializer(evaluation);
       }
       return new InstanceFieldInitializer(evaluation);
    }
  
-   private Evaluation create(Scope scope, Initializer initializer) throws Exception {
+   private Evaluation create(Initializer initializer) throws Exception {
       if (checker.isConstant()) {
          return new DeclareBlank(identifier, constraint, value);
       }

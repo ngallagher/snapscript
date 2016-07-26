@@ -9,9 +9,11 @@ public class FunctionType implements Type {
    
    private final Function function;
    private final Module module;
+   private final Scope scope;
    
    public FunctionType(Signature signature, Module module) {
       this.function = new EmptyFunction(signature, METHOD_CLOSURE);
+      this.scope = new StaticScope(null);
       this.module = module;
    }
    
@@ -38,6 +40,11 @@ public class FunctionType implements Type {
    @Override
    public Module getModule() {
       return module;
+   }
+   
+   @Override
+   public Scope getScope(){
+      return scope;
    }
 
    @Override

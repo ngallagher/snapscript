@@ -8,6 +8,7 @@ public interface Type extends Any {
    List<Function> getFunctions();
    List<Type> getTypes();
    Module getModule();
+   Scope getScope();
    Class getType();
    Type getEntry();
    String getName();

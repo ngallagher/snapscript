@@ -4,7 +4,6 @@ import org.snapscript.compile.instruction.AnnotationList;
 import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
@@ -15,7 +14,7 @@ public class EnumConstructor extends ClassConstructor {
    }
 
    @Override
-   public Initializer compile(Scope scope, Initializer statements, Type type) throws Exception {
-      return compile(scope, statements, type, false);
+   public Initializer compile(Initializer statements, Type type) throws Exception {
+      return compile(statements, type, false);
    }
 }

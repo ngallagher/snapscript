@@ -1,10 +1,14 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.compile.instruction.AnnotationList;
+import org.snapscript.core.Module;
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
-public class ClassBuilder {   
+public class ClassBuilder extends Statement {   
    
    private final ClassConstantInitializer builder;
    private final AnnotationList annotations;
@@ -18,13 +22,26 @@ public class ClassBuilder {
       this.name = name;
    }
    
-   public Type create(Scope scope) throws Exception {
-      Type type = name.getType(scope);
+   @Override
+   public Result define(Scope outer) throws Exception {
+      Module module = outer.getModule();
+      String alias = name.getName(outer);
+      Type type = module.addType(alias);
+      
+      return ResultType.getNormal(type);
+   }
+   
+   @Override
+   public Result compile(Scope outer) throws Exception {
+      Module module = outer.getModule();
+      String alias = name.getName(outer);
+      Type type = module.getType(alias);
+      Scope scope = type.getScope();
       
       annotations.apply(scope, type);
       hierarchy.update(scope, type); 
       builder.declare(scope, type);
       
-      return type;
+      return ResultType.getNormal(type);
    }
 }

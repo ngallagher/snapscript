@@ -2,7 +2,6 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.List;
 
-import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
@@ -32,8 +31,7 @@ public class TypeHierarchy {
             types.add(base);
          }
       }else {
-         Result result = definition.compile(scope);
-         Type base = result.getValue();
+         Type base = definition.create(scope);
          
          if(base != null) {
             types.add(base);

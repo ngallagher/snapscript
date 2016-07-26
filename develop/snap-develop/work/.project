@@ -3,7 +3,7 @@
     <variable name="PROJECT_ROOT">C:\Work\development\github\snapscript\develop\snap-develop\work</variable>
   </environment>
   <arguments>
-    <argument>-Xmx2000m</argument>
+    <argument>-Xmx500m</argument>
     <argument>-Xms10m</argument>
     <argument>-XX:+UnlockCommercialFeatures</argument>
     <argument>-XX:+FlightRecorder</argument>

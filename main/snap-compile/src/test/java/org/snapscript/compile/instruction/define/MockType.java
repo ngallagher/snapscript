@@ -1,14 +1,17 @@
-package org.snapscript.core;
+package org.snapscript.compile.instruction.define;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.snapscript.core.Annotation;
 import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
+import org.snapscript.core.Scope;
+import org.snapscript.core.StaticScope;
 import org.snapscript.core.Type;
 
-public class TestType implements Type {
+public class MockType implements Type {
 
    private final List<Annotation> annotations;
    private final List<Property> properties;
@@ -20,7 +23,7 @@ public class TestType implements Type {
    private final Type entry;
    private final String name;
 
-   public TestType(Module module, String name, Type entry, Class type){
+   public MockType(Module module, String name, Type entry, Class type){
       this.annotations = new ArrayList<Annotation>();
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();

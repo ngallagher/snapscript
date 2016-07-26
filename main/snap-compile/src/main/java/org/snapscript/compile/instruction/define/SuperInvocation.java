@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.ArgumentList;
 import org.snapscript.compile.instruction.NameExtractor;
 import org.snapscript.compile.instruction.dispatch.InvocationBinder;
 import org.snapscript.compile.instruction.dispatch.InvocationDispatcher;
+import org.snapscript.core.Bug;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeCombiner;
@@ -16,16 +17,15 @@ public class SuperInvocation implements Evaluation {
    private final InvocationBinder dispatcher;
    private final NameExtractor extractor;
    private final ArgumentList arguments;
-   private final Scope outer;
    
-   public SuperInvocation(Evaluation function, ArgumentList arguments, Scope outer, Type type) {
+   public SuperInvocation(Evaluation function, ArgumentList arguments, Type type) {
       this.builder = new SuperInstanceBuilder(type);
       this.extractor = new NameExtractor(function);
       this.dispatcher = new InvocationBinder();
       this.arguments = arguments;
-      this.outer = outer;
    }
    
+   @Bug("ScopeCombiner.combine(scope, outer) this might be wrong!!")
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
       Scope instance = builder.create(scope, left);
@@ -34,6 +34,7 @@ public class SuperInvocation implements Evaluation {
       String name = extractor.extract(scope);     
       
       if(arguments != null) {
+         Scope outer = real.getScope();
          Scope compound = ScopeCombiner.combine(scope, outer);
          Value array = arguments.evaluate(compound, null); // arguments have no left hand side
          Object[] list = array.getValue();

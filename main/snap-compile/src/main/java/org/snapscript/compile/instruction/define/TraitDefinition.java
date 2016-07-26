@@ -1,11 +1,55 @@
 package org.snapscript.compile.instruction.define;
 
-import org.snapscript.compile.instruction.AnnotationList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TraitDefinition extends ClassDefinition {
+import org.snapscript.compile.instruction.AnnotationList;
+import org.snapscript.core.Initializer;
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
+import org.snapscript.core.Scope;
+import org.snapscript.core.Statement;
+import org.snapscript.core.Type;
+
+public class TraitDefinition extends Statement {   
+   
+   private final FunctionPropertyGenerator generator;
+   private final InitializerCollector collector;
+   private final Initializer constants;
+   private final AtomicBoolean compile;
+   private final ClassBuilder builder;
+   private final TypePart[] parts;
    
    public TraitDefinition(AnnotationList annotations, TraitName name, TypeHierarchy hierarchy, TypePart... parts) {
-      super(annotations, name, hierarchy, parts);     
+      this.builder = new ClassBuilder(annotations, name, hierarchy);
+      this.generator = new FunctionPropertyGenerator(); 
+      this.constants = new StaticConstantInitializer();
+      this.collector = new InitializerCollector();
+      this.compile = new AtomicBoolean(true);
+      this.parts = parts;
+   }
+   
+   @Override
+   public Result define(Scope outer) throws Exception {
+      return builder.define(outer);
+   }
+
+   @Override
+   public Result compile(Scope outer) throws Exception {
+      if(!compile.compareAndSet(false, true)) {
+         Result result = builder.compile(outer);
+         Type type = result.getValue();
+         
+         collector.update(constants); // collect static constants first
+         
+         for(TypePart part : parts) {
+            Initializer initializer = part.compile(collector, type);
+            collector.update(initializer);
+         } 
+         generator.generate(type);
+         
+         return result;
+      }
+      return ResultType.getNormal();
    }
 
 }

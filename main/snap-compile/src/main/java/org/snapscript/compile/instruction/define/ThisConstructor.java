@@ -23,7 +23,7 @@ public class ThisConstructor implements TypePart {
    }
 
    @Override
-   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {  
+   public Initializer compile(Initializer initializer, Type type) throws Exception {  
       Statement statement = new StaticBody(initializer, type);
       Evaluation reference = new TypeValue(type);
       CreateObject evaluation = new CreateObject(reference, arguments);

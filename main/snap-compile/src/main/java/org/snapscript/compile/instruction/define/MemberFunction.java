@@ -40,12 +40,13 @@ public class MemberFunction implements TypePart {
    } 
 
    @Override
-   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
-      return define(scope, initializer, type, 0);
+   public Initializer compile(Initializer initializer, Type type) throws Exception {
+      return define(initializer, type, 0);
    }
    
-   protected Initializer define(Scope scope, Initializer initializer, Type type, int mask) throws Exception {
-      MemberFunctionBuilder builder = assembler.assemble(scope, type, mask);
+   protected Initializer define(Initializer initializer, Type type, int mask) throws Exception {
+      Scope scope = type.getScope();
+      MemberFunctionBuilder builder = assembler.assemble(type, mask);
       Function function = builder.create(scope, initializer, type);
       List<Function> functions = type.getFunctions();
       int modifiers = function.getModifiers();

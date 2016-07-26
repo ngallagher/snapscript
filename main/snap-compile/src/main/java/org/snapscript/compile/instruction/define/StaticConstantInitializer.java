@@ -2,28 +2,26 @@ package org.snapscript.compile.instruction.define;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 
-public class StaticFieldInitializer extends Initializer {
-   
-   private final Evaluation evaluation;
+public class StaticConstantInitializer extends Initializer {
+
+   private final StaticConstantCollector collector;
    private final AtomicBoolean done;
    
-   public StaticFieldInitializer(Evaluation evaluation){
-      this.done = new AtomicBoolean();
-      this.evaluation = evaluation;
+   public StaticConstantInitializer() {
+      this.collector = new StaticConstantCollector();
+      this.done = new AtomicBoolean(false);
    }
 
    @Override
-   public Result compile(Scope instance, Type type) throws Exception {
+   public Result compile(Scope scope, Type type) throws Exception { 
       if(done.compareAndSet(false, true)) {
-         Scope scope = type.getScope();
-         evaluation.evaluate(scope, null);
+         collector.collect(type);
       }
       return ResultType.getNormal();
    }

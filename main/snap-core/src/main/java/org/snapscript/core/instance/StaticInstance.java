@@ -1,7 +1,6 @@
 package org.snapscript.core.instance;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.MapState;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -10,28 +9,28 @@ import org.snapscript.core.Type;
 
 public class StaticInstance implements Instance {
    
-   private final Instance outer;
+   private final Instance base;
    private final Module module;
    private final State state;
    private final Model model;
    private final Type type;
    
-   public StaticInstance(Module module, Model model, Scope inner, Instance outer, Type type) {
-      this.state = new MapState(model, inner);
+   public StaticInstance(Module module, Model model, Scope inner, Instance base, Type type) {
+      this.state = new StaticState(inner, base);
       this.module = module;
-      this.outer = outer;
+      this.base = base;
       this.model = model;
       this.type = type;
    }
    
    @Override
    public Instance getInner() {
-      return new StaticInstance(module, model, this, outer, type);
+      return new StaticInstance(module, model, this, base, type);
    } 
    
    @Override
    public Instance getOuter() {
-      return outer; 
+      return base; 
    } 
    
    @Override
@@ -41,12 +40,12 @@ public class StaticInstance implements Instance {
    
    @Override
    public Instance getInstance() {
-      return outer.getInstance(); 
+      return base.getInstance(); 
    } 
    
    @Override
    public void setInstance(Instance instance) {
-      outer.setInstance(instance);
+      base.setInstance(instance);
    }
   
    @Override
@@ -71,6 +70,6 @@ public class StaticInstance implements Instance {
    
    @Override
    public String toString(){
-      return outer.toString();
+      return base.toString();
    }
 }

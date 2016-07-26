@@ -30,7 +30,8 @@ public class MemberFunctionAssembler {
       this.body = body;
    } 
 
-   public MemberFunctionBuilder assemble(Scope scope, Type type, int mask) throws Exception {
+   public MemberFunctionBuilder assemble(Type type, int mask) throws Exception {
+      Scope scope = type.getScope();
       String name = extractor.extract(scope);
       Signature signature = parameters.create(scope);
       Type returns = constraint.extract(scope);

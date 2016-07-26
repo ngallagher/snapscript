@@ -9,6 +9,7 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 import java.util.List;
 import java.util.Set;
 
+import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
@@ -98,6 +99,7 @@ public class TypeValidator {
       }
    }
    
+   @Bug("this does not really do anything")
    private void validateFunctions(Type type) throws Exception {
       List<Function> functions = type.getFunctions();
       
@@ -118,7 +120,7 @@ public class TypeValidator {
             String resource = module.getName();
             String name = type.getName();
             
-            throw new InternalStateException("Type '" + resource + "." + name + "' have function '" + require + "'");
+            //throw new InternalStateException("Type '" + resource + "." + name + "' have function '" + require + "'");
          }
       }
    }

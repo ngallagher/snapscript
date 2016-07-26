@@ -16,16 +16,18 @@ public class NewInvocation implements Invocation<Instance>{
    private final Initializer initializer;
    private final AtomicBoolean compile;
    private final Allocator allocator;
+   private final Type type;
    
-   public NewInvocation(Initializer initializer, Allocator allocator, Scope inner, Type type) {
-      this(initializer, allocator, inner, type, true);
+   public NewInvocation(Initializer initializer, Allocator allocator, Type type) {
+      this(initializer, allocator, type, true);
    }
    
-   public NewInvocation(Initializer initializer, Allocator allocator, Scope inner, Type type, boolean compile) {
-      this.builder = new StaticInstanceBuilder(inner, type);
+   public NewInvocation(Initializer initializer, Allocator allocator, Type type, boolean compile) {
+      this.builder = new StaticInstanceBuilder(type);
       this.compile = new AtomicBoolean(compile);
       this.initializer = initializer;
       this.allocator = allocator;
+      this.type = type;
    }
 
    @Override
@@ -35,7 +37,7 @@ public class NewInvocation implements Invocation<Instance>{
       
       if(initializer != null) {
          if(compile.compareAndSet(true, false)) {
-            initializer.compile(scope, real); // static stuff if needed
+            initializer.compile(scope, type); // static stuff if needed
          }
       }
       if(instance != null) {

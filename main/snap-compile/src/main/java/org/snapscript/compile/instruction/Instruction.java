@@ -34,6 +34,7 @@ import org.snapscript.compile.instruction.define.ModuleFunction;
 import org.snapscript.compile.instruction.define.ModuleName;
 import org.snapscript.compile.instruction.define.SuperConstructor;
 import org.snapscript.compile.instruction.define.ThisConstructor;
+import org.snapscript.compile.instruction.define.TraitConstant;
 import org.snapscript.compile.instruction.define.TraitDefinition;
 import org.snapscript.compile.instruction.define.TraitFunction;
 import org.snapscript.compile.instruction.define.TraitName;
@@ -148,6 +149,7 @@ public enum Instruction {
    TYPE_NAME(TypeName.class, "type-name"),
    TRAIT_NAME(TraitName.class, "trait-name"),     
    TRAIT_HIERARCHY(TypeHierarchy.class, "trait-hierarchy"),
+   TRAIT_CONSTANT(TraitConstant.class, "trait-constant"),   
    TRAIT_DEFINITION(TraitDefinition.class, "trait-definition"),    
    TRAIT_FUNCTION(TraitFunction.class, "trait-function"),
    ENUM_KEY(EnumKey.class, "enum-key"),

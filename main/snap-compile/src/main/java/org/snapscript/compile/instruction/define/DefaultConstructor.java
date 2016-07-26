@@ -10,7 +10,6 @@ import org.snapscript.compile.instruction.ParameterList;
 import org.snapscript.core.Function;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.NoStatement;
-import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.Type;
 
@@ -33,7 +32,7 @@ public class DefaultConstructor implements TypePart {
    } 
    
    @Override
-   public Initializer compile(Scope scope, Initializer statements, Type type) throws Exception {
+   public Initializer compile(Initializer statements, Type type) throws Exception {
       List<Function> functions = type.getFunctions();
       
       for(Function function : functions) {
@@ -43,13 +42,13 @@ public class DefaultConstructor implements TypePart {
             return null;
          }
       }
-      return define(scope, statements, type, compile);
+      return define(statements, type, compile);
    }
    
-   protected Initializer define(Scope scope, Initializer statements, Type type, boolean compile) throws Exception {
+   protected Initializer define(Initializer statements, Type type, boolean compile) throws Exception {
       Statement statement = new NoStatement();
       ClassConstructor constructor = new ClassConstructor(annotations, modifiers, parameters, statement);
       
-      return constructor.compile(scope, statements, type, compile);
+      return constructor.compile(statements, type, compile);
    }
 }

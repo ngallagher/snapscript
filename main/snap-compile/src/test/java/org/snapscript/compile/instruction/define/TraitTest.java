@@ -41,19 +41,54 @@ public class TraitTest extends TestCase{
    "var c =new Cat();\n"+
    "c.speak();\n"+
    "c.comeToMaster();\n";
-
-   public static void main(String[] l)throws Exception{
-      new TraitTest().testTraits();
-   }
-   public void testTraits() throws Exception {
-      Map map = new HashMap<String,Value>();
-      map.put("out",System.out);
-      Model s = new MapModel(map);
+   
+   private static final String SOURCE_2 =
+   "trait X{\n"+
+   "   const x = 11;\n"+
+   "   dump(){\n"+
+   "      println(x);\n"+
+   "   }\n"+
+   "}\n"+
+   "class Y with X{\n"+
+   "}\n"+
+   "new Y().dump();\n";
+   
+   private static final String SOURCE_3 =
+   "class X{\n"+
+   "   static const x = 11;\n"+
+   "   static dump(){\n"+
+   "      println(x);\n"+
+   "   }\n"+
+   "}\n"+
+   "X.x;\n";   
+         
+//   public void testTraits() throws Exception {
+//      Map map = new HashMap<String,Value>();
+//      map.put("out",System.out);
+//      Model s = new MapModel(map);
+//      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+//      boolean failure=false;
+//      System.err.println(SOURCE_1);
+//      compiler.compile(SOURCE_1).execute(s);
+//      System.err.println();
+//
+//   }
+   
+   public void testTraitConstants() throws Exception {
       Compiler compiler = ClassPathCompilerBuilder.createCompiler();
       boolean failure=false;
-      System.err.println(SOURCE_1);
-      compiler.compile(SOURCE_1).execute(s);
+      System.err.println(SOURCE_2);
+      compiler.compile(SOURCE_2).execute();
       System.err.println();
 
    }
+   
+//   public void testClassConstants() throws Exception {
+//      Compiler compiler = ClassPathCompilerBuilder.createCompiler();
+//      boolean failure=false;
+//      System.err.println(SOURCE_3);
+//      compiler.compile(SOURCE_3).execute();
+//      System.err.println();
+//
+//   }   
 }

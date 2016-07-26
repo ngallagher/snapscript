@@ -1,7 +1,6 @@
 package org.snapscript.compile.instruction.define;
 
 import org.snapscript.core.Initializer;
-import org.snapscript.core.Scope;
 import org.snapscript.core.SuperExtractor;
 import org.snapscript.core.Type;
 
@@ -17,14 +16,14 @@ public class DelegateInitializer {
       this.part = part;
    } 
 
-   public Initializer compile(Scope scope, Initializer initializer, Type type) throws Exception {
+   public Initializer compile(Initializer initializer, Type type) throws Exception {
       Type base = extractor.extractor(type);
       
       if(part != null){
-         return part.compile(scope, initializer, type);              
+         return part.compile(initializer, type);              
       }
       if(base != null) {
-         return constructor.compile(scope, initializer, type);
+         return constructor.compile(initializer, type);
       }
       return new PrimitiveConstructor(); 
    }

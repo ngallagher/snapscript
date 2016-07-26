@@ -29,11 +29,12 @@ public abstract class MemberConstructor implements TypePart {
       this.body = body;
    } 
 
-   protected Initializer compile(Scope scope, Initializer initializer, Type type, boolean compile) throws Exception {
+   protected Initializer compile(Initializer initializer, Type type, boolean compile) throws Exception {
       int modifiers = list.getModifiers();
-      ConstructorBuilder builder = assembler.assemble(scope, initializer, type);
-      Function constructor = builder.create(scope, initializer, type, modifiers, compile);
+      ConstructorBuilder builder = assembler.assemble(initializer, type);
+      Function constructor = builder.create(initializer, type, modifiers, compile);
       List<Function> functions = type.getFunctions();
+      Scope scope = type.getScope();
       
       annotations.apply(scope, constructor);
       functions.add(constructor);
