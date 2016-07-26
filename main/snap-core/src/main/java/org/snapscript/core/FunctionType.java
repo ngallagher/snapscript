@@ -13,7 +13,7 @@ public class FunctionType implements Type {
    
    public FunctionType(Signature signature, Module module) {
       this.function = new EmptyFunction(signature, METHOD_CLOSURE);
-      this.scope = new StaticScope(null);
+      this.scope = new TypeScope(null);
       this.module = module;
    }
    

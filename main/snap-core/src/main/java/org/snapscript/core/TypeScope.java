@@ -1,12 +1,12 @@
 package org.snapscript.core;
 
-public class StaticScope implements Scope {
+public class TypeScope implements Scope {
    
    private final State state;
    private final Type type;
    
    @Bug("we probably should provide the Type or Module here")
-   public StaticScope(Type type) {
+   public TypeScope(Type type) {
       this.state = new MapState(null, null);
       this.type = type;
    }
@@ -26,6 +26,7 @@ public class StaticScope implements Scope {
       return type.getModule();
    }
    
+   @Bug("This is broken")
    @Override
    public Context getContext() {
       return type.getModule().getContext();

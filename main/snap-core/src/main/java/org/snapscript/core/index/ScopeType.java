@@ -8,7 +8,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
-import org.snapscript.core.StaticScope;
+import org.snapscript.core.TypeScope;
 import org.snapscript.core.Type;
 
 public class ScopeType implements Type {
@@ -27,7 +27,7 @@ public class ScopeType implements Type {
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
-      this.scope = new StaticScope(this);
+      this.scope = new TypeScope(this);
       this.module = module;
       this.name = name;
       this.order = order;

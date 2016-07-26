@@ -7,7 +7,7 @@ import org.snapscript.core.Function;
 import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
-import org.snapscript.core.StaticScope;
+import org.snapscript.core.TypeScope;
 import org.snapscript.core.Type;
 
 public class ClassType implements Type {
@@ -20,7 +20,7 @@ public class ClassType implements Type {
    
    public ClassType(ClassIndexer indexer, Class type, String name, int order) {
       this.index = new ClassIndex(indexer, this);
-      this.scope = new StaticScope(this);
+      this.scope = new TypeScope(this);
       this.name = name;
       this.type = type;
       this.order = order;

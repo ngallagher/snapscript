@@ -25,7 +25,7 @@ public class TestType implements Type {
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
-      this.scope = new StaticScope(null);
+      this.scope = new TypeScope(null);
       this.module = module;
       this.entry = entry;
       this.type = type;
