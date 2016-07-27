@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -21,7 +22,8 @@ public class ListConstraint implements Evaluation {
    
    @Override
    public Value evaluate(Scope scope, Object left) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       TypeLoader loader = context.getLoader();
       Type type = loader.loadType(List.class);
       

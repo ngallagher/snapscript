@@ -31,11 +31,6 @@ public class ClosureScope implements Scope {
    public Module getModule() {
       return scope.getModule();
    }
-
-   @Override
-   public Context getContext() {
-      return scope.getContext();
-   }
    
    @Override
    public Model getModel() {

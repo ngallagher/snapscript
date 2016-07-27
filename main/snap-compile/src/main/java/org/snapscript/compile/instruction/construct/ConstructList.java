@@ -57,7 +57,8 @@ public class ConstructList implements Compilation {
          
          if(arguments != null) {
             Value reference = arguments.evaluate(scope, left);
-            Context context = scope.getContext();
+            Module module = scope.getModule();
+            Context context = module.getContext();
             ProxyWrapper wrapper = context.getWrapper();
             Object[] array = reference.getValue();
             

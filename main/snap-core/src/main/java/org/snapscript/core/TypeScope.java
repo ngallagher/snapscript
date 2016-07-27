@@ -5,9 +5,8 @@ public class TypeScope implements Scope {
    private final State state;
    private final Type type;
    
-   @Bug("we probably should provide the Type or Module here")
    public TypeScope(Type type) {
-      this.state = new MapState(null, null);
+      this.state = new MapState();
       this.type = type;
    }
    
@@ -25,12 +24,6 @@ public class TypeScope implements Scope {
    public Module getModule() {
       return type.getModule();
    }
-   
-   @Bug("This is broken")
-   @Override
-   public Context getContext() {
-      return type.getModule().getContext();
-   }   
    
    @Override
    public Model getModel() {

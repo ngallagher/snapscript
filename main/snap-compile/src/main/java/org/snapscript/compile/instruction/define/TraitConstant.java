@@ -15,6 +15,7 @@ import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.ModifierType;
+import org.snapscript.core.Module;
 import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.StaticAccessor;
@@ -41,10 +42,10 @@ public class TraitConstant implements TypePart {
       this.identifier = identifier;
    }
 
-   @Bug("Clean this up")
    @Override
    public Initializer compile(Initializer initializer, Type type) throws Exception {
       Scope scope = type.getScope();
+      Module module = type.getModule();
       Initializer declare = declaration.declare(initializer);
       List<Property> properties = type.getProperties();
       Value value = identifier.evaluate(scope, null);
@@ -52,7 +53,7 @@ public class TraitConstant implements TypePart {
       String name = value.getString();
       
       if(!checker.isConstant()) {
-         throw new InternalStateException("Modifier must be constant for " + name);
+         throw new InternalStateException("Variable '" + name + "' for " +module + "." + type + " must be constant");
       }
       Accessor accessor = new StaticAccessor(initializer, scope, type, name);
       Property property = new AccessorProperty(name, type, constraint, accessor, ModifierType.STATIC.mask | ModifierType.CONSTANT.mask);

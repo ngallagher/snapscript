@@ -23,11 +23,6 @@ public class ModelScope implements Scope {
    } 
    
    @Override
-   public Context getContext() {
-      return module.getContext();
-   } 
-   
-   @Override
    public Model getModel() {
       return model;
    }

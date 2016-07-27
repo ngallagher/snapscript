@@ -1,13 +1,14 @@
 package org.snapscript.core.convert;
 
 import org.snapscript.core.Context;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.convert.ProxyWrapper;
 
 public class StringBuilder {
 
    public static String create(Scope scope, Object left) {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       ProxyWrapper wrapper = context.getWrapper();
       Object object = wrapper.toProxy(left);
       

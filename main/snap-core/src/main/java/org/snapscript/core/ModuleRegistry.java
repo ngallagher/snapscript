@@ -27,7 +27,7 @@ public class ModuleRegistry {
       this.references = new CopyOnWriteArrayList<Module>();
       this.extender = new ModuleExtender(context);
       this.converter = new PathConverter();
-      this.counter = new AtomicInteger();
+      this.counter = new AtomicInteger(1);
       this.context = context;
       this.limit = limit;
    }

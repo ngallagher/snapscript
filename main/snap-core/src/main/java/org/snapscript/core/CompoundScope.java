@@ -30,12 +30,7 @@ public class CompoundScope implements Scope {
    @Override
    public Module getModule() {
       return outer.getModule();
-   }
-   
-   @Override
-   public Context getContext() {
-      return outer.getContext();
-   }   
+   } 
 
    @Override
    public Model getModel() {
@@ -82,11 +77,6 @@ public class CompoundScope implements Scope {
       @Override
       public Module getModule() {
          return outer.getModule();
-      }
-
-      @Override
-      public Context getContext() {
-         return outer.getContext();
       }
       
       @Override

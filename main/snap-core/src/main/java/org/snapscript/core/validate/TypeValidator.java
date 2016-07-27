@@ -98,29 +98,15 @@ public class TypeValidator {
          }
       }
    }
-   
-   @Bug("this does not really do anything")
+
    private void validateFunctions(Type type) throws Exception {
       List<Function> functions = type.getFunctions();
-      
-      for(int i = 0; i < FUNCTIONS.length; i++) {
-         String require = FUNCTIONS[i];
-         int matches = 0;
          
-         for(Function function : functions) {
-            String name = function.getName();
-            
-            if(name.equals(require)) {
-               matches++;
-            }
+      for(Function function : functions) {
+         String name = function.getName();
+         
+         if(!name.equals(TYPE_CONSTRUCTOR)) {
             validator.validate(function);
-         }
-         if(matches == 0) {
-            Module module = type.getModule();
-            String resource = module.getName();
-            String name = type.getName();
-            
-            //throw new InternalStateException("Type '" + resource + "." + name + "' have function '" + require + "'");
          }
       }
    }

@@ -20,6 +20,10 @@ public class ContextModule implements Module {
    private final Scope scope;
    private final int order;
    
+   public ContextModule(Context context, String path, String prefix) {
+      this(context, path, prefix, 0);
+   }
+   
    public ContextModule(Context context, String path, String prefix, int order) {
       this.annotations = new CopyOnWriteArrayList<Annotation>();
       this.functions = new CopyOnWriteArrayList<Function>();

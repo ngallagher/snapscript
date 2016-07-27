@@ -43,7 +43,8 @@ public class ThrowStatement implements Compilation {
       @Override
       public Result execute(Scope scope) throws Exception {
          Value reference = evaluation.evaluate(scope, null);
-         Context context = scope.getContext();
+         Module module = scope.getModule();
+         Context context = module.getContext();
          ErrorHandler handler = context.getHandler();
          Object value = reference.getValue();
          

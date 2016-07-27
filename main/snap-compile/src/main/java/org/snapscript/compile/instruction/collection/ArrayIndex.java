@@ -6,6 +6,7 @@ import org.snapscript.compile.instruction.Argument;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalArgumentException;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.convert.ProxyWrapper;
@@ -28,7 +29,8 @@ public class ArrayIndex implements Evaluation {
    public Value evaluate(Scope scope, Object left) throws Exception {
       Value index = first.evaluate(scope, null);
       Value value = array.evaluate(scope, left);
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       ProxyWrapper wrapper = context.getWrapper();
       Integer number = index.getInteger();
       List source = value.getValue();

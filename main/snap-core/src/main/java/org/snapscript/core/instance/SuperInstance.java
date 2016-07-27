@@ -1,6 +1,5 @@
 package org.snapscript.core.instance;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.State;
@@ -20,11 +19,6 @@ public class SuperInstance implements Instance {
       this.model = model;
       this.base = base;
       this.real = real;
-   }
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
    }
 
    @Override

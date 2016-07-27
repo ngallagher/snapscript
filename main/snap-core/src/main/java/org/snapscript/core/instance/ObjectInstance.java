@@ -2,7 +2,6 @@ package org.snapscript.core.instance;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.State;
@@ -35,11 +34,6 @@ public class ObjectInstance implements Instance {
    public Instance getOuter() {
       return this; 
    } 
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
-   }
    
    @Override
    public Instance getInstance() {

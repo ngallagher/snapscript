@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.snapscript.compile.instruction.ParameterExtractor;
 import org.snapscript.core.Context;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -36,7 +37,8 @@ public class StaticInvocation implements Invocation<Object> {
    @Override
    public Result invoke(Scope outer, Object object, Object... list) throws Exception {
       Object[] arguments = aligner.align(list); 
-      Context context = outer.getContext();
+      Module module = outer.getModule();
+      Context context = module.getContext();
       Scope scope = inner.getInner();
       
       if(arguments.length > 0) {

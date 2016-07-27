@@ -1,12 +1,14 @@
 package org.snapscript.compile.instruction;
 
+import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.ContextScope;
+import org.snapscript.core.ContextModule;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
@@ -16,16 +18,16 @@ import org.snapscript.parse.Line;
 public class InstructionBuilder {
    
    private final InstructionProcessor processor;
-   private final Context context;
-   private final Scope scope;
+   private final Module module;
 
    public InstructionBuilder(Context context) {
+      this.module = new ContextModule(context, DEFAULT_PACKAGE, DEFAULT_PACKAGE, 0);
       this.processor = new InstructionProcessor(context);
-      this.scope = new ContextScope(context);
-      this.context = context;
    }
    
    public Object create(Type type, Object[] arguments, Line line) throws Exception {
+      Scope scope = module.getScope();
+      Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
       Callable<Result> callable = binder.bind(scope, type, TYPE_CONSTRUCTOR, arguments);
       

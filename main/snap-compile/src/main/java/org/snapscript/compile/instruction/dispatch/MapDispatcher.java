@@ -44,7 +44,8 @@ public class MapDispatcher implements InvocationDispatcher {
    }
    
    private Callable<Result> bind(String name, Object... arguments) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
       Callable<Result> local = binder.bind(scope, object, name, arguments);
       

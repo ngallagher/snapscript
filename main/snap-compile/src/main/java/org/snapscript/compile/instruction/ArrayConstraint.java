@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.collection.ArrayBuilder;
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.InternalArgumentException;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
@@ -33,7 +34,8 @@ public class ArrayConstraint implements Evaluation {
    }
    
    private Type create(Scope scope, Type entry) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       TypeLoader loader = context.getLoader();
       Object array = create(entry);
       Class real = array.getClass();

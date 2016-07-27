@@ -8,6 +8,7 @@ import org.snapscript.core.Any;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Signature;
@@ -33,7 +34,8 @@ public class FunctionDispatcher implements InvocationDispatcher {
 
    @Override
    public Value dispatch(String name, Object... arguments) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
       Callable<Result> call = binder.bind(scope, function, name, arguments); // this is not used often
       

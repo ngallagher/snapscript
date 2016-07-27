@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Evaluation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -25,7 +26,8 @@ public class MapEntryList implements Evaluation{
       
       for(int i = 0; i < list.length; i++){
          Entry entry = list[i].create(scope);
-         Context context = scope.getContext();
+         Module module = scope.getModule();
+         Context context = module.getContext();
          ProxyWrapper wrapper = context.getWrapper();
          Object key = entry.getKey();
          Object value = entry.getValue();

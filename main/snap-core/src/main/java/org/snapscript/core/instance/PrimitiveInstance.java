@@ -2,7 +2,6 @@ package org.snapscript.core.instance;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.MapState;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
@@ -35,11 +34,6 @@ public class PrimitiveInstance implements Instance {
    public Instance getOuter() {
       return this;
    } 
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
-   }  
    
    @Override
    public Instance getInstance() {

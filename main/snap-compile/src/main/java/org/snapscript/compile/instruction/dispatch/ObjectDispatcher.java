@@ -27,13 +27,13 @@ public class ObjectDispatcher implements InvocationDispatcher {
 
    @Override
    public Value dispatch(String name, Object... arguments) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
       Callable<Result> call = binder.bind(scope, object, name, arguments);
       
       if(call == null) {
          Type type = extractor.extract(scope, object);
-         Module module = type.getModule();
          
          throw new InternalStateException("Method '" + name + "' not found for " + module + "." + type);
       }

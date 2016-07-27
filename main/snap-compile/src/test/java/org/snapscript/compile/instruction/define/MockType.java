@@ -28,7 +28,7 @@ public class MockType implements Type {
       this.properties = new ArrayList<Property>();
       this.functions = new ArrayList<Function>();
       this.types = new ArrayList<Type>();
-      this.scope = new TypeScope(null);
+      this.scope = new TypeScope(this);
       this.module = module;
       this.entry = entry;
       this.type = type;

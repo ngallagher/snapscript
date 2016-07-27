@@ -10,8 +10,8 @@ import org.snapscript.core.Evaluation;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Trace;
-import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceEvaluation;
+import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TraceType;
 import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
@@ -57,7 +57,8 @@ public class ConstructSet implements Compilation {
          
          if(arguments != null) {
             Value reference = arguments.evaluate(scope, left);
-            Context context = scope.getContext();
+            Module module = scope.getModule();
+            Context context = module.getContext();
             ProxyWrapper wrapper = context.getWrapper();
             Object[] array = reference.getValue();
             

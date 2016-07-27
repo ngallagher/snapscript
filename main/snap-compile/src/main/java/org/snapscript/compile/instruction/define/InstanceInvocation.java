@@ -4,6 +4,7 @@ import org.snapscript.compile.instruction.ParameterExtractor;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -38,7 +39,8 @@ public class InstanceInvocation implements Invocation<Scope> {
       if(instance == null) {
          instance = scope; // this is for super
       }
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       Scope outer = instance.getOuter();
       Scope inner = outer.getInner(); // create a writable scope
       

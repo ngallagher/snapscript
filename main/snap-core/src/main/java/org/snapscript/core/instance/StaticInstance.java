@@ -1,6 +1,5 @@
 package org.snapscript.core.instance;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
@@ -31,11 +30,6 @@ public class StaticInstance implements Instance {
    @Override
    public Instance getOuter() {
       return base; 
-   } 
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
    } 
    
    @Override

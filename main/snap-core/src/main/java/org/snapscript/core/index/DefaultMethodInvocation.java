@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import org.snapscript.core.Context;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -53,7 +54,8 @@ public class DefaultMethodInvocation implements Invocation<Object>{
             list = copy;
          }
       }
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       ProxyWrapper wrapper = context.getWrapper();
       Object value = handle.invoke(left, list);
       Object result = wrapper.fromProxy(value);

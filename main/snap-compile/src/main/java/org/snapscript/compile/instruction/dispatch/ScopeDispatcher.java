@@ -42,12 +42,12 @@ public class ScopeDispatcher implements InvocationDispatcher {
    }
    
    private Callable<Result> bind(String name, Object... arguments) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       FunctionBinder binder = context.getBinder();
       Callable<Result> local = binder.bind(scope, object, name, arguments);
       
       if(local == null) {
-         Module module = scope.getModule();
          Callable<Result> external = binder.bind(scope, module, name, arguments); // maybe closure should be first
          
          if(external != null) {

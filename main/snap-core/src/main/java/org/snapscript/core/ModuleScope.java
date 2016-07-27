@@ -19,11 +19,6 @@ public class ModuleScope implements Scope {
    public Scope getOuter() {
       return this;
    }
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
-   } 
 
    @Override
    public State getState() {

@@ -1,6 +1,5 @@
 package org.snapscript.core.instance;
 
-import org.snapscript.core.Context;
 import org.snapscript.core.MapState;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
@@ -32,11 +31,6 @@ public class CompoundInstance implements Instance {
    public Instance getOuter() {
       return outer.getOuter(); 
    } 
-   
-   @Override
-   public Context getContext() {
-      return module.getContext();
-   }
    
    @Override
    public Instance getInstance() {

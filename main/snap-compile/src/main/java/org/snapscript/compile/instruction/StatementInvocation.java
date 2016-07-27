@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Invocation;
+import org.snapscript.core.Module;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
@@ -33,7 +34,8 @@ public class StatementInvocation implements Invocation<Object> {
    @Override
    public Result invoke(Scope scope, Object object, Object... list) throws Exception {
       Object[] arguments = aligner.align(list); 
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       Scope outer = scope.getOuter(); 
       Scope inner = outer.getInner();
       

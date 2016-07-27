@@ -24,7 +24,8 @@ public class IterationConverter {
    }
    
    public Iteration convert(Scope scope, Object value) throws Exception {
-      Context context = scope.getContext();
+      Module module = scope.getModule();
+      Context context = module.getContext();
       ProxyWrapper wrapper = context.getWrapper();
       Class type = value.getClass();
    
