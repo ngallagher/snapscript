@@ -6,7 +6,6 @@ import org.snapscript.core.Type;
 
 public abstract class Initializer {
 
-   @Bug("All static intializers need to be FutureTasks")
    public Result compile(Scope scope, Type type) throws Exception { // static stuff
       return ResultType.getNormal();
    }

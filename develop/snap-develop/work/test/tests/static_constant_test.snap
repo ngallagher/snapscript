@@ -49,5 +49,3 @@ function testStaticConstIneritance(){
    assert boo.getY() == 12;
    assert boo.getBoo() == 667;
 }
-
-testStaticConstIneritance();

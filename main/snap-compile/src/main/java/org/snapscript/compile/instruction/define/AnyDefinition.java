@@ -11,7 +11,6 @@ import static org.snapscript.core.Reserved.METHOD_TO_STRING;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Context;
 import org.snapscript.core.Function;
 import org.snapscript.core.Invocation;
@@ -33,19 +32,17 @@ public class AnyDefinition{
       this.constructor = new DefaultConstructor();
    }
 
-   @Bug("This should work better concurrently")
    public Type create(Scope scope) throws Exception {
       Module module = scope.getModule();
       Context context = module.getContext();
       TypeLoader loader = context.getLoader();
       Type type = loader.defineType(DEFAULT_PACKAGE, ANY_TYPE);
-      Type string = loader.loadType(String.class);
-      Type integer = loader.loadType(Integer.class);
-      Type bool = loader.loadType(Boolean.class);
       List<Function> functions = type.getFunctions();
       
       if(functions.isEmpty()) {
-         Scope value = module.getScope();
+         Type string = loader.loadType(String.class);
+         Type integer = loader.loadType(Integer.class);
+         Type bool = loader.loadType(Boolean.class);
          Function hashCode = createHashCode(module, type, integer);
          Function toString = createToString(module, type, string);
          Function equals = createEquals(module, type, bool);

@@ -43,11 +43,7 @@ public class StaticConstantCollector {
                   PropertyValue value = new PropertyValue(property, null, name);
                   
                   if(names.add(name)) {
-                     try {
-                        state.addVariable(name, value);
-                     }catch(Exception e){
-                        e.printStackTrace();
-                     }
+                     state.addVariable(name, value);
                   }
                }
             }

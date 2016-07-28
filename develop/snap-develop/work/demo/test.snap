@@ -6,7 +6,15 @@ class X{
 }
 class Y with X{
    override dump(){
-      println(x);
+      foo(1, 2, 3);
+   }
+   foo(a, b, c){
+      var location= "foo";
+      var resource = "resource:1";
+      blah("X", "Y");
+   }
+   blah(a, b){
+      println("${a}, ${b}");
    }
 }
 var y = new Y();
