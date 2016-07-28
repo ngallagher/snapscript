@@ -10,7 +10,6 @@ import org.snapscript.compile.instruction.ModifierList;
 import org.snapscript.compile.instruction.literal.TextLiteral;
 import org.snapscript.core.Accessor;
 import org.snapscript.core.AccessorProperty;
-import org.snapscript.core.Bug;
 import org.snapscript.core.Evaluation;
 import org.snapscript.core.Initializer;
 import org.snapscript.core.InternalStateException;

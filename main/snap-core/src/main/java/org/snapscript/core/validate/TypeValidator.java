@@ -9,7 +9,6 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.Bug;
 import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
