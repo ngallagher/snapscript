@@ -20,7 +20,6 @@ import org.snapscript.core.convert.ConstraintMatcher;
 public class TypeValidator {
    
    private static final String[] PROPERTIES = { TYPE_THIS, TYPE_SUPER, TYPE_CLASS };
-   private static final String[] FUNCTIONS = { TYPE_CONSTRUCTOR };
    private static final String[] TYPES = { ANY_TYPE };
    
    private final FunctionValidator validator;
