@@ -14,11 +14,12 @@ public class TypeTraverser {
       this.types = new ConcurrentHashMap<Type, Set<Type>>();
    }
 
-   public Set<Type> traverse(Type actual) {
-      Set<Type> list = types.get(actual);
+   public Set<Type> traverse(Type type) {
+      Set<Type> list = types.get(type);
       
       if(list == null) {
-         return collect(actual);
+         list = collect(type);
+         types.put(type, list);
       }
       return list;
    }
@@ -27,21 +28,26 @@ public class TypeTraverser {
       Set<Type> list = new LinkedHashSet<Type>();
       
       if(type != null) {
-         collect(type, list);
+         collect(type, type, list);
       }
-      types.put(type, list);
       return list;
-      
    }
    
-   private Set<Type> collect(Type type, Set<Type> types) {
-      if(types.add(type)) {
-         List<Type> list = type.getTypes();
-         
-         for(Type entry : list) {
-            collect(entry, types);
+   private Set<Type> collect(Type root, Type type, Set<Type> list) {
+      List<Type> types = type.getTypes();
+      
+      if(list.add(type)) {
+         for(Type entry : types) {
+            if(entry == root) {
+               Module module = type.getModule();
+               String resource = module.getName();
+               String name = type.getName();
+               
+               throw new InternalStateException("Hierarchy for '" + resource + "." + name + "' contains a cycle");
+            }
+            collect(root, entry, list);
          }
       }
-      return types;
+      return list;
    }
 }

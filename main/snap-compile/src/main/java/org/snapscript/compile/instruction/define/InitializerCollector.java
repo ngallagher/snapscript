@@ -26,7 +26,7 @@ public class InitializerCollector extends Initializer {
    @Override
    public Result compile(Scope scope, Type type) throws Exception {
       Result last = null;
-
+      
       for(Initializer initializer : list) {
          Result result = initializer.compile(scope, type);
          

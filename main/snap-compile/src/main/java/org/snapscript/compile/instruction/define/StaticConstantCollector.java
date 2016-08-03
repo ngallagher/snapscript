@@ -30,7 +30,7 @@ public class StaticConstantCollector {
       Set<String> names = indexer.index(type);
       Scope scope = type.getScope();
       State state = scope.getState();
-      
+
       for(Type base : types) {
          if(type != base) {
             List<Property> properties = base.getProperties();

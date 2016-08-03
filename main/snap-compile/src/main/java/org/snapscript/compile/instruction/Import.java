@@ -110,7 +110,7 @@ public class Import implements Compilation {
          Module module = scope.getModule();
          ImportManager manager = module.getManager();
          String type = builder.createName(location, target);
-         
+             
          if(target == null) {
             manager.addImport(location); // import game.tetris.*;
          }  else {

@@ -1,21 +1,6 @@
-class X{
-   static const x = 11;
-   dump(){
-      println(x);
-   }
+class X {
 }
-class Y with X{
-   override dump(){
-      foo(1, 2, 3);
-   }
-   foo(a, b, c){
-      var location= "foo";
-      var resource = "resource:1";
-      blah("X", "Y");
-   }
-   blah(a, b){
-      println("${a}, ${b}");
-   }
+class Y extends X{
 }
-var y = new Y();
-y.dump();
+println(X.class.getTypes());
+println(Y.class.getTypes());

@@ -1,5 +1,7 @@
 package org.snapscript.compile.instruction.define;
 
+import org.snapscript.core.Result;
+import org.snapscript.core.ResultType;
 import org.snapscript.core.Type;
 
 public class StaticConstantInitializer extends StaticInitializer {
@@ -11,7 +13,8 @@ public class StaticConstantInitializer extends StaticInitializer {
    }
 
    @Override
-   protected void compile(Type type) throws Exception { 
+   protected Result compile(Type type) throws Exception { 
       collector.collect(type);
+      return ResultType.getNormal();
    }
 }
