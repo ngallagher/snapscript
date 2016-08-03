@@ -1,5 +1,6 @@
 package org.snapscript.core;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class TypeTraverser {
       if(type != null) {
          collect(type, type, list);
       }
-      return list;
+      return Collections.unmodifiableSet(list);
    }
    
    private Set<Type> collect(Type root, Type type, Set<Type> list) {
@@ -38,7 +39,7 @@ public class TypeTraverser {
       
       if(list.add(type)) {
          for(Type entry : types) {
-            if(entry == root) {
+            if(entry == root) { 
                Module module = type.getModule();
                String resource = module.getName();
                String name = type.getName();
