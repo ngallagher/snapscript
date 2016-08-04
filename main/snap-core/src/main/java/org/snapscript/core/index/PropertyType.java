@@ -2,8 +2,6 @@ package org.snapscript.core.index;
 
 import java.lang.reflect.Method;
 
-import org.snapscript.core.PropertyNameExtractor;
-
 public enum PropertyType {
    GET("get", true),
    SET("set", false),      

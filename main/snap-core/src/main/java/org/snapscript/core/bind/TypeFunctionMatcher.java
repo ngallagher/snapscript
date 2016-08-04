@@ -2,15 +2,15 @@ package org.snapscript.core.bind;
 
 import java.util.List;
 
-import org.snapscript.core.ArgumentConverter;
-import org.snapscript.core.EmptyFunction;
-import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.convert.Score;
 import org.snapscript.core.error.ThreadStack;
+import org.snapscript.core.function.ArgumentConverter;
+import org.snapscript.core.function.EmptyFunction;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Signature;
 
 public class TypeFunctionMatcher {
    

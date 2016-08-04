@@ -1,6 +1,6 @@
 package org.snapscript.core;
 
-import org.snapscript.core.instance.SuperInstance;
+import org.snapscript.core.define.SuperInstance;
 
 public class ValueTypeConverter {
    

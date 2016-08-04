@@ -5,10 +5,10 @@ import static org.snapscript.core.convert.Score.INVALID;
 
 import java.util.List;
 
-import org.snapscript.core.Function;
-import org.snapscript.core.Parameter;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Parameter;
+import org.snapscript.core.function.Signature;
 
 public class FunctionComparator {
    

@@ -4,16 +4,17 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import java.util.List;
 
-import org.snapscript.core.Annotation;
-import org.snapscript.core.Function;
-import org.snapscript.core.ImportScanner;
 import org.snapscript.core.InternalArgumentException;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PrimitivePromoter;
-import org.snapscript.core.Property;
 import org.snapscript.core.Type;
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.annotation.AnnotationExtractor;
 import org.snapscript.core.extend.ClassExtender;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.link.ImportScanner;
+import org.snapscript.core.property.Property;
 
 public class ClassIndexer {
 

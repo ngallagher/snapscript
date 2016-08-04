@@ -2,6 +2,11 @@ package org.snapscript.core;
 
 import org.snapscript.core.extend.ClassExtender;
 import org.snapscript.core.index.TypeIndexer;
+import org.snapscript.core.link.ImportScanner;
+import org.snapscript.core.link.Package;
+import org.snapscript.core.link.PackageLinker;
+import org.snapscript.core.link.PackageLoader;
+import org.snapscript.core.link.PackageManager;
 
 public class TypeLoader {
    

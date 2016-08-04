@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.Annotation;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.PrimitivePromoter;
-import org.snapscript.core.Property;
-import org.snapscript.core.PropertyNameExtractor;
 import org.snapscript.core.Type;
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.annotation.AnnotationExtractor;
+import org.snapscript.core.property.Property;
 
 public class PropertyIndexer {
    
@@ -22,6 +22,7 @@ public class PropertyIndexer {
    private final ModifierConverter converter;
    private final PropertyGenerator generator;
    private final PrimitivePromoter promoter;
+   private final MethodMatcher matcher;
    private final TypeIndexer indexer;
    
    public PropertyIndexer(TypeIndexer indexer){
@@ -30,6 +31,7 @@ public class PropertyIndexer {
       this.converter = new ModifierConverter();
       this.generator = new PropertyGenerator();
       this.promoter = new PrimitivePromoter();
+      this.matcher = new MethodMatcher();
       this.indexer = indexer;
    }
 
@@ -70,7 +72,7 @@ public class PropertyIndexer {
                   
                   if(done.add(name)){
                      Class declaration = method.getReturnType();
-                     Method write = match(methods, declaration, name);
+                     Method write = matcher.match(methods, declaration, name);
                      
                      if(write == null) {
                         modifiers |= CONSTANT.mask;
@@ -94,30 +96,5 @@ public class PropertyIndexer {
       }
       return properties;
    }
-   
-   private Method match(Method[] methods, Class require, String name) throws Exception {
-      PropertyType[] types = PropertyType.values();
 
-      for(Method method : methods) {         
-         int modifiers = converter.convert(method);
-         
-         if(!ModifierType.isStatic(modifiers) && ModifierType.isPublic(modifiers)) {
-            for(PropertyType type : types) {            
-               if(type.isWrite(method)) {
-                  Class[] parameters = method.getParameterTypes();
-                  Class actual = parameters[0];
-                  
-                  if(actual == require) {
-                     String property = type.getProperty(method);
-      
-                     if(property.equals(name)) {
-                        return method;
-                     }
-                  }
-               }
-            }
-         }
-      }
-      return null;
-   }
 }

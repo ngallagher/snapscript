@@ -4,10 +4,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.Invocation;
 import org.snapscript.core.Result;
 import org.snapscript.core.ResultType;
 import org.snapscript.core.Scope;
+import org.snapscript.core.function.Invocation;
 
 public class ConstructorInvocation implements Invocation<Object> {
 

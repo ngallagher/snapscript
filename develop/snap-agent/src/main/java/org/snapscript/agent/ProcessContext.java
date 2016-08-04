@@ -11,8 +11,8 @@ import org.snapscript.compile.ResourceCompiler;
 import org.snapscript.compile.StoreContext;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
-import org.snapscript.core.PackageLinker;
-import org.snapscript.core.TraceInterceptor;
+import org.snapscript.core.link.PackageLinker;
+import org.snapscript.core.trace.TraceInterceptor;
 
 public class ProcessContext {
 

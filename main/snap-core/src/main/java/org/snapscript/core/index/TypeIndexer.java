@@ -4,12 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.snapscript.core.ImportScanner;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.Type;
 import org.snapscript.core.extend.ClassExtender;
+import org.snapscript.core.link.ImportScanner;
 
 public class TypeIndexer {
 

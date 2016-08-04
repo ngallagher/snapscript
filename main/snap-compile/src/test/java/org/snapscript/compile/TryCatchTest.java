@@ -2,9 +2,6 @@ package org.snapscript.compile;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.Compiler;
-import org.snapscript.compile.Executable;
-
 public class TryCatchTest extends TestCase {
    
    private static final String SOURCE=

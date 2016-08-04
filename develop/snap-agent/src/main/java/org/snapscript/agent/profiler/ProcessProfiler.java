@@ -12,8 +12,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Trace;
-import org.snapscript.core.TraceListener;
+import org.snapscript.core.trace.Trace;
+import org.snapscript.core.trace.TraceListener;
 
 public class ProcessProfiler implements TraceListener {
    

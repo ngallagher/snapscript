@@ -3,11 +3,11 @@ package org.snapscript.core.index;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.snapscript.core.AccessorProperty;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.ModifierType;
-import org.snapscript.core.Property;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.AccessorProperty;
+import org.snapscript.core.property.Property;
 
 public class PropertyGenerator {
   

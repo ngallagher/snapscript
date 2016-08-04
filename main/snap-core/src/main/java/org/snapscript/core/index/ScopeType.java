@@ -3,13 +3,13 @@ package org.snapscript.core.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Annotation;
-import org.snapscript.core.Function;
 import org.snapscript.core.Module;
-import org.snapscript.core.Property;
 import org.snapscript.core.Scope;
 import org.snapscript.core.TypeScope;
 import org.snapscript.core.Type;
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.property.Property;
 
 public class ScopeType implements Type {
    

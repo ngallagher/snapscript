@@ -6,7 +6,7 @@ import java.util.Map;
 import org.snapscript.core.Context;
 import org.snapscript.core.PrimitivePromoter;
 import org.snapscript.core.convert.ProxyWrapper;
-import org.snapscript.core.instance.Instance;
+import org.snapscript.core.define.Instance;
 
 public class ScopeNodeBuilder {
    

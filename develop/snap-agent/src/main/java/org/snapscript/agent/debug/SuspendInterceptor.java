@@ -8,10 +8,10 @@ import org.snapscript.agent.event.ScopeEvent;
 import org.snapscript.core.Context;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Trace;
-import org.snapscript.core.TraceListener;
-import org.snapscript.core.TraceType;
 import org.snapscript.core.error.ThreadStack;
+import org.snapscript.core.trace.Trace;
+import org.snapscript.core.trace.TraceListener;
+import org.snapscript.core.trace.TraceType;
 
 public class SuspendInterceptor implements TraceListener {
 

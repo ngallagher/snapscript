@@ -5,13 +5,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snapscript.core.Annotation;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
-import org.snapscript.core.Parameter;
-import org.snapscript.core.ParameterBuilder;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.annotation.AnnotationConverter;
+import org.snapscript.core.function.Parameter;
+import org.snapscript.core.function.ParameterBuilder;
+import org.snapscript.core.function.Signature;
 
 public class SignatureGenerator {
    

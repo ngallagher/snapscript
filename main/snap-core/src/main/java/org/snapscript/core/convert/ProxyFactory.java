@@ -4,8 +4,8 @@ import java.lang.reflect.Proxy;
 
 import org.snapscript.core.Any;
 import org.snapscript.core.Context;
-import org.snapscript.core.Function;
 import org.snapscript.core.Scope;
+import org.snapscript.core.function.Function;
 
 public class ProxyFactory {
 

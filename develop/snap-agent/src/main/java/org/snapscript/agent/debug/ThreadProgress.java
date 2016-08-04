@@ -3,7 +3,7 @@ package org.snapscript.agent.debug;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.core.TraceType;
+import org.snapscript.core.trace.TraceType;
 
 public class ThreadProgress {
 

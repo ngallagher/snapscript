@@ -3,8 +3,8 @@ package org.snapscript.core.index;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.snapscript.core.Accessor;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.function.Accessor;
 
 public class FinalFieldAccessor implements Accessor<Object>{
 

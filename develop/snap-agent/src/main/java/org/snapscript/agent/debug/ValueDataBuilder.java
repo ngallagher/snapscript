@@ -2,7 +2,7 @@ package org.snapscript.agent.debug;
 
 import org.snapscript.core.Context;
 import org.snapscript.core.Type;
-import org.snapscript.core.instance.Instance;
+import org.snapscript.core.define.Instance;
 
 public class ValueDataBuilder {
    

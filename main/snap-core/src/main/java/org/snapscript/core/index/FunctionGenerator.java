@@ -3,12 +3,12 @@ package org.snapscript.core.index;
 import java.lang.reflect.Method;
 
 import org.snapscript.core.Any;
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.Invocation;
-import org.snapscript.core.InvocationFunction;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Invocation;
+import org.snapscript.core.function.InvocationFunction;
+import org.snapscript.core.function.Signature;
 
 public class FunctionGenerator {
    

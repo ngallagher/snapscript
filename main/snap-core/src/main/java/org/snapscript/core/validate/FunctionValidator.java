@@ -5,7 +5,6 @@ import static org.snapscript.core.convert.Score.INVALID;
 import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.ModifierType;
 import org.snapscript.core.Type;
@@ -13,6 +12,7 @@ import org.snapscript.core.TypeTraverser;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FunctionComparator;
 import org.snapscript.core.convert.Score;
+import org.snapscript.core.function.Function;
 
 public class FunctionValidator {
    

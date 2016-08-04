@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
 import org.snapscript.core.Scope;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.function.Function;
 
 public class ModuleExtender {
    

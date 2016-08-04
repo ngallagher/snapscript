@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.link.ImportManager;
+
 public class ContextModule implements Module {
    
    private final Map<String, Module> modules;

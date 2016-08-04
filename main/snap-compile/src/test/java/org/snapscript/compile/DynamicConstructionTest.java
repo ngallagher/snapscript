@@ -1,6 +1,6 @@
 package org.snapscript.compile;
 
-import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+import static org.snapscript.compile.Instruction.SCRIPT;
 
 import java.util.HashMap;
 import java.util.Map;

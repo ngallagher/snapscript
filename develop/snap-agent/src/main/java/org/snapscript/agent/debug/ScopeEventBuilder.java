@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.snapscript.agent.event.ScopeEvent;
-import org.snapscript.core.TraceType;
+import org.snapscript.core.trace.TraceType;
 
 public class ScopeEventBuilder {
 

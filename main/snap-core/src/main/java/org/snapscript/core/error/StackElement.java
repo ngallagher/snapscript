@@ -1,9 +1,9 @@
 package org.snapscript.core.error;
 
-import org.snapscript.core.Function;
 import org.snapscript.core.Module;
-import org.snapscript.core.Trace;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.trace.Trace;
 
 public class StackElement {
    

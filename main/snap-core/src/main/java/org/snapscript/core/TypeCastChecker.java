@@ -6,9 +6,11 @@ import static org.snapscript.core.convert.Score.SIMILAR;
 
 import java.util.Set;
 
+import org.snapscript.core.closure.ClosureFunctionFinder;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.FunctionComparator;
 import org.snapscript.core.convert.Score;
+import org.snapscript.core.function.Function;
 
 public class TypeCastChecker {
 

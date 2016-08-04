@@ -1,6 +1,6 @@
 package org.snapscript.agent;
 
-import org.snapscript.core.PackageLinker;
+import org.snapscript.core.link.PackageLinker;
 
 public class SystemValidator {
    

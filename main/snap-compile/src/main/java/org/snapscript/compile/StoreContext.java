@@ -2,22 +2,21 @@ package org.snapscript.compile;
 
 import java.util.concurrent.Executor;
 
-import org.snapscript.compile.instruction.ExecutorLinker;
-import org.snapscript.compile.instruction.InstructionEvaluator;
+import org.snapscript.compile.link.ExecutorLinker;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.ResourceManager;
 import org.snapscript.core.StoreManager;
-import org.snapscript.core.TraceInterceptor;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.ProxyWrapper;
 import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.error.ThreadStack;
+import org.snapscript.core.link.PackageLinker;
 import org.snapscript.core.store.Store;
+import org.snapscript.core.trace.TraceInterceptor;
 import org.snapscript.core.validate.ExecutableValidator;
 
 public class StoreContext implements Context {

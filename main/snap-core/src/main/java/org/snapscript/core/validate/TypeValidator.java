@@ -9,13 +9,13 @@ import static org.snapscript.core.Reserved.TYPE_THIS;
 import java.util.List;
 import java.util.Set;
 
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Module;
-import org.snapscript.core.Property;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeTraverser;
 import org.snapscript.core.convert.ConstraintMatcher;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.property.Property;
 
 public class TypeValidator {
    

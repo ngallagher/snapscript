@@ -3,8 +3,8 @@ package org.snapscript.core.error;
 import java.util.Iterator;
 
 import org.snapscript.common.Stack;
-import org.snapscript.core.Function;
-import org.snapscript.core.Trace;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.trace.Trace;
 
 public class StackElementIterator {
    

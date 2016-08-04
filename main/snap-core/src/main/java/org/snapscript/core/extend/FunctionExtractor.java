@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.snapscript.core.Function;
-import org.snapscript.core.Invocation;
-import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Module;
-import org.snapscript.core.Parameter;
-import org.snapscript.core.ParameterBuilder;
 import org.snapscript.core.Result;
 import org.snapscript.core.Scope;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Invocation;
+import org.snapscript.core.function.InvocationFunction;
+import org.snapscript.core.function.Parameter;
+import org.snapscript.core.function.ParameterBuilder;
+import org.snapscript.core.function.Signature;
 
 public class FunctionExtractor {
    

@@ -4,20 +4,20 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.snapscript.core.ClosureFunctionFinder;
 import org.snapscript.core.Context;
 import org.snapscript.core.ContextModule;
-import org.snapscript.core.EmptyFunction;
-import org.snapscript.core.Function;
-import org.snapscript.core.InvocationFunction;
 import org.snapscript.core.Module;
-import org.snapscript.core.Parameter;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.closure.ClosureFunctionFinder;
 import org.snapscript.core.convert.ConstraintConverter;
 import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.convert.Score;
+import org.snapscript.core.function.EmptyFunction;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.InvocationFunction;
+import org.snapscript.core.function.Parameter;
+import org.snapscript.core.function.Signature;
 import org.snapscript.core.store.ClassPathStore;
 import org.snapscript.core.store.Store;
 

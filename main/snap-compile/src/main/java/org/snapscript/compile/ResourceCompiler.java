@@ -1,16 +1,14 @@
 package org.snapscript.compile;
 
-import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+import static org.snapscript.compile.Instruction.SCRIPT;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.instruction.Application;
-import org.snapscript.compile.instruction.Instruction;
 import org.snapscript.core.Context;
-import org.snapscript.core.Package;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.PathConverter;
 import org.snapscript.core.ResourceManager;
+import org.snapscript.core.link.Package;
+import org.snapscript.core.link.PackageLinker;
 
 public class ResourceCompiler implements Compiler {
 

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.Property;
 import org.snapscript.core.Type;
+import org.snapscript.core.property.ClassProperty;
+import org.snapscript.core.property.Property;
+import org.snapscript.core.property.ThisProperty;
 
 public class ClassPropertyBuilder {
 

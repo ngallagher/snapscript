@@ -8,7 +8,7 @@ import java.util.Set;
 import org.snapscript.core.Context;
 import org.snapscript.core.Type;
 import org.snapscript.core.convert.ProxyWrapper;
-import org.snapscript.core.instance.Instance;
+import org.snapscript.core.define.Instance;
 
 public class ArrayStringBuilder {
    

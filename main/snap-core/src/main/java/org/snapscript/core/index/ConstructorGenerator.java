@@ -4,12 +4,12 @@ import static org.snapscript.core.Reserved.TYPE_CONSTRUCTOR;
 
 import java.lang.reflect.Constructor;
 
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
-import org.snapscript.core.Invocation;
-import org.snapscript.core.InvocationFunction;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Invocation;
+import org.snapscript.core.function.InvocationFunction;
+import org.snapscript.core.function.Signature;
 
 public class ConstructorGenerator {
 

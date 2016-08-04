@@ -2,8 +2,8 @@ package org.snapscript.core.index;
 
 import java.lang.reflect.Field;
 
-import org.snapscript.core.Accessor;
 import org.snapscript.core.InternalStateException;
+import org.snapscript.core.function.Accessor;
 
 public class FieldAccessor implements Accessor<Object>{
 

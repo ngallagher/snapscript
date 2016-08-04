@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
 import org.snapscript.core.Context;
-import org.snapscript.core.Function;
 import org.snapscript.core.InternalStateException;
 import org.snapscript.core.Result;
 import org.snapscript.core.Transient;
 import org.snapscript.core.Value;
 import org.snapscript.core.bind.FunctionBinder;
+import org.snapscript.core.function.Function;
 
 public class FunctionProxyHandler implements InvocationHandler {
    

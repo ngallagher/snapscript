@@ -3,7 +3,8 @@ package org.snapscript.core;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snapscript.core.instance.SuperInstance;
+import org.snapscript.core.define.SuperInstance;
+import org.snapscript.core.function.Function;
 
 public class TypeExtractor {
    

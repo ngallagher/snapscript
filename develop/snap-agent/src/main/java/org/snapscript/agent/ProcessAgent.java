@@ -9,7 +9,7 @@ import org.snapscript.agent.event.ProcessEventChannel;
 import org.snapscript.agent.event.RegisterEvent;
 import org.snapscript.agent.event.socket.SocketEventClient;
 import org.snapscript.agent.profiler.ProcessProfiler;
-import org.snapscript.core.TraceInterceptor;
+import org.snapscript.core.trace.TraceInterceptor;
 
 public class ProcessAgent {
 

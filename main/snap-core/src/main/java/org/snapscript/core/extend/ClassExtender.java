@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.snapscript.core.Function;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.function.Function;
 
 public class ClassExtender {
    

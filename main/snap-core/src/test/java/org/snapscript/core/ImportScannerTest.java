@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
+import org.snapscript.core.link.ImportScanner;
+
 import junit.framework.TestCase;
 
 public class ImportScannerTest extends TestCase {

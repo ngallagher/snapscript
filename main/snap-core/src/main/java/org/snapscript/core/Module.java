@@ -3,6 +3,10 @@ package org.snapscript.core;
 import java.io.InputStream;
 import java.util.List;
 
+import org.snapscript.core.annotation.Annotation;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.link.ImportManager;
+
 public interface Module extends Any{
    Scope getScope();
    Context getContext();

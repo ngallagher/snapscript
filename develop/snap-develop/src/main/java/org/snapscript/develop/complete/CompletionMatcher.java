@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.snapscript.agent.ConsoleLogger;
-import org.snapscript.core.Function;
 import org.snapscript.core.ModifierType;
-import org.snapscript.core.Parameter;
 import org.snapscript.core.PathConverter;
-import org.snapscript.core.Property;
-import org.snapscript.core.Signature;
 import org.snapscript.core.Type;
+import org.snapscript.core.function.Function;
+import org.snapscript.core.function.Parameter;
+import org.snapscript.core.function.Signature;
+import org.snapscript.core.property.Property;
 import org.snapscript.develop.common.TypeNode;
 import org.snapscript.develop.configuration.ConfigurationClassLoader;
 import org.snapscript.parse.GrammarIndexer;

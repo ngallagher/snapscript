@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.snapscript.core.Function;
+import org.snapscript.core.function.Function;
 
 public class FunctionCache { // copy on write cache
 

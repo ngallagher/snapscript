@@ -1,5 +1,6 @@
 package org.snapscript.compile;
 
+
 public class ThisAndSuperCallTest {
 
    private static final String SOURCE =

@@ -1,6 +1,6 @@
 package org.snapscript.develop.common;
 
-import static org.snapscript.compile.instruction.Instruction.SCRIPT;
+import static org.snapscript.compile.Instruction.SCRIPT;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
-import org.snapscript.core.Package;
-import org.snapscript.core.PackageLinker;
 import org.snapscript.core.PathConverter;
 import org.snapscript.core.Scope;
 import org.snapscript.core.ScopeMerger;
 import org.snapscript.core.Type;
+import org.snapscript.core.link.Package;
+import org.snapscript.core.link.PackageLinker;
 import org.snapscript.core.store.FileStore;
 import org.snapscript.core.store.Store;
 import org.snapscript.develop.configuration.ClassPathExecutor;

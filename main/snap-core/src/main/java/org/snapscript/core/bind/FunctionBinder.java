@@ -8,7 +8,6 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Type;
 import org.snapscript.core.TypeLoader;
 import org.snapscript.core.Value;
-import org.snapscript.core.convert.ConstraintMatcher;
 import org.snapscript.core.error.ThreadStack;
 
 public class FunctionBinder {

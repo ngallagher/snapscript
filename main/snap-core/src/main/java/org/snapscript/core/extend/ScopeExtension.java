@@ -4,10 +4,10 @@ import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.Module;
 import org.snapscript.core.ModuleRegistry;
-import org.snapscript.core.Package;
 import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.core.TypeLoader;
+import org.snapscript.core.link.Package;
 
 public class ScopeExtension {
 
