@@ -30,7 +30,8 @@
    <modules>
            <module>snap-common</module>
            <module>snap-core</module>
-           <module>snap-parse</module>           
+           <module>snap-parse</module>
+           <module>snap-tree</module>              
            <module>snap-compile</module>       
 	</modules>
 

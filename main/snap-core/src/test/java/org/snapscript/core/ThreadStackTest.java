@@ -5,6 +5,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.snapscript.core.ContextModule;
+import org.snapscript.core.Module;
 import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.function.InvocationFunction;
 import org.snapscript.core.function.Parameter;

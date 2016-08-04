@@ -2,6 +2,8 @@ package org.snapscript.core.store;
 
 import java.net.URI;
 
+import org.snapscript.core.store.RemoteLocation;
+
 import junit.framework.TestCase;
 
 public class RemoteLocationTest extends TestCase {

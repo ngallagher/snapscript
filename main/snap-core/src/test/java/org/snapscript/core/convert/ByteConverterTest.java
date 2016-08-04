@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.ByteConverter;
+import org.snapscript.core.convert.Score;
 
 public class ByteConverterTest extends TestCase {
 

@@ -1,6 +1,6 @@
 package org.snapscript.develop.common;
 
-import static org.snapscript.compile.Instruction.SCRIPT;
+import static org.snapscript.compile.assemble.Instruction.SCRIPT;
 
 import java.io.File;
 import java.util.ArrayList;

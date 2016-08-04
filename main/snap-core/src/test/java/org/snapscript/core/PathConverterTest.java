@@ -1,5 +1,7 @@
 package org.snapscript.core;
 
+import org.snapscript.core.PathConverter;
+
 import junit.framework.TestCase;
 
 public class PathConverterTest extends TestCase {

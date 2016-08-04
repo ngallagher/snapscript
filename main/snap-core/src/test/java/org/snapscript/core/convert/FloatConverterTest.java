@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.FloatConverter;
+import org.snapscript.core.convert.Score;
 
 public class FloatConverterTest extends TestCase {
    

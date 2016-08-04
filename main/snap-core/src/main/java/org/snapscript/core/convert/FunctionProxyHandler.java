@@ -1,8 +1,8 @@
 package org.snapscript.core.convert;
 
+import static org.snapscript.core.Reserved.METHOD_EQUALS;
 import static org.snapscript.core.Reserved.METHOD_HASH_CODE;
 import static org.snapscript.core.Reserved.METHOD_TO_STRING;
-import static org.snapscript.core.Reserved.METHOD_EQUALS;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

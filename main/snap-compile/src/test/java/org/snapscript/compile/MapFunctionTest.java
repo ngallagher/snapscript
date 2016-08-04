@@ -3,6 +3,9 @@ package org.snapscript.compile;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 
+import org.snapscript.compile.Compiler;
+import org.snapscript.compile.Executable;
+
 import junit.framework.TestCase;
 
 import com.sun.management.ThreadMXBean;

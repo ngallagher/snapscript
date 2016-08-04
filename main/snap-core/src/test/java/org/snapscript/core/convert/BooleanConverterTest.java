@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.BooleanConverter;
+import org.snapscript.core.convert.Score;
 
 public class BooleanConverterTest extends TestCase {
 

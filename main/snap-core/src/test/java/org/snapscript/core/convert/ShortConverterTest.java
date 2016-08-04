@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.Score;
+import org.snapscript.core.convert.ShortConverter;
 
 public class ShortConverterTest extends TestCase {
 

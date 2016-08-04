@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.bind.FunctionPathFinder;
 
 public class SearchPathFinderTest extends TestCase {
    

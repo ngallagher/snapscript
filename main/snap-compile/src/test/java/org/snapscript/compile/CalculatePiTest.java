@@ -3,9 +3,9 @@ package org.snapscript.compile;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 
-import com.sun.management.ThreadMXBean;
-
 import junit.framework.TestCase;
+
+import com.sun.management.ThreadMXBean;
 
 public class CalculatePiTest extends TestCase{
    

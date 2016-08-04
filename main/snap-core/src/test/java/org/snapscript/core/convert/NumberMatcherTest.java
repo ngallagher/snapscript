@@ -1,5 +1,8 @@
 package org.snapscript.core.convert;
 
+import org.snapscript.core.convert.NumberMatcher;
+import org.snapscript.core.convert.NumberType;
+
 import junit.framework.TestCase;
 
 public class NumberMatcherTest extends TestCase {

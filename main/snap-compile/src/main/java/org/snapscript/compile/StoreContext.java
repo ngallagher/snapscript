@@ -2,8 +2,11 @@ package org.snapscript.compile;
 
 import java.util.concurrent.Executor;
 
-import org.snapscript.compile.link.ExecutorLinker;
+import org.snapscript.compile.assemble.ExecutorLinker;
+import org.snapscript.compile.assemble.InstructionEvaluator;
+import org.snapscript.compile.validate.ExecutableValidator;
 import org.snapscript.core.Context;
+import org.snapscript.core.ContextValidator;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.ResourceManager;
@@ -17,7 +20,6 @@ import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.link.PackageLinker;
 import org.snapscript.core.store.Store;
 import org.snapscript.core.trace.TraceInterceptor;
-import org.snapscript.core.validate.ExecutableValidator;
 
 public class StoreContext implements Context {
 
@@ -69,7 +71,7 @@ public class StoreContext implements Context {
    }
    
    @Override
-   public ExecutableValidator getValidator() {
+   public ContextValidator getValidator() {
       return validator;
    }
    

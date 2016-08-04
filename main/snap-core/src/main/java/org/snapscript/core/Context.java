@@ -7,7 +7,6 @@ import org.snapscript.core.error.ErrorHandler;
 import org.snapscript.core.error.ThreadStack;
 import org.snapscript.core.link.PackageLinker;
 import org.snapscript.core.trace.TraceInterceptor;
-import org.snapscript.core.validate.ExecutableValidator;
 
 public interface Context extends Any {
    ThreadStack getStack();
@@ -15,7 +14,7 @@ public interface Context extends Any {
    ResourceManager getManager();
    ModuleRegistry getRegistry();
    ConstraintMatcher getMatcher();
-   ExecutableValidator getValidator();
+   ContextValidator getValidator();
    TraceInterceptor getInterceptor();
    ExpressionEvaluator getEvaluator();
    FunctionBinder getBinder();

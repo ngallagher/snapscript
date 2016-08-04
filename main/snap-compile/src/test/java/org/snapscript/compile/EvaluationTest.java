@@ -8,6 +8,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.snapscript.compile.assemble.Assembler;
+import org.snapscript.compile.assemble.InstructionAssembler;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.MapModel;

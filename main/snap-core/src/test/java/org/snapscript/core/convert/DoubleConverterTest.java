@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 
 import org.snapscript.core.TestType;
 import org.snapscript.core.Type;
+import org.snapscript.core.convert.DoubleConverter;
+import org.snapscript.core.convert.Score;
 
 public class DoubleConverterTest extends TestCase {
    

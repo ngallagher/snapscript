@@ -2,6 +2,7 @@ package org.snapscript.compile;
 
 import junit.framework.TestCase;
 
+import org.snapscript.compile.StoreContext;
 import org.snapscript.core.Context;
 import org.snapscript.core.EmptyModel;
 import org.snapscript.core.Model;

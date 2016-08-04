@@ -5,8 +5,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.snapscript.compile.template.Segment;
-import org.snapscript.compile.template.SegmentIterator;
+import org.snapscript.tree.template.Segment;
+import org.snapscript.tree.template.SegmentIterator;
 
 public class SegmentIteratorTest extends TestCase {
 

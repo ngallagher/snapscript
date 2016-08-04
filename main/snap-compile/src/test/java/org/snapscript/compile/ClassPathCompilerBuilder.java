@@ -1,5 +1,8 @@
 package org.snapscript.compile;
 
+import org.snapscript.compile.Compiler;
+import org.snapscript.compile.StoreContext;
+import org.snapscript.compile.StringCompiler;
 import org.snapscript.core.Context;
 import org.snapscript.core.store.ClassPathStore;
 import org.snapscript.core.store.Store;

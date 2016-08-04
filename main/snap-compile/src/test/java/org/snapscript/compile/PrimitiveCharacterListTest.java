@@ -1,8 +1,8 @@
 package org.snapscript.compile;
 
-import org.snapscript.compile.collection.PrimitiveCharacterList;
-
 import junit.framework.TestCase;
+
+import org.snapscript.tree.collection.PrimitiveCharacterList;
 
 public class PrimitiveCharacterListTest extends TestCase {
 
