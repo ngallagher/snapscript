@@ -6,7 +6,7 @@ import org.snapscript.compile.assemble.ExecutorLinker;
 import org.snapscript.compile.assemble.InstructionEvaluator;
 import org.snapscript.compile.validate.ExecutableValidator;
 import org.snapscript.core.Context;
-import org.snapscript.core.ContextValidator;
+import org.snapscript.core.ProgramValidator;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.ResourceManager;
@@ -71,7 +71,7 @@ public class StoreContext implements Context {
    }
    
    @Override
-   public ContextValidator getValidator() {
+   public ProgramValidator getValidator() {
       return validator;
    }
    

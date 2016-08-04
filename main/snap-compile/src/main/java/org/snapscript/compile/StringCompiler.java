@@ -5,7 +5,7 @@ import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.assemble.Application;
+import org.snapscript.compile.assemble.Program;
 import org.snapscript.compile.assemble.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.PathConverter;
@@ -53,7 +53,7 @@ public class StringCompiler implements Compiler {
          Package library = linker.link(module, source, instruction.name);
          String path = converter.createPath(module);
          
-         return new Application(context, library, module, path);
+         return new Program(context, library, module, path);
       }
       return executable;
    } 

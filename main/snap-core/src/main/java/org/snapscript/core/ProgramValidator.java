@@ -1,5 +1,5 @@
 package org.snapscript.core;
 
-public interface ContextValidator {
+public interface ProgramValidator {
    void validate(Context context) throws Exception;
 }

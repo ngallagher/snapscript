@@ -14,7 +14,7 @@ public interface Context extends Any {
    ResourceManager getManager();
    ModuleRegistry getRegistry();
    ConstraintMatcher getMatcher();
-   ContextValidator getValidator();
+   ProgramValidator getValidator();
    TraceInterceptor getInterceptor();
    ExpressionEvaluator getEvaluator();
    FunctionBinder getBinder();

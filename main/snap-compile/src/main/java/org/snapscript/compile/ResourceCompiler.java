@@ -4,7 +4,7 @@ import static org.snapscript.compile.assemble.Instruction.SCRIPT;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
-import org.snapscript.compile.assemble.Application;
+import org.snapscript.compile.assemble.Program;
 import org.snapscript.compile.assemble.Instruction;
 import org.snapscript.core.Context;
 import org.snapscript.core.PathConverter;
@@ -49,7 +49,7 @@ public class ResourceCompiler implements Compiler {
          PackageLinker linker = context.getLinker();
          Package library = linker.link(module, source, instruction.name);
   
-         return new Application(context, library, module, resource);
+         return new Program(context, library, module, resource);
       }
       return executable;
    } 
