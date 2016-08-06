@@ -6,15 +6,15 @@ import org.snapscript.core.Scope;
 import org.snapscript.core.Statement;
 import org.snapscript.parse.StringToken;
 
-public class NoOperation extends Statement {
+public class EmptyStatement extends Statement {
    
    private final StringToken token;
    
-   public NoOperation() {
+   public EmptyStatement() {
       this(null);
    }
    
-   public NoOperation(StringToken token) {
+   public EmptyStatement(StringToken token) {
       this.token = token;
    }
 

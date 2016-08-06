@@ -10,7 +10,7 @@ import org.snapscript.core.Value;
 import org.snapscript.core.ValueType;
 import org.snapscript.core.function.Function;
 import org.snapscript.core.function.Signature;
-import org.snapscript.tree.NoOperation;
+import org.snapscript.tree.EmptyStatement;
 import org.snapscript.tree.closure.ClosureBuilder;
 import org.snapscript.tree.function.ParameterList;
 
@@ -21,7 +21,7 @@ public class FunctionConstraint implements Evaluation {
    private final Statement body;
    
    public FunctionConstraint(ParameterList list) {
-      this.body = new NoOperation();
+      this.body = new EmptyStatement();
       this.builder = new ClosureBuilder(body);
       this.list = list;
    }
