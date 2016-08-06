@@ -16,7 +16,7 @@ public class PackageBuilder {
    private final Assembler assembler;   
    
    public PackageBuilder(Context context) {
-      this.assembler = new InstructionAssembler(context);      
+      this.assembler = new OperationAssembler(context);      
       this.compiler = new SyntaxCompiler();
       this.converter = new PathConverter();
    }

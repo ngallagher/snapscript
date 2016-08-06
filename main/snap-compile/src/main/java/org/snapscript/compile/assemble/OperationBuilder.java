@@ -15,14 +15,14 @@ import org.snapscript.core.Type;
 import org.snapscript.core.bind.FunctionBinder;
 import org.snapscript.parse.Line;
 
-public class InstructionBuilder {
+public class OperationBuilder {
    
-   private final InstructionProcessor processor;
+   private final OperationProcessor processor;
    private final Module module;
 
-   public InstructionBuilder(Context context) {
+   public OperationBuilder(Context context) {
       this.module = new ContextModule(context, DEFAULT_PACKAGE, DEFAULT_PACKAGE, 0);
-      this.processor = new InstructionProcessor(context);
+      this.processor = new OperationProcessor(context);
    }
    
    public Object create(Type type, Object[] arguments, Line line) throws Exception {

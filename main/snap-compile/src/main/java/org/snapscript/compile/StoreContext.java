@@ -3,7 +3,7 @@ package org.snapscript.compile;
 import java.util.concurrent.Executor;
 
 import org.snapscript.compile.assemble.ExecutorLinker;
-import org.snapscript.compile.assemble.InstructionEvaluator;
+import org.snapscript.compile.assemble.OperationEvaluator;
 import org.snapscript.compile.validate.ExecutableValidator;
 import org.snapscript.core.Context;
 import org.snapscript.core.ProgramValidator;
@@ -24,7 +24,7 @@ import org.snapscript.core.trace.TraceInterceptor;
 public class StoreContext implements Context {
 
    private final ExecutableValidator validator;
-   private final ExpressionEvaluator executor;
+   private final ExpressionEvaluator evaluator;
    private final TraceInterceptor interceptor;
    private final ConstraintMatcher matcher;
    private final ResourceManager manager;
@@ -52,7 +52,7 @@ public class StoreContext implements Context {
       this.matcher = new ConstraintMatcher(loader, wrapper);
       this.validator = new ExecutableValidator(matcher);
       this.binder = new FunctionBinder(loader, stack);
-      this.executor = new InstructionEvaluator(this);
+      this.evaluator = new OperationEvaluator(this);
    }
    
    @Override
@@ -92,7 +92,7 @@ public class StoreContext implements Context {
    
    @Override
    public ExpressionEvaluator getEvaluator() {
-      return executor;
+      return evaluator;
    }
 
    @Override

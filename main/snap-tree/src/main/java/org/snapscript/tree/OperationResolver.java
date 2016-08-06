@@ -1,4 +1,4 @@
-package org.snapscript.compile.assemble;
+package org.snapscript.tree;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

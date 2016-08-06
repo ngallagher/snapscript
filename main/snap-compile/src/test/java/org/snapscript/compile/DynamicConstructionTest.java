@@ -1,6 +1,6 @@
 package org.snapscript.compile;
 
-import static org.snapscript.compile.assemble.Instruction.SCRIPT;
+import static org.snapscript.tree.Instruction.SCRIPT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class DynamicConstructionTest extends TestCase {
    public void testDynamicConstruction() throws Exception {
       Store store = new ClassPathStore();
       Context context = new StoreContext(store, null);
-      Compiler compiler = new StringCompiler(context, SCRIPT, "blah");
+      Compiler compiler = new StringCompiler(context, "blah");
       System.err.println(SOURCE);
       Executable executable = compiler.compile(SOURCE);
       executable.execute();

@@ -26,6 +26,11 @@
         <include name="**/*.class" />
       </fileset>
     </copy>
+   <copy todir="output">
+            <fileset dir="../../main/snap-tree/target/classes">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>    
     <copy todir="output">
             <fileset dir="../../main/snap-core/target/classes">
         <include name="**/*.class" />

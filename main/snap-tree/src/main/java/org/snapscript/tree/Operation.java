@@ -1,4 +1,4 @@
-package org.snapscript.compile.assemble;
+package org.snapscript.tree;
 
 import org.snapscript.core.Type;
 

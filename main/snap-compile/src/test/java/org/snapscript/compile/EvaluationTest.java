@@ -9,7 +9,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.snapscript.compile.assemble.Assembler;
-import org.snapscript.compile.assemble.InstructionAssembler;
+import org.snapscript.compile.assemble.OperationAssembler;
 import org.snapscript.core.Context;
 import org.snapscript.core.ExpressionEvaluator;
 import org.snapscript.core.MapModel;
@@ -196,7 +196,7 @@ public class EvaluationTest extends TestCase {
       Model model = new MapModel(map);
       Store store = new ClassPathStore();
       Context context = new StoreContext(store);
-      Assembler builder = new InstructionAssembler(context);
+      Assembler builder = new OperationAssembler(context);
       SyntaxCompiler compiler = new SyntaxCompiler();
       ScopeMerger merger = new ScopeMerger(context);
       Scope scope = merger.merge(model, "default", "/default.snap");

@@ -9,16 +9,18 @@ import org.snapscript.core.error.ThreadStack;
 import org.snapscript.parse.Line;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.Token;
+import org.snapscript.tree.Operation;
+import org.snapscript.tree.OperationResolver;
 
-public class InstructionAssembler implements Assembler {
+public class OperationAssembler implements Assembler {
    
-   private final InstructionBuilder builder;
+   private final OperationBuilder builder;
    private final OperationResolver resolver;
    private final Context context;
    private final Object[] empty;
 
-   public InstructionAssembler(Context context) {
-      this.builder = new InstructionBuilder(context);
+   public OperationAssembler(Context context) {
+      this.builder = new OperationBuilder(context);
       this.resolver = new OperationResolver(context);
       this.empty = new Object[]{};
       this.context = context;

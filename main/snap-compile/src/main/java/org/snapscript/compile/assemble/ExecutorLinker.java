@@ -1,7 +1,5 @@
 package org.snapscript.compile.assemble;
 
-import static org.snapscript.compile.assemble.Instruction.SCRIPT_PACKAGE;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,12 +24,8 @@ public class ExecutorLinker implements PackageLinker {
    }
    
    public ExecutorLinker(Context context, Executor executor) {
-      this(context, executor, SCRIPT_PACKAGE);
-   }
-   
-   public ExecutorLinker(Context context, Executor executor, Instruction instruction) {
-      this.linker = new InstructionLinker(context, instruction);
       this.registry = new ConcurrentHashMap<String, Package>();
+      this.linker = new ProgramLinker(context);
       this.executor = executor;
    }
 

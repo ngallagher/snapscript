@@ -1,7 +1,7 @@
 package org.snapscript.compile.assemble;
 
-import static org.snapscript.compile.assemble.Instruction.EXPRESSION;
 import static org.snapscript.core.Reserved.DEFAULT_PACKAGE;
+import static org.snapscript.tree.Instruction.EXPRESSION;
 
 import org.snapscript.common.Cache;
 import org.snapscript.common.LeastRecentlyUsedCache;
@@ -17,29 +17,23 @@ import org.snapscript.parse.SyntaxCompiler;
 import org.snapscript.parse.SyntaxNode;
 import org.snapscript.parse.SyntaxParser;
 
-public class InstructionEvaluator implements ExpressionEvaluator {
+public class OperationEvaluator implements ExpressionEvaluator {
    
    private final Cache<String, Evaluation> cache;
    private final SyntaxCompiler compiler;
-   private final Instruction instruction;
    private final ScopeMerger merger;
    private final Assembler assembler;
    private final int limit;
    
-   public InstructionEvaluator(Context context){
-      this(context, EXPRESSION);
+   public OperationEvaluator(Context context){
+      this(context, 200);
    }
    
-   public InstructionEvaluator(Context context, Instruction instruction) {
-      this(context, instruction, 200);
-   }
-   
-   public InstructionEvaluator(Context context, Instruction instruction, int limit) {
+   public OperationEvaluator(Context context, int limit) {
       this.cache = new LeastRecentlyUsedCache<String, Evaluation>();
-      this.assembler = new InstructionAssembler(context);
+      this.assembler = new OperationAssembler(context);
       this.merger = new ScopeMerger(context);
       this.compiler = new SyntaxCompiler();
-      this.instruction = instruction;
       this.limit = limit;
    }
    
@@ -66,7 +60,7 @@ public class InstructionEvaluator implements ExpressionEvaluator {
       try {
          if(evaluation == null) {
             SyntaxParser parser = compiler.compile();
-            SyntaxNode node = parser.parse(module, source, instruction.name);
+            SyntaxNode node = parser.parse(module, source, EXPRESSION.name);
             int length = source.length();
             
             evaluation = assembler.assemble(node, source);

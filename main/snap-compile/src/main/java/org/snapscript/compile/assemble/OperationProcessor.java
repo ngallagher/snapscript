@@ -7,12 +7,12 @@ import org.snapscript.core.ModuleRegistry;
 import org.snapscript.core.PathConverter;
 import org.snapscript.parse.Line;
 
-public class InstructionProcessor {
+public class OperationProcessor {
 
    private final PathConverter converter;
    private final Context context;
    
-   public InstructionProcessor(Context context) {
+   public OperationProcessor(Context context) {
       this.converter = new PathConverter();
       this.context = context;
    }
