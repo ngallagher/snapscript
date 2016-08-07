@@ -1,4 +1,4 @@
-class X {
+class X  {
 }
 class Y extends X{
 }
